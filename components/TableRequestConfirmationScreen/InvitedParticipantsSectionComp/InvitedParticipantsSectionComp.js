@@ -1,0 +1,45 @@
+// All information, source code contained in this document 
+// is the property of StrynDev Solutions, LLC. It must not 
+// be transmitted to others without the written consent of 
+// StrynDev Solutions. It must be returned to StrynDev Solutions 
+// when its authorized use is terminated.
+
+import React from 'react';
+
+import { 
+    View, 
+    Text,
+    StyleSheet } from 'react-native';
+import { heightRatioProMax } from '../../../dimensions/Dimensions';
+import { Fonts } from '../../../fonts/Fonts';
+
+import ParticipantBubbleComp from './ParticipantBubbleComp';
+
+const InvitiedParticipantsSectionComp = (props) => {
+
+
+    return (<View style={styles.mainContainer}>
+        <Text style={{
+            marginBottom: 10 * heightRatioProMax,
+            fontFamily: Fonts.mainFontReg,
+            fontSize: 20 * heightRatioProMax,
+        }}>invited participants</Text>
+        {props.participants.map((participant, index) => (
+            <ParticipantBubbleComp
+            key={index}
+            avatarImage={participant.image}
+            name={participant.name}
+            externalUser={participant.externalUser}
+            email={participant.email}></ParticipantBubbleComp>
+        ))}
+    </View>)
+}
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        width: '85%'
+    }
+
+})
+
+export default InvitiedParticipantsSectionComp;
