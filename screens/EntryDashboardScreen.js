@@ -39,7 +39,7 @@ const EntryDashboardScreen = (props) => {
     const [ clubList, setClubList ] = useState([]);
     useEffect(() => {
 
-        axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/clubs/coordinates/42.361145/-71.057083`)
+        axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/clubs/coordinates/42.35313/-71.047218`)
         .then((res) => {
 
             let firstResponse = res.data;

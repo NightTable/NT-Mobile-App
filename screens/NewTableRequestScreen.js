@@ -72,7 +72,7 @@ const NewTableRequestScreen = (props) => {
 
     useEffect(() => {
 
-        axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/tableconfigurations/club/626b1a7062ce23d9fd404379`)
+        axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/tableconfigurations/club/627edbba0734f863222db602`)
         .then((res) => {
 
             let response = res.data;

@@ -36,12 +36,12 @@ const ClubFullDetailScreen = (props) => {
     const [tableConfigList, setTableConfigsList] = useState([]);
 
     const getEvents = async () => {
-        let response = await axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/events/club/627470322e404757114019e5`);
+        let response = await axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/events/club/627edbba0734f863222db602`);
         return response.data;
     }
 
     const getTableConfigs = async () => {
-        let response = await axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/tableconfigurations/club/627470322e404757114019e5`)
+        let response = await axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/tableconfigurations/club/627edbba0734f863222db602`)
         return response.data;
 
     }
