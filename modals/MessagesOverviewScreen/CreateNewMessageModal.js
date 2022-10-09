@@ -1,17 +1,10 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import { 
     View, 
     Text, 
     Modal,
-    TouchableOpacity,
-    Button } from 'react-native';
+    TouchableOpacity } from 'react-native';
 
 import { windowHeight, heightRatioProMax } from '../../dimensions/Dimensions';
 import { Colors } from '../../colors/Colors';

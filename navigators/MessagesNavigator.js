@@ -1,33 +1,64 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 import { View, 
-    Text, 
+    TouchableOpacity,
+    Image,
+    Platform,
     StyleSheet
  } from 'react-native';
-
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import whiteMenuPic from '../assets/whitemenu.png';
 import { Colors } from '../colors/Colors';
 import { Fonts } from '../fonts/Fonts';
-
+import MessagesOverviewScreen from '../screens/MessagesOverviewScreen';
 import { heightRatioNorm } from '../dimensions/Dimensions';
 
-import MessagesDetailScreen from '../screens/MessagesDetailScreen';
+let Stack;
 
-const MessageNavigator = () => {
+if (Platform.OS === 'android') {
+    Stack = createStackNavigator();
+} else {
+    Stack = createNativeStackNavigator();
+}
 
-
+const MessageNavigator = (props) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.clubListContainer}>
-                <Text style={styles.text}>Messages Navigator in Progress</Text>
-            </View>
-        </View>    
-        // <MessagesDetailScreen></MessagesDetailScreen>
-)
+        <Stack.Navigator 
+        screenOptions={{headerStyle: {
+            backgroundColor: Colors.purple,
+            shadowOpacity: 0,
+        }}}>
+            <Stack.Screen
+                component={MessagesOverviewScreen}
+                name="edNav-MessagesOverviewScreen"
+                options={{
+                    headerTitle: 'messages',
+                    headerTitleStyle: {
+                        fontSize: Platform.OS === 'ios' ? 20 * heightRatioNorm : 15 * heightRatioNorm,
+                        fontFamily: Fonts.mainFontReg
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity 
+                        onPress={() => props.navigation.openDrawer()}
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Image 
+                                style={{
+
+                                    width: 40,
+                                    height: 40
+                                }}
+                                source={whiteMenuPic}></Image>
+                        </TouchableOpacity>),
+                    headerTintColor: Colors.white,
+                    headerShadowVisible: false
+                }}
+            >
+            </Stack.Screen>
+        </Stack.Navigator>
+    )
 };
 
 const styles = StyleSheet.create({
