@@ -1,24 +1,18 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Colors } from '../colors/Colors';
 import { Fonts } from '../fonts/Fonts';
+
+import { API_URL_IOS, API_URL_ANDROID } from "@env";
+import axios from 'axios';
 
 import { View, 
     Text, 
     StyleSheet,
     TouchableOpacity,} from 'react-native';
-import girlOnePic from '../assets/younggirl1.jpeg';
-import youngguy2 from '../assets/younguy2.jpeg';
-import johnPic from '../assets/johnpic.jpeg';
 import MessageBubbleComp from '../components/MessagesOverviewScreen/MessageBubbleComp';
 import {
-    heightRatioNorm, heightRatioProMax
+    heightRatioNorm
 } from '../dimensions/Dimensions';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -28,7 +22,57 @@ import CreateNewMessageModal from '../modals/MessagesOverviewScreen/CreateNewMes
 const MessagesOverviewScreen = () => {
 
     const [ messageModalVisible, setMessageModalVisible ] = useState(false);
+    const [messages, setMessages] = useState([]);
 
+    const userId = '627edbbe0734f863222db6e6'
+
+    const getAllMessages = async () => {
+        const response = await axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/messagechats/${userId}`);
+        const message = response.data;
+        let cleanedMessages = [];
+
+        for (let i = 0; i < message.length; i++){
+            let messageData = {
+                image: null,
+                name: null,
+                messagePrev: null,
+                sentMessage: false,
+                isRecieved: null,
+                isNew: null
+            }
+            let source = message[i].sourceUserId;
+            let target = message[i].targetUserId;
+            let name;
+            let image;
+            if (typeof source === 'object'){
+                image = source.profilePhoto;
+                name = source.firstName + " " + source.lastName;
+            }
+            else if (typeof target === 'object'){
+                image = target.profilePhoto;
+                name = target.firstName + " " + target.lastName;
+            }
+            messageData.image = image;
+            messageData.name = name;
+            messageData.messagePrev = message[i].lastMessage;
+            if (messageData.sentMessage){
+                messageData.isRecieved = false;
+
+            }
+            else{
+                messageData.isRecieved = true;
+            }
+            messageData.isNew = message[i].isUnRead;
+            cleanedMessages.push(messageData)
+        }
+        setMessages(cleanedMessages);
+
+    }
+
+    useEffect(() => {
+        getAllMessages();
+        
+    }, []);
 
     const handleOpenNewMessageModal = () => {
 
@@ -50,32 +94,19 @@ const MessagesOverviewScreen = () => {
             <View style={{
                 flexDirection: 'column', 
                 flex: 9,
-                marginTop: 20 * heightRatioProMax}}>
+                marginTop: 20 * heightRatioNorm}}>
                 <ScrollView>
-                    <MessageBubbleComp
-                        image={johnPic}
-                        name={'Jake Tanner'}
-                        messagePrev={"Let's get a table at the grand tonight"}
-                        sentMessage={false}
-                        isRecieved={true}
-                        isNew={true}>
-                    </MessageBubbleComp>
-                    <MessageBubbleComp
-                        image={girlOnePic}
-                        name={'Janelle May'}
-                        messagePrev={"did you recieve this, Amiya?"}
-                        sentMessage={false}
-                        isRecieved={true}
-                        isNew={false}>
-                    </MessageBubbleComp>
-                    <MessageBubbleComp
-                        image={youngguy2}
-                        name={'George Clooney'}
-                        messagePrev={"I think I left my ID at LIV, or at the girl's..."}
-                        sentMessage={true}
-                        isRecieved={true}
-                        isNew={false}>
-                    </MessageBubbleComp>
+                    {messages.map((list, index) => (
+                        <MessageBubbleComp
+                            key={index}
+                            image={list.image}
+                            name={list.name}
+                            messagePrev={list.messagePrev}
+                            sentMessage={list.sentMessage}
+                            isRecieved={list.isRecieved}
+                            isNew={list.isNew}>
+                        </MessageBubbleComp>
+                    ))}
                 </ScrollView>
 
             </View>
