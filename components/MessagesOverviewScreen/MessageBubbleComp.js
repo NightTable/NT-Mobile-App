@@ -1,10 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
-
 import { 
     View, 
     Text,
@@ -51,7 +44,7 @@ const MessageBubbleComp = (props) => {
                     width: 40 * heightRatioNorm,
                     height: 40 * heightRatioNorm,
                     borderRadius: 20 * heightRatioNorm
-                }} source={props.image}></Image>
+                }} source={{uri: props.image}}></Image>
                 <View style={{flexDirection: 'column', width: 200*widthRatioNorm}}>
                     <Text style={{
                         fontSize: 13 * heightRatioNorm,
