@@ -38,7 +38,7 @@ const PartHorizComp = (props) => {
                 </View>
                 <View>
                     <Text style={{
-                        color: Colors.white
+                        color: Colors.black
                     }}>{props.name}</Text>
                 </View>
             </React.Fragment>
@@ -53,7 +53,7 @@ const PartHorizComp = (props) => {
             }}>
                 <Text style={{
                     marginLeft: 15 * widthRatioProMax,
-                    color: Colors.white,
+                    color: Colors.black,
                     fontFamily: Fonts.mainFontReg
                 }}>{props.email}</Text>
             </View>
@@ -63,7 +63,7 @@ const PartHorizComp = (props) => {
 
     return (<View style={{
         width: '100%',
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.gold,
         height: 70 * heightRatioProMax,
         borderRadius: 10 * heightRatioProMax,
         flexDirection: 'row',

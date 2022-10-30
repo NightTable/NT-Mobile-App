@@ -16,8 +16,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Colors } from '../colors/Colors';
 import { Fonts } from '../fonts/Fonts';
 import { heightRatioNorm, heightRatioProMax, widthRatioNorm } from '../dimensions/Dimensions';
-import whiteMenuPic from '../assets/whitemenu.png';
-import whiteBackButtonPic from '../assets/whitebackbutton.png';
+import whiteMenuPic from '../assets/goldmenu.png';
+import whiteBackButtonPic from '../assets/goldenbackbutton.png';
 import UserProfileScreen from '../screens/UserProfileScreen';
 import PhotoDetailListScreen from '../screens/PhotoDetailListScreen';
 import PhotoListScreen from '../screens/PhotoListScreen';
@@ -40,17 +40,18 @@ const InvitesNavigator = (props) => {
     return (
             <Stack.Navigator 
             screenOptions={{headerStyle: {
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.black,
                 shadowOpacity: 0,
             }}}>
                 <Stack.Screen
                     component={TableInvitesOverviewScreen}
                     name="invNav-TableInvitesOverviewScreen"
                     options={{
-                        headerTitle: 'table invites overview',
+                        headerTitle: 'Table Invites Overview',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -67,7 +68,7 @@ const InvitesNavigator = (props) => {
                                     }}
                                     source={whiteMenuPic}></Image>
                             </TouchableOpacity>),
-                        headerTintColor: Colors.white,
+                        headerTintColor: Colors.gold,
                         headerShadowVisible: false
                     }}
                 >
@@ -76,10 +77,11 @@ const InvitesNavigator = (props) => {
                     component={TableInvitesDetailScreen}
                     name="invNav-TableInvitesDetailScreen"
                     options={{
-                        headerTitle: 'table invite details',
+                        headerTitle: 'Table Invite Details',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -96,7 +98,7 @@ const InvitesNavigator = (props) => {
                                     }}
                                     source={whiteBackButtonPic}></Image>
                             </TouchableOpacity>),
-                        headerTintColor: Colors.white,
+                        headerTintColor: Colors.gold,
                         headerShadowVisible: false
                     }}
                 >
@@ -107,10 +109,11 @@ const InvitesNavigator = (props) => {
                     options={(props) => { 
 
                         return ({
-                            headerTitle: 'user profile',
+                            headerTitle: 'User Profile',
                             headerTitleStyle: {
                                 fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                                fontFamily: Fonts.mainFontReg
+                                fontFamily: Fonts.mainFontReg,
+                                color: Colors.gold
                             },
                             headerLeft: () => (
                                 <TouchableOpacity 
@@ -135,7 +138,7 @@ const InvitesNavigator = (props) => {
                                         }}
                                         source={whiteBackButtonPic}></Image>
                                 </TouchableOpacity>),
-                            headerTintColor: Colors.white,
+                            headerTintColor: Colors.gold,
                             headerShadowVisible: false
                         }) 
                     }}
@@ -145,14 +148,15 @@ const InvitesNavigator = (props) => {
                     component={ActiveTableGroupScreen}
                     name="invNav-ActiveTableGroupScreen"
                     options={{
-                        headerTitle: "live table groupings",
+                        headerTitle: "Live Table Groupings",
                         headerLeft: (props) => null,
 
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
-                        headerTintColor: Colors.white,
+                        headerTintColor: Colors.gold,
                         headerShadowVisible: false
                     }}
                 >
@@ -162,12 +166,12 @@ const InvitesNavigator = (props) => {
                 name="invNav-EndOutingScreen"
                 options={{
                     headerLeft: (props) => null,
-                    headerTitle: "thank you",
+                    headerTitle: "Thank You",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
                         fontFamily: Fonts.mainFontReg
                     },
-                    headerTintColor: Colors.white,
+                    headerTintColor: Colors.gold,
                 }}
                 >
                 </Stack.Screen>
@@ -175,10 +179,11 @@ const InvitesNavigator = (props) => {
                     component={PollingRoomScreen}
                     name="invNav-PollingRoomScreen"
                     options={{
-                        headerTitle: 'polling room',
+                        headerTitle: 'Polling Room',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -204,10 +209,11 @@ const InvitesNavigator = (props) => {
                     component={PhotoListScreen}
                     name="invNav-PhotoListScreen"
                     options={{
-                        headerTitle: 'photos',
+                        headerTitle: 'Photos',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -223,7 +229,7 @@ const InvitesNavigator = (props) => {
                                     }}
                                     source={whiteBackButtonPic}></Image>
                             </TouchableOpacity>),
-                        headerTintColor: Colors.white,
+                        headerTintColor: Colors.gold,
                         headerShadowVisible: false
                     }}
                 >
@@ -232,10 +238,11 @@ const InvitesNavigator = (props) => {
                     component={PhotoDetailListScreen}
                     name="invNav-PhotoDetailListScreen"
                     options={{
-                        headerTitle: 'photos',
+                        headerTitle: 'Photos',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -261,10 +268,11 @@ const InvitesNavigator = (props) => {
                     component={MessagesDetailScreen}
                     name="invNav-MessagesDetailScreen"
                     options={{
-                        headerTitle: 'message',
+                        headerTitle: 'Message',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 

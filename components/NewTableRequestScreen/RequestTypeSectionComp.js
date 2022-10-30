@@ -25,7 +25,8 @@ const RequestTypeSectionComp = (props) => {
             alignSelf: 'flex-start'
         }}>
             <Text style={{
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>select request type: </Text>
         </View>
         <View style={styles.costTypeButtonContainer}>
@@ -39,7 +40,7 @@ const RequestTypeSectionComp = (props) => {
                     elevation: 6
                 }]} onPress={props.onRequestTypeChange}>
                     <Text style={{
-                        color: props.selectedRequestType === 'snpl' ? Colors.white : Colors.purple,
+                        color: props.selectedRequestType === 'snpl' ? Colors.black : Colors.buttonColorGold,
                         fontFamily: Fonts.mainFontReg
                     }}>{props.isQuestionButtonSelected ? 'split-now-pay-later' : 'snpl'}</Text>
                 </TouchableOpacity>
@@ -54,7 +55,7 @@ const RequestTypeSectionComp = (props) => {
                         elevation: 6
                 }]} onPress={props.onRequestTypeChange}>
                     <Text style={{
-                        color: props.selectedRequestType === 'pnsl' ? Colors.white : Colors.purple,
+                        color: props.selectedRequestType === 'pnsl' ? Colors.black : Colors.textColorGold,
                         fontFamily: Fonts.mainFontReg
                     }}>{props.isQuestionButtonSelected ? 'pay-now-split-later' : 'pnsl'}</Text>
                 </TouchableOpacity>
@@ -108,23 +109,23 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     selectedButtonStyle: {
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.textColorGold,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 7 * heightRatioProMax,
         width: 160 * widthRatioProMax,
         height: 40 * heightRatioProMax,
-        borderColor: Colors.white,
+        borderColor: Colors.textColorGold,
         borderWidth: 1
     },
     notSelectedButtonStyle: {
-        backgroundColor: Colors.greyMedium,
+        backgroundColor: Colors.black,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 7 * heightRatioProMax,
         width: 160 * widthRatioProMax,
         height: 40 * heightRatioProMax,
-        borderColor: Colors.orange,
+        borderColor: Colors.textColorGold,
         borderWidth: 1
     },
     questionButtonContainer: {

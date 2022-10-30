@@ -24,7 +24,8 @@ const MessageInputComp = (props) => {
 
     return (<View style={{
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: Colors.black
     }}>
         <View style={{
             flex: 7,
@@ -32,14 +33,14 @@ const MessageInputComp = (props) => {
         }}>
             <TextInput style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.black,
+                color: Colors.gold,
                 marginLeft: 30 * widthRatioProMax,
                 borderTopWidth: 0,
                 height: 30 * heightRatioProMax,
                 borderLeftWidth: 0,
                 borderRightWidth: 0,
                 borderBottomWidth: 1,
-                borderBottomColor: Colors.greyDark
+                borderBottomColor: Colors.gold
             }}></TextInput>
         </View>
         <View style={{

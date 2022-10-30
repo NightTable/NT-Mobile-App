@@ -22,12 +22,14 @@ const HeaderComp = (props) => {
             marginLeft: 35 * widthRatioProMax,
             fontSize: 20 * heightRatioProMax,
             fontFamily: Fonts.mainFontBold,
+            color: Colors.gold
         }}>your table request</Text>
         <Text style={{
             color: Colors.orange,
             fontFamily: Fonts.mainFontBold,
             marginLeft: 35 * heightRatioProMax,
             marginTop: 15 * heightRatioProMax,
+            color: Colors.gold
         }}>split-now-pay-later</Text>
     </View>)
 }

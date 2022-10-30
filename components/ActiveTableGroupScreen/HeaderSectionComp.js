@@ -30,7 +30,7 @@ const HeaderSectionComp = (props) => {
             alignItems: 'center'
         }}>
             <View style={{
-                backgroundColor: 'black',
+                backgroundColor: Colors.black,
                 width: '88%',
                 borderRadius: 5 * heightRatioProMax,
                 marginTop: 50 * heightRatioProMax,
@@ -41,7 +41,7 @@ const HeaderSectionComp = (props) => {
                 <Text style={{
                     marginLeft: 10 * widthRatioProMax,
                     textAlign: 'left',
-                    color: Colors.white,
+                    color: Colors.gold,
                     lineHeight: 20 * heightRatioProMax,
                     fontFamily: Fonts.mainFontReg
                 }}>organized by:{"\n"}<Text style={{
@@ -77,29 +77,32 @@ const HeaderSectionComp = (props) => {
                 <View style={styles.headerTextInfoContainer}>
                     <Text style={{
                         textAlign: 'left',
-                        color: Colors.white,
+                        color: Colors.gold,
                         fontFamily: Fonts.mainFontReg,
                     }}>your night at:{"\n"}<Text style={{
                         fontFamily: Fonts.mainFontBold,
-                        color: Colors.white,
+                        color: Colors.gold,
                     }}>the grand</Text></Text>
                 </View>
                 <View style={styles.headerTextInfoContainer}>
                     <Text style={{
+                        fontFamily: Fonts.mainFontReg,
                         marginLeft: 10 * widthRatioProMax,
-                        color: Colors.orange
+                        color: Colors.gold
                     }}>table size: {props.tableReqObj.size} </Text>
                 </View>
                 <View style={styles.headerTextInfoContainer}>
                     <Text style={{
+                        fontFamily: Fonts.mainFontReg,
                         marginLeft: 10 * widthRatioProMax,
-                        color: Colors.orange
+                        color: Colors.gold
                     }}>price: ${props.tableReqObj.price}</Text>
                 </View>
                 <View style={styles.headerTextInfoContainer}>
                     <Text style={{
+                        fontFamily: Fonts.mainFontReg,
                         marginLeft: 10 * widthRatioProMax,
-                        color: Colors.orange
+                        color: Colors.gold
                     }}>type: {props.tableReqObj.type}</Text>
                 </View>
             </View>

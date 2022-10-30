@@ -7,7 +7,7 @@ import { View,
  } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
-import whiteMenuPic from '../assets/whitemenu.png';
+import whiteMenuPic from '../assets/goldmenu.png';
 import { Colors } from '../colors/Colors';
 import { Fonts } from '../fonts/Fonts';
 import MessagesOverviewScreen from '../screens/MessagesOverviewScreen';
@@ -25,17 +25,18 @@ const MessageNavigator = (props) => {
     return (
         <Stack.Navigator 
         screenOptions={{headerStyle: {
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.black,
             shadowOpacity: 0,
         }}}>
             <Stack.Screen
                 component={MessagesOverviewScreen}
                 name="edNav-MessagesOverviewScreen"
                 options={{
-                    headerTitle: 'messages',
+                    headerTitle: 'Messages',
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioNorm : 15 * heightRatioNorm,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold
                     },
                     headerLeft: () => (
                         <TouchableOpacity 
@@ -52,7 +53,7 @@ const MessageNavigator = (props) => {
                                 }}
                                 source={whiteMenuPic}></Image>
                         </TouchableOpacity>),
-                    headerTintColor: Colors.white,
+                    headerTintColor: Colors.black,
                     headerShadowVisible: false
                 }}
             >

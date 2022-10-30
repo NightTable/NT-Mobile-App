@@ -1,10 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
-
 import React from 'react';
 
 import { 
@@ -48,7 +41,7 @@ const PhotoDetailListScreen = (props) => {
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
                         
-                        color: Colors.white,
+                        color: Colors.gold,
                     }}>Jake Tanner</Text>
 
                 </View>
@@ -76,7 +69,7 @@ const PhotoDetailListScreen = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'transparent',
+        backgroundColor: Colors.black,
         flex: 1,
         flexDirection: 'column',
     }

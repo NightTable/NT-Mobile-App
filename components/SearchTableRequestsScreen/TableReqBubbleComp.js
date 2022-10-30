@@ -31,7 +31,7 @@ const TableReqBubbleComp = (props) => {
             flexDirection: 'row',
             height: 60 * heightRatioProMax,
             borderRadius: 12 * heightRatioProMax,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.gold,
             alignItems: 'center'
         },  {
             shadowColor: Colors.black,
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     requestLabelText: {
         textAlign: 'center',
         fontFamily: Fonts.mainFontReg,
-        fontSize: 11 * widthRatioProMax
+        fontSize: 11 * widthRatioProMax,
+        color: Colors.black
     }
 });
 

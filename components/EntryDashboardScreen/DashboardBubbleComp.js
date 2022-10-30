@@ -35,7 +35,7 @@ const DashboardBubbleComp = (props) => {
                     width: imageDimValue,
                     height: imageDimValue,
                     borderRadius: imageDimValue / 2,
-                    borderColor: Colors.black,
+                    borderColor: Colors.dashboardCompGrey,
                     borderWidth: 1
                 }}></Image>
             </View>
@@ -69,7 +69,7 @@ const DashboardBubbleComp = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.textColorGold,
         borderRadius: 10 * heightRatioProMax,
         flexDirection: 'row',
         height: 60 * heightRatioProMax,

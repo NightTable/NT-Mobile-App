@@ -6,6 +6,7 @@
 import React from 'react';
 
 import { View, Text, StyleSheet } from 'react-native';
+import { Colors } from '../../colors/Colors';
 import { heightRatioProMax } from '../../dimensions/Dimensions';
 import { Fonts } from '../../fonts/Fonts';
 
@@ -31,7 +32,8 @@ const TableOptionSectionComp = (props) => {
             marginBottom: 15 * heightRatioProMax,
         }}>
             <Text style={{
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>select a table option:</Text>
         </View>
         {

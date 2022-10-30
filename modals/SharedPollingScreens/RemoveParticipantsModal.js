@@ -71,12 +71,10 @@ const RemoveParticipantsModal = (props) => {
             }}>
                 <View style={{
                     height: windowHeight < 700 || Platform.OS === 'android' ? '80%' : '70%',
-                    backgroundColor: Colors.greyLight,
+                    backgroundColor: Colors.black,
                     borderRadius: 50 * heightRatioProMax,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderWidth: 1,
-                    borderColor: Colors.black,
                 }}>
                     <View style={{
                         marginTop: 50 * heightRatioProMax,
@@ -90,7 +88,8 @@ const RemoveParticipantsModal = (props) => {
                         }}>
                            <Text style={{
                                fontFamily: Fonts.mainFontBold,
-                               fontSize: 20 * heightRatioProMax
+                               fontSize: 20 * heightRatioProMax,
+                               color: Colors.gold
                            }}>Please select the individuals you would like to remove</Text>  
                         </View>
                         <ScrollView style={{
@@ -115,11 +114,10 @@ const RemoveParticipantsModal = (props) => {
                             <TouchableOpacity onPress={props.onRequestClose} style={[{
                                 width: '60%',
                                 height: Platform.OS === 'ios' && windowHeight < 700 ? 60 * heightRatioProMax : 40 * heightRatioProMax,
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.red,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                borderColor: Colors.purple,
-                                borderWidth: 1
+                                borderRadius: 10 * heightRatioProMax
                             }, {
                                 shadowColor: Colors.black,
                                 shadowOffset: {width: 0, height: 0},
@@ -129,7 +127,8 @@ const RemoveParticipantsModal = (props) => {
                             }]}>
                                 <Text style={{
                                     color: Colors.purple,
-                                    fontFamily: Fonts.mainFontReg
+                                    fontFamily: Fonts.mainFontReg,
+                                    color: Colors.white
                                 }}>remove 2 participants</Text>
                             </TouchableOpacity>
                         </View>

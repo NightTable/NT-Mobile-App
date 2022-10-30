@@ -22,19 +22,20 @@ const TableInformationSectionComp = (props) => {
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
                 fontSize: 20 * heightRatioProMax,
+                color: Colors.textColorGold
             }}>table information</Text>
         </View>
         <View style={styles.textViewContainer}>
             <Text style={styles.textLabelDescriptionStyle}>type: <Text style={{
-                color: Colors.purple
+                color: Colors.textColorGold
             }}>{props.type}</Text></Text>
         </View>
         <View style={styles.textViewContainer}>
-            <Text style={styles.textLabelDescriptionStyle}>table price:<Text style={{color: Colors.purple}}> ${props.price}</Text></Text>
+            <Text style={styles.textLabelDescriptionStyle}>table price:<Text style={{color: Colors.textColorGold}}> ${props.price}</Text></Text>
         </View>
         <View style={styles.textViewContainer}>
             <Text style={styles.textLabelDescriptionStyle}>table size:<Text style={{
-                color: Colors.purple
+                color: Colors.textColorGold
             }}> {props.size}</Text></Text>
         </View>
     </View>)
@@ -49,6 +50,8 @@ const styles = StyleSheet.create({
     textLabelDescriptionStyle: {
         marginLeft: 15 * widthRatioProMax,
         fontFamily: Fonts.mainFontReg,
+        color: Colors.textColorGold
+
     },
     textViewContainer: {
         marginBottom: 20 * heightRatioProMax,

@@ -21,7 +21,7 @@ const TableConfigComp = (props) => {
 
     return (<TouchableOpacity style={[
         {...styles.configCompContainer,
-        borderColor: props.selectedId === props.id ? Colors.lightGreen : null,
+        borderColor: props.selectedId === props.id ? Colors.textColorGold : null,
         borderWidth: props.selectedId === props.id ? 1 : 0,},
         styles.configCompContainerShadow]} onPress={() => props.onTableConfigPress(props.id)}>
         <View style={{
@@ -33,7 +33,8 @@ const TableConfigComp = (props) => {
                 textAlign: 'center',
                 flexDirection: 'column',
                 fontFamily: Fonts.mainFontReg,
-                width: '80%'
+                width: '80%',
+                color: Colors.textColorGold
             }}>{props.type}</Text>
         </View>
         <View style={{
@@ -41,7 +42,8 @@ const TableConfigComp = (props) => {
         }}>
             <Text style={{
                 textAlign: 'center',
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>${props.price}</Text>
         </View>
         <View style={{
@@ -50,6 +52,7 @@ const TableConfigComp = (props) => {
             <Text style={{
                 textAlign: 'center',
                 fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>fits {props.size}</Text>
         </View>
     </TouchableOpacity>)
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
         height: 50 * heightRatioProMax,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: Colors.greyMedium
+        backgroundColor: Colors.black
     },
     configCompContainerShadow: {
         shadowColor: 'black',

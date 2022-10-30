@@ -22,7 +22,8 @@ const InviteFriendSectionComp = (props) => {
     return (<View style={styles.inviteFriendSectionContainer}>
         <View style={styles.inviteFriendsTextContainer}>
             <Text style={{
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>invite friends:</Text>
         </View>
         <FriendInputComp
@@ -43,7 +44,8 @@ const InviteFriendSectionComp = (props) => {
             marginTop: 30 * heightRatioProMax,
         }}>
             <Text style={{
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>or</Text>
         </View>
         <FriendInputComp

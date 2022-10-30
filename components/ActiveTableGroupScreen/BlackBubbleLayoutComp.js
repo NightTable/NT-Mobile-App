@@ -16,6 +16,8 @@ const BlackBubbleLayoutComp = (props) => {
 
     return (<View style={{
         marginTop: 15 * heightRatioProMax,
+        borderWidth: 1,
+        borderColor: Colors.gold,
         backgroundColor: Colors.black,
         borderRadius: 15 * heightRatioProMax,
         height: 1050 * heightRatioProMax,

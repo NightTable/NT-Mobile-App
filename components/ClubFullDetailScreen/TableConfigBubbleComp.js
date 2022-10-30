@@ -20,7 +20,7 @@ const TableConfigBubbleComp = (props) => {
 
     return (
     <View style={[{
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.textColorGold,
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
@@ -61,6 +61,8 @@ const TableConfigBubbleComp = (props) => {
 const styles = StyleSheet.create({
     infoText: {
         fontSize: 20 * heightRatioProMax,
+        fontFamily: Fonts.mainFontReg,
+        color: Colors.black
     }
 
 });

@@ -32,7 +32,8 @@ const ParticipantBubbleComp = (props) => {
                     fontSize: 15 * heightRatioProMax,
                     marginLeft: 10 * widthRatioProMax,
                     color: Colors.white,
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.black
                 }}>{props.email}</Text>
             </View>
             <TouchableOpacity onPress={() => props.localDeleteParticipantPress(props.id)} style={{
@@ -97,7 +98,7 @@ const ParticipantBubbleComp = (props) => {
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.textColorGold,
         height: isExternalUser ? 60 * heightRatioProMax : 75 * heightRatioProMax
     }}>
         {dynamicRowRender}

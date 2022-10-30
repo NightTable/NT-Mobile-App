@@ -19,8 +19,9 @@ import { heightRatioNorm, heightRatioProMax } from '../dimensions/Dimensions';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import whiteMenuPic from '../assets/whitemenu.png';
-import whiteBackButtonPic from '../assets/whitebackbutton.png';
+import whiteMenuPic from '../assets/goldmenu.png';
+import whiteBackButtonPic from '../assets/goldenbackbutton.png';
+
 
 import EntryDashboardScreen from '../screens/EntryDashboardScreen';
 import ClubMiniDetailScreen from '../screens/ClubMiniDetailScreen';
@@ -54,7 +55,7 @@ const EntryDashboardNavigator = (props) => {
     return (
         <Stack.Navigator 
         screenOptions={{headerStyle: {
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.black,
             shadowOpacity: 0,
         }}}>
             <Stack.Screen
@@ -64,7 +65,8 @@ const EntryDashboardNavigator = (props) => {
                     headerTitle: 'NightTable',
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity 
@@ -81,7 +83,7 @@ const EntryDashboardNavigator = (props) => {
                                 }}
                                 source={whiteMenuPic}></Image>
                         </TouchableOpacity>),
-                    headerTintColor: Colors.white,
+                    headerTintColor: Colors.textColorGold,
                     headerShadowVisible: false
                 }}
             >
@@ -90,10 +92,11 @@ const EntryDashboardNavigator = (props) => {
                 component={ClubMiniDetailScreen}
                 name="edNav-ClubMiniDetailScreen"
                 options={{
-                    headerTitle: "the grand",
+                    headerTitle: "The Grand",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -115,10 +118,11 @@ const EntryDashboardNavigator = (props) => {
                 component={ClubFullDetailScreen}
                 name="edNav-ClubFullDetailScreen"
                 options={{
-                    headerTitle: "club page",
+                    headerTitle: "Club Page",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -139,10 +143,11 @@ const EntryDashboardNavigator = (props) => {
                 component={NewTableRequestScreen}
                 name="edNav-NewTableRequestScreen"
                 options={{
-                    headerTitle: "new table request",
+                    headerTitle: "New Table Request",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -163,10 +168,11 @@ const EntryDashboardNavigator = (props) => {
                 component={SearchTableRequestsScreen}
                 name="edNav-SearchTableRequestsScreen"
                 options={{
-                    headerTitle: "search for requests",
+                    headerTitle: "Search for Requests",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -187,10 +193,11 @@ const EntryDashboardNavigator = (props) => {
                 component={TableRequestDetailScreen}
                 name="edNav-TableRequestDetailScreen"
                 options={{
-                    headerTitle: "request details",
+                    headerTitle: "Request details",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -211,10 +218,11 @@ const EntryDashboardNavigator = (props) => {
                 component={InitialPaymentScreen}
                 name="edNav-InitialPaymentScreen"
                 options={{
-                    headerTitle: "payment",
+                    headerTitle: "Payment",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -235,10 +243,11 @@ const EntryDashboardNavigator = (props) => {
                 component={TableRequestConfirmationScreen}
                 name="edNav-TableRequestConfirmationScreen"
                 options={{
-                    headerTitle: "confirmation",
+                    headerTitle: "Confirmation",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -259,10 +268,11 @@ const EntryDashboardNavigator = (props) => {
                 component={PollingRoomScreen}
                 name="edNav-PollingRoomScreen"
                 options={{
-                    headerTitle: "polling room",
+                    headerTitle: "Polling Room",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -283,10 +293,11 @@ const EntryDashboardNavigator = (props) => {
                 component={ActiveTableGroupScreen}
                 name="edNav-ActiveTableGroupScreen"
                 options={{
-                    headerTitle: "your table",
+                    headerTitle: "Your Table",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -307,10 +318,11 @@ const EntryDashboardNavigator = (props) => {
                 component={UserProfileScreen}
                 name="edNav-UserProfileScreen"
                 options={{
-                    headerTitle: "user profile",
+                    headerTitle: "User Profile",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -331,10 +343,11 @@ const EntryDashboardNavigator = (props) => {
                 component={PhotoDetailListScreen}
                 name="edNav-PhotoDetailListScreen"
                 options={{
-                    headerTitle: "photos",
+                    headerTitle: "Photos",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontRegm,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -355,10 +368,11 @@ const EntryDashboardNavigator = (props) => {
                 component={PhotoListScreen}
                 name="edNav-PhotoListScreen"
                 options={{
-                    headerTitle: "photos",
+                    headerTitle: "Photos",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -379,10 +393,11 @@ const EntryDashboardNavigator = (props) => {
                 component={MessagesDetailScreen}
                 name="edNav-MessagesDetailScreen"
                 options={{
-                    headerTitle: "chat",
+                    headerTitle: "Chat",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity
@@ -404,10 +419,11 @@ const EntryDashboardNavigator = (props) => {
                 name="edNav-EndOutingScreen"
                 
                 options={{
-                    headerTitle: "thank you",
+                    headerTitle: "Thank You",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     },
                     headerLeft: () => (
                         <TouchableOpacity

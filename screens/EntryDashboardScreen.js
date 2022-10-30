@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, { useEffect, useState } from 'react';
 
 import { Colors } from '../colors/Colors';
@@ -69,7 +63,7 @@ const EntryDashboardScreen = (props) => {
     return (<View style={styles.container}>
         <Text style={{
             fontFamily: Fonts.mainFontReg,
-            color: Colors.white,
+            color: Colors.gold,
             marginTop: 110 * heightRatioProMax,
             marginBottom: Platform.OS === 'android' ? 100 * heightRatioProMax : 120 * heightRatioProMax,
             marginLeft: 10 * widthRatioProMax
@@ -81,12 +75,12 @@ const EntryDashboardScreen = (props) => {
             position: 'absolute',
             height: 200 * heightRatioProMax,
             width: '110%',
-            top: 80 * heightRatioProMax
+            top: 80 * heightRatioProMax,
         }}></Image>
         <Text
         style={{
             fontFamily: Fonts.mainFontReg,
-            color: Colors.white,
+            color: Colors.gold,
             marginLeft: 10 * widthRatioProMax,
             marginBottom: 10 * heightRatioProMax,
             fontSize: 14 * heightRatioProMax
@@ -123,7 +117,7 @@ const EntryDashboardScreen = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.black,
         position: 'relative'
     },
     clubListContainer: {

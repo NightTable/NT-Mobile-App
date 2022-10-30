@@ -25,7 +25,8 @@ const AdditionalCostSectionComp = (props) => {
     return (<View style={styles.additionalCostSectionContainer}>
         <Text style={{
             fontSize: 18 * heightRatioProMax,
-            fontFamily: Fonts.mainFontReg
+            fontFamily: Fonts.mainFontReg,
+            color: Colors.textColorGold
         }}>your cost</Text>
         <View style={styles.costDescriptionContainer}>
             <View style={styles.costDescriptionTextContainer}>
@@ -33,6 +34,7 @@ const AdditionalCostSectionComp = (props) => {
                     lineHeight: 17,
                     fontFamily: Fonts.mainFontReg,
                     fontSize: 15 * heightRatioProMax,
+                    color: Colors.textColorGold
                 }}>Assuming that your table
                     will be filled up at the end of the polling period,
                     your minimum share will be $100, would you like to
@@ -43,7 +45,7 @@ const AdditionalCostSectionComp = (props) => {
         <View style={styles.buttonContainer}>
             <View style={styles.yesButtonContainer}>
                 <TouchableOpacity onPress={props.onYesButtonPress} style={[
-                    props.isDesiredAdditionalCost ? styles.notSelectedButtonStyle : styles.selectedButtonStyle, {
+                    props.isDesiredAdditionalCost ? styles.selectedButtonStyle : styles.notSelectedButtonStyle, {
                     shadowColor: 'black',
                     shadowOffset: {width: 0, height: 0},
                     shadowRadius: 2,
@@ -51,8 +53,8 @@ const AdditionalCostSectionComp = (props) => {
                     elevation: 6
                 }]}>
                     <Text style={{
-                        color: props.isDesiredAdditionalCost ? Colors.white : Colors.purple,
-                        fontFamily: Fonts.mainFontReg
+                        color: props.isDesiredAdditionalCost ? Colors.black : Colors.textColorGold,
+                        fontFamily: Fonts.mainFontReg,
                     }}>yes</Text>
                 </TouchableOpacity>
             </View>
@@ -66,8 +68,8 @@ const AdditionalCostSectionComp = (props) => {
                         elevation: 6
                 }]}>
                     <Text style={{
-                        color: props.isDesiredAdditionalCost ? Colors.purple : Colors.white,
-                        fontFamily: Fonts.mainFontReg
+                        color: props.isDesiredAdditionalCost ? Colors.black : Colors.textColorGold,
+                        fontFamily: Fonts.mainFontReg,
                     }}>no</Text>
                 </TouchableOpacity>
             </View>
@@ -79,6 +81,7 @@ const AdditionalCostSectionComp = (props) => {
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     fontSize: 15 * heightRatioProMax,
+                    color: Colors.textColorGold
                 }}>additional amount:</Text>
             </View>
         </View>
@@ -105,7 +108,7 @@ const AdditionalCostSectionComp = (props) => {
                         borderRightWidth: 0,
                         borderBottomWidth: 1,
                         height: 50 * heightRatioProMax,
-                        borderColor: Colors.black
+                        borderColor: Colors.textColorGold
                     }}></TextInput>
                 </View>
                 <TouchableOpacity 
@@ -174,24 +177,24 @@ const styles = StyleSheet.create({
         height: '90%',
         width: '60%',
         flexDirection: 'column',
-        borderColor: Colors.orange,
+        borderColor: Colors.black,
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10 * heightRatioProMax,
-        backgroundColor: Colors.greyMedium
+        backgroundColor: Colors.gold
     },
     notSelectedButtonStyle: {
         marginLeft: 40 * widthRatioProMax,
         height: '90%',
         width: '60%',
         flexDirection: 'column',
-        borderColor: Colors.white,
+        borderColor: Colors.gold,
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10 * heightRatioProMax,
-        backgroundColor: Colors.purple
+        backgroundColor: Colors.black
     }
     
 })

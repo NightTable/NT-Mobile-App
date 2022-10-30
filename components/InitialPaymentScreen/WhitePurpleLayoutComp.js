@@ -16,8 +16,8 @@ const WhitePurpleBubbleLayoutComp = (props) => {
 
     return (<View style={{
         marginTop: 60 * heightRatioProMax,
-        backgroundColor: Colors.white,
-        borderColor: Colors.purple,
+        backgroundColor: Colors.black,
+        borderColor: Colors.gold,
         borderWidth: 1,
         borderRadius: 50 * heightRatioProMax,
         alignItems: 'center',

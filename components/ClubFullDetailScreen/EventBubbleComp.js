@@ -32,12 +32,15 @@ const EventBubbleComp = (props) => {
     return (
     <View style={[{
         flexDirection: 'column',
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.textColorGold,
+        borderColor: Colors.textColorGold,
+        borderWidth: 2,
         width: '100%',
         borderRadius: 8 * heightRatio,
         padding: 10 * heightRatio,
         marginTop: 10 * heightRatio},  
         {
+            borderColor: Colors.textColorGold,
             shadowColor: 'black',
             shadowOffset: {width: 0, height: 0},
             shadowRadius: 5,
@@ -45,7 +48,7 @@ const EventBubbleComp = (props) => {
             elevation: 5
     }]}>
         <View style={{
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.textColorGold,
             flexDirection: 'row',
         }}>
             <View style={{

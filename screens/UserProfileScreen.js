@@ -1,10 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
-
 import React from 'react';
 
 import { 
@@ -20,7 +13,6 @@ import {
 
 import exampleGuy from '../assets/younguy2.jpeg';
 import exampleGirl from '../assets/younggirl1.jpeg';
-import examplePerson from '../assets/person.jpeg';
 import instagramLogo from '../assets/instalogo.png';
 import sampleNightClubPic from '../assets/samplenightclub.jpeg';
 import WhiteBubbleLayoutComp from '../components/UserProfileScreen/WhiteBubbleLayoutComp';
@@ -204,7 +196,7 @@ const UserProfileScreen = (props) => {
                         fontFamily: Fonts.mainFontReg,
 
                         marginBottom: 10 * heightRatioProMax,
-                        color: Colors.white,
+                        color: Colors.gold,
                     }}>Jake Tanner</Text>
                 </View>
                 <View style={{
@@ -241,7 +233,7 @@ const UserProfileScreen = (props) => {
                                     flexDirection: 'row',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    backgroundColor: Colors.white,
+                                    backgroundColor: Colors.black,
                                     width: 47 * heightRatioProMax,
                                     height: 47 * heightRatioProMax,
                                     marginRight: 10 * widthRatioProMax
@@ -260,11 +252,11 @@ const UserProfileScreen = (props) => {
                                 flexDirection: 'column',
                                 justifyContent: 'center',
                                 borderRadius: 5 * heightRatioProMax,
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.black,
                                 height: 30 * heightRatioProMax,
                             }}>
                                  <Text style={{
-                                     color: Colors.orange,
+                                     color: Colors.gold,
                                      fontFamily: Fonts.mainFontBold
                                  }}>browse photos</Text>
                             </TouchableOpacity>
@@ -283,7 +275,7 @@ const UserProfileScreen = (props) => {
                                 width: '80%'
                             }}>
                                 <Text style={{
-                                    color: Colors.white,
+                                    color: Colors.gold,
                                     fontFamily: Fonts.mainFontReg,
                                 }}>age: 26</Text>
                             </View>
@@ -292,7 +284,7 @@ const UserProfileScreen = (props) => {
                                 width: '80%'
                             }}>
                                 <Text style={{
-                                    color: Colors.white,
+                                    color: Colors.gold,
                                     fontFamily: Fonts.mainFontReg
                                 }}>gender: male</Text>
                             </View>
@@ -303,32 +295,28 @@ const UserProfileScreen = (props) => {
                                 width: '100%'
                             }}>
                                 <TouchableOpacity style={{
-                                    borderColor: Colors.green,
-                                    borderWidth: 1,
                                     borderRadius: 6 * heightRatioProMax,
                                     padding: 6 * heightRatioProMax,
                                     paddingHorizontal: 8 * heightRatioProMax,
-                                    backgroundColor: Colors.white,
+                                    backgroundColor: Colors.gold,
                                     marginLeft: 10 * widthRatioProMax,
                                 }}>
                                     <Text style={{
-                                        color: Colors.green,
+                                        color: Colors.black,
                                         fontFamily: Fonts.mainFontReg
                                     }}>add friend</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity 
                                 onPress={handleMessageButton}
                                 style={{
-                                    borderColor: Colors.orange,
-                                    borderWidth: 1,
                                     borderRadius: 6 * heightRatioProMax,
                                     padding: 6 * heightRatioProMax,
                                     paddingHorizontal: 8 * heightRatioProMax,
                                     marginRight: 10 * widthRatioProMax,
-                                    backgroundColor: Colors.white
+                                    backgroundColor: Colors.gold
                                 }}>
                                     <Text style={{
-                                        color: Colors.orange,
+                                        color: Colors.black,
                                         fontFamily: Fonts.mainFontReg
                                     }}>message</Text>
                                 </TouchableOpacity>
@@ -355,7 +343,7 @@ const UserProfileScreen = (props) => {
                 flex: 1,
                 flexDirection: 'column',
                 alignItems: 'center',
-                backgroundColor: Colors.greyLight,
+                backgroundColor: Colors.black,
                 zIndex: 12
             }}>
                 <View style={{
@@ -364,8 +352,9 @@ const UserProfileScreen = (props) => {
                 }}>
                      <Text style={{
                          fontSize: 20 * heightRatioProMax,
-                         fontFamily: Fonts.mainFontReg
-                     }}>other information</Text>
+                         fontFamily: Fonts.mainFontReg,
+                         color: Colors.gold
+                     }}>Other Information</Text>
                 </View>
                 <View style={{
                     marginTop: 20 * heightRatioProMax,
@@ -374,7 +363,8 @@ const UserProfileScreen = (props) => {
                 }}>
                      <Text style={{
                          fontSize: 15 * heightRatioProMax,
-                         fontFamily: Fonts.mainFontReg
+                         fontFamily: Fonts.mainFontReg,
+                         color: Colors.gold
                      }}>friends (3 mutual friends)</Text>
                 </View>
                 <WhiteBubbleLayoutComp>
@@ -397,7 +387,7 @@ const UserProfileScreen = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         flex: 1,
         flexDirection: 'column',
     }

@@ -25,7 +25,7 @@ const TableInvitesBubbleComp = (props) => {
             justifyContent: 'space-between',
             flexDirection: 'row',
             borderRadius: 10 * heightRatioNorm,
-            backgroundColor: Colors.pink,
+            backgroundColor: Colors.gold,
             marginLeft: 15*widthRatioNorm,
             marginRight: 15*widthRatioNorm,
             height: 90 * heightRatioNorm,
@@ -85,7 +85,7 @@ const TableInvitesBubbleComp = (props) => {
                     <Text style={{
                         fontSize: 12 * heightRatioNorm,
                         fontFamily: Fonts.mainFontBold,
-                        color: Colors.greyDark,
+                        color: Colors.black,
                         textAlign: 'right',
                         marginRight: 10*widthRatioNorm
                     }}>{props.time}, {props.payType}, {props.friends}
@@ -95,7 +95,7 @@ const TableInvitesBubbleComp = (props) => {
                     <Text style={{
                         fontSize: 12 * heightRatioNorm,
                         fontFamily: Fonts.mainFontBold,
-                        color: Colors.purple,
+                        color: Colors.black,
 
                         textAlign: 'right',
                         marginRight: 10*widthRatioNorm,
@@ -112,7 +112,7 @@ const TableInvitesBubbleComp = (props) => {
 
 const styles = StyleSheet.create({
     screenContainer: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
        flex: 1
     },
 })

@@ -27,7 +27,8 @@ const HeaderInquiryComp = (props) => {
         }}>
             <Text style={{
                 fontSize: 18 * heightRatioProMax,
-                fontFamily: Fonts.mainFontBold
+                fontFamily: Fonts.mainFontBold,
+                color: Colors.gold
             }}>Are you sure you want to leave this group as table organizer?</Text>
         </View>
         <View style={{
@@ -46,7 +47,8 @@ const HeaderInquiryComp = (props) => {
                     flex: 2
                 }}>
                     <Text style={{
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold
                     }}>organizer</Text>    
                 </View>
                 <View style={{
@@ -55,7 +57,8 @@ const HeaderInquiryComp = (props) => {
                     flex: 2
                 }}>
                     <Text style={{
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold
                     }}>name</Text>
                 </View>
                 <View style={{
@@ -64,14 +67,13 @@ const HeaderInquiryComp = (props) => {
                     flex: 2
                 }}>
                     <Text style={{
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold
                     }}>size</Text>
                 </View>
             </View>
             <View style={{
-                backgroundColor: Colors.white,
-                borderColor: Colors.purple,
-                borderWidth: 1,
+                backgroundColor: Colors.gold,
                 height: 65 * heightRatioProMax,
                 borderRadius: 10 * heightRatioProMax,
                 flexDirection: 'row',
@@ -97,7 +99,8 @@ const HeaderInquiryComp = (props) => {
                     <View>
                         <Text style={{
                             fontSize: 13 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.black
                         }}>Janelle May </Text>
                     </View>
                 </View>
@@ -108,7 +111,8 @@ const HeaderInquiryComp = (props) => {
                 }}>
                     <Text style={{
                         fontSize: 13 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
                     }}>ziprave</Text>
                 </View>
                 <View style={{
@@ -118,7 +122,8 @@ const HeaderInquiryComp = (props) => {
                 }}>
                     <Text style={{
                         fontSize: 13 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg 
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black 
                     }}>9</Text>
                 </View>
             </View>

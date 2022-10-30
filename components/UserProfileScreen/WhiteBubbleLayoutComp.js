@@ -16,9 +16,11 @@ const WhiteBubbleLayoutComp = (props) => {
     return (<View style={{
         paddingTop: 40 * heightRatioProMax,
         width: '95%',
-        borderRadius: 50 * heightRatioProMax,
-        backgroundColor: Colors.white,
-        minHeight: 500 * heightRatioProMax
+        borderRadius: 10 * heightRatioProMax,
+        backgroundColor: Colors.black,
+        minHeight: 500 * heightRatioProMax,
+        borderWidth: 1,
+        borderColor: Colors.gold
     }}>
         {props.children}
     </View>)

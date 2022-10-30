@@ -33,10 +33,10 @@ const BlockUserModal = (props) => {
         }}>
             <View style={{
                 height: '70%',
-                borderColor: Colors.black,
+                borderColor: Colors.gold,
                 borderRadius: 50 * heightRatioProMax,
                 borderWidth: 1,
-                backgroundColor: Colors.greyLight,
+                backgroundColor: Colors.black,
                 alignItems: 'center'
             }}>
                 <View style={{
@@ -44,7 +44,8 @@ const BlockUserModal = (props) => {
                     width: '75%'
                 }}>
                     <Text style={{
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold
                     }}>Are you sure you want to <Text style={{
                         color: Colors.red,
                         fontFamily: Fonts.mainFontBold
@@ -58,16 +59,14 @@ const BlockUserModal = (props) => {
                 }}>
                     <TouchableOpacity style={{
                         width: '55%',
-                        backgroundColor: Colors.white,
+                        backgroundColor: Colors.orange,
                         height: 50 * heightRatioProMax,
                         alignItems: 'center',
                         justifyContent: 'center',
                         borderRadius: 10 * heightRatioProMax,
-                        borderColor: Colors.orange,
-                        borderWidth: 1
                     }} onPress={() => props.onHandleModalClose()}>
                         <Text style={{
-                            color: Colors.orange,
+                            color: Colors.white,
                             fontFamily: Fonts.mainFontReg
                         }}>Cancel</Text>
                     </TouchableOpacity>
@@ -84,13 +83,11 @@ const BlockUserModal = (props) => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         borderRadius: 10 * heightRatioProMax,
-                        borderColor: Colors.orange,
-                        borderWidth: 1
                     }}>
                         <Text style={{
                             color: Colors.white,
                             fontFamily: Fonts.mainFontReg
-                        }}>block jake tanner</Text>
+                        }}>Block Jake Tanner</Text>
                     </TouchableOpacity>
                 </View>
             </View>

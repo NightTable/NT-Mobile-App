@@ -31,6 +31,7 @@ const PendingPartSectionComp = (props) => {
             color: Colors.white,
             fontFamily: Fonts.mainFontBold,
             fontSize: 16 * heightRatioProMax,
+            color: Colors.gold
         }}>pending participants</Text>
         <View style={{
             height: 300 * heightRatioProMax,

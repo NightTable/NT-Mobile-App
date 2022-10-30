@@ -33,7 +33,7 @@ const UpdateShareModal = (props) => {
             }}>
                 <View style={{
                     height: windowHeight < 700 || Platform.OS === 'android' ? '80%' : '70%',
-                    backgroundColor: Colors.greyLight,
+                    backgroundColor: Colors.black,
                     borderRadius: 50 * heightRatioProMax,
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -56,19 +56,21 @@ const UpdateShareModal = (props) => {
                                 <View>
                                     <Text style={{
                                         fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
-                                        fontFamily: Fonts.mainFontBold
+                                        fontFamily: Fonts.mainFontBold,
+                                        color: Colors.gold
                                     }}>How much would you like to chip in?
                                     </Text>
                                 </View>
                                 <View style={{marginTop: 40*heightRatioProMax, flexDirection: 'row', justifyContent: 'center'}}>
                                     <Text style={{
                                         fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
-                                        fontFamily: Fonts.mainFontBold, color: Colors.purple, textAlign: 'center'
+                                        fontFamily: Fonts.mainFontBold, color: Colors.purple, textAlign: 'center',
+                                        color: Colors.gold
                                     }}>$
                                     </Text>
                                     <TextInput style={{borderWidth: 2, borderColor: 'transparent',
                                         fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
-                                        fontFamily: Fonts.mainFontBold, textAlign: 'center', borderBottomColor: Colors.purple, borderBottomWidth: 1, textAlign: 'center', color: Colors.purple
+                                        fontFamily: Fonts.mainFontBold, textAlign: 'center', borderBottomColor: Colors.gold, borderBottomWidth: 1, textAlign: 'center', color: Colors.gold
                                     }}
                                     placeholder='0'
                                     keyboardType="numeric"
@@ -80,7 +82,7 @@ const UpdateShareModal = (props) => {
                                 <View style={{marginTop: 420*heightRatioProMax, flexDirection: 'row', justifyContent: 'center'}}>
                                     <TouchableOpacity
                                         onPress={props.onRequestClose}>
-                                        <View style={{width: '300%', borderWidth: 1, justifyContent: 'center', alignSelf: 'center', borderColor: Colors.purple, backgroundColor: Colors.white,
+                                        <View style={{width: '300%', justifyContent: 'center', alignSelf: 'center', borderRadius: 10 * heightRatioProMax, backgroundColor: Colors.gold,
                                             shadowColor: Colors.black,
                                             shadowOffset: {width: 0, height: 0},
                                             shadowOpacity: 0.5 * heightRatioProMax,
@@ -88,7 +90,8 @@ const UpdateShareModal = (props) => {
                                             elevation: 10 * heightRatioProMax}}>
                                             <Text style={{
                                                 fontSize: 20 * heightRatioProMax,
-                                                fontFamily: Fonts.mainFontBold, color: Colors.purple, textAlign: 'center', padding: 10*heightRatioProMax
+                                                fontFamily: Fonts.mainFontBold, color: Colors.purple, textAlign: 'center', padding: 10*heightRatioProMax,
+                                                color: Colors.black
                                             }}>save
                                             </Text>
                                         </View>

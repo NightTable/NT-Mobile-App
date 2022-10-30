@@ -39,7 +39,8 @@ const ImageScrollContainerComp = (props) => {
                             top: 0,
                             left: 280 * widthRatioProMax,
                             width: 310 * widthRatioProMax,
-                            height: 200 * heightRatioProMax
+                            height: 200 * heightRatioProMax,
+                            tintColor: Colors.black
                         }}
                     ></Image>
                 </View>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         height: 200 * heightRatioProMax,
         width: '90%',
         position: 'relative',
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         overflow: 'hidden',
         marginLeft: Platform.OS === 'android' ? -2 * widthRatioProMax : -2 * widthRatioProMax
     },

@@ -39,14 +39,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.textColorGold,
         borderWidth: 1,
         borderColor: Colors.black,
         borderRadius: 10
     },
     textStyle: {
         fontFamily: Fonts.mainFontBold,
-        color: Colors.white,
+        color: Colors.backgroundColorBlack,
     }
 })
 

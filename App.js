@@ -35,8 +35,8 @@ export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const fetchFonts = () => {
 
   return Font.loadAsync({
-    'comfortaa-reg': require('./assets/fonts/Comfortaa-Regular.ttf'),
-    'comfortaa-bold': require('./assets/fonts/Comfortaa-Bold.ttf')
+    'VerahHumana-reg': require('./assets/fonts/VerahHumana-Regular.ttf'),
+    'VerahHumana-bold': require('./assets/fonts/VerahHumana-Bold.ttf')
   });
 };
 
@@ -74,7 +74,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },

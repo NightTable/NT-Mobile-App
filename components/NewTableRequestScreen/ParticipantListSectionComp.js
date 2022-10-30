@@ -11,9 +11,8 @@ import {
     Text,
     StyleSheet } from 'react-native';
 import { heightRatioProMax } from '../../dimensions/Dimensions';
-
+import { Colors } from '../../colors/Colors';
 import { Fonts } from '../../fonts/Fonts';
-
 
 import ParticipantBubbleComp from './ParticipantListSectionComp/ParticipantBubbleComp';
 
@@ -27,7 +26,8 @@ const ParticipantListSectionComp = (props) => {
         }}>
             <Text style={{
                 fontSize: 18 * heightRatioProMax,
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>participants</Text>
         </View>
         <View style={{

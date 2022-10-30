@@ -58,12 +58,12 @@ const PollingConfirmationToActiveTableGroupModal = (props) => {
             }}>
                 <View style={{
                     height: windowHeight < 700 || Platform.OS === 'android' ? '80%' : '70%',
-                    backgroundColor: Colors.greyLight,
+                    backgroundColor: Colors.black,
                     borderRadius: 50 * heightRatioProMax,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderWidth: 1,
-                    borderColor: Colors.black,
+                    borderColor: Colors.gold,
                 }}>
                     <View style={{
                         marginTop: 50 * heightRatioProMax,
@@ -82,7 +82,8 @@ const PollingConfirmationToActiveTableGroupModal = (props) => {
                             }}>
                                 <Text style={{
                                     fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
-                                    fontFamily: Fonts.mainFontBold
+                                    fontFamily: Fonts.mainFontBold,
+                                    color: Colors.gold
                                 }}>You are about to confirm a table group with the following people
                                     {"\n\n"}
 

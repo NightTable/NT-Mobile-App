@@ -26,7 +26,8 @@ const FriendInputComp = (props) => {
     return (<View style={styles.enterEmailCompContainer}>
         <View>
             <Text style={{
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold
             }}>{props.inputText}</Text>
         </View>
         <View style={{
@@ -49,7 +50,7 @@ const FriendInputComp = (props) => {
                     borderLeftWidth: 0,
                     borderRightWidth: 0,
                     height: 30 * heightRatioProMax,
-                    borderBottomColor: Colors.black,
+                    borderBottomColor: Colors.textColorGold,
                 }}></TextInput>
             </View>
             <TouchableOpacity style={{

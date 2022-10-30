@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, { useState, useEffect} from 'react';
 
 import { View, 
@@ -54,7 +48,7 @@ const MessagesDetailScreen = (props) => {
         behavior={Platform.OS === 'android' ? '' : 'position'}
         >
         <View style={{
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         flex: 1
     }}>
         <BlockUserModal

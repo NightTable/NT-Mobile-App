@@ -19,12 +19,12 @@ const FriendBubbleComp = (props) => {
 
 
     return (<TouchableOpacity style={[{
-        borderColor: Colors.purple,
-        borderWidth: props.isMutualFriend ? 0.7 : 0,
+        borderColor: Colors.gold,
+        borderWidth: 0.7,
         justifyContent: 'space-between',
         flexDirection: 'row',
         borderRadius: 10 * heightRatioProMax,
-        backgroundColor: Colors.greyLight,
+        backgroundColor: props.isMutualFriend ? Colors.gold : Colors.black,
         width: '100%',
         height: 72 * heightRatioProMax,
         marginBottom: 5 * heightRatioProMax,
@@ -49,7 +49,8 @@ const FriendBubbleComp = (props) => {
             }} source={props.image}></Image>
             <Text style={{
                 fontSize: 18 * heightRatioProMax,
-                fontFamily: Fonts.mainFontReg
+                fontFamily: Fonts.mainFontReg,
+                color: props.isMutualFriend ? Colors.black : Colors.gold
             }}>{props.name}</Text>
         </View>
         <View style={{
@@ -59,8 +60,9 @@ const FriendBubbleComp = (props) => {
             {props.isMutualFriend ? <Text style={{
                 fontSize: 20 * heightRatioProMax,
                 marginRight: 20 * widthRatioProMax,
-                color: Colors.purple
-            }}>M</Text> : null}
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.black
+            }}>Mutual Friend</Text> : null}
         </View>
     </TouchableOpacity>)
 }

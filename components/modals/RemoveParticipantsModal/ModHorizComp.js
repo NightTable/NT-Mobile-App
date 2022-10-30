@@ -39,8 +39,8 @@ const ModHorizComp = (props) => {
                 }}>
                     <Text style={{
                         marginLeft: 6 * widthRatioProMax,
-                        color: Colors.white,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
                     }}>{props.name}</Text>
                 </View>
             </React.Fragment>
@@ -50,7 +50,7 @@ const ModHorizComp = (props) => {
             <Text style={{
                 paddingLeft: 7 * widthRatioProMax,
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.white,
+                color: Colors.black,
                 width: '100%'
             }}>{props.email}</Text>
         )
@@ -58,11 +58,11 @@ const ModHorizComp = (props) => {
 
     return (<TouchableOpacity activeOpacity={1} onPress={() => setButtonSelected((state) => !state)} style={{
         borderRadius: 5 * heightRatioProMax,
-        backgroundColor: Colors.purple,
+        borderRadius: 10*heightRatioProMax,
+        backgroundColor: Colors.gold,
         width: '70%',
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: Colors.orange,
         borderWidth: buttonSelected ? 5 : 0,
         marginBottom: 5 * heightRatioProMax,
         height: props.isExternalUser ? 50 * heightRatioProMax : 90 * heightRatioProMax

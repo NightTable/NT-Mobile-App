@@ -32,12 +32,12 @@ const SearchInputCompSection = (props) => {
         }}>
             <TextInput
             style={{
-                borderColor: Colors.purple,
+                borderColor: Colors.gold,
                 borderTopWidth: 0,
                 borderLeftWidth: 0,
                 borderRightWidth: 0,
                 textAlign: 'center',
-                color: Colors.purple,
+                color: Colors.gold,
                 fontFamily: Fonts.mainFontReg,
                 fontSize: 17 * heightRatioProMax,
                 height: 20 * heightRatioProMax,

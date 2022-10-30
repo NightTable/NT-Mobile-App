@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, {useState} from 'react';
 
 import { View, 
@@ -25,7 +19,6 @@ import johnPic from '../assets/johnpic.jpeg';
 import TableReqBubbleComp from '../components/SearchTableRequestsScreen/TableReqBubbleComp';
 
 import { heightRatioProMax, widthRatioProMax } from '../dimensions/Dimensions';
-import { useLinkProps } from '@react-navigation/native';
 
 const SearchTableRequestsScreen = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -41,7 +34,7 @@ const SearchTableRequestsScreen = (props) => {
 
     return (
     <View style={{ 
-        backgroundColor: Colors.greyLight, 
+        backgroundColor: Colors.black, 
         flex: 1}}>
             <FilterOpenTableRequestsModal
                 modalVisible={modalVisible}
@@ -77,7 +70,8 @@ const SearchTableRequestsScreen = (props) => {
                          <Text style={{
                              color: Colors.white,
                              fontSize: 20 * heightRatioProMax,
-                             fontFamily: Fonts.mainFontBold
+                             fontFamily: Fonts.mainFontBold,
+                             color: Colors.gold
                          }}>open table requests for:</Text>
                      </View>
                  </View>
@@ -88,14 +82,15 @@ const SearchTableRequestsScreen = (props) => {
                  }}>
                      <View style={{
                          padding: 10 * heightRatioProMax,
-                         backgroundColor: Colors.purple,
+                         backgroundColor: Colors.black,
                          borderRadius: 10 * heightRatioProMax,
                          alignSelf: 'flex-end'
                      }}>
                          <Text style={{
                              color: Colors.white,
                              fontSize: 20 * heightRatioProMax, 
-                             fontFamily: Fonts.mainFontBold
+                             fontFamily: Fonts.mainFontBold,
+                             color: Colors.gold
                          }}>the grand</Text>
                      </View>
                  </View>
@@ -104,13 +99,13 @@ const SearchTableRequestsScreen = (props) => {
             <View>
                 <View style={{
                     marginTop: 10 * heightRatioProMax,
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Colors.black,
                     borderRadius: 20 * heightRatioProMax,
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Colors.black,
                     paddingBottom: 30 * heightRatioProMax,
                     width: '100%',
                     borderWidth: 1,
-                    borderColor: Colors.black
+                    borderColor: Colors.gold
                 }}>
                     <View style={{
                         flexDirection: 'row',
@@ -126,7 +121,7 @@ const SearchTableRequestsScreen = (props) => {
                                 marginLeft: 20 * widthRatioProMax,
                                 fontSize: 20 * heightRatioProMax,
                                 fontFamily: Fonts.mainFontReg,
-                                color: Colors.white
+                                color: Colors.gold
                             }}>selected filters</Text>
 
 
@@ -149,7 +144,7 @@ const SearchTableRequestsScreen = (props) => {
                         }}>
                             <Text style={{
                                 fontFamily: Fonts.mainFontReg,
-                                color: Colors.white
+                                color: Colors.gold
                             }}>+/-</Text>
                         </View>
                     </View>
@@ -242,7 +237,7 @@ const SearchTableRequestsScreen = (props) => {
 const styles = StyleSheet.create({
 
     infoText: {
-        color: Colors.white,
+        color: Colors.gold,
         fontSize: 15 * heightRatioProMax,
         fontFamily: Fonts.mainFontReg,
         textAlign: 'center'
@@ -250,7 +245,8 @@ const styles = StyleSheet.create({
     requestLabelText: {
         textAlign: 'center',
         fontFamily: Fonts.mainFontReg,
-        fontSize: 11 * widthRatioProMax
+        fontSize: 11 * widthRatioProMax,
+        color: Colors.gold
     },
 })
 

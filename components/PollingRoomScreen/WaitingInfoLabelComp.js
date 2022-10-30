@@ -21,7 +21,8 @@ const WaitingInfoLabelComp = (props) => {
     return (<View style={styles.container}>
         <Text style={{
             color: Colors.white,
-            fontFamily: Fonts.mainFontReg
+            fontFamily: Fonts.mainFontReg,
+            color: Colors.textColorGold
         }}>Waiting for <Text style={{
             color: Colors.orange
         }}>3</Text>  more people...</Text>

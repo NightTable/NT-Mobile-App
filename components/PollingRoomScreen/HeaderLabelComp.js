@@ -35,9 +35,11 @@ const HeaderLabelComp = (props) => {
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     textAlign: 'center',
+                    color: Colors.textColorGold
                     }}>table request organized by</Text>
                 <Text style={{
                     textAlign: 'left',
+                    color: Colors.textColorGold,
                     fontFamily: Fonts.mainFontBold}}>{props.name}</Text>
             </View>
         </View>
@@ -48,11 +50,11 @@ const HeaderLabelComp = (props) => {
 const styles = StyleSheet.create({
     screenContainer: {
         borderWidth: 1,
-        borderColor: Colors.purple,
+        borderColor: Colors.textColorGold,
         height: 75 * heightRatioProMax,
         borderRadius: 12 * heightRatioProMax,
         padding: 10 * heightRatioProMax,
-        backgroundColor: Colors.greyMedium,
+        backgroundColor: Colors.black,
         alignItems: 'center',
         flexDirection: 'row',
         width: '80%'

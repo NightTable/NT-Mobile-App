@@ -10,6 +10,7 @@ import { Image,
     View, 
     Text,
     TouchableOpacity } from 'react-native';
+import { Colors } from '../../colors/Colors';
 import { heightRatioProMax, widthRatioProMax } from '../../dimensions/Dimensions';
 import { Fonts } from '../../fonts/Fonts';
 
@@ -39,6 +40,7 @@ const PendingPartHorizComp = (props) => {
                 fontFamily: Fonts.mainFontReg,
                 fontSize: 15 * heightRatioProMax,
                 marginTop: 10 * heightRatioProMax,
+                color: Colors.gold,
                 textAlign: 'center'}}>{props.nameLabelOne}</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -55,6 +57,7 @@ const PendingPartHorizComp = (props) => {
                 fontFamily: Fonts.mainFontReg,
                 fontSize: 15 * heightRatioProMax,
                 marginTop: 10 * heightRatioProMax,
+                color: Colors.gold,
                 textAlign: 'center'}}
             >{props.nameLabelTwo}</Text>
         </TouchableOpacity>

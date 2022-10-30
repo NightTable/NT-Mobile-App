@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import { 
@@ -80,7 +74,8 @@ const TableRequestConfirmationScreen = (props) => {
             }}>
                 <Text style={{
                     fontSize: Platform.OS === 'ios' ? (windowHeight < 700 ? 20 * heightRatioProMax : 15 * heightRatioProMax) : 20 * heightRatioProMax,
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.textColorGold
                 }}>You have chosen the {"\n"}<Text style={{
                     color: Colors.orange,
                     fontFamily: Fonts.mainFontReg
@@ -97,7 +92,9 @@ const TableRequestConfirmationScreen = (props) => {
                 <TouchableOpacity 
                 onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
                 style={[{
-                    backgroundColor: Colors.purple,
+                    borderRadius: 10 * heightRatioProMax,
+
+                    backgroundColor: Colors.textColorGold,
                     padding: 15 * heightRatioProMax,
                     width: '100%'
                 }, {
@@ -113,7 +110,7 @@ const TableRequestConfirmationScreen = (props) => {
                     <Text style={{
                         textAlign: 'center',
                         fontFamily: Fonts.mainFontReg,
-                        color: Colors.orange
+                        color: Colors.black
                     }}>create request!</Text>
                 </TouchableOpacity>
             </View>
@@ -127,7 +124,7 @@ const styles = StyleSheet.create({
     confirmationScreenContainer: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.greyLight
+        backgroundColor: Colors.black
     }
 })
 

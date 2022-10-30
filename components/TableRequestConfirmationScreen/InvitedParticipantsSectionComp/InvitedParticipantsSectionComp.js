@@ -12,7 +12,7 @@ import {
     StyleSheet } from 'react-native';
 import { heightRatioProMax } from '../../../dimensions/Dimensions';
 import { Fonts } from '../../../fonts/Fonts';
-
+import { Colors } from '../../../colors/Colors'
 import ParticipantBubbleComp from './ParticipantBubbleComp';
 
 const InvitiedParticipantsSectionComp = (props) => {
@@ -23,6 +23,7 @@ const InvitiedParticipantsSectionComp = (props) => {
             marginBottom: 10 * heightRatioProMax,
             fontFamily: Fonts.mainFontReg,
             fontSize: 20 * heightRatioProMax,
+            color: Colors.textColorGold
         }}>invited participants</Text>
         {props.participants.map((participant, index) => (
             <ParticipantBubbleComp

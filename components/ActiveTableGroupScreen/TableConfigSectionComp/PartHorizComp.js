@@ -21,7 +21,7 @@ import whitePencil from '../../../assets/icons/whitepencil.png';
 const PartHorizComp = (props) => {
 
     return (<View style={{
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.gold,
         height: 70 * heightRatioProMax,
         borderRadius: 10 * heightRatioProMax,
         flexDirection: 'row',
@@ -44,7 +44,7 @@ const PartHorizComp = (props) => {
             justifyContent: 'center'
         }}>
             <Text style={{
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 15 * heightRatioProMax,
                 fontFamily: Fonts.mainFontBold
             }}>{props.name}</Text>
@@ -59,7 +59,7 @@ const PartHorizComp = (props) => {
             <Text style={{
                 fontFamily: Fonts.mainFontBold,
                 fontSize: 15 * heightRatioProMax,
-                color: Colors.white
+                color: Colors.black
             }}>${props.share}</Text>
             <TouchableOpacity>
                 <Image 

@@ -17,7 +17,8 @@ const PartHorizComp = (props) => {
         width: '70%',
         flexDirection: 'row',
         height: 70 * heightRatioProMax,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.gold,
+        borderRadius: 10 * heightRatioProMax,
         alignItems: 'center',
         borderRadius: 12 * heightRatioProMax,
         marginBottom: 3 * heightRatioProMax
@@ -39,7 +40,7 @@ const PartHorizComp = (props) => {
             marginLeft: 10 * widthRatioProMax
         }}>
             <Text style={{
-                color: Colors.white,
+                color: Colors.black,
                 fontFamily: Fonts.mainFontReg
             }}>{props.name}</Text>
         </View>

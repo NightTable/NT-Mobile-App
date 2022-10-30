@@ -25,14 +25,16 @@ const MessageHorizComp = (props) => {
             width: '45%',
             borderRadius: 5 * heightRatioProMax,
             minHeight: 30 * heightRatioProMax,
-            backgroundColor: props.isSourceUser ? Colors.greyMedium : Colors.purple
+            backgroundColor: props.isSourceUser ? Colors.gold : Colors.black,
+            borderWidth: 1,
+            borderColor: props.isSourceUser ? Colors.black : Colors.gold
         }}>
             <View style={{width: '90%'}}>
                 <Text style={{
                     lineHeight: 25 * heightRatioProMax,
                     fontFamily: Fonts.mainFontReg,
                     fontSize: 15 * heightRatioProMax,
-                    color: props.isSourceUser ? Colors.black : Colors.white
+                    color: props.isSourceUser ? Colors.black : Colors.gold
                 }}>{props.content}</Text>
             </View>
         </View>

@@ -27,9 +27,11 @@ const styles = StyleSheet.create({
     whiteBubbleLayoutContainer: {
         height: Platform.OS === 'ios' ? 500 * heightRatioProMax : 550 * heightRatioProMax,
         borderRadius: 80 * heightRatioProMax,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: Colors.gold
     },
     whiteBubbleLayoutShadowStyle: {
         shadowColor: Colors.black,

@@ -26,6 +26,7 @@ const BasicInfoSectionComp = (props) => {
             marginLeft: 20 * widthRatioProMax,
             fontFamily: Fonts.mainFontReg,
             fontSize: 15 * heightRatioProMax,
+            color: Colors.gold
         }}>basic info</Text>
         <WhiteBubbleLayoutComp>
             <View style={styles.innerTextContainer}>
@@ -39,16 +40,16 @@ const BasicInfoSectionComp = (props) => {
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.detailTextLabelStyle}>request type:  <Text style={{
                         fontFamily: Fonts.mainFontBold,
-                        color: Colors.orange
+                        color: Colors.gold
                     }}>{props.tableObj.requestType}</Text></Text>
                     <TouchableOpacity style={{
                         borderRadius: 5 * heightRatioProMax,
                         marginLeft: 7 * widthRatioProMax,
                         paddingHorizontal: 10 * widthRatioProMax,
                         height: 20 * heightRatioProMax,
-                        backgroundColor: Colors.greyMedium
+                        backgroundColor: Colors.black
                     }}>
-                        <Text>?</Text>
+                        <Text style={{color: Colors.gold}}>?</Text>
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.detailTextLabelStyle}>table price:  <Text style={{
@@ -56,18 +57,18 @@ const BasicInfoSectionComp = (props) => {
                 }}>${props.tableObj.tablePrice}</Text> </Text>
                 <Text style={styles.detailTextLabelStyle}>minimum cost:  <Text style={{
                     fontFamily: Fonts.mainFontBold,
-                    color: Colors.red
+                    color: Colors.gold
                 }}>${props.tableObj.costContribution}</Text></Text>
                 <View style={styles.differentCostButtonContainer}>
                     <TouchableOpacity style={{
                         width: '60%',
                         borderWidth: 1,
                         borderRadius: 10 * heightRatioProMax,
-                        borderColor: Colors.purple,
+                        borderColor: Colors.gold,
                         padding: 13 * heightRatioProMax,
                     }}>
                         <Text style={{
-                            color: Colors.purple,
+                            color: Colors.gold,
                             fontFamily: Fonts.mainFontReg,
                             textAlign: 'center'
                         }}>request different cost</Text>
@@ -75,7 +76,7 @@ const BasicInfoSectionComp = (props) => {
                 </View>
                 <Text style={styles.detailTextLabelStyle}>available seats: <Text
                 style={{
-                    color: Colors.green,
+                    color: Colors.gold,
                     fontFamily: Fonts.mainFontBold
                 }}>{props.tableObj.availableSeats}</Text></Text>
                 <View style={styles.additionalAmountContainer}>
@@ -102,12 +103,12 @@ const BasicInfoSectionComp = (props) => {
                     }}>
                         <TouchableOpacity style={{
                             borderWidth: 1,
-                            borderColor: Colors.purple,
+                            borderColor: Colors.gold,
                             padding: 10 * heightRatioProMax,
                             borderRadius: 10 * heightRatioProMax,
                         }}>
                             <Text style={{
-                                color: Colors.purple,
+                                color: Colors.gold,
                                 textAlign: 'center',
                                 fontFamily: Fonts.mainFontReg
                             }}>update</Text>
@@ -119,8 +120,9 @@ const BasicInfoSectionComp = (props) => {
                     marginTop: 15 * heightRatioProMax,
                     fontFamily: Fonts.mainFontBold,
                     fontSize: 18 * heightRatioProMax,
+                    color: Colors.gold
                 }}>cost to you: <Text style={{
-                    color: Colors.red
+                    color: Colors.gold
                 }}>${props.tableObj.costContribution}</Text> </Text>
             </View>
         </WhiteBubbleLayoutComp>
@@ -137,7 +139,8 @@ const styles = StyleSheet.create({
         marginTop: 10 * heightRatioProMax,
         fontFamily: Fonts.mainFontReg,
         fontSize: 15 * heightRatioProMax,
-        marginBottom: 8 * heightRatioProMax
+        marginBottom: 8 * heightRatioProMax,
+        color: Colors.gold
     },
     innerTextContainer: {
         marginTop: 40 * heightRatioProMax,
@@ -148,13 +151,13 @@ const styles = StyleSheet.create({
         marginTop: 20 * heightRatioProMax,
         marginBottom: 10 * heightRatioProMax,
         height: 1 * heightRatioProMax,
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.gold,
     },  
     differentCostButtonContainer: {
         marginTop: 20 * heightRatioProMax,
         flexDirection: 'column',
         alignItems: 'center',
-        marginBottom: 10 * heightRatioProMax
+        marginBottom: 10 * heightRatioProMax,
     },
     additionalAmountContainer: {
         flexDirection: 'row',

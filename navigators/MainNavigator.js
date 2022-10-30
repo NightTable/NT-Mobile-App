@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { useDrawerStatus } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import ProfileNavigator from './ProfileNavigator';
 import InvitesNavigator from './InvitesNavigator';
@@ -17,10 +18,10 @@ import EntryDashboardNavigator from './EntryDashboardNavigator';
 import {Image, StyleSheet} from 'react-native';
 import ProfilePic from '../assets/personcircle.png';
 import DashboardPic from '../assets/dashboardpic.png';
-import InvitePic from '../assets/invitepngblack.png';
+import InvitePic from '../assets/invitepnggold.png';
 import BottlePic from '../assets/champagne.png';
 import ChatPic from '../assets/chatpng.png';
-import FriendPic from '../assets/friendblack.png';
+import FriendPic from '../assets/friendgold.png';
 import PhotoPic from '../assets/photoreal.png';
 import { Colors } from '../colors/Colors';
 import { widthRatioNorm, heightRatioNorm } from '../dimensions/Dimensions';
@@ -35,7 +36,7 @@ const MainNavigator = () => {
                 screenOptions={{
                     headerShown: false,
                     drawerStyle: {
-                        backgroundColor: Colors.greyLight,
+                        backgroundColor: Colors.white,
                     },
                     drawerActiveBackgroundColor: Colors.purple,
                     drawerActiveTintColor: Colors.white,
@@ -44,6 +45,7 @@ const MainNavigator = () => {
                         marginLeft: -20*widthRatioNorm,
                         fontFamily: Fonts.mainFontReg,
                         fontSize: 15*heightRatioNorm,
+                        color: Colors.black
                     },
                 }}>
                 <Drawer.Screen name="dashboard" component={EntryDashboardNavigator}
@@ -70,7 +72,7 @@ const MainNavigator = () => {
                     options={{
                         drawerIcon: () => (
                             <Image
-                                style={styles.icon}
+                                style={{height: 25*heightRatioNorm, width: 35*heightRatioNorm}}
                                 source={InvitePic}>
                             </Image>
                         ),
@@ -100,7 +102,7 @@ const MainNavigator = () => {
                     options={{
                         drawerIcon: () => (
                             <Image
-                                style={styles.icon}
+                                style={{height: 25*heightRatioNorm, width: 35*heightRatioNorm}}
                                 source={FriendPic}>
                             </Image>
                         ),

@@ -26,7 +26,9 @@ const styles = StyleSheet.create({
         marginTop: 15 * heightRatioProMax,
         height: 400 * heightRatioProMax,
         borderRadius: 50 * heightRatioProMax,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        borderColor: Colors.gold,
+        borderWidth: 1,
         flexDirection: 'column',
         alignItems: 'center',
         width: '95%'

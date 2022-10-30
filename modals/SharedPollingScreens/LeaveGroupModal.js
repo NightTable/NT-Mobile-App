@@ -38,12 +38,12 @@ const LeaveGroupModal = (props) => {
             }}>
                 <View style={{
                 height: windowHeight < 700 || Platform.OS === 'android' ? '80%' : '70%',
-                backgroundColor: Colors.greyLight,
+                backgroundColor: Colors.black,
                 borderRadius: 50 * heightRatioProMax,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderWidth: 1,
-                borderColor: Colors.black,
+                borderColor: Colors.gold,
             }}>
                 <View style={{
                     marginTop: 50 * heightRatioProMax,
@@ -59,16 +59,13 @@ const LeaveGroupModal = (props) => {
                     }}>
                         <Text style={{
                             fontSize: 18 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontBold
+                            fontFamily: Fonts.mainFontBold,
+                            color: Colors.gold
                         }}>Another member of this group will be
                             assigned organizer {"\n\n"}
 
                             You will forfeit your spot, and you will be
-                            charged a fee of <Text style={{
-                                color: Colors.red,
-                                fontFamily: Fonts.mainFontBold
-                            }}>$370</Text>
-                        </Text>
+                            charged a fee of $370</Text>
                     </View>
                     <ButtonContainerComp
                         onCancelPress={props.onRequestClose}></ButtonContainerComp>

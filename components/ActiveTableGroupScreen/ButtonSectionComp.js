@@ -27,9 +27,12 @@ const ButtonSectionComp = (props) => {
         <View>
             <View style={{
                 borderRadius: 10 * heightRatioProMax,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.black,
                 height: 100 * heightRatioProMax,
                 alignItems: 'center',
+                borderWidth: 1,
+                borderRadius: 10*heightRatioProMax,
+                borderColor: Colors.gold,
                 justifyContent: 'center'
             }}>
                 <View style={{
@@ -43,7 +46,7 @@ const ButtonSectionComp = (props) => {
                         <Text style={{
                             marginLeft: 20 * widthRatioProMax,
                             fontFamily: Fonts.mainFontReg,
-                            color: Colors.purple,
+                            color: Colors.gold,
                             fontSize: 25 * heightRatioProMax
                         }}> your share: ${props.share}</Text>
                     </View>
@@ -76,16 +79,15 @@ const ButtonSectionComp = (props) => {
             }}>
                 <TouchableOpacity style={{
                     height: 50 * heightRatioProMax,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.orange,
                     width: '93%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderColor: Colors.red,
-                    borderWidth: 1
+                    borderRadius: 10*heightRatioProMax
                 }}>
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
-                        color: Colors.red
+                        color: Colors.white
                     }}>remove participants</Text>
                 </TouchableOpacity>
             </View>
@@ -95,17 +97,16 @@ const ButtonSectionComp = (props) => {
                 alignItems: 'center'
             }}>
                 <TouchableOpacity onPress={props.onAddParticipantPress} style={{
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.green,
                     width: '93%',
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: 50 * heightRatioProMax,
-                    borderColor: Colors.green,
-                    borderWidth: 1
+                    borderRadius: 10*heightRatioProMax
                 }}>
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
-                        color: Colors.green
+                        color: Colors.white
                     }}>add participants</Text>
                 </TouchableOpacity>
             </View>
@@ -120,17 +121,17 @@ const ButtonSectionComp = (props) => {
                 alignItems: 'center'
             }}>
                 <TouchableOpacity onPress={props.onLeaveGroupPress} style={{
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.red,
                     width: '93%',
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: 50 * heightRatioProMax,
-                    borderColor: Colors.red,
-                    borderWidth: 1
+                    borderRadius: 10*heightRatioProMax
                 }}>
                     <Text style={{
                         color: Colors.red,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.white
                     }}>leave group</Text>
                 </TouchableOpacity>
             </View>
@@ -142,17 +143,18 @@ const ButtonSectionComp = (props) => {
                 <TouchableOpacity 
                 onPress={props.onEndOutingButtonPress}
                 style={{
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.gold,
                     width: '93%',
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: 50 * heightRatioProMax,
-                    borderColor: Colors.orange,
-                    borderWidth: 1
+                    height: 50 * heightRatioProMax,
+                    borderRadius: 10*heightRatioProMax
                 }}>
                     <Text style={{
                         color: Colors.orange,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
                     }}>end outing</Text>
                 </TouchableOpacity>
             </View>

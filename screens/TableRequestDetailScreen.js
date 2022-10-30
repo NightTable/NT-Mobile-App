@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import {
@@ -87,16 +81,17 @@ const TableRequestDetailScreen = (props) => {
         ></HeaderInfoSectionComp>
         <View style={{
             flex: 1,
-            backgroundColor: Colors.greyLight
+            backgroundColor: Colors.black
         }}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.lowerContainer}>
                     <Text style={{
                     marginLeft: 10 * widthRatioProMax,
                     marginTop: 15 * heightRatioProMax,
-                    fontFamily: Fonts.mainFontBold,
+                    fontFamily: Fonts.mainFontReg,
                     fontSize: 18 * heightRatioProMax,
-                }}>request details</Text>
+                    color: Colors.gold
+                }}>Request Details</Text>
                     <BasicInfoSectionComp
                         tableObj={tableRequestObject}></BasicInfoSectionComp>
                     <ParticipantInfoSection 
@@ -108,11 +103,12 @@ const TableRequestDetailScreen = (props) => {
                         <TouchableOpacity 
                         onPress={() => props.navigation.navigate('edNav-InitialPaymentScreen')}
                         style={[{
-                            backgroundColor: Colors.purple,
+                            backgroundColor: Colors.gold,
                             paddingVertical: 15 * heightRatioProMax,
                             paddingHorizontal: 40 * widthRatioProMax,
                             marginTop: 60 * heightRatioProMax,
                             marginBottom: 60 * heightRatioProMax,
+                            borderRadius: 10 * heightRatioProMax
                         }, {
                             shadowColor: Colors.black,
                             shadowOffset: {width: 0, height: 0},
@@ -121,7 +117,7 @@ const TableRequestDetailScreen = (props) => {
                             elevation: 5
                         }]}>
                             <Text style={{
-                                color: Colors.orange,
+                                color: Colors.black,
                                 fontFamily: Fonts.mainFontReg
                             }}>Join Table!</Text>
                         </TouchableOpacity>
@@ -134,10 +130,11 @@ const TableRequestDetailScreen = (props) => {
 
 const styles = StyleSheet.create({
     tableRequestDetailContainer: {
-        flex: 1
+        flex: 1,
     },
     lowerContainer: {
-        minHeight: '100%'
+        minHeight: '100%',
+        backgroundColor: Colors.black
     }
 })
 

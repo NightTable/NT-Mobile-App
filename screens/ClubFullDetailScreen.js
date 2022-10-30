@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, { useState, useEffect } from 'react';
 
 import { 
@@ -58,7 +52,7 @@ const ClubFullDetailScreen = (props) => {
     }, []);
 
 
-    return (<View style={{flex: 1, position: 'relative', backgroundColor: Colors.greyLight}}>
+    return (<View style={{flex: 1, position: 'relative', backgroundColor: Colors.black}}>
         <ImageBackground
         source={standardClubPic}
         style={{
@@ -70,7 +64,7 @@ const ClubFullDetailScreen = (props) => {
         <View style={{ marginBottom: 5 * heightRatioProMax, 
             flexDirection: 'row-reverse'}}>
             <View style={{
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.black,
                 padding: 10 * heightRatioProMax,
                 borderRadius: 5 * heightRatioProMax,
                 marginRight: 5 * widthRatioProMax,
@@ -78,7 +72,7 @@ const ClubFullDetailScreen = (props) => {
                 
             }}>
                 <Text style={{
-                    color: Colors.white,
+                    color: Colors.textColorGold,
                     marginTop: Platform.OS === 'android' ? -2 * heightRatioProMax : 0,
                     fontSize: 20 * heightRatioProMax,
                     fontFamily: Fonts.mainFontBold
@@ -89,6 +83,7 @@ const ClubFullDetailScreen = (props) => {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.lowerContainer}>
                 <PurpleLayoutBubbleComp label="upcoming events">
+                    
                     {eventList.slice(0,5).map((list, index) => (
                         <EventBubbleComp
                             key={index}
@@ -119,7 +114,7 @@ const ClubFullDetailScreen = (props) => {
                     onPress={() => props.navigation.navigate('edNav-SearchTableRequestsScreen')}
                     style={[{
                         padding: 10 * heightRatioProMax,
-                        backgroundColor: Colors.lightPurple,
+                        backgroundColor: Colors.buttonColorGold,
                         width: 150 * widthRatioProMax,
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -133,7 +128,7 @@ const ClubFullDetailScreen = (props) => {
                             elevation: 6
                     }]}>
                         <Text style={{
-                            color: Colors.white,
+                            color: Colors.black,
                             fontFamily: Fonts.mainFontReg
                         }}>search table requests</Text>
                     </TouchableOpacity>
@@ -141,12 +136,11 @@ const ClubFullDetailScreen = (props) => {
                     onPress={() => props.navigation.navigate('edNav-NewTableRequestScreen')}
                     style={[{
                         padding: 10 * heightRatioProMax,
-                        backgroundColor: Colors.greyLight,
+                        backgroundColor: Colors.buttonColorGold,
                         width: 150 * widthRatioProMax,
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 12 * heightRatioProMax,
-                        backgroundColor: Colors.greyDark
                     }, {
                             shadowColor: 'black',
                             shadowOffset: {width: 0, height: 0},
@@ -155,7 +149,7 @@ const ClubFullDetailScreen = (props) => {
                             elevation: 10
                     }]}>
                         <Text style={{
-                            color: Colors.purple,
+                            color: Colors.black,
                             fontFamily: Fonts.mainFontReg
                         }}
                         >organize a table!</Text>
@@ -171,7 +165,7 @@ const ClubFullDetailScreen = (props) => {
 
 const styles = StyleSheet.create({
     lowerContainer: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         paddingBottom: 35 * heightRatioProMax,
         flex: 7,
         alignItems: 'center'

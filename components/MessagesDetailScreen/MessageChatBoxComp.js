@@ -40,8 +40,8 @@ const MessageChatBoxComp = (props) => {
 const styles = StyleSheet.create({
     messageChatBoxContainer: {
         borderRadius: 60 * heightRatioProMax,
-        backgroundColor: Colors.white,
-        borderColor: Colors.purple,
+        backgroundColor: Colors.black,
+        borderColor: Colors.gold,
         borderWidth: 1,
         height: Platform.OS === 'android' ? 520 * heightRatioProMax : 500 * heightRatioProMax,
     },

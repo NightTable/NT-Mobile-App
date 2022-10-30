@@ -53,7 +53,7 @@ const HeaderInfoSectionComp = (props) => {
                            <Text style={{
                                marginLeft: 10 * widthRatioProMax,
                                fontSize: 15 * heightRatioProMax,
-                               color: Colors.white,
+                               color: Colors.gold,
                                fontFamily: Fonts.mainFontReg
                            }}>organizer: <Text style={{
                                 fontFamily: Fonts.mainFontBold
@@ -103,7 +103,7 @@ const HeaderInfoSectionComp = (props) => {
                             flexDirection: 'row',
                         }}>
                             <TouchableOpacity style={{
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.black,
                                 height: 52 * heightRatioProMax,
                                 width: 52 * heightRatioProMax,
                                 justifyContent: 'center', 
@@ -124,11 +124,11 @@ const HeaderInfoSectionComp = (props) => {
                                 paddingLeft: 8 * widthRatioProMax,
                                 paddingRight: 8 * widthRatioProMax,
                                 marginLeft: 10 * widthRatioProMax,
-                                backgroundColor: Colors.white
+                                backgroundColor: Colors.black
                             }}>
                                 <Text style={{
                                     fontFamily: Fonts.mainFontReg,
-                                    color: Colors.orange
+                                    color: Colors.gold
                                 }}>browse photos</Text>
                             </TouchableOpacity>
                         </View>
@@ -146,15 +146,15 @@ const HeaderInfoSectionComp = (props) => {
                                     borderRadius: 8 * heightRatioProMax,
                                     justifyContent: 'center',
                                     height: 40 * heightRatioProMax,
-                                    backgroundColor: Colors.purple
+                                    backgroundColor: Colors.black
                                 }}>
                                     <Text style={{
                                         marginLeft: 15 * widthRatioProMax,
                                         textAlign: 'left',
                                         fontFamily: Fonts.mainFontBold,
-                                        color: Colors.white,
+                                        color: Colors.gold,
                                         fontSize: 18 * heightRatioProMax,
-                                    }}>the grand</Text>
+                                    }}>The Grand</Text>
                                 </View>
                             </View>
                         </View>

@@ -22,13 +22,12 @@ const ButtonContainerComp = (props) => {
             alignItems: 'center'
         }}>
             <TouchableOpacity onPress={props.onCancelPress} style={[{
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.orange,
                 width: '80%',
                 height: 40 * heightRatioProMax,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderColor: Colors.orange,
-                borderWidth: 1
+                borderRadius: 10*heightRatioProMax,
             }, {
                 shadowColor: Colors.black,
                 shadowOffset: {width: 0, height: 0},
@@ -37,7 +36,7 @@ const ButtonContainerComp = (props) => {
                 elevation: 5
             }]}>
                 <Text style={{
-                    color: Colors.orange,
+                    color: Colors.white,
                     fontFamily: Fonts.mainFontReg
                 }}>cancel</Text>
             </TouchableOpacity>
@@ -48,12 +47,12 @@ const ButtonContainerComp = (props) => {
         }}>
             <TouchableOpacity style={[{
                 width: '80%',
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.red,
                 height: 40 * heightRatioProMax,
+                borderRadius: 10*heightRatioProMax,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderColor: Colors.red,
-                borderWidth: 1
+
             }, {
                 shadowColor: Colors.black,
                 shadowOffset: {width: 0, height: 0},
@@ -62,7 +61,7 @@ const ButtonContainerComp = (props) => {
                 elevation: 5
             }]}>
                 <Text style={{
-                    color: Colors.red,
+                    color: Colors.white,
                     fontFamily: Fonts.mainFontReg
                 }}>leave</Text>
             </TouchableOpacity>

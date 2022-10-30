@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, { useEffect, useState} from 'react';
 
 import { 
@@ -53,7 +47,7 @@ const NewTableRequestScreen = (props) => {
     ];
     const [ tableConfigList, setTableConfigList ] = useState([]);
     const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
-    const [ selectedTableType, setSelectedTableType ] = useState('snpl');
+    const [ selectedTableType, setSelectedTableType ] = useState('snpl'); //type of the table, either snpl or pnsl
     const [ questionMarkButtonSelected, setQuestionMarkButtonSelected ] = useState(false);
 
     const [ searchFriendInputState, setSearchFriendInputState ] = useState("");
@@ -63,7 +57,7 @@ const NewTableRequestScreen = (props) => {
 
     const [ currentParticipants, setCurrentParticipants ] = useState(dummyParticipants);
 
-    const [ selectedAdditionalCostSelection, setSelectedAdditionalCostSelection ] = useState(false);
+    const [ selectedAdditionalCostSelection, setSelectedAdditionalCostSelection ] = useState(false); //true if you''ve selected to have additional cost
     const [ additionalAmountValue, setAdditionalAmountValue ] = useState("$");
     const [ additionalAmountSaved, setAdditionalAmountSaved ] = useState(false);
 
@@ -213,7 +207,8 @@ const NewTableRequestScreen = (props) => {
     const handleYesButtonPress = () => {
 
         setSelectedAdditionalCostSelection(true);
-
+        setAdditionalAmountSaved(true)
+        
     };
 
     const handleNoButtonPress = () => {
@@ -307,7 +302,7 @@ const NewTableRequestScreen = (props) => {
             }}>
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
-                    color: Colors.black
+                    color: Colors.textColorGold
                 }}>organizing a table request for: </Text>
             </View>
             <View style={{
@@ -318,11 +313,11 @@ const NewTableRequestScreen = (props) => {
             }}>
                 <View style={{
                     padding: 5 * heightRatioProMax,
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.textColorGold,
                     borderRadius: 5 * heightRatioProMax,
                 }}>
                     <Text style={{
-                        color: Colors.white,
+                        color: Colors.black,
                         fontFamily: Fonts.mainFontBold
                     }}>the grand</Text>
                 </View>
@@ -335,7 +330,7 @@ const NewTableRequestScreen = (props) => {
                 <View>
                     <Image
                         style={{
-                            borderColor: Colors.purple,
+                            borderColor: Colors.textColorGold,
                             borderWidth: 3,
                             borderRadius: 10 * heightRatioProMax,
                             width: 250 * widthRatioProMax,
@@ -351,9 +346,9 @@ const NewTableRequestScreen = (props) => {
             alignItems: 'center',
             paddingBottom: 75 * heightRatioProMax,
             marginBottom: 50 * heightRatioProMax,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.black,
             borderRadius: 70 * heightRatioProMax,
-            borderColor: Colors.purple,
+            borderColor: Colors.textColorGold,
             borderWidth: 2
         }}>
             <View style={{
@@ -362,9 +357,11 @@ const NewTableRequestScreen = (props) => {
                 width: '85%'
             }}>
                 <Text style={{
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.textColorGold
                 }}>organizer: <Text style={{
-                    fontFamily: Fonts.mainFontBold
+                    fontFamily: Fonts.mainFontBold,
+                    color: Colors.textColorGold
                 }}>amiya sekhar</Text></Text>
             </View>
             <TableOptionSectionComp
@@ -411,17 +408,16 @@ const NewTableRequestScreen = (props) => {
             style={{
                 width: '40%',
                 height: 50 * heightRatioProMax,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.textColorGold,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 10 * heightRatioProMax,
-                borderColor: Colors.purple,
                 borderWidth: 1,
                 opacity: termsCheckboxEnabled ? 1 : 0.5
             }}>
                 <Text style={{
-                    color: Colors.purple,
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.black
                 }}>continue</Text>
             </TouchableOpacity>
         </View>
@@ -431,7 +427,7 @@ const NewTableRequestScreen = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         flex: 1,
         flexDirection: 'column'
     }

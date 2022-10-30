@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import { Colors } from '../colors/Colors';
@@ -14,7 +8,7 @@ import { View,
     StyleSheet,
     TouchableOpacity,} from 'react-native';
 import {
-    heightRatioNorm
+    heightRatioNorm, heightRatioProMax
 } from '../dimensions/Dimensions';
 
 
@@ -34,14 +28,14 @@ const EndOutingScreen = (props) => {
     return (
         <View style={styles.container}>
             <View style={{flexDirection: 'column', flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{margin: 10*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.black, textAlign: 'center', direction: 'rtl'}}>Looks like your night has ended. Thanks again for using </Text>
-                <Text style={{margin: 10*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.purple, textAlign: 'center', direction: 'rtl'}}>NightTable!</Text>
+                <Text style={{margin: 10*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold, textAlign: 'center', direction: 'rtl'}}>Looks like your night has ended. Thanks again for using </Text>
+                <Text style={{margin: 10*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold, textAlign: 'center', direction: 'rtl'}}>NightTable!</Text>
 
                 <TouchableOpacity 
                     onPress={handleBackToHome}
-                    style={{backgroundColor: Colors.white, marginTop: 10*heightRatioNorm, width: '60%',
+                    style={{backgroundColor: Colors.gold, marginTop: 10*heightRatioNorm, width: '60%',
                             borderWidth: 2,
-                            borderColor: Colors.purple,
+                            borderRadius: 10*heightRatioProMax,
                             shadowColor: Colors.black,
                             shadowRadius: 5,
                             shadowOpacity: 1,
@@ -51,7 +45,7 @@ const EndOutingScreen = (props) => {
                             },
                             elevation: 3
                         }}>
-                        <Text style={{margin: 10*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.purple, textAlign: 'center'}}>Back to Home</Text>
+                        <Text style={{margin: 10*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.black, textAlign: 'center'}}>Back to Home</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -63,7 +57,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         marginTop: 40*heightRatioNorm,
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
     },
 });
 

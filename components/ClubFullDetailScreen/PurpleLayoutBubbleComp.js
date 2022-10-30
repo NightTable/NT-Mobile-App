@@ -14,7 +14,6 @@ import {
 
 import { Colors } from '../../colors/Colors';
 import { Fonts } from '../../fonts/Fonts';
-
 let windowWidth = Dimensions.get('window').width;
 let windowHeight = Dimensions.get('window').height;
 
@@ -29,7 +28,9 @@ const PurpleLayoutBubbleComp = (props) => {
     return (
         <View style={[{
             marginTop: 10 * heightRatio,
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.black,
+            borderColor: Colors.textColorGold,
+            borderWidth: 2,
             borderRadius: 50,
             paddingBottom: 60 * heightRatio,
             width: '100%'
@@ -45,17 +46,18 @@ const PurpleLayoutBubbleComp = (props) => {
                 marginLeft: 10 * widthRatio,
                 marginRight: 10 * widthRatio,
                 flexDirection: 'row',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                borderColor: Colors.textColorGold
             }}>
                 <Text style={{
-                    color: Colors.white,
+                    color: Colors.textColorGold,
                     fontFamily: Fonts.mainFontReg,
                     marginBottom: 2 * heightRatio,
                     fontSize: 20 * heightRatio}}>{props.label}</Text>
                 <TouchableOpacity>
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
-                        color: Colors.white,
+                        color: Colors.textColorGold,
                         fontSize: 20 * heightRatio}}> + </Text>
                 </TouchableOpacity>
             </View>

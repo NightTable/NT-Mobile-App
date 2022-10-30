@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, {useState} from 'react';
 
 import { 
@@ -231,7 +225,8 @@ const PollingRoomScreen = (props) => {
                         width: '80%'
                     }}>
                         <Text style={{
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.textColorGold
                         }}>current cost breakdown</Text>
                     </View>
                     <WhiteBubbleLayoutComp>
@@ -250,9 +245,11 @@ const PollingRoomScreen = (props) => {
                             <Text style={{
                                 color: Colors.purple,
                                 fontSize: 18 * heightRatioProMax,
-                                fontFamily: Fonts.mainFontReg
+                                fontFamily: Fonts.mainFontReg,
+                                color: Colors.gold
                             }}>table price: <Text style={{
-                                fontFamily: Fonts.mainFontBold
+                                fontFamily: Fonts.mainFontBold,
+                                color: Colors.gold
                             }}>$510</Text></Text>
                         </View>
                     </WhiteBubbleLayoutComp>
@@ -261,7 +258,8 @@ const PollingRoomScreen = (props) => {
                         width: '80%'
                     }}>
                         <Text style={{
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.textColorGold
                         }}>pending participants</Text>
                     </View>
                     <WhiteBubbleLayoutComp>
@@ -285,7 +283,8 @@ const PollingRoomScreen = (props) => {
                         width: '80%'
                     }}>
                         <Text style={{
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.textColorGold
                         }}>current participants (3)</Text>
                     </View>
                     <WhiteBubbleLayoutComp>
@@ -325,6 +324,7 @@ const PollingRoomScreen = (props) => {
                                     fontFamily: Fonts.mainFontReg,
                                     textAlign: 'center',
                                     fontSize: 15 * heightRatioProMax,
+                                    color: Colors.white
                                 }}>add participants</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -336,6 +336,7 @@ const PollingRoomScreen = (props) => {
                                     fontFamily: Fonts.mainFontReg,
                                     textAlign: 'center',
                                     fontSize: 15 * heightRatioProMax,
+                                    color: Colors.white
                                 }}>remove participants</Text>
                             </TouchableOpacity>
                         </View>
@@ -354,6 +355,7 @@ const PollingRoomScreen = (props) => {
                                     fontFamily: Fonts.mainFontReg,
                                     textAlign: 'center',
                                     fontSize: 15 * heightRatioProMax,
+                                    color: Colors.white
                                 }}>leave group</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -377,11 +379,11 @@ const PollingRoomScreen = (props) => {
 
 const styles = StyleSheet.create({
     screenContainer: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
        flex: 1
     },
     lowerContainer: {
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         flexDirection: 'column',
         alignItems: 'center',
         minHeight: '100%'
@@ -408,7 +410,8 @@ const styles = StyleSheet.create({
         width: 180 * widthRatioProMax,
         borderColor: Colors.green,
         borderWidth: 1,
-        backgroundColor: Colors.white
+        backgroundColor: Colors.green,
+        borderRadius: 10 * heightRatioProMax,
     },
     removeParticipantsButtonStyle: {
         flexDirection: 'column',
@@ -417,7 +420,8 @@ const styles = StyleSheet.create({
         width: 180 * widthRatioProMax,
         borderColor: Colors.orange,
         borderWidth: 1,
-        backgroundColor: Colors.white
+        backgroundColor: Colors.orange,
+        borderRadius: 10 * heightRatioProMax,
     },
     leaveGroupButtonStyle: {
         flexDirection: 'column',
@@ -426,14 +430,18 @@ const styles = StyleSheet.create({
         width: 180 * widthRatioProMax,
         borderColor: Colors.red,
         borderWidth: 1,
-        backgroundColor: Colors.white
+        backgroundColor: Colors.red,
+        borderRadius: 10 * heightRatioProMax,
+
     },
     approveRequestButtonStyle: {
         flexDirection: 'column',
         justifyContent: 'center',
         marginRight: 30 * widthRatioProMax,
         width: 180 * widthRatioProMax,
-        backgroundColor: Colors.lightGreen
+        backgroundColor: Colors.gold,
+        borderRadius: 10 * heightRatioProMax,
+
     }
 })
 

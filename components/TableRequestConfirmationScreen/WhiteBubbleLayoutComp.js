@@ -25,8 +25,10 @@ const styles = StyleSheet.create({
         marginTop: 30 * heightRatioProMax,
         flex: 1,
         alignItems: 'center',
-        backgroundColor: Colors.white,
-        borderRadius: 75 * heightRatioProMax
+        backgroundColor: Colors.black,
+        borderRadius: 75 * heightRatioProMax,
+        borderColor: Colors.textColorGold,
+        borderWidth: 1
     }
 })
 

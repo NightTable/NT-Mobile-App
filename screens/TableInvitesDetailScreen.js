@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import { Colors } from '../colors/Colors';
@@ -20,7 +14,8 @@ import johnpic from '../assets/johnpic.jpeg'
 
 import {
     widthRatioNorm,
-    heightRatioNorm
+    heightRatioNorm,
+    heightRatioProMax
 } from '../dimensions/Dimensions';
 
 
@@ -49,11 +44,11 @@ const TableInvitesDetailScreen = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={{ flex: 3, backgroundColor: Colors.pink, borderRadius: 80, justifyContent: 'flex-start',}}> 
+            <View style={{ flex: 3, backgroundColor: Colors.black, borderRadius: 80, justifyContent: 'flex-start', borderWidth: 1, borderColor: Colors.gold}}> 
                 <View style={{flexDirection: 'column', flex: 5}}>
-                    <Text style={{marginLeft: 50*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 30*heightRatioNorm, color: Colors.black}}>details</Text>
+                    <Text style={{marginLeft: 50*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 30*heightRatioNorm, color: Colors.gold}}>details</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 40*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.black}}>organizer: John Nydam</Text>
+                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 40*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold}}>organizer: John Nydam</Text>
                         <TouchableOpacity
                             onPress={handleBubblePress}>
                             <Image
@@ -64,29 +59,30 @@ const TableInvitesDetailScreen = (props) => {
 
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.black}}>name: </Text>
-                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.purple}}>woohza!</Text>
+                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.gold}}>name: </Text>
+                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold}}>woohza!</Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.black}}>table size: </Text>
-                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.black}}>12</Text>
+                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.gold}}>table size: </Text>
+                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold}}>12</Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.black}}>request type: </Text>
-                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.orange}}>snpl</Text>
+                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.gold}}>request type: </Text>
+                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold}}>snpl</Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.black}}>table price: </Text>
-                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.black}}>$800</Text>
+                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.gold}}>table price: </Text>
+                        <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.gold}}>$800</Text>
                     </View>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.black}}>you paid: </Text>
+                        <Text style={{marginLeft: 60*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontReg, fontSize: 18*heightRatioNorm, color: Colors.gold}}>you paid: </Text>
                         <Text style={{marginLeft: 10*widthRatioNorm, marginTop: 20*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.red}}>$33.7</Text>
                     </View>
                 </View>
                 <View style={{flexDirection: 'column', flex: 1, alignItems: 'center'}}>
-                    <TouchableOpacity style={{backgroundColor: Colors.white, marginTop: 10*heightRatioNorm, width: '60%', borderWidth: 1*widthRatioNorm, borderColor: Colors.green,
+                    <TouchableOpacity style={{backgroundColor: Colors.green, marginTop: 10*heightRatioNorm, width: '60%', borderWidth: 1*widthRatioNorm, borderColor: Colors.green,
                         shadowColor: Colors.black,
+                        borderRadius: 10 * heightRatioProMax,
                         shadowRadius: 5,
                         shadowOpacity: 1,
                         shadowOffset: {
@@ -96,9 +92,10 @@ const TableInvitesDetailScreen = (props) => {
                             elevation: 3         
                         }}
                         onPress={handleAcceptPress}>
-                        <Text style={{margin: 10*(heightRatioNorm/widthRatioNorm), fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.green, textAlign: 'center'}}>accept</Text>
+                        <Text style={{margin: 10*(heightRatioNorm/widthRatioNorm), fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.white, textAlign: 'center'}}>accept</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: Colors.white, marginTop: 10*heightRatioNorm, width: '60%', borderWidth: 1*widthRatioNorm, borderColor: Colors.red,
+                    <TouchableOpacity style={{backgroundColor: Colors.red, marginTop: 10*heightRatioNorm, width: '60%', borderWidth: 1*widthRatioNorm, borderColor: Colors.red,
+                            borderRadius: 10 * heightRatioProMax,
                             shadowColor: Colors.black,
                             shadowRadius: 5,
                             shadowOpacity: 1,
@@ -109,7 +106,7 @@ const TableInvitesDetailScreen = (props) => {
                             elevation: 3
                         }}
                         onPress={handleDeclinePress}>
-                        <Text style={{margin: 10, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.red, textAlign: 'center'}}>decline</Text>
+                        <Text style={{margin: 10, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.white, textAlign: 'center'}}>decline</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -121,7 +118,8 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       marginTop: 40,
-      marginBottom: Platform.OS=='android'?40*heightRatioNorm:0
+      marginBottom: Platform.OS=='android'?40*heightRatioNorm:0,
+      backgroundColor: Colors.black
     },
   });
 

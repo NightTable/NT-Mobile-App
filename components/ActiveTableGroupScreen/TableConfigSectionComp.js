@@ -25,8 +25,9 @@ const TableConfigSectionComp = (props) => {
             marginBottom: 10 * heightRatioProMax,
             color: Colors.white,
             fontSize: 16 * heightRatioProMax,
-            fontFamily: Fonts.mainFontBold
-        }}>table configuration</Text>
+            fontFamily: Fonts.mainFontBold,
+            color: Colors.gold
+        }}>Table Configuration</Text>
         <View style={{
             height: 300 * heightRatioProMax
         }}>

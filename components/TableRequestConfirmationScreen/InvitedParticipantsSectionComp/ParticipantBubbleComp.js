@@ -26,7 +26,7 @@ const ParticipantBubbleComp = (props) => {
         <Text style={{
             marginLeft: 10 * widthRatioProMax,
             fontFamily: Fonts.mainFontReg,
-            color: Colors.white
+            color: Colors.black
         }}>{props.email}</Text>
         : <View style={{
             flexDirection: 'row'
@@ -50,7 +50,7 @@ const ParticipantBubbleComp = (props) => {
                 justifyContent: 'center'
             }}>
                 <Text style={{
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 18 * heightRatioProMax,
                     fontFamily: Fonts.mainFontReg,
                 }}>{props.name}</Text>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10 * heightRatioProMax,
         marginVertical: 4 * heightRatioProMax,
         width: '100%',
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.textColorGold,
         justifyContent: 'center'
     }
 })

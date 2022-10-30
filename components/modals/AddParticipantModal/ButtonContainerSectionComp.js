@@ -25,11 +25,10 @@ const ButtonContainerSectionComp = (props) => {
         onPress={props.onAddPartButtonHandler}
         style={[{
             height: 50 * heightRatioProMax,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.green,
             alignItems: 'center',
             justifyContent: 'center',
-            borderColor: Colors.green,
-            borderWidth: 1
+            borderRadius: 10 * heightRatioProMax,
         }, {
             shadowColor: Colors.black,
             shadowRadius: 2,
@@ -41,9 +40,9 @@ const ButtonContainerSectionComp = (props) => {
             elevation: 3
         }]}>
             <Text style={{
-                color: Colors.green,
+                color: Colors.white,
                 fontFamily: Fonts.mainFontReg
-            }}>add 2 participants</Text>
+            }}>Add 2 participants</Text>
         </TouchableOpacity>
     </View>)
 }

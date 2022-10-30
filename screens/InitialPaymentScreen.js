@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import { View, 
@@ -27,7 +21,7 @@ const InitialPaymentScreen = (props) => {
     keyboardShouldPersistTaps={Platform.OS === 'android' ? false : "never"}
     >
     <View style={{
-        backgroundColor: Colors.lightGrey,
+        backgroundColor: Colors.black,
         marginTop: 50 * heightRatioProMax
     }}>
         <WhitePurpleBubbleLayoutComp>
@@ -37,7 +31,8 @@ const InitialPaymentScreen = (props) => {
             }}>
                 <Text style={{
                     fontSize: windowHeight < 700 ? 20 * heightRatioProMax : 15 * heightRatioProMax ,
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.gold
                 }}>NightTable requires that all new users
                     give out credit/debit card information, so that they
                     will be able to join tables when one opens up.
@@ -50,12 +45,12 @@ const InitialPaymentScreen = (props) => {
                 marginTop: 20 * heightRatioProMax,
                 borderWidth: 1,
                 borderRadius: 10 * heightRatioProMax,
-                borderColor: Colors.greyDark
+                borderColor: Colors.gold
             }}>
                 <CardField 
                 cardStyle={{
-                    placeholderColor: Colors.purple,
-                    textColor: Colors.purple,
+                    placeholderColor: Colors.gold,
+                    textColor: Colors.gold,
                     fontSize: 15 * heightRatioProMax
                 }}
                 style={{
@@ -71,13 +66,13 @@ const InitialPaymentScreen = (props) => {
                 marginTop: 20 * heightRatioProMax
             }}>
                 <TouchableOpacity style={{
-                    backgroundColor: Colors.purple,
+                    backgroundColor: Colors.gold,
                     padding: 10 * heightRatioProMax,
                     borderRadius: 10 * heightRatioProMax,
                 }}>
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
-                        color: Colors.white
+                        color: Colors.black
                     }}>pay with crypto</Text>
                 </TouchableOpacity>
             </View>
@@ -92,9 +87,8 @@ const InitialPaymentScreen = (props) => {
             style={[{
                 padding: 20 * heightRatioProMax,
                 width: '60%',
-                backgroundColor: Colors.white,
-                borderColor: Colors.green,
-                borderWidth: 1
+                backgroundColor: Colors.gold,
+                borderRadius: 10 * heightRatioProMax
             }, {
                 shadowColor: Colors.black,
                 shadowRadius: 5,
@@ -107,7 +101,7 @@ const InitialPaymentScreen = (props) => {
             }]}>
                 <Text style={{
                     fontSize: 17 * heightRatioProMax,
-                    color: Colors.green,
+                    color: Colors.black,
                     fontFamily: Fonts.mainFontReg,
                     textAlign: 'center'
                 }}>enter payment info!</Text>

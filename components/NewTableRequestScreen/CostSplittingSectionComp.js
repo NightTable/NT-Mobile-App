@@ -27,7 +27,8 @@ const CostSplittingSectionComp = (props) => {
     return (<View style={styles.costSplittingContainer}>
         <Text style={{
             fontSize: 18 * heightRatioProMax,
-            fontFamily: Fonts.mainFontReg
+            fontFamily: Fonts.mainFontReg,
+            color: Colors.textColorGold
         }}>cost-splitting:</Text>
         <View style={{
             width: '100%',
@@ -40,7 +41,8 @@ const CostSplittingSectionComp = (props) => {
                     <Text style={{
                         fontSize: 15 * heightRatioProMax,
                         lineHeight: 18 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     }}>You have chosen the <Text style={{
                         fontFamily: Fonts.mainFontBold,
                         fontSize: 15 * heightRatioProMax,
@@ -55,7 +57,8 @@ const CostSplittingSectionComp = (props) => {
                     <Text style={{
                         fontSize: 15 * heightRatioProMax,
                         lineHeight: 18 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     }}>By selecting the create request button you are agreeing to paying
                         the full non-refundable amount of <Text style={{
                             fontSize: 15 * heightRatioProMax,
@@ -69,7 +72,8 @@ const CostSplittingSectionComp = (props) => {
                     <Text style={{
                         fontSize: 15 * heightRatioProMax,
                         lineHeight: 18 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
                     }}>You will be refunded small amounts incrementally
                     as more people join your table, such as invited participants or
                     new people joining in the polling or active table group room.
@@ -99,7 +103,8 @@ const CostSplittingSectionComp = (props) => {
             </TouchableOpacity>
             <View>
                 <Text style={{
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.textColorGold
                 }}>i agree with the above statement</Text>
             </View>
         </View>

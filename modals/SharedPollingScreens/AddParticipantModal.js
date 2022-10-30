@@ -50,12 +50,12 @@ const AddParticipantModal = (props) => {
             }}>
                 <View style={{
                     height: windowHeight < 700 || Platform.OS === 'android' ? '80%' : '70%',
-                    backgroundColor: Colors.greyLight,
+                    backgroundColor: Colors.black,
                     borderRadius: 50 * heightRatioProMax,
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderWidth: 1,
-                    borderColor: Colors.black,
+                    borderColor: Colors.gold,
                 }}>
                     <View style={{
                         marginTop: 50 * heightRatioProMax,
@@ -70,7 +70,8 @@ const AddParticipantModal = (props) => {
                         }}>
                             <Text style={{
                                 fontFamily: Fonts.mainFontBold,
-                                fontSize: windowHeight < 700 ? 20 * heightRatioProMax :  15 * heightRatioProMax
+                                fontSize: windowHeight < 700 ? 20 * heightRatioProMax :  15 * heightRatioProMax,
+                                color: Colors.gold
                             }}>Please type in name or emails of people
                                 you would like to add to your group: </Text>
                         </View>

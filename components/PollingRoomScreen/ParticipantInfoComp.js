@@ -37,7 +37,8 @@ const ParticipantInfoComp = (props) => {
                     }}
                     source={props.imageObj}></Image>
                 <Text style={{
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.black
                 }}>{props.name}</Text>
             </View>
             <View style={{
@@ -47,7 +48,8 @@ const ParticipantInfoComp = (props) => {
                 <Text style={{
                     color: Colors.purple,
                     marginRight: 10 * widthRatioProMax,
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.black
                 }}>$100</Text>
                 <TouchableOpacity>
                     <Image 
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10 * heightRatioProMax,
         paddingHorizontal: 10 * widthRatioProMax,
         width: '90%',
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.gold,
         flexDirection: 'row',
         justifyContent: 'space-between'
     }

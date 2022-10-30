@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, { useEffect, useState } from 'react';
 
 import { View, 
@@ -31,6 +25,7 @@ import {
     windowWidth } from '../dimensions/Dimensions';
 
 import { API_URL_IOS, API_URL_ANDROID } from "@env";
+import { color } from 'react-native-reanimated';
 
 
 const ClubMiniDetailScreen = (props) => {
@@ -96,7 +91,7 @@ const ClubMiniDetailScreen = (props) => {
                         ></ImageScrollContainerComp>
                         <View style={{
                             position: 'absolute',
-                            backgroundColor: Colors.greyLight,
+                            backgroundColor: Colors.black,
                             height: 200 * heightRatioProMax,
                             left: Platform.OS === 'android' ? 386 * widthRatioProMax: 386 * widthRatioProMax,
                             width: 40 * widthRatioProMax
@@ -148,8 +143,8 @@ const ClubMiniDetailScreen = (props) => {
                         alignItems: 'center',
                         borderRadius: 10 * heightRatioProMax,
                         marginBottom: 20 * heightRatioProMax,
-                        backgroundColor: Colors.lightPurple}}>
-                        <Text style={{color: Colors.white,
+                        backgroundColor: Colors.buttonColorGold}}>
+                        <Text style={{color: Colors.textColorBlack,
                         marginTop: Platform.OS === 'android' ? -3 * heightRatioProMax : 0,
                         fontFamily: Fonts.mainFontBold}}>select club</Text>
                     </View>
@@ -162,7 +157,7 @@ const ClubMiniDetailScreen = (props) => {
 const styles = StyleSheet.create({
 
     container: {
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.black,
         flex: 1,
         position: 'relative'
     },
@@ -170,19 +165,20 @@ const styles = StyleSheet.create({
         height: 200 * heightRatioProMax,
         width: '90%',
         position: 'relative',
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.black,
         overflow: 'hidden'
     },
     imageWrapperCurve: {
         position: 'absolute',
-        zIndex: 0
+        zIndex: 0,
+        color: Colors.black
     },
     whiteRoundDetailContainer: {
         marginTop: 250 * heightRatioProMax,
         borderTopLeftRadius: 50 * widthRatioProMax,
         borderTopRightRadius: 50 * widthRatioProMax,
-        backgroundColor: Colors.greyLight,
-        borderColor: Colors.black,
+        backgroundColor: Colors.black,
+        borderColor: Colors.textColorGold,
         borderWidth: 1,
         flexDirection: 'column',
         flex: 1,
@@ -191,28 +187,34 @@ const styles = StyleSheet.create({
     outerInfoBox: {
         flex: 4,
         marginLeft: 20 * widthRatioProMax,
-        marginBottom: Platform.OS === 'ios' ? 10 * heightRatioProMax : 0
+        marginBottom: Platform.OS === 'ios' ? 10 * heightRatioProMax : 0,
+        color: Colors.textColorGold
     },
     headerText: {
         marginRight: 5 * widthRatioProMax,
         fontFamily: Fonts.mainFontBold,
-        fontSize: Platform.OS === 'android' ? 15 * heightRatioProMax : 14 * heightRatioProMax
+        fontSize: Platform.OS === 'android' ? 15 * heightRatioProMax : 14 * heightRatioProMax,
+        color: Colors.textColorGold
+
     },
     innerInfoBox: {
         flexDirection: 'row',
         marginBottom: Platform.OS === 'android' ? 10 * heightRatioProMax: 17 * heightRatioProMax,
         alignItems: 'center',
+        color: Colors.textColorGold
+
 
     },
     innerTextValues: {
         fontFamily: Fonts.mainFontReg,
-        fontSize: Platform.OS === 'android' ? 15 * heightRatioProMax : 14 * heightRatioProMax
+        fontSize: Platform.OS === 'android' ? 15 * heightRatioProMax : 14 * heightRatioProMax,
+        color: Colors.textColorGold
     },
     buttonContainer: {
         marginTop: Platform.OS === 'android' ? 60 * heightRatioProMax : 0,
         marginBottom: 20 * heightRatioProMax,
         flex: 2
     }
-});
+})
 
 export default ClubMiniDetailScreen;

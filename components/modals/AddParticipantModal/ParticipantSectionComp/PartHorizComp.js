@@ -22,7 +22,7 @@ const PartHorizComp = (props) => {
         dynamicRender = (<View>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.white
+                color: Colors.black
             }}>{props.email}</Text>
         </View>)
 
@@ -45,7 +45,7 @@ const PartHorizComp = (props) => {
                 }}>
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
-                        color: Colors.white
+                        color: Colors.black
                     }}>{props.name}</Text>
                 </View>
             </React.Fragment>
@@ -55,7 +55,7 @@ const PartHorizComp = (props) => {
 
 
     return (<View style={{
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.gold,
         flexDirection: 'row',
         height: props.isExternalUser ? 40 * heightRatioProMax : 60 * heightRatioProMax,
         paddingHorizontal: 10 * widthRatioProMax,

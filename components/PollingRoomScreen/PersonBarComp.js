@@ -42,10 +42,10 @@ const PersonBarComp = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: Colors.purple,
+        borderColor: Colors.textColorGold,
         borderWidth: 1,
         borderRadius: 10 * heightRatioProMax,
-        backgroundColor: Colors.greyLightMedium,
+        backgroundColor: Colors.black,
         height: 85 * heightRatioProMax,
         flexDirection: 'row',
         justifyContent: 'center',

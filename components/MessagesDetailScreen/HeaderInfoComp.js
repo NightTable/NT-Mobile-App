@@ -30,6 +30,7 @@ const HeaderInfoComp = (props) => {
         flexDirection: 'row',
         height: 200 * heightRatioProMax,
         marginBottom: 15 * heightRatioProMax,
+        backgroundColor: Colors.black,
     }}>
         <View style={{
             height: '100%',
@@ -43,7 +44,7 @@ const HeaderInfoComp = (props) => {
                 shadowRadius: 3,
                 shadowOpacity: 0.4,
                 elevation: 10,
-                backgroundColor: Colors.greyLight,
+                backgroundColor: Colors.black,
                 borderRadius: 85 * heightRatioProMax,
             }]}>
                 <Image 
@@ -69,12 +70,14 @@ const HeaderInfoComp = (props) => {
                     marginBottom: 10 * heightRatioProMax,
                     textAlign: 'right',
                     fontSize: 18 * heightRatioProMax,
-                    fontFamily: Fonts.mainFontReg
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.gold
                 }}>your messages with: </Text>
                 <Text style={{
                     textAlign: 'right',
                     fontSize: 18 * heightRatioProMax,
-                    fontFamily: Fonts.mainFontBold
+                    fontFamily: Fonts.mainFontBold,
+                    color: Colors.gold
                 }}>{props.name}</Text>
             </View>
             <View style={{
@@ -86,17 +89,15 @@ const HeaderInfoComp = (props) => {
                 <TouchableOpacity 
                 onPress={handleBlockUserButtonPress}
                 style={{
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.red,
                     height: 35 * heightRatioProMax,
                     width: '65%',
-                    borderRadius: 5 * heightRatioProMax,
-                    borderColor: Colors.red,
-                    borderWidth: 0.5,
+                    borderRadius: 10 * heightRatioProMax,
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
                     <Text style={{
-                        color: Colors.red,
+                        color: Colors.white,
                         fontFamily: Fonts.mainFontReg
                     }}>block user</Text>
                 </TouchableOpacity>

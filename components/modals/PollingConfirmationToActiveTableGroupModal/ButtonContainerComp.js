@@ -26,8 +26,8 @@ const ButtonContainerComp = (props) => {
             <TouchableOpacity onPress={props.onCancelPress} style={[{
                 height: 50 * heightRatioProMax,
                 width: '85%',
-                backgroundColor: Colors.white,
-                borderColor: Colors.red,
+                backgroundColor: Colors.orange,
+                borderRadius: 10*heightRatioProMax,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderWidth: 1
@@ -43,7 +43,7 @@ const ButtonContainerComp = (props) => {
             }]}>
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
-                    color: Colors.red
+                    color: Colors.white
                 }}>cancel</Text>
             </TouchableOpacity>
         </View>
@@ -57,11 +57,11 @@ const ButtonContainerComp = (props) => {
             style={[{
                 height: 50 * heightRatioProMax,
                 width: '85%',
-                backgroundColor: Colors.white,
-                borderWidth: 1,
+                backgroundColor: Colors.green,
+                borderRadius: 10 * heightRatioProMax,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderColor: Colors.lightGreen
+
             }, {
                 shadowColor: Colors.black,
                 shadowRadius: 2,
@@ -73,7 +73,7 @@ const ButtonContainerComp = (props) => {
                 elevation: 3
             }]}>
                 <Text style={{
-                    color: Colors.lightGreen,
+                    color: Colors.white,
                     fontFamily: Fonts.mainFontReg
                 }}>confirm</Text>
             </TouchableOpacity>

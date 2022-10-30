@@ -33,12 +33,12 @@ const EndOutingConfirmationModal = (props) => {
         }}>
             <View style={{
                 height: '70%',
-                borderColor: Colors.black,
+                borderColor: Colors.gold,
                 borderRadius: 50 * heightRatioProMax,
                 borderWidth: 1,
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                backgroundColor: Colors.greyLight,
+                backgroundColor: Colors.black,
                 alignItems: 'center'
             }}>
               <View style={{
@@ -47,7 +47,8 @@ const EndOutingConfirmationModal = (props) => {
               }}>
                   <Text style={{
                       fontFamily: Fonts.mainFontReg,
-                      fontSize: 18 * heightRatioProMax
+                      fontSize: 18 * heightRatioProMax,
+                      color: Colors.gold
                   }}>Are you sure you want to end the outing?</Text>
               </View>
               <View style={{
@@ -63,13 +64,11 @@ const EndOutingConfirmationModal = (props) => {
                       alignItems: 'center'
                   }}>
                       <TouchableOpacity onPress={props.onRequestClose} style={[{
-                          color: Colors.orange,
-                          borderWidth: 1,
-                          borderColor: Colors.orange,
                           height: '60%',
+                          borderRadius: 10 * heightRatioProMax,
                           width: '75%',
                           justifyContent: 'center',
-                          backgroundColor: Colors.white
+                          backgroundColor: Colors.orange
                       }, {
                         shadowColor: Colors.black,
                         shadowRadius: 2,
@@ -81,7 +80,7 @@ const EndOutingConfirmationModal = (props) => {
                         elevation: 3
                       }]}>
                           <Text style={{
-                              color: Colors.orange,
+                              color: Colors.white,
                               textAlign: 'center',
                               fontFamily: Fonts.mainFontReg
                           }}>cancel</Text>
@@ -98,9 +97,8 @@ const EndOutingConfirmationModal = (props) => {
                         height: '60%',
                         width: '75%',
                         justifyContent: 'center',
-                        backgroundColor: Colors.white,
-                        borderColor: Colors.red,
-                        borderWidth: 1
+                        backgroundColor: Colors.red,
+                        borderRadius: 10 * heightRatioProMax
                       }, {
                         shadowColor: Colors.black,
                         shadowRadius: 2,
@@ -112,7 +110,7 @@ const EndOutingConfirmationModal = (props) => {
                         elevation: 3
                       }]}>
                           <Text style={{
-                              color: Colors.red,
+                              color: Colors.white,
                               textAlign: 'center',
                               fontFamily: Fonts.mainFontReg
                           }}>end outing</Text>

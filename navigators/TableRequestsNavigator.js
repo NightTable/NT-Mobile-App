@@ -16,8 +16,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Colors } from '../colors/Colors';
 import { Fonts } from '../fonts/Fonts';
 import { heightRatioNorm, heightRatioProMax, widthRatioNorm } from '../dimensions/Dimensions';
-import whiteMenuPic from '../assets/whitemenu.png';
-import whiteBackButtonPic from '../assets/whitebackbutton.png';
+import whiteMenuPic from '../assets/goldmenu.png';
+import whiteBackButtonPic from '../assets/goldenbackbutton.png';
 import TableRequestsHomeScreen from '../screens/TableRequestsHomeScreen';
 import ClosedRequestDetailScreen from '../screens/ClosedRequestDetailScreen';
 import ActiveTableGroupScreen from '../screens/ActiveTableGroupScreen';
@@ -40,17 +40,18 @@ const TableRequestsNavigator = (props) => {
     return (
             <Stack.Navigator 
             screenOptions={{headerStyle: {
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.black,
                 shadowOpacity: 0,
             }}}>
                 <Stack.Screen
                     component={TableRequestsHomeScreen}
                     name="trNav-TableRequestsHomeScreen"
                     options={{
-                        headerTitle: 'table requests screen',
+                        headerTitle: 'Table Requests Screen',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.textColorGold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -76,10 +77,11 @@ const TableRequestsNavigator = (props) => {
                     component={PollingRoomScreen}
                     name="trNav-PollingRoomScreen"
                     options={{
-                        headerTitle: 'polling room',
+                        headerTitle: 'Polling Room',
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -220,12 +222,13 @@ const TableRequestsNavigator = (props) => {
                     component={ActiveTableGroupScreen}
                     name="trNav-ActiveTableGroupScreen"
                     options={{
-                        headerTitle: "live table groupings",
+                        headerTitle: "Live Table Groupings",
                         headerLeft: (props) => null,
 
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerTintColor: Colors.white,
                         headerShadowVisible: false
@@ -236,10 +239,11 @@ const TableRequestsNavigator = (props) => {
                     component={ActiveTableGroupScreen}
                     name="trNav-ActiveTableGroupScreen2"
                     options={{
-                        headerTitle: "live table groupings",
+                        headerTitle: "Live Table Groupings",
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity 
@@ -265,10 +269,11 @@ const TableRequestsNavigator = (props) => {
                     component={ClosedRequestDetailScreen}
                     name="trNav-ClosedRequestDetailScreen"
                     options={{
-                        headerTitle: "closed table requests",
+                        headerTitle: "Closed Table Requests",
                         headerTitleStyle: {
                             fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                            fontFamily: Fonts.mainFontReg
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
                         },
                         headerLeft: () => (
                             <TouchableOpacity
@@ -290,10 +295,11 @@ const TableRequestsNavigator = (props) => {
                 name="trNav-EndOutingScreen"
                 options={{
                     headerLeft: (props) => null,
-                    headerTitle: "thank you",
+                    headerTitle: "Thank You",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
-                        fontFamily: Fonts.mainFontReg
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold
                     },
                     headerTintColor: Colors.white,
                 }}

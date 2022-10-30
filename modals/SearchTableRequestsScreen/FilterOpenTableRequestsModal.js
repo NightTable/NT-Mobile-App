@@ -41,27 +41,27 @@ const FilterOpenTableRequestsModal = (props) => {
           }}
     >
         <View style={styles.centeredView}>
-            <View style={{justifyContent: 'space-evenly', width: '100%', backgroundColor: Colors.greyMedium, height: '85%', borderRadius: 50*heightRatioNorm, marginTop: 10*heightRatioNorm,}}>
+            <View style={{justifyContent: 'space-evenly', width: '100%', backgroundColor: Colors.black, height: '85%', borderRadius: 50*heightRatioNorm, marginTop: 10*heightRatioNorm, borderWidth: 1, borderColor: Colors.gold}}>
                 <View style={{alignItems: 'center',}}>
-                    <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 25*heightRatioNorm, textAlign: 'center', margin: 15*heightRatioNorm}}>Filters</Text>
+                    <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 25*heightRatioNorm, textAlign: 'center', margin: 15*heightRatioNorm}}>Filters</Text>
                 </View>
 
                 <View style={{flexDirection: 'row', margin: 20*heightRatioNorm}}>
                     <View style={{flexDirection: 'column', flex: 1}}>
-                        <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>preferred table size: </Text>
+                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>preferred table size: </Text>
                     </View>
                     <View style={{flexDirection: 'column', flex: 1, alignItems: 'center'}}>
                         <View style={{flexDirection: 'row',  flex: 1}}>
-                            <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginTop: (Platform.OS == 'android'?-30*heightRatioNorm:0), marginBottom: (Platform.OS=='android'?0:-27*heightRatioNorm)}}>{Math.floor(modalSize)}</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginTop: (Platform.OS == 'android'?-30*heightRatioNorm:0), marginBottom: (Platform.OS=='android'?0:-27*heightRatioNorm)}}>{Math.floor(modalSize)}</Text>
                         </View>
                         <View style={{flexDirection: 'row',  flex: 1,marginTop: (Platform.OS=='android'?0*heightRatioNorm:15*heightRatioNorm)}}>
                             <Slider
                                 style={{width: '80%'}}
                                 minimumValue={0}
                                 maximumValue={20}
-                                minimumTrackTintColor={Colors.purple}
-                                maximumTrackTintColor={Colors.white}
-                                thumbTintColor={Colors.purple}
+                                minimumTrackTintColor={Colors.gold}
+                                maximumTrackTintColor={Colors.gold}
+                                thumbTintColor={Colors.gold}
                                 value={modalSize}
                                 onValueChange={value => setModalSize(value)}
                             />
@@ -71,20 +71,20 @@ const FilterOpenTableRequestsModal = (props) => {
 
                 <View style={{flexDirection: 'row', margin: 20*heightRatioNorm}}>
                     <View style={{flexDirection: 'column', flex: 1}}>
-                        <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>price:</Text>
+                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>price:</Text>
                     </View>
                     <View style={{flexDirection: 'column', flex: 1, alignItems: 'center'}}>
                         <View style={{flexDirection: 'row',  flex: 1}}>
-                            <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginTop: (Platform.OS == 'android'?-30*heightRatioNorm:0), marginBottom: (Platform.OS=='android'?0:-27*heightRatioNorm)}}>${Math.floor(modalPrice)}</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginTop: (Platform.OS == 'android'?-30*heightRatioNorm:0), marginBottom: (Platform.OS=='android'?0:-27*heightRatioNorm)}}>${Math.floor(modalPrice)}</Text>
                         </View>
                         <View style={{flexDirection: 'row',  flex: 1, marginTop: (Platform.OS=='android'?0*heightRatioNorm:15*heightRatioNorm)}}>
                             <Slider
                                 style={{width: '80%'}}
                                 minimumValue={0}
                                 maximumValue={5000}
-                                minimumTrackTintColor={Colors.purple}
-                                maximumTrackTintColor={Colors.white}
-                                thumbTintColor={Colors.purple}
+                                minimumTrackTintColor={Colors.gold}
+                                maximumTrackTintColor={Colors.gold}
+                                thumbTintColor={Colors.gold}
                                 value={modalPrice}
                                 onValueChange={value => setModalPrice(value)}
                             />
@@ -94,20 +94,20 @@ const FilterOpenTableRequestsModal = (props) => {
 
                 <View style={{flexDirection: 'row', margin: 20*heightRatioNorm,}}>
                     <View style={{flexDirection: 'column', flex: 1,}}>
-                        <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>male-to-female ratio:</Text>
+                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>male-to-female ratio:</Text>
                     </View>
                     <View style={{flexDirection: 'column', flex: 1, alignItems: 'center'}}>
                         <View style={{flexDirection: 'row',  flex: 1}}>
-                            <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginTop: (Platform.OS == 'android'?-30*heightRatioNorm:(h<700?-10*heightRatioNorm:0))}}>{Math.floor(modalGuys)}:{Math.floor(modalGirls)}</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginTop: (Platform.OS == 'android'?-30*heightRatioNorm:(h<700?-10*heightRatioNorm:0))}}>{Math.floor(modalGuys)}:{Math.floor(modalGirls)}</Text>
                         </View>
                         <View style={{flexDirection: 'row',  flex: 1,}}>
                             <Slider
                                 style={{width: '80%'}}
                                 minimumValue={0}
                                 maximumValue={20}
-                                minimumTrackTintColor={Colors.purple}
-                                maximumTrackTintColor={Colors.white}
-                                thumbTintColor={Colors.purple}
+                                minimumTrackTintColor={Colors.gold}
+                                maximumTrackTintColor={Colors.gold}
+                                thumbTintColor={Colors.gold}
                                 value={modalGuys}
                                 onValueChange={value => setModalGuys(value)}
                             />
@@ -117,18 +117,18 @@ const FilterOpenTableRequestsModal = (props) => {
 
                 <View style={{flexDirection: 'row', margin: 20*heightRatioNorm}}>
                     <View style={{flexDirection: 'column', flex: 1, }}>
-                        <Text style={{color: Colors.greyMedium, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>male-to-female ratio:</Text>
+                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>male-to-female ratio:</Text>
                     </View>
                     <View style={{flexDirection: 'column', flex: 1, alignItems: 'center',}}>
                         <View style={{flexDirection: 'row',  flex: 1, }}>
-                            <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginBottom: -5*heightRatioNorm}}>more guys</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginBottom: -5*heightRatioNorm}}>more guys</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={{flexDirection: 'row', margin: 20*heightRatioNorm}}>
                     <View style={{flexDirection: 'column', flex: 1, }}>
-                        <Text style={{color: Colors.greyMedium, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'center'}}>preferred table size: </Text>
+                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'center'}}>preferred table size: </Text>
                     </View>
                     <View style={{flexDirection: 'column', flex: 1, alignItems: 'center', }}>
                     <View style={{flexDirection: 'row',  flex: 1, marginTop: (Platform.OS=='android'?0*heightRatioNorm:15*heightRatioNorm)}}>
@@ -136,9 +136,9 @@ const FilterOpenTableRequestsModal = (props) => {
                                 style={{width: '80%'}}
                                 minimumValue={0}
                                 maximumValue={20}
-                                minimumTrackTintColor={Colors.purple}
-                                maximumTrackTintColor={Colors.white}
-                                thumbTintColor={Colors.purple}
+                                minimumTrackTintColor={Colors.gold}
+                                maximumTrackTintColor={Colors.gold}
+                                thumbTintColor={Colors.gold}
                                 value={modalGirls}
                                 onValueChange={value => setModalGirls(value)}
                             />
@@ -148,17 +148,17 @@ const FilterOpenTableRequestsModal = (props) => {
 
                 <View style={{flexDirection: 'row',  margin: 20*heightRatioNorm}}>
                     <View style={{flexDirection: 'column', flex: 1}}>
-                        <Text style={{color: Colors.greyMedium, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>male-to-female ratio:</Text>
+                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, textAlign: 'left'}}>male-to-female ratio:</Text>
                     </View>
                     <View style={{flexDirection: 'column', flex: 1, alignItems: 'center', }}>
                         <View style={{flexDirection: 'row',  flex: 1, }}>
-                            <Text style={{color: Colors.purple, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginBottom: -5*heightRatioNorm}}>more girls</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontBold, fontSize: 20*heightRatioNorm, textAlign: 'center', marginBottom: -5*heightRatioNorm}}>more girls</Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                    <TouchableOpacity style={{backgroundColor: Colors.white, width: '60%', borderWidth: 2*heightRatioNorm, borderColor: Colors.purple,
+                    <TouchableOpacity style={{backgroundColor: Colors.gold, width: '60%', borderWidth: 2*heightRatioNorm, borderRadius: 10 * heightRatioProMax,
                         shadowColor: Colors.black,
                         shadowRadius: 5,
                         shadowOpacity: 1,
@@ -176,7 +176,7 @@ const FilterOpenTableRequestsModal = (props) => {
                             props.setPrice(modalPrice);
                             props.setModalVisible(false);
                           }}>
-                            <Text style={{margin: 5*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.purple, textAlign: 'center'}}>save filters</Text>
+                            <Text style={{margin: 5*heightRatioNorm, fontFamily: Fonts.mainFontBold, fontSize: 18*heightRatioNorm, color: Colors.black, textAlign: 'center'}}>save filters</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{alignItems: 'center'}}>
