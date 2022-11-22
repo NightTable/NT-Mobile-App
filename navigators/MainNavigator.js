@@ -36,7 +36,7 @@ const MainNavigator = () => {
                 screenOptions={{
                     headerShown: false,
                     drawerStyle: {
-                        backgroundColor: Colors.white,
+                        backgroundColor: Colors.black,
                     },
                     drawerActiveBackgroundColor: Colors.purple,
                     drawerActiveTintColor: Colors.white,
@@ -45,7 +45,7 @@ const MainNavigator = () => {
                         marginLeft: -20*widthRatioNorm,
                         fontFamily: Fonts.mainFontReg,
                         fontSize: 15*heightRatioNorm,
-                        color: Colors.black
+                        color: Colors.gold
                     },
                 }}>
                 <Drawer.Screen name="dashboard" component={EntryDashboardNavigator}
