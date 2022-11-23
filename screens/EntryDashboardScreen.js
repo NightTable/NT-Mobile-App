@@ -8,7 +8,8 @@ import { View,
     StyleSheet,
     Image,
     ScrollView,
-    Platform
+    Platform,
+    TextInput
  } from 'react-native';
 
  import { getDistanceFromLatLonInMi } from './algo';
@@ -29,7 +30,7 @@ import {
 
 
 const EntryDashboardScreen = (props) => {
-
+    const [text, onChangeText] = useState("Enter City");
     const [ clubList, setClubList ] = useState([]);
     useEffect(() => {
 
@@ -69,6 +70,16 @@ const EntryDashboardScreen = (props) => {
             marginLeft: 10 * widthRatioProMax
 
         }}>Welcome back, John!</Text>
+        <TextInput
+            style={styles.input}
+            onChangeText={onChangeText}
+            placeholder={text}
+            placeholderTextColor={Colors.gold}
+            selectionColor={Colors.gold}
+            color={Colors.gold}
+
+        />
+
         <Image 
         source={curvedWhiteLinePic}
         style={{
@@ -124,7 +135,20 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         height: 400 * heightRatioProMax
-    }
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        borderBottomColor: Colors.gold,
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        placeholderTextColor: Colors.gold,
+        selectionColor: Colors.gold,
+        color: Colors.gold
+      },
 })
 
 export default EntryDashboardScreen;
