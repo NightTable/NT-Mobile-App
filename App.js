@@ -26,6 +26,7 @@ import TableInvitesOverviewScreen from './screens/TableInvitesOverviewScreen';
 import TableInvitesDetailScreen from './screens/TableInvitesDetailScreen'
 import ClubFullDetailScreen from './screens/ClubFullDetailScreen'
 import EntryDashboardScreen from './screens/EntryDashboardScreen';
+import ClubFullDetailScreen2 from './screens/ClubFullDetailScreen2';
 const rootReducer = combineReducers({
   main: mainReducer
 });
@@ -66,10 +67,12 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <AppNavigatorContainer></AppNavigatorContainer>
+      <ClubFullDetailScreen2></ClubFullDetailScreen2>
     </Provider>
   );
 }
+
+      /*<AppNavigatorContainer></AppNavigatorContainer>*/
 
 const styles = StyleSheet.create({
   container: {
