@@ -303,7 +303,7 @@ const NewTableRequestScreen = (props) => {
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.textColorGold
-                }}>organizing a table request for: </Text>
+                }}>organizing a table request at: </Text>
             </View>
             <View style={{
                 marginLeft: 15 * widthRatioProMax,
@@ -319,7 +319,7 @@ const NewTableRequestScreen = (props) => {
                     <Text style={{
                         color: Colors.black,
                         fontFamily: Fonts.mainFontBold
-                    }}>the grand</Text>
+                    }}>The Grand</Text>
                 </View>
             </View>
             <View style={{

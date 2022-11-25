@@ -25,6 +25,7 @@ import whiteBackButtonPic from '../assets/goldenbackbutton.png';
 
 import EntryDashboardScreen from '../screens/EntryDashboardScreen';
 import ClubMiniDetailScreen from '../screens/ClubMiniDetailScreen';
+import EventTableConfigurationScreen from '../screens/EventTableConfigurationScreen';
 import ClubFullDetailScreen from '../screens/ClubFullDetailScreen';
 import NewTableRequestScreen from '../screens/NewTableRequestScreen';
 import SearchTableRequestsScreen from '../screens/SearchTableRequestsScreen';
@@ -119,6 +120,31 @@ const EntryDashboardNavigator = (props) => {
                 name="edNav-ClubFullDetailScreen"
                 options={{
                     headerTitle: "Club Page",
+                    headerTitleStyle: {
+                        fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                        onPress={() => props.navigation.goBack()}>
+                            <Image
+                                style={{
+                                    width: 30 * heightRatioNorm,
+                                    height: 30 * heightRatioNorm
+                                }} 
+                                source={whiteBackButtonPic}></Image>
+                        </TouchableOpacity>
+                    ),
+                    headerTintColor: Colors.white,
+                }}
+            >
+            </Stack.Screen>
+            <Stack.Screen
+                component={EventTableConfigurationScreen}
+                name="edNav-EventTableConfigurationScreen"
+                options={{
+                    headerTitle: "Tables",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
                         fontFamily: Fonts.mainFontReg,
