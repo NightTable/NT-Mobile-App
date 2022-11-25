@@ -26,6 +26,7 @@ import TableInvitesOverviewScreen from './screens/TableInvitesOverviewScreen';
 import TableInvitesDetailScreen from './screens/TableInvitesDetailScreen'
 import ClubFullDetailScreen from './screens/ClubFullDetailScreen'
 import EntryDashboardScreen from './screens/EntryDashboardScreen';
+import ClubFullDetailScreen2 from './screens/EventTableConfigurationScreen';
 const rootReducer = combineReducers({
   main: mainReducer
 });
@@ -35,8 +36,8 @@ export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const fetchFonts = () => {
 
   return Font.loadAsync({
-    'VerahHumana-reg': require('./assets/fonts/VerahHumana-Regular.ttf'),
-    'VerahHumana-bold': require('./assets/fonts/VerahHumana-Bold.ttf')
+    'VerahHumana-Regular': require('./assets/fonts/VerahHumana-Regular.ttf'),
+    'VerahHumana-Bold': require('./assets/fonts/VerahHumana-Bold.ttf')
   });
 };
 
@@ -70,6 +71,8 @@ export default function App() {
     </Provider>
   );
 }
+
+      /*<AppNavigatorContainer></AppNavigatorContainer>*/
 
 const styles = StyleSheet.create({
   container: {

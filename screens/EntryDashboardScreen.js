@@ -72,11 +72,11 @@ const EntryDashboardScreen = (props) => {
         }}>Welcome back, John!</Text>
         <TextInput
             style={styles.input}
+            fontFamily={Fonts.mainFontReg}
             onChangeText={onChangeText}
             placeholder={text}
             placeholderTextColor={Colors.gold}
             selectionColor={Colors.gold}
-            color={Colors.gold}
 
         />
 
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0,
         placeholderTextColor: Colors.gold,
         selectionColor: Colors.gold,
-        color: Colors.gold
+        color: Colors.gold,
       },
 })
 
