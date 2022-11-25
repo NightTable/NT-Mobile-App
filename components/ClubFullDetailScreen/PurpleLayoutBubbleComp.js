@@ -53,13 +53,8 @@ const PurpleLayoutBubbleComp = (props) => {
                     color: Colors.textColorGold,
                     fontFamily: Fonts.mainFontReg,
                     marginBottom: 2 * heightRatio,
-                    fontSize: 20 * heightRatio}}>{props.label}</Text>
-                <TouchableOpacity>
-                    <Text style={{
-                        fontFamily: Fonts.mainFontReg,
-                        color: Colors.textColorGold,
-                        fontSize: 20 * heightRatio}}> + </Text>
-                </TouchableOpacity>
+                    fontSize: 20 * heightRatio}}>{props.label}
+                </Text>
             </View>
             {props.children}
         </View>)

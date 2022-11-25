@@ -104,7 +104,7 @@ const EventTableConfigurationScreen = (props) => {
                 </View>
             </View>
             <ScrollView 
-                style={{borderWidth: 5 * widthRatioProMax, borderColor: Colors.gold, borderRadius: 15 * widthRatioProMax}}
+                style={{borderWidth: 2 * widthRatioProMax, borderColor: Colors.gold, borderRadius: 15 * widthRatioProMax}}
                 showsVerticalScrollIndicator={true}>
                 {tcs.map((tc, index) => (
                         <TableConfigurationComponent
@@ -120,7 +120,8 @@ const EventTableConfigurationScreen = (props) => {
         </View>
         <View style={{flex: 1, justifyContent: 'center'}}>
             <TouchableOpacity
-                style={{backgroundColor: Colors.gold, height: 50 * heightRatioProMax, width: 200 * widthRatioProMax, borderRadius: 10 * widthRatioProMax}}>
+                style={{backgroundColor: Colors.gold, height: 50 * heightRatioProMax, width: 200 * widthRatioProMax, borderRadius: 10 * widthRatioProMax}}
+                onPress={() => props.navigation.navigate('edNav-NewTableRequestScreen')}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.black, fontSize: 20 * heightRatioProMax, textAlign: 'center', textAlignVertical: 'center'}}>Organize a Table</Text>
                 </View>
