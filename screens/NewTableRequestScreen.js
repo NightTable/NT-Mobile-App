@@ -352,23 +352,37 @@ const NewTableRequestScreen = (props) => {
             borderWidth: 2
         }}>
             <View style={{
-                marginTop: 40 * heightRatioProMax,
-                flexDirection: 'row',
-                width: '85%'
-            }}>
+                    marginTop: 20 * heightRatioProMax,
+                    flexDirection: 'row',
+                    width: '85%'
+                }}>
                 <Text style={{
-                    fontFamily: Fonts.mainFontReg,
-                    color: Colors.textColorGold
-                }}>organizer: <Text style={{
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
+                }}>Event: <Text style={{
                     fontFamily: Fonts.mainFontBold,
                     color: Colors.textColorGold
-                }}>amiya sekhar</Text></Text>
+                }}>Steve Aoki's Playhouse</Text></Text>
+            </View>
+            <View style={{
+                    marginTop: 20 * heightRatioProMax,
+                    flexDirection: 'row',
+                    width: '85%'
+                }}>
+                <Text style={{
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.textColorGold
+                }}>Organizer: <Text style={{
+                    fontFamily: Fonts.mainFontBold,
+                    color: Colors.textColorGold
+                }}>Amiya Sekhar</Text></Text>
             </View>
             <TableOptionSectionComp
                 onOuterTableConfigPress={handleTableConfigPress}
                 selectedTableConfigurationId={selectedTableConfigId}
                 tableConfigData={tableConfigList}
-            ></TableOptionSectionComp>
+            ></TableOptionSectionComp>            
+
             <RequestTypeSectionComp
                 onQuestionMarkButtonToggle={handleQuestionMarkButtonToggle}
                 onRequestTypeChange={handleRequestTypeChange}
