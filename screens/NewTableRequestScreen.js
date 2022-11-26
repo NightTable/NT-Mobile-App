@@ -7,11 +7,13 @@ import {
     ScrollView,
     Platform,
     TouchableOpacity,
-    StyleSheet } from 'react-native';
+    StyleSheet,
+    TextInput} from 'react-native';
 
 import { Colors } from '../colors/Colors';
 import { Fonts } from '../fonts/Fonts';
 
+import SelectDropdown from 'react-native-select-dropdown'
 import axios from 'axios';
 
 import { API_URL_IOS, API_URL_ANDROID } from "@env";
@@ -28,7 +30,7 @@ import AdditionalCostSectionComp from '../components/NewTableRequestScreen/Addit
 import CostSplittingSectionComp from '../components/NewTableRequestScreen/CostSplittingSectionComp';
 
 const NewTableRequestScreen = (props) => {
-
+    
     const dummyParticipants = [
         {
             id: null,
@@ -63,22 +65,25 @@ const NewTableRequestScreen = (props) => {
 
     const [ termsCheckboxEnabled, setTermsCheckboxEnabled ] = useState(false);
 
+    const [tableMinimum, setTableMinimum] = useState(4000)
+
+    let tc1 = {id: "S1", type: "Stage", minimum: "$4000", fits: 5}; 
+    let tc2 = {id: "S2", type: "Stage", minimum: "$8000", fits: 15}; 
+    let tc3 = {id: "D1", type: "floor", minimum: "$3000", fits: 10}; 
+
+    let tcs = [tc1, tc2, tc3];
+
+    let hours = []
+    let minutes = []
 
     useEffect(() => {
-
-        axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/tableconfigurations/club/627edbba0734f863222db602`)
-        .then((res) => {
-
-            let response = res.data;
-
-            setTableConfigList(response);
-            setSelectedTableConfigId(response[0]._id);
-
-        })
-        .catch((err) => {
-
-            console.log(err);
-        })
+        setTableConfigList(tcs);
+        for (let i = 1; i < 13; i++){
+            hours.push(i);
+        }
+        for (let i = 1; i < 59; i++){
+            hours.push(i);
+        }
 
     }, []);
 
@@ -303,7 +308,7 @@ const NewTableRequestScreen = (props) => {
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.textColorGold
-                }}>organizing a table request at: </Text>
+                }}>Organizing a table request at: </Text>
             </View>
             <View style={{
                 marginLeft: 15 * widthRatioProMax,
@@ -374,7 +379,7 @@ const NewTableRequestScreen = (props) => {
                         color: Colors.textColorGold
                 }}>Organizer: <Text style={{
                     fontFamily: Fonts.mainFontBold,
-                    color: Colors.textColorGold
+                    color: Colors.gold
                 }}>Amiya Sekhar</Text></Text>
             </View>
             <TableOptionSectionComp
@@ -382,12 +387,55 @@ const NewTableRequestScreen = (props) => {
                 selectedTableConfigurationId={selectedTableConfigId}
                 tableConfigData={tableConfigList}
             ></TableOptionSectionComp>            
+            <Text style={{
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.gold,
+                    fontSize: 20 * heightRatioProMax,
+                    marginBottom: 15 * heightRatioProMax
+                }}>
+                Set a Custom Minimum
+            </Text>
+            <Text style={{
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.gold,
+                    fontSize: 15 * heightRatioProMax,
+                    marginBottom: 15 * heightRatioProMax,
+                    textAlign: 'center'
+                }}>
+                Note that only employees, promoters, and VIP hosts, and club staff can modify table minimums 
+            </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setTableMinimum}
+                    placeholder={`$${tableMinimum}`}
+                    placeholderTextColor={Colors.gold}
+                    selectionColor={Colors.gold}
+                    fontFamily={Fonts.mainFontReg}
+                    keyboardType={"numeric"}
+                />
+                <View style={{backgroundColor: Colors.gold, borderRadius: 5 * widthRatioProMax}}>
+                    <TouchableOpacity>
+                        <Text style={{fontSize: 20 * heightRatioProMax, textAlign: 'center', color: Colors.black, padding: 5 * heightRatioProMax, fontFamily: Fonts.mainFontReg}}>OK</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
 
             <RequestTypeSectionComp
                 onQuestionMarkButtonToggle={handleQuestionMarkButtonToggle}
                 onRequestTypeChange={handleRequestTypeChange}
                 isQuestionButtonSelected={questionMarkButtonSelected}
-                selectedRequestType={selectedTableType}></RequestTypeSectionComp>
+                selectedRequestType={selectedTableType}>
+            </RequestTypeSectionComp>
+
+            <Text style={{
+                    fontFamily: Fonts.mainFontReg,
+                    color: Colors.gold,
+                    fontSize: 20 * heightRatioProMax,
+                    marginBottom: 15 * heightRatioProMax
+                }}>
+                Estimated Time of Arrival
+            </Text>
             <InviteFriendSectionComp
                 isNewEmailAddErrorShown={newEmailAddErrorShown}
                 isNewParticipantAddErrorShown={newParticipantAddErrorShown}
@@ -444,7 +492,22 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.black,
         flex: 1,
         flexDirection: 'column'
-    }
+    },
+    input: {
+        height: 20,
+        borderWidth: 1,
+        marginTop: 10 * heightRatioProMax,
+        marginHorizontal: 20 * widthRatioProMax,
+        borderColor: Colors.gold,
+        borderBottomColor: Colors.gold,
+        borderTopWidth: 0,
+        borderRightWidth: 0,
+        borderLeftWidth: 0,
+        placeholderTextColor: Colors.gold,
+        selectionColor: Colors.gold,
+        color: Colors.gold,
+        fontSize: 20 * heightRatioProMax
+    },
 });
 
 export default NewTableRequestScreen;
