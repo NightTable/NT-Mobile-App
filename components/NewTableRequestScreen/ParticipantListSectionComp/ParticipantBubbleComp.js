@@ -31,7 +31,6 @@ const ParticipantBubbleComp = (props) => {
                 <Text style={{
                     fontSize: 15 * heightRatioProMax,
                     marginLeft: 10 * widthRatioProMax,
-                    color: Colors.white,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
                 }}>{props.email}</Text>
@@ -70,7 +69,7 @@ const ParticipantBubbleComp = (props) => {
                 flex: 5
             }}>
                 <Text style={{
-                    color: Colors.white,
+                    color: Colors.black,
                     fontFamily: Fonts.mainFontReg
                 }}>{props.name}</Text>
             </View>
@@ -91,18 +90,25 @@ const ParticipantBubbleComp = (props) => {
         )
     }
 
-    return (<View style={{
-        borderRadius: 5 * heightRatioProMax,
-        marginTop: 5 * heightRatioProMax,
-        flex: 1,
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: Colors.textColorGold,
-        height: isExternalUser ? 60 * heightRatioProMax : 75 * heightRatioProMax
-    }}>
-        {dynamicRowRender}
-    </View>)
+    return (
+        <View style={{flexDirection: 'column'}}>
+            <View style={{
+                borderRadius: 5 * heightRatioProMax,
+                marginTop: 5 * heightRatioProMax,
+                flex: 1,
+                width: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: Colors.gold,
+                height: isExternalUser ? 60 * heightRatioProMax : 75 * heightRatioProMax
+            }}>
+                {dynamicRowRender}
+
+            </View>
+            <Text style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax}}> Test Text </Text>
+        </View>
+
+        )
 
 };
 

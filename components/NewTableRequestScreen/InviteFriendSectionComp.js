@@ -22,14 +22,20 @@ const InviteFriendSectionComp = (props) => {
     return (<View style={styles.inviteFriendSectionContainer}>
         <View style={styles.inviteFriendsTextContainer}>
             <Text style={{
-                fontFamily: Fonts.mainFontReg,
-                color: Colors.textColorGold
-            }}>invite friends:</Text>
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.gold,
+                        fontSize: 20 * heightRatioProMax,
+                        marginVertical: 25 * heightRatioProMax
+            }}>Invite Friends:</Text>
         </View>
         <FriendInputComp
             onCheckmarkSubmit={props.onEnterEmailSubmit}
             onFriendInputChange={props.onEmailInputTrigger}
-            inputText="enter email"></FriendInputComp>
+            inputText="Enter Email"></FriendInputComp>
+        <FriendInputComp
+            onCheckmarkSubmit={props.onEnterEmailSubmit}
+            onFriendInputChange={props.onEmailInputTrigger}
+            inputText="Enter Phone Number"></FriendInputComp>
         { props.isNewEmailAddErrorShown ? <View style={{
             width: '93%',
             alignSelf: 'flex-end',
@@ -51,7 +57,7 @@ const InviteFriendSectionComp = (props) => {
         <FriendInputComp
             onCheckmarkSubmit={props.onEnterSearchFriendSubmit}
             onFriendInputChange={props.onSearchFriendInputTrigger}
-            inputText="search friends"></FriendInputComp>
+            inputText="Search Friends"></FriendInputComp>
         { props.isNewParticipantAddErrorShown ? <View style={{
             width: '93%',
             alignSelf: 'flex-end',

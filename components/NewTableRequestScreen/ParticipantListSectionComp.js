@@ -28,7 +28,15 @@ const ParticipantListSectionComp = (props) => {
                 fontSize: 18 * heightRatioProMax,
                 fontFamily: Fonts.mainFontReg,
                 color: Colors.textColorGold
-            }}>participants</Text>
+            }}>Participants:</Text>
+            <Text style={{
+                        fontSize: 15 * heightRatioProMax,
+                        fontFamily: Fonts.mainFontReg,
+                color: Colors.textColorGold,
+                textAlign: 'center',
+                marginVertical: 15 * heightRatioProMax
+            }}>Note that only organizers or club representatives that are part of the 
+            table can change their minmum joining fee to 0</Text>
         </View>
         <View style={{
             width: '100%',

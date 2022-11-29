@@ -36,9 +36,11 @@ const TableOptionSectionComp = (props) => {
         }}>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.textColorGold
+                color: Colors.textColorGold,
+                fontSize: 20 * heightRatioProMax,
+
             }}>
-                Select your table option(s):</Text>
+                Select Your Table Option(s):</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: "space-evenly", alignItems: 'center'}}>
             <Text style={{

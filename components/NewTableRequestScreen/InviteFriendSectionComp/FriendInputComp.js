@@ -34,6 +34,9 @@ const FriendInputComp = (props) => {
             flexDirection: 'row',
             alignItems: 'center',
         }}>
+            {props.inputText === "Enter Phone Number" ? 
+                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, marginTop: 10 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}> + </Text> : null
+            }
             <View style={{
                 flex: 10
             }}>
