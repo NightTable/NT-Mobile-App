@@ -11,6 +11,7 @@ import {
     View, 
     Text, 
     Image,
+    TextInput,
     TouchableOpacity} from 'react-native';
 import { Colors } from '../../../colors/Colors';
 
@@ -105,7 +106,16 @@ const ParticipantBubbleComp = (props) => {
                 {dynamicRowRender}
 
             </View>
-            <Text style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax}}> Test Text </Text>
+            <View style={{alignContent: 'center', justifyContent: 'space-evenly', flexDirection: 'row'}}>
+                <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, marginLeft: 15 * widthRatioProMax}}> Test Text </Text>
+
+                <TextInput
+                    style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 50 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
+                    placeholder={0}/>
+                <Text style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax}}> Test Text </Text>
+
+            </View>
+
         </View>
 
         )
