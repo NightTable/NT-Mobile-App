@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
         placeholderTextColor: Colors.gold,
         selectionColor: Colors.gold,
         color: Colors.gold,
+        fontFamily: Fonts.mainFontReg
       },
 })
 

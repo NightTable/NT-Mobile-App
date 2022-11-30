@@ -77,7 +77,6 @@ const NewTableRequestScreen = (props) => {
     const [pmTextColor, setPMTextColor] = useState(Colors.gold);
 
     const [hourModalVisible, setHourModalVisible] = useState(false);
-    const [minuteModalVisible, setMinuteModalVisible] = useState(false);
 
     const [hours, setHours] = useState([]);
     const [minutes, setMinutes] = useState([]);
@@ -593,7 +592,8 @@ const NewTableRequestScreen = (props) => {
                     </View>
                     <Text style={{fontSize: 20 * heightRatioProMax, textAlign: 'center', color: Colors.gold, padding: 5 * heightRatioProMax, fontFamily: Fonts.mainFontReg}}>:</Text>
                     <View style={{backgroundColor: Colors.black, borderRadius: 5 * widthRatioProMax, justifyContent: 'space-evenly', marginHorizontal: 5 * widthRatioProMax, borderWidth: 1 * widthRatioProMax, borderColor: Colors.gold}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => [setHourModalVisible(true), setScreenOpacity(0.5)]}>
                             <Text style={{fontSize: 20 * heightRatioProMax, textAlign: 'center', color: Colors.gold, padding: 5 * heightRatioProMax, fontFamily: Fonts.mainFontReg}}>{minuteValue}</Text>
                         </TouchableOpacity>
                     </View>
