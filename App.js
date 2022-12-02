@@ -11,7 +11,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
-
+import { configureStore } from '@reduxjs/toolkit'
+//import configureStore from 'redux';
 import { API_URL } from "@env";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from 'expo-app-loading';
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   main: mainReducer
 });
 
+//export const store = configureStore({rootReducer, middleware: applyMiddleware(ReduxThunk)})
 export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
