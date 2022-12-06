@@ -18,9 +18,6 @@ const TableOptionSectionComp = (props) => {
     const tableConfigListData = props.tableConfigData; 
 
     const handleTableOptionSectionConfigPress = (idParam) => {
-
-        console.log("This is the middle chain");
-
         props.onOuterTableConfigPress(idParam);
 
     }
@@ -99,6 +96,7 @@ const TableOptionSectionComp = (props) => {
                     id={tableConfig.id}
                     price={tableConfig.minimum}
                     size={tableConfig.fits}
+                    handletableMin={props.handleTableMinimum}
                 ></TableConfigComp>);
             })
         }

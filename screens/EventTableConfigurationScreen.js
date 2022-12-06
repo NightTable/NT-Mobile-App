@@ -121,7 +121,7 @@ const EventTableConfigurationScreen = (props) => {
         <View style={{flex: 1, justifyContent: 'center'}}>
             <TouchableOpacity
                 style={{backgroundColor: Colors.gold, height: 50 * heightRatioProMax, width: 200 * widthRatioProMax, borderRadius: 10 * widthRatioProMax}}
-                onPress={() => props.navigation.navigate('edNav-NewTableRequestScreen')}>
+                onPress={() => props.navigation.navigate(/*'edNav-UserProfileScreen'*/'edNav-NewTableRequestScreen')}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.black, fontSize: 20 * heightRatioProMax, textAlign: 'center', textAlignVertical: 'center'}}>Organize a Table</Text>
                 </View>

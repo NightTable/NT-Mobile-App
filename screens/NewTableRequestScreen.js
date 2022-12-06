@@ -17,7 +17,7 @@ import { Fonts } from '../fonts/Fonts';
 import Slider from '@react-native-community/slider';
 import axios from 'axios';
 
-import { API_URL_IOS, API_URL_ANDROID } from "@env";
+import { API_URL_IOS, API_URL_ANDROID, ABSTRACTAPI_PARTIAL_URL } from "@env";
 
 import sampleNightClubPic from '../assets/samplenightclub.jpeg';
 
@@ -30,10 +30,10 @@ import ParticipantListSectionComp from '../components/NewTableRequestScreen/Part
 import AdditionalCostSectionComp from '../components/NewTableRequestScreen/AdditionalCostSectionComp';
 import CostSplittingSectionComp from '../components/NewTableRequestScreen/CostSplittingSectionComp';
 
-import HourMinSectionCompModal from '../components/NewTableRequestScreen/HourMinuteSectionComp/HourMinuteSectionCompModal'
 
 const NewTableRequestScreen = (props) => {
-    
+
+
     const dummyParticipants = [
         {
             id: null,
@@ -52,12 +52,17 @@ const NewTableRequestScreen = (props) => {
     ];
     const [ tableConfigList, setTableConfigList ] = useState([]);
     const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
-    const [ selectedTableType, setSelectedTableType ] = useState('snpl'); //type of the table, either snpl or pnsl
+    //////
+    const [paymentType, setPaymentType] = useState("");
+    //////
+    const [ selectedTableType, setSelectedTableType ] = useState('pnsl'); //type of the table, either snpl or pnsl
     const [ questionMarkButtonSelected, setQuestionMarkButtonSelected ] = useState(false);
 
     const [ searchFriendInputState, setSearchFriendInputState ] = useState("");
     const [ enterEmailInputState, setEnterEmailInputState ] = useState("");
     const [ newParticipantAddErrorShown, setNewParticipantAddErrorShown ] = useState(false);
+    const [ enterPhoneNumberInputState, setEnterPhoneNumberInputState ] = useState("");
+    const [ newPhoneNumberAddErrorShown, setNewPhoneNumberAddErrorShown] = useState(false);
     const [ newEmailAddErrorShown, setNewEmailAddErrorShown ] = useState(false);
 
     const [ currentParticipants, setCurrentParticipants ] = useState(dummyParticipants);
@@ -68,7 +73,7 @@ const NewTableRequestScreen = (props) => {
 
     const [ termsCheckboxEnabled, setTermsCheckboxEnabled ] = useState(false);
 
-    const [tableMinimum, setTableMinimum] = useState(4000);
+    const [tableMinimum, setTableMinimum] = useState(0);
     const [hourValue, setHourValue] = useState("hours");
     const [minuteValue, setMinuteValue] = useState("mins");
     const [amBGColor, setAMBGColor] = useState(Colors.black);
@@ -85,6 +90,10 @@ const NewTableRequestScreen = (props) => {
     let h = [];
     let m = [];
 
+
+    const handleModifyTableMin = (min) => {
+        setTableMinimum(tableMinimum + min);
+    }
     const handleAMPress = () => {
         if (amTextColor ===  Colors.gold && amBGColor === Colors.black){
             setAMTextColor(Colors.black);
@@ -128,11 +137,20 @@ const NewTableRequestScreen = (props) => {
             setMinutes(m);
         }
 
-        console.log("\n");
-        console.log(hours, minutes, "hours, minutes");
-        console.log("\n");
+
     
     }, []);
+
+    const validatePhoneNumber = async (num) => {
+        try {
+            console.log(ABSTRACTAPI_PARTIAL_URL + `&phone_number=` + num);
+            const response = await fetch.get(ABSTRACTAPI_PARTIAL_URL + `&phone_number=` + num);
+            console.log(response.json())
+            return response.valid
+        } catch (error) {
+            return false;
+        }
+    }
 
     const validateEmail = (email) => {
 
@@ -143,6 +161,11 @@ const NewTableRequestScreen = (props) => {
         ) !== null);
 
       };
+
+    const handleEnterPhoneInputState = (inputText) => {
+
+        setEnterPhoneNumberInputState(inputText);
+    }
 
     const handleEmailInputTrigger = (inputText) => {
 
@@ -172,7 +195,8 @@ const NewTableRequestScreen = (props) => {
                     externalUser: false,
                     email: null,
                     imageObj: res.data[0].profilePhoto,
-                    name: `${res.data[0].firstName} ${res.data[0].lastName}`
+                    name: `${res.data[0].firstName} ${res.data[0].lastName}`,
+                    joiningFee: (tableMinimum) / (currentParticipants.length + 1)
             };
 
             newParticipantList.push(newParticipant);
@@ -198,6 +222,36 @@ const NewTableRequestScreen = (props) => {
 
     }
 
+    const handleEnterPhoneSubmit = () => {
+
+        
+        const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
+        console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
+        if (validatePhoneNumber(currentPhoneNumberInputSnapshot)) {
+
+            let newParticipantList = currentParticipants;
+
+            const newExternalParticipant = {
+                externalUser: true,
+                phone: currentPhoneNumberInputSnapshot,
+                imageObj: null,
+                name: null,
+                joiningFee: (tableMinimum) / (currentParticipants.length + 1)
+            };
+
+            newParticipantList.push(newExternalParticipant);
+            setNewPhoneNumberAddErrorShown(false);
+            setCurrentParticipants([...newParticipantList]);
+
+        } else {
+
+            setNewPhoneNumberAddErrorShown(validatePhoneNumber(currentPhoneNumberInputSnapshot));
+        }
+        console.log(newPhoneNumberAddErrorShown, ": phone number error")
+
+    };
+
+
     const handleEnterEmailSubmit = () => {
 
         const currentEmailInputSnapshot = enterEmailInputState;
@@ -210,7 +264,8 @@ const NewTableRequestScreen = (props) => {
                 externalUser: true,
                 email: currentEmailInputSnapshot,
                 imageObj: null,
-                name: null
+                name: null,
+                joiningFee: (tableMinimum) / (currentParticipants.length + 1)
             };
 
             newParticipantList.push(newExternalParticipant);
@@ -245,7 +300,7 @@ const NewTableRequestScreen = (props) => {
     }
 
     const handleRequestTypeChange = () => {
-        
+        console.log("handleRequestTypeChange being called");
         setSelectedTableType((state) => {
             if (state === 'pnsl') {
                 return 'snpl';
@@ -405,8 +460,6 @@ const NewTableRequestScreen = (props) => {
 
                             </View>
                     </View>
-
-
                 </View>
         </Modal>
 
@@ -520,11 +573,12 @@ const NewTableRequestScreen = (props) => {
                         color: Colors.gold
                     }}>Amiya Sekhar</Text></Text>
                 </View>
-                <TableOptionSectionComp
+                {<TableOptionSectionComp
                     onOuterTableConfigPress={handleTableConfigPress}
                     selectedTableConfigurationId={selectedTableConfigId}
                     tableConfigData={tableConfigList}
-                ></TableOptionSectionComp>            
+                    handleTableMinimum={handleModifyTableMin}
+                ></TableOptionSectionComp>}            
                 <Text style={{
                         fontFamily: Fonts.mainFontReg,
                         color: Colors.gold,
@@ -549,7 +603,6 @@ const NewTableRequestScreen = (props) => {
                         placeholder={`$${tableMinimum}`}
                         placeholderTextColor={Colors.gold}
                         selectionColor={Colors.gold}
-                        fontFamily={Fonts.mainFontReg}
                         keyboardType={"numeric"}
                     />
                     <View style={{backgroundColor: Colors.gold, borderRadius: 5 * widthRatioProMax}}>
@@ -559,12 +612,12 @@ const NewTableRequestScreen = (props) => {
                     </View>
                 </View>
 
-                <RequestTypeSectionComp
+                {<RequestTypeSectionComp
                     onQuestionMarkButtonToggle={handleQuestionMarkButtonToggle}
                     onRequestTypeChange={handleRequestTypeChange}
                     isQuestionButtonSelected={questionMarkButtonSelected}
                     selectedRequestType={selectedTableType}>
-                </RequestTypeSectionComp>
+                </RequestTypeSectionComp>}
 
                 <Text style={{
                         fontFamily: Fonts.mainFontReg,
@@ -611,28 +664,35 @@ const NewTableRequestScreen = (props) => {
                     </View>
                 </View>
 
-
-                <InviteFriendSectionComp
+                
+                {<InviteFriendSectionComp
+                    isNewPhoneNumberAddErrorShown={newPhoneNumberAddErrorShown}
                     isNewEmailAddErrorShown={newEmailAddErrorShown}
                     isNewParticipantAddErrorShown={newParticipantAddErrorShown}
                     onEnterSearchFriendSubmit={handleSearchFriendSubmit}
                     onEnterEmailSubmit={handleEnterEmailSubmit}
+                    onEnterPhoneSubmit={handleEnterPhoneSubmit}
                     onEmailInputTrigger={handleEmailInputTrigger}
-                    onSearchFriendInputTrigger={handleSearchFriendInputTrigger}></InviteFriendSectionComp>
-                <ParticipantListSectionComp
+                    onPhoneNumberInputTrigger={handleEnterPhoneInputState}
+                    onSearchFriendInputTrigger={handleSearchFriendInputTrigger}></InviteFriendSectionComp>}
+                {/*participant list section has bugs*/}
+                {<ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
-                    participants={currentParticipants}></ParticipantListSectionComp>
-                <AdditionalCostSectionComp
+                    participants={currentParticipants}></ParticipantListSectionComp>}
+                
+                {<AdditionalCostSectionComp
                     onAdditionaAmountInputChange={handleAdditionalAmountChange}
                     isDesiredAdditionalCost={selectedAdditionalCostSelection}
                     isAdditionalAmountSaved={additionalAmountSaved}
                     additionalAmountValue={additionalAmountValue}
                     onSaveAdditionalAmount={handleSaveAdditionalAmountPress}
                     onYesButtonPress={handleYesButtonPress}
-                    onNoButtonPress={handleNoButtonPress}></AdditionalCostSectionComp>
-                <CostSplittingSectionComp
+                    onNoButtonPress={handleNoButtonPress}></AdditionalCostSectionComp>}
+                {<CostSplittingSectionComp
                     isCheckboxSelected={termsCheckboxEnabled}
-                    onTermsAgreementPress={handleOnTermsAgreementPress}></CostSplittingSectionComp>
+                    onTermsAgreementPress={handleOnTermsAgreementPress}
+                    tableTypeSelection={selectedTableType}>
+                </CostSplittingSectionComp>}
             </View>
             <View style={{
                 marginTop: 20 * heightRatioProMax,

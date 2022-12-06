@@ -4,7 +4,7 @@
 // StrynDev Solutions. It must be returned to StrynDev Solutions 
 // when its authorized use is terminated.
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import { 
     View, 
@@ -25,14 +25,23 @@ const TableConfigComp = (props) => {
         if (boxColor === Colors.black && textColor === Colors.gold){
             setBoxColor(Colors.gold);
             setTextColor(Colors.black);
+            let parts = props.price.split('$')
+            props.handletableMin(1*parseInt(parts[1]));
+
+
         }
 
         if (boxColor === Colors.gold && textColor === Colors.black){
             setBoxColor(Colors.black);
             setTextColor(Colors.gold);
+            let parts = props.price.split('$')
+            props.handletableMin(-1*parseInt(parts[1]));
+
         }
 
     }
+
+
 
     return (
     <View>

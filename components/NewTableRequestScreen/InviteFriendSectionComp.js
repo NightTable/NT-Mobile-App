@@ -16,8 +16,14 @@ import { Colors } from '../../colors/Colors';
 
 import FriendInputComp from './InviteFriendSectionComp/FriendInputComp';
 
+import { ABSTRACTAPI_API_KEY, ABSTRACTAPI_PARTIAL_URL } from "@env";
+
+
+
 const InviteFriendSectionComp = (props) => {
 
+
+    const API_URL_ABSTRACT = ABSTRACTAPI_PARTIAL_URL + ABSTRACTAPI_API_KEY;
 
     return (<View style={styles.inviteFriendSectionContainer}>
         <View style={styles.inviteFriendsTextContainer}>
@@ -33,8 +39,8 @@ const InviteFriendSectionComp = (props) => {
             onFriendInputChange={props.onEmailInputTrigger}
             inputText="Enter Email"></FriendInputComp>
         <FriendInputComp
-            onCheckmarkSubmit={props.onEnterEmailSubmit}
-            onFriendInputChange={props.onEmailInputTrigger}
+            onCheckmarkSubmit={props.onEnterPhoneSubmit}
+            onFriendInputChange={props.onPhoneNumberInputTrigger}
             inputText="Enter Phone Number"></FriendInputComp>
         { props.isNewEmailAddErrorShown ? <View style={{
             width: '93%',
@@ -43,8 +49,22 @@ const InviteFriendSectionComp = (props) => {
         }}>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.red
-            }}>We could not add the selected email</Text>
+                color: Colors.purple, 
+                opacity: 1,
+                fontSize: 20 * heightRatioProMax
+            }}>We could not add the selected participant with the entered email</Text>
+        </View> : null }
+        { props.isNewPhoneNumberAddErrorShown ? <View style={{
+            width: '93%',
+            alignSelf: 'flex-end',
+            marginTop: 10 * heightRatioProMax
+        }}>
+            <Text style={{
+                fontFamily: Fonts.mainFontReg,
+                color: Colors.purple, 
+                opacity: 1,
+                fontSize: 20 * heightRatioProMax
+            }}>We could not add the selected participant with the entered phone number</Text>
         </View> : null }
         <View style={{
             marginTop: 30 * heightRatioProMax,
@@ -65,7 +85,8 @@ const InviteFriendSectionComp = (props) => {
         }}>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.red
+                color: Colors.purple,
+                fontSize: 20 * heightRatioProMax
             }}>We could not add the selected friend</Text>
         </View> : null }
     </View>)

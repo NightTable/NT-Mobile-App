@@ -12,9 +12,11 @@ import {
     Text, 
     Image,
     TextInput,
-    TouchableOpacity} from 'react-native';
+    TouchableOpacity,
+    } from 'react-native';
 import { Colors } from '../../../colors/Colors';
 
+import goldenCheckImage from '../../../assets/goldentickbox.png'
 import whiteXCircleImage from '../../../assets/whitexcircle.png';
 import { Fonts } from '../../../fonts/Fonts';
 const ParticipantBubbleComp = (props) => {
@@ -103,16 +105,24 @@ const ParticipantBubbleComp = (props) => {
                 backgroundColor: Colors.gold,
                 height: isExternalUser ? 60 * heightRatioProMax : 75 * heightRatioProMax
             }}>
+
                 {dynamicRowRender}
 
             </View>
             <View style={{alignContent: 'center', justifyContent: 'space-evenly', flexDirection: 'row'}}>
-                <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, marginLeft: 15 * widthRatioProMax}}> Test Text </Text>
-
+                <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, marginLeft: 15 * widthRatioProMax, fontFamily: Fonts.mainFontReg}}> Set Joining Fee </Text>
                 <TextInput
                     style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 50 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
-                    placeholder={0}/>
-                <Text style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax}}> Test Text </Text>
+                    placeholder={'$'}/>
+                <TouchableOpacity>
+                    <Image
+                        style={{
+                            width: 40 * heightRatioProMax,
+                            height: 40 * heightRatioProMax,
+                        }}
+                        source={goldenCheckImage}>
+                    </Image>
+                </TouchableOpacity>
 
             </View>
 

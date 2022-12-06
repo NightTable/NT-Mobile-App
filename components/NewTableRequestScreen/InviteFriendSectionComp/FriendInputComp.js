@@ -16,6 +16,7 @@ import {
 
 import { Colors } from '../../../colors/Colors';
 
+import goldenCheckImage from '../../../assets/goldentickbox.png'
 import purpleCheckImage from '../../../assets/purplecheckmark.png';
 import { heightRatioProMax} from '../../../dimensions/Dimensions';
 import { Fonts } from '../../../fonts/Fonts';
@@ -23,7 +24,8 @@ import { Fonts } from '../../../fonts/Fonts';
 const FriendInputComp = (props) => {
 
 
-    return (<View style={styles.enterEmailCompContainer}>
+    return (
+    <View style={styles.enterEmailCompContainer}>
         <View>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
@@ -67,7 +69,7 @@ const FriendInputComp = (props) => {
                         width: 40 * heightRatioProMax,
                         height: 40 * heightRatioProMax,
                     }}
-                    source={purpleCheckImage}></Image>
+                    source={goldenCheckImage}></Image>
             </TouchableOpacity>
         </View>
     </View>)
