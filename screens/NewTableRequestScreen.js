@@ -40,14 +40,16 @@ const NewTableRequestScreen = (props) => {
             externalUser: true,
             email: "jnydam@me.com",
             imageObj: null,
-            name: null
+            name: null,
+            joiningFee: 0
         },
         {
             id: null,
             externalUser: true,
             imageObj: null,
             email: "gblade@gmail.com",
-            name: null
+            name: null,
+            joiningFee: 0
         }
     ];
     const [ tableConfigList, setTableConfigList ] = useState([]);
@@ -136,6 +138,9 @@ const NewTableRequestScreen = (props) => {
             setHours(h);
             setMinutes(m);
         }
+        console.log(tableMinimum, "table min")
+        updateJoiningFee();
+        
 
 
     
@@ -177,6 +182,14 @@ const NewTableRequestScreen = (props) => {
         setSearchFriendInputState(inputText);
     }
 
+    const updateJoiningFee = () => {
+        for (let i = 0; i < currentParticipants.length; i++){
+            currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
+            console.log(currentParticipants[i].joiningFee , "currentParticipants[i].joiningFee ")
+        }
+
+    }
+
     const handleSearchFriendSubmit = () => {
 
         axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/users/name/${searchFriendInputState}`)
@@ -196,7 +209,7 @@ const NewTableRequestScreen = (props) => {
                     email: null,
                     imageObj: res.data[0].profilePhoto,
                     name: `${res.data[0].firstName} ${res.data[0].lastName}`,
-                    joiningFee: (tableMinimum) / (currentParticipants.length + 1)
+                    joiningFee: 0
             };
 
             newParticipantList.push(newParticipant);
@@ -236,7 +249,7 @@ const NewTableRequestScreen = (props) => {
                 phone: currentPhoneNumberInputSnapshot,
                 imageObj: null,
                 name: null,
-                joiningFee: (tableMinimum) / (currentParticipants.length + 1)
+                joiningFee: 0
             };
 
             newParticipantList.push(newExternalParticipant);
@@ -265,7 +278,7 @@ const NewTableRequestScreen = (props) => {
                 email: currentEmailInputSnapshot,
                 imageObj: null,
                 name: null,
-                joiningFee: (tableMinimum) / (currentParticipants.length + 1)
+                joiningFee: 0
             };
 
             newParticipantList.push(newExternalParticipant);
@@ -679,15 +692,6 @@ const NewTableRequestScreen = (props) => {
                 {<ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
                     participants={currentParticipants}></ParticipantListSectionComp>}
-                
-                {<AdditionalCostSectionComp
-                    onAdditionaAmountInputChange={handleAdditionalAmountChange}
-                    isDesiredAdditionalCost={selectedAdditionalCostSelection}
-                    isAdditionalAmountSaved={additionalAmountSaved}
-                    additionalAmountValue={additionalAmountValue}
-                    onSaveAdditionalAmount={handleSaveAdditionalAmountPress}
-                    onYesButtonPress={handleYesButtonPress}
-                    onNoButtonPress={handleNoButtonPress}></AdditionalCostSectionComp>}
                 {<CostSplittingSectionComp
                     isCheckboxSelected={termsCheckboxEnabled}
                     onTermsAgreementPress={handleOnTermsAgreementPress}

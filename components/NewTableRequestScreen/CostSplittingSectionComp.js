@@ -29,7 +29,7 @@ const CostSplittingSectionComp = (props) => {
             fontSize: 18 * heightRatioProMax,
             fontFamily: Fonts.mainFontReg,
             color: Colors.textColorGold
-        }}>cost-splitting:</Text>
+        }}>Cost-Splitting:</Text>
         <View style={{
             width: '100%',
             marginTop: 20 * heightRatioProMax,
@@ -147,7 +147,7 @@ const CostSplittingSectionComp = (props) => {
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.textColorGold
-                }}>i agree with the above statement</Text>
+                }}>I agree with the above statement</Text>
             </View>
         </View>
     </View>)
