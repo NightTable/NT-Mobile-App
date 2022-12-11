@@ -27,75 +27,106 @@ import TableOptionSectionComp from '../components/NewTableRequestScreen/TableOpt
 import RequestTypeSectionComp from '../components/NewTableRequestScreen/RequestTypeSectionComp';
 import InviteFriendSectionComp from '../components/NewTableRequestScreen/InviteFriendSectionComp';
 import ParticipantListSectionComp from '../components/NewTableRequestScreen/ParticipantListSectionComp';
-import AdditionalCostSectionComp from '../components/NewTableRequestScreen/AdditionalCostSectionComp';
 import CostSplittingSectionComp from '../components/NewTableRequestScreen/CostSplittingSectionComp';
 
 
 const NewTableRequestScreen = (props) => {
 
+    const [dummyParticipants, setDummyParticipants] = useState(
+        [
+            {
+                id: null,
+                externalUser: true,
+                email: "jnydam@me.com",
+                imageObj: null,
+                name: null,
+                joiningFee: 0
+            },
+            {
+                id: null,
+                externalUser: true,
+                imageObj: null,
+                email: "gblade@gmail.com",
+                name: null,
+                joiningFee: 0
+            }        
+        ]
+    )
 
-    const dummyParticipants = [
-        {
-            id: null,
-            externalUser: true,
-            email: "jnydam@me.com",
-            imageObj: null,
-            name: null,
-            joiningFee: 0
-        },
-        {
-            id: null,
-            externalUser: true,
-            imageObj: null,
-            email: "gblade@gmail.com",
-            name: null,
-            joiningFee: 0
-        }
-    ];
     const [ tableConfigList, setTableConfigList ] = useState([]);
+
     const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
-    //////
-    const [paymentType, setPaymentType] = useState("");
-    //////
+    
     const [ selectedTableType, setSelectedTableType ] = useState('pnsl'); //type of the table, either snpl or pnsl
+
     const [ questionMarkButtonSelected, setQuestionMarkButtonSelected ] = useState(false);
 
     const [ searchFriendInputState, setSearchFriendInputState ] = useState("");
+
     const [ enterEmailInputState, setEnterEmailInputState ] = useState("");
+
     const [ newParticipantAddErrorShown, setNewParticipantAddErrorShown ] = useState(false);
+
     const [ enterPhoneNumberInputState, setEnterPhoneNumberInputState ] = useState("");
+
     const [ newPhoneNumberAddErrorShown, setNewPhoneNumberAddErrorShown] = useState(false);
+
     const [ newEmailAddErrorShown, setNewEmailAddErrorShown ] = useState(false);
 
     const [ currentParticipants, setCurrentParticipants ] = useState(dummyParticipants);
 
-    const [ selectedAdditionalCostSelection, setSelectedAdditionalCostSelection ] = useState(false); //true if you''ve selected to have additional cost
-    const [ additionalAmountValue, setAdditionalAmountValue ] = useState("$");
-    const [ additionalAmountSaved, setAdditionalAmountSaved ] = useState(false);
-
     const [ termsCheckboxEnabled, setTermsCheckboxEnabled ] = useState(false);
 
     const [tableMinimum, setTableMinimum] = useState(0);
+
     const [hourValue, setHourValue] = useState("hours");
+
     const [minuteValue, setMinuteValue] = useState("mins");
+
     const [amBGColor, setAMBGColor] = useState(Colors.black);
+
     const [amTextColor, setAMTextColor] = useState(Colors.gold);
+
     const [pmBGColor, setPMBGColor] = useState(Colors.black);
+
     const [pmTextColor, setPMTextColor] = useState(Colors.gold);
 
     const [hourModalVisible, setHourModalVisible] = useState(false);
 
     const [hours, setHours] = useState([]);
+
     const [minutes, setMinutes] = useState([]);
+
     const [screenOpacity, setScreenOpacity] = useState(1);
+
+    const [participantCompPrice, setParticipantCompPrice] = useState(0);
+
+    const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(tableMinimum / dummyParticipants.length);
+
 
     let h = [];
     let m = [];
 
+    // this function is for setting custom participant joining prices    
+    const handleSetParticipantPrice = (number, index) => {
+        setParticipantCompPrice(number);
+        let list = dummyParticipants;
+        for (let i = 0; i < list.length; i++){
+            if (i === index){
+                console.log(true, "coming from app comp");
+                list[index].price = number;
+                setDummyParticipants(list);
+                break;
+            }
+        }
+    }
 
+    //changes table minimum as you select a table option
     const handleModifyTableMin = (min) => {
         setTableMinimum(tableMinimum + min);
     }
+
+    //when AM pressed for time of day, this function is called
     const handleAMPress = () => {
         if (amTextColor ===  Colors.gold && amBGColor === Colors.black){
             setAMTextColor(Colors.black);
@@ -105,7 +136,8 @@ const NewTableRequestScreen = (props) => {
         }
 
     }
-
+    
+    //when pm is presed for time of day, this function is called
     const handlePMPress = () => {
         if (pmTextColor === Colors.gold && pmBGColor === Colors.black){
             setPMTextColor(Colors.black);
@@ -125,7 +157,7 @@ const NewTableRequestScreen = (props) => {
     let tcs = [tc1, tc2, tc3];
 
 
-
+    //setting table configuration list to the table configurations
     useEffect(() => {
         setTableConfigList(tcs);
         if (h !== [] && m !== []){
@@ -146,6 +178,7 @@ const NewTableRequestScreen = (props) => {
     
     }, []);
 
+    //checking to see if the phone numbers are valid
     const validatePhoneNumber = async (num) => {
         try {
             console.log(ABSTRACTAPI_PARTIAL_URL + `&phone_number=` + num);
@@ -157,28 +190,24 @@ const NewTableRequestScreen = (props) => {
         }
     }
 
+    //checking to see if email is valid
     const validateEmail = (email) => {
-
         return (String(email)
         .toLowerCase()
         .match(
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         ) !== null);
-
       };
 
     const handleEnterPhoneInputState = (inputText) => {
-
         setEnterPhoneNumberInputState(inputText);
     }
 
     const handleEmailInputTrigger = (inputText) => {
-
         setEnterEmailInputState(inputText);
     }
 
     const handleSearchFriendInputTrigger = (inputText) => {
-
         setSearchFriendInputState(inputText);
     }
 
@@ -224,16 +253,6 @@ const NewTableRequestScreen = (props) => {
             setNewParticipantAddErrorShown(true);
         })
     };
-
-    const handleAdditionalAmountChange = (newAdditionalAmount) => {
-
-        if (!newAdditionalAmount.includes("$")) {
-            return;
-        }
-
-        setAdditionalAmountValue(newAdditionalAmount);
-
-    }
 
     const handleEnterPhoneSubmit = () => {
 
@@ -324,27 +343,7 @@ const NewTableRequestScreen = (props) => {
     
     };
 
-    const handleYesButtonPress = () => {
-
-        setSelectedAdditionalCostSelection(true);
-        setAdditionalAmountSaved(true)
-        
-    };
-
-    const handleNoButtonPress = () => {
-
-        setSelectedAdditionalCostSelection(false);
-        setAdditionalAmountSaved(false);
-
-    }
-
-    const handleSaveAdditionalAmountPress = () => {
-
-        setAdditionalAmountSaved((state) => !state);
-    }
-
     const handleOnTermsAgreementPress = () => {
-
         setTermsCheckboxEnabled((state) => !state);
     }
 
@@ -412,6 +411,7 @@ const NewTableRequestScreen = (props) => {
         flexDirection: 'column',
         opacity: screenOpacity
         }}>
+            
         <Modal
             animationType={'fade'}
             transparent={true}
@@ -437,7 +437,7 @@ const NewTableRequestScreen = (props) => {
                                     thumbTintColor={Colors.gold}
                                     minimumValue={1}
                                     maximumValue={12}
-                                    onValueChange={value => setHourValue(Math.floor(value))}
+                                    onValueChange={value => (value < 10 ? setHourValue('0' + `${Math.floor(value)}`) : setHourValue(Math.floor(value)))}
                                 />
                             </View>
                             <View style={{justifyContent: 'center', marginVertical: 10 * heightRatioProMax}}>
@@ -691,7 +691,9 @@ const NewTableRequestScreen = (props) => {
                 {/*participant list section has bugs*/}
                 {<ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
-                    participants={currentParticipants}></ParticipantListSectionComp>}
+                    participants={currentParticipants}
+                    defaultJoiningFee={defaultParticipantPrice}>
+                </ParticipantListSectionComp>}
                 {<CostSplittingSectionComp
                     isCheckboxSelected={termsCheckboxEnabled}
                     onTermsAgreementPress={handleOnTermsAgreementPress}

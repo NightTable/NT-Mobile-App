@@ -23,6 +23,8 @@ import ParticipantBubbleComp from './ParticipantListSectionComp/ParticipantBubbl
 
 const ParticipantListSectionComp = (props) => {
 
+    let defaultfee = props.defaultJoiningFee
+
 
     return (<View style={styles.participantSectionContainer}>
         <View style={{
@@ -80,17 +82,16 @@ const ParticipantListSectionComp = (props) => {
 
             </View>
             {props.participants.map((participant, index) => (
-                <ParticipantBubbleComp
-                    localDeleteParticipantPress={props.onDeleteParticipantPress}
-                    key={index}
-                    id={index}
-                    externalUser={participant.externalUser}
-                    name={participant.name}
-                    imageObj={participant.imageObj}
-                    email={participant.email}
-                >
-                </ParticipantBubbleComp>
-
+                    <ParticipantBubbleComp
+                        localDeleteParticipantPress={props.onDeleteParticipantPress}
+                        key={index}
+                        id={index}
+                        externalUser={participant.externalUser}
+                        name={participant.name}
+                        imageObj={participant.imageObj}
+                        email={participant.email}
+                    >
+                    </ParticipantBubbleComp>
             ))}
 
         </View>
