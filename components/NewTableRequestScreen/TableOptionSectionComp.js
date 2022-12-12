@@ -37,7 +37,7 @@ const TableOptionSectionComp = (props) => {
                 fontSize: 20 * heightRatioProMax,
 
             }}>
-                Select Your Table Option(s):</Text>
+                Select Your Table Options:</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: "space-evenly", alignItems: 'center'}}>
             <Text style={{

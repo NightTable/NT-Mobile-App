@@ -1,3 +1,21 @@
+/*
+
+Few points about this screen. 
+Only promoters, VIP hosts, employees, and club staff can change the table minimum. If a normal 
+user attempts to set a custom table minimum, they should not be allowed to move onto the next screen.
+All participants' joining fees, including the organizer's, must add up to be equal to or more than
+the table minimum. 
+
+Phone number validation isn't working. Fix that. 
+
+How do you handle duplicate friends?
+
+Work on continue button error modal
+
+
+
+*/
+
 import React, { useEffect, useState} from 'react';
 
 import { 
@@ -32,11 +50,29 @@ import CostSplittingSectionComp from '../components/NewTableRequestScreen/CostSp
 
 const NewTableRequestScreen = (props) => {
 
+
+    let continueButtonErrorMessages = [];
+
+    const [thisUserAsParticipant, setThisUserAsParticipant] = useState(
+        [
+            {
+                id: null,
+                externalUser: false,
+                phone: 0,
+                email: "amiyasekhar@nighttable.co",
+                imageObj: null,
+                name: "Amiya Sekhar",
+                joiningFee: 0
+            }
+        ]
+    )
+
     const [ currentParticipants, setCurrentParticipants ] = useState(
         [
             {
                 id: null,
                 externalUser: true,
+                phone: 0,
                 email: "jnydam@me.com",
                 imageObj: null,
                 name: null,
@@ -46,6 +82,7 @@ const NewTableRequestScreen = (props) => {
                 id: null,
                 externalUser: true,
                 imageObj: null,
+                phone: 0,
                 email: "gblade@gmail.com",
                 name: null,
                 joiningFee: 0
@@ -55,7 +92,15 @@ const NewTableRequestScreen = (props) => {
 
     const [ tableConfigList, setTableConfigList ] = useState([]);
 
+    const [selectedTables, setSelectedTables] = useState([]);
+
+    const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
+
+    const [isPromoter, setIsPromoter] = useState(false);
+
     const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
+
+    const [continueButtonPressShowError, setContinueButtonPressShowError] = useState(false);
     
     const [ selectedTableType, setSelectedTableType ] = useState('pnsl'); //type of the table, either snpl or pnsl
 
@@ -99,40 +144,25 @@ const NewTableRequestScreen = (props) => {
 
     const [customTableMinErrorModalVisible, setCustomTableMinErrorModalVisible] = useState(false);
 
-    const [participantCompPrice, setParticipantCompPrice] = useState(0);
-
     const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(tableMinimum / currentParticipants.length);
+
 
 
     let h = [];
     let m = [];
 
-    // this function is for setting custom participant joining prices    
-    const handleSetParticipantPrice = (number, index) => {
-        setParticipantCompPrice(number);
-        let list = dummyParticipants;
-        for (let i = 0; i < list.length; i++){
-            if (i === index){
-                console.log(true, "coming from app comp");
-                list[index].price = number;
-                setDummyParticipants(list);
-                break;
-            }
-        }
-    }
-
-    //changes table minimum as you select a table option
 
     const validateCustomTableMin = () => {
-        let isPromoter = Math.floor(Math.random() * 2) === 0;
-        if (!isPromoter){
+        if (!isPromoter || tableMinimum < defaultTableMinimum){
             setScreenOpacity(0.5);
             setCustomTableMinErrorModalVisible(true);
+            setTableMinimum(defaultTableMinimum)
         }
     }
 
     const handleModifyTableMin = (min) => {
         setTableMinimum(tableMinimum + min);
+        setDefaultTableMinimum(defaultTableMinimum + min);
     }
 
     //when AM pressed for time of day, this function is called
@@ -181,7 +211,7 @@ const NewTableRequestScreen = (props) => {
             setHours(h);
             setMinutes(m);
         }
-        if (tableMinimum !== 0){
+        if (tableMinimum !== ""){
             updateJoiningFee();
         }
         
@@ -226,8 +256,16 @@ const NewTableRequestScreen = (props) => {
     const updateJoiningFee = () => {
         for (let i = 0; i < currentParticipants.length; i++){
             currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
-            console.log(currentParticipants[i].joiningFee);
         }
+
+        if (selectedTableType === "pnsl"){
+            thisUserAsParticipant.joiningFee = defaultTableMinimum;
+        }
+
+        else{
+            thisUserAsParticipant.joiningFee = currentParticipants[0].joiningFee
+        }
+
 
     }
 
@@ -240,6 +278,7 @@ const NewTableRequestScreen = (props) => {
             if (res.data.length > 1) {
                 throw new Error("More than one user");
             }
+
 
             let newParticipantList = currentParticipants;
 
@@ -270,9 +309,15 @@ const NewTableRequestScreen = (props) => {
 
         
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
-        console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
+        //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
         if (validatePhoneNumber(currentPhoneNumberInputSnapshot)) {
-
+            // check for duplicate
+            for (let i = 0; i < currentParticipants.length; i++){
+                if (currentParticipants[i].phone === currentPhoneNumberInputSnapshot){
+                    setNewPhoneNumberAddErrorShown(true);
+                    return;
+                }
+            }
             let newParticipantList = currentParticipants;
 
             const newExternalParticipant = {
@@ -289,9 +334,9 @@ const NewTableRequestScreen = (props) => {
 
         } else {
 
-            setNewPhoneNumberAddErrorShown(validatePhoneNumber(currentPhoneNumberInputSnapshot));
+            setNewPhoneNumberAddErrorShown(true);
         }
-        console.log(newPhoneNumberAddErrorShown, ": phone number error")
+        //console.log(newPhoneNumberAddErrorShown, ": phone number error")
 
     };
 
@@ -301,6 +346,15 @@ const NewTableRequestScreen = (props) => {
         const currentEmailInputSnapshot = enterEmailInputState;
 
         if (validateEmail(currentEmailInputSnapshot)) {
+
+            //check for duplicate email
+
+            for (let i = 0; i < currentParticipants.length; i++){
+                if (currentParticipants[i].email === currentEmailInputSnapshot){
+                    setNewEmailAddErrorShown(true);
+                    return
+                }
+            }
 
             let newParticipantList = currentParticipants;
 
@@ -339,12 +393,18 @@ const NewTableRequestScreen = (props) => {
     }
 
     const handleTableConfigPress = (idParam) => {
-
+        let selectedTableList = selectedTables;
         setSelectedTableConfigId(idParam);
+        for (let i = 0; i < tcs.length; i++){
+            if (tcs[i].id === idParam){
+                selectedTableList.push(tcs[i]);
+            }
+        }
+        setSelectedTables(selectedTableList);
     }
 
     const handleRequestTypeChange = () => {
-        console.log("handleRequestTypeChange being called");
+        //console.log("handleRequestTypeChange being called");
         setSelectedTableType((state) => {
             if (state === 'pnsl') {
                 return 'snpl';
@@ -360,7 +420,38 @@ const NewTableRequestScreen = (props) => {
     }
 
     const handleContinueButtonPress = () => {
-        
+        let errorMessages = []
+        let timeOfDayNotSelected = (amTextColor ===  Colors.gold && amBGColor === Colors.black) && (pmTextColor === Colors.gold && pmBGColor === Colors.black);
+
+        //check to see if table option has been selected
+        if (selectedTables === []){
+            errorMessages.push("Make sure you select your table options")
+        }
+
+        //check to see if table minimum is approved
+        if (tableMinimum < defaultTableMinimum){
+            if (!isPromoter){
+                errorMessages.push("Table minimum must be greater than or equal to the total combined table minimums of the selected table options");
+            }
+            //check to see, if snpl, whether all joining fees are greater than or equal to the table minimum
+            else{
+                let totalFunds = 0;
+                for (let i = 0; i < currentParticipants.length; i++){
+                    totalFunds = totalFunds + currentParticipants[i].joiningFee;
+                }
+                totalFunds = totalFunds + thisUserAsParticipant.joiningFee;
+                if (totalFunds < tableMinimum){
+                    errorMessages.push("Participants aren't contributing enough money. Reduce the table minimum, reduce your table options, or increase the joining fee");
+                }
+            }
+
+
+        }
+
+        //check to make sure a proper time has been selected (hour, minute, and time of day)
+        if (hourValue === "hours" || minuteValue == "minutes" || timeOfDayNotSelected){
+            errorMessages.push("Please select an estimated time of arrival")
+        }
 
         // const currentParticipantsSnapshot = currentParticipants;
         
@@ -411,8 +502,17 @@ const NewTableRequestScreen = (props) => {
 
         //     console.log(err);
         // });
+        console.log(errorMessages);
+        if (errorMessages === []){
+            props.navigation.navigate('edNav-TableRequestConfirmationScreen');
+        }
+        else{
+            continueButtonErrorMessages = errorMessages;
+            setScreenOpacity(0.5);
+            setContinueButtonPressShowError(true);
+        }
 
-        props.navigation.navigate('edNav-TableRequestConfirmationScreen');
+
     };
 
 
@@ -423,6 +523,44 @@ const NewTableRequestScreen = (props) => {
         flexDirection: 'column',
         opacity: screenOpacity
         }}>
+        <Modal
+            animationType={'fade'}
+            transparent={true}
+            visible={customTableMinErrorModalVisible}
+            onRequestClose={() => [setContinueButtonPressShowError(!continueButtonPressShowError), setScreenOpacity(1)]}>
+                <View style={styles.centeredView}>
+                    <View 
+                        style={{
+                            backgroundColor: Colors.black,
+                            width: 400 * widthRatioProMax,
+                            height: 150 * heightRatioProMax,
+                            borderRadius: 5 * widthRatioProMax,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            borderWidth: 10 * widthRatioProMax,
+                            flexWrap: 'wrap',
+                            borderColor: Colors.gold}}>
+                            {
+                                continueButtonErrorMessages.map((errorMessage, index) => {
+                                    return (
+                                        <View style={{alignContent: 'center', justifyContent: 'center', marginLeft: 10 * widthRatioProMax}}
+                                            key={index}>
+                                            <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>{errorMessage+'\n'}</Text>
+                                        </View> 
+                                    );
+                                })
+                            }
+                            <View style={{justifyContent: 'center', marginVertical: 10 * heightRatioProMax}}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => [setContinueButtonPressShowError(!continueButtonPressShowError), setScreenOpacity(1)]}
+                                    >
+                                    <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Close</Text>
+                                </Pressable>
+                            </View>
+                    </View>
+                </View>
+        </Modal>
         <Modal
             animationType={'fade'}
             transparent={true}
@@ -446,7 +584,7 @@ const NewTableRequestScreen = (props) => {
                             <View style={{justifyContent: 'center', marginVertical: 10 * heightRatioProMax}}>
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
-                                    onPress={() => [setCustomTableMinErrorModalVisible(!customTableMinErrorModalVisible), setScreenOpacity(1)]}
+                                    onPress={() => [setCustomTableMinErrorModalVisible(!customTableMinErrorModalVisible), setScreenOpacity(1), setTableMinimum(defaultTableMinimum)]}
                                     >
                                     <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Close</Text>
                                 </Pressable>
@@ -655,9 +793,10 @@ const NewTableRequestScreen = (props) => {
                     <TextInput
                         style={styles.input}
                         onChangeText={setTableMinimum}
-                        placeholder={`$${tableMinimum}`}
+                        placeholder={`$${defaultTableMinimum}`}
                         placeholderTextColor={Colors.gold}
                         selectionColor={Colors.gold}
+                        value={tableMinimum}
                         keyboardType={"numeric"}
                     />
                     <View style={{backgroundColor: Colors.gold, borderRadius: 5 * widthRatioProMax}}>
@@ -720,8 +859,8 @@ const NewTableRequestScreen = (props) => {
                     </View>
                 </View>
 
-                
-                {<InviteFriendSectionComp
+
+                {selectedTableType === 'snpl' ? <InviteFriendSectionComp
                     isNewPhoneNumberAddErrorShown={newPhoneNumberAddErrorShown}
                     isNewEmailAddErrorShown={newEmailAddErrorShown}
                     isNewParticipantAddErrorShown={newParticipantAddErrorShown}
@@ -730,18 +869,21 @@ const NewTableRequestScreen = (props) => {
                     onEnterPhoneSubmit={handleEnterPhoneSubmit}
                     onEmailInputTrigger={handleEmailInputTrigger}
                     onPhoneNumberInputTrigger={handleEnterPhoneInputState}
-                    onSearchFriendInputTrigger={handleSearchFriendInputTrigger}></InviteFriendSectionComp>}
-                {/*participant list section has bugs*/}
-                {<ParticipantListSectionComp
+                    onSearchFriendInputTrigger={handleSearchFriendInputTrigger}>
+                </InviteFriendSectionComp> : null}
+
+                { selectedTableType === 'snpl' ? <ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
                     participants={currentParticipants}
                     defaultJoiningFee={defaultParticipantPrice}>
-                </ParticipantListSectionComp>}
-                {<CostSplittingSectionComp
+                </ParticipantListSectionComp> : null}
+
+                <CostSplittingSectionComp
                     isCheckboxSelected={termsCheckboxEnabled}
                     onTermsAgreementPress={handleOnTermsAgreementPress}
-                    tableTypeSelection={selectedTableType}>
-                </CostSplittingSectionComp>}
+                    tableTypeSelection={selectedTableType}
+                    nonRefundableAmount={defaultTableMinimum}>
+                </CostSplittingSectionComp>
             </View>
             <View style={{
                 marginTop: 20 * heightRatioProMax,
@@ -750,22 +892,22 @@ const NewTableRequestScreen = (props) => {
                 justifyContent: 'center'
             }}>
                 <TouchableOpacity
-                disabled={!termsCheckboxEnabled}
-                onPress={handleContinueButtonPress}
-                style={{
-                    width: '40%',
-                    height: 50 * heightRatioProMax,
-                    backgroundColor: Colors.textColorGold,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 10 * heightRatioProMax,
-                    borderWidth: 1,
-                    opacity: termsCheckboxEnabled ? 1 : 0.5
-                }}>
-                    <Text style={{
-                        fontFamily: Fonts.mainFontReg,
-                        color: Colors.black
-                    }}>continue</Text>
+                    disabled={!termsCheckboxEnabled}
+                    onPress={handleContinueButtonPress}
+                    style={{
+                        width: '40%',
+                        height: 50 * heightRatioProMax,
+                        backgroundColor: Colors.textColorGold,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 10 * heightRatioProMax,
+                        borderWidth: 1,
+                        opacity: termsCheckboxEnabled ? 1 : 0.5
+                    }}>
+                        <Text style={{
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.black
+                        }}>continue</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -822,3 +964,4 @@ const styles = StyleSheet.create({
 });
 
 export default NewTableRequestScreen;
+

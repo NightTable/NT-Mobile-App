@@ -61,10 +61,9 @@ const CostSplittingSectionComp = (props) => {
                         fontSize: 15 * heightRatioProMax,
                         color: Colors.purple
                     }}>split-now-pay-later </Text>
-                    method. This means that you are choosing to assign each participant a joining fee
-                    , and finalize it, before making an official reservation. Note that this method does not
-                    create an official reservation upon creation of the request, and you may lose your table selection to 
-                    someone else.</Text> 
+                    method. This means that you are choosing to assign each participant a joining fee. Note that this method does not
+                    create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to 
+                    someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.</Text> 
                     }
                 </View>
                 <View style={{
@@ -76,11 +75,12 @@ const CostSplittingSectionComp = (props) => {
                         lineHeight: 18 * heightRatioProMax,
                         fontFamily: Fonts.mainFontReg,
                         color: Colors.textColorGold
-                    }}>By selecting the create request button you are agreeing to paying
+                    }}>By selecting the create request button you are finalizing a reservation, and are agreeing to pay
                         the full non-refundable amount of <Text style={{
+                            fontFamily: Fonts.mainFontBold,
                             fontSize: 15 * heightRatioProMax,
-                            color: Colors.red
-                        }}>$800</Text>.
+                            color: Colors.purple
+                        }}>${props.nonRefundableAmount}</Text>.
                     </Text> : 
                     <Text style={{
                         fontSize: 15 * heightRatioProMax,
@@ -88,7 +88,7 @@ const CostSplittingSectionComp = (props) => {
                         fontFamily: Fonts.mainFontReg,
                         color: Colors.textColorGold
                         }}>By selecting the create request button, you are aknowledge that you have not made 
-                        an official reservation, but are asking people to join this request for their respective proposed joining fees.
+                        an official reservation, but are asking people to join a potential table group.
                     </Text> 
                     //                        Once everyone's joining fees have been finalised, you will be able to finalize your reservation. 
 
@@ -113,7 +113,7 @@ const CostSplittingSectionComp = (props) => {
                         lineHeight: 18 * heightRatioProMax,
                         fontFamily: Fonts.mainFontReg,
                         color: Colors.textColorGold
-                        }}>Once everyone's joining fees have been finalised, you will be able to finalize your reservation. 
+                        }}>Once everyone's joining fees have been finalized, you will be able to finalize your reservation. 
                         If your table selections are reserved by another group, neither you nor the participants in this request
                         will be charged, and the pending charges made to participants' cards will not appear in their card statements.
                         Note that participants, once they join a table, cannot leave unless the organizer or promoter cancels the request. 
