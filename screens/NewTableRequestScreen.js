@@ -97,6 +97,8 @@ const NewTableRequestScreen = (props) => {
 
     const [screenOpacity, setScreenOpacity] = useState(1);
 
+    const [customTableMinErrorModalVisible, setCustomTableMinErrorModalVisible] = useState(false);
+
     const [participantCompPrice, setParticipantCompPrice] = useState(0);
 
     const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(tableMinimum / currentParticipants.length);
@@ -120,9 +122,17 @@ const NewTableRequestScreen = (props) => {
     }
 
     //changes table minimum as you select a table option
+
+    const validateCustomTableMin = () => {
+        let isPromoter = Math.floor(Math.random() * 2) === 0;
+        if (!isPromoter){
+            setScreenOpacity(0.5);
+            setCustomTableMinErrorModalVisible(true);
+        }
+    }
+
     const handleModifyTableMin = (min) => {
         setTableMinimum(tableMinimum + min);
-        updateJoiningFee();
     }
 
     //when AM pressed for time of day, this function is called
@@ -158,7 +168,9 @@ const NewTableRequestScreen = (props) => {
 
     //setting table configuration list to the table configurations
     useEffect(() => {
-        setTableConfigList(tcs);
+        if (tableConfigList !== tcs){
+            setTableConfigList(tcs);
+        }
         if (h !== [] && m !== []){
             for (let i = 1; i < 13; i++){
                 h.push(i);
@@ -169,12 +181,14 @@ const NewTableRequestScreen = (props) => {
             setHours(h);
             setMinutes(m);
         }
-        console.log(tableMinimum, "table min")
+        if (tableMinimum !== 0){
+            updateJoiningFee();
+        }
         
 
 
     
-    }, []);
+    }, [tableMinimum]);
 
     //checking to see if the phone numbers are valid
     const validatePhoneNumber = async (num) => {
@@ -212,6 +226,7 @@ const NewTableRequestScreen = (props) => {
     const updateJoiningFee = () => {
         for (let i = 0; i < currentParticipants.length; i++){
             currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
+            console.log(currentParticipants[i].joiningFee);
         }
 
     }
@@ -408,12 +423,42 @@ const NewTableRequestScreen = (props) => {
         flexDirection: 'column',
         opacity: screenOpacity
         }}>
-            
+        <Modal
+            animationType={'fade'}
+            transparent={true}
+            visible={customTableMinErrorModalVisible}
+            onRequestClose={() => [setCustomTableMinErrorModalVisible(!customTableMinErrorModalVisible), setScreenOpacity(1)]}>
+                <View style={styles.centeredView}>
+                    <View 
+                        style={{
+                            backgroundColor: Colors.black,
+                            width: 400 * widthRatioProMax,
+                            height: 150 * heightRatioProMax,
+                            borderRadius: 5 * widthRatioProMax,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            borderWidth: 10 * widthRatioProMax,
+                            flexWrap: 'wrap',
+                            borderColor: Colors.gold}}>
+                            <View style={{alignContent: 'center', justifyContent: 'center', marginLeft: 10 * widthRatioProMax}}>
+                                <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Only employees, promoters, VIP hosts, and club staff can modify table minimums</Text>
+                            </View>
+                            <View style={{justifyContent: 'center', marginVertical: 10 * heightRatioProMax}}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => [setCustomTableMinErrorModalVisible(!customTableMinErrorModalVisible), setScreenOpacity(1)]}
+                                    >
+                                    <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Close</Text>
+                                </Pressable>
+                            </View>
+                    </View>
+                </View>
+        </Modal>
         <Modal
             animationType={'fade'}
             transparent={true}
             visible={hourModalVisible}
-            onRequestClose={() => [setHourModalVisible(!setHourModalVisible), setScreenOpacity(1)]}>
+            onRequestClose={() => [setHourModalVisible(!hourModalVisible), setScreenOpacity(1)]}>
                 <View style={styles.centeredView}>
                     <View 
                         style={{
@@ -604,7 +649,7 @@ const NewTableRequestScreen = (props) => {
                         marginBottom: 15 * heightRatioProMax,
                         textAlign: 'center'
                     }}>
-                    Note that only employees, promoters, and VIP hosts, and club staff can modify table minimums 
+                    Note that only employees, promoters, VIP hosts, and club staff can modify table minimums 
                 </Text>
                 <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
                     <TextInput
@@ -616,7 +661,8 @@ const NewTableRequestScreen = (props) => {
                         keyboardType={"numeric"}
                     />
                     <View style={{backgroundColor: Colors.gold, borderRadius: 5 * widthRatioProMax}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={validateCustomTableMin}>
                             <Text style={{fontSize: 20 * heightRatioProMax, textAlign: 'center', color: Colors.black, padding: 5 * heightRatioProMax, fontFamily: Fonts.mainFontReg}}>OK</Text>
                         </TouchableOpacity>
                     </View>
