@@ -99,7 +99,7 @@ const NewTableRequestScreen = (props) => {
 
     const [participantCompPrice, setParticipantCompPrice] = useState(0);
 
-    const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(tableMinimum / dummyParticipants.length);
+    const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(tableMinimum / currentParticipants.length);
 
 
     let h = [];
@@ -123,7 +123,6 @@ const NewTableRequestScreen = (props) => {
     const handleModifyTableMin = (min) => {
         setTableMinimum(tableMinimum + min);
         updateJoiningFee();
-        for ()
     }
 
     //when AM pressed for time of day, this function is called
