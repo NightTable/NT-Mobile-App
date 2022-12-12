@@ -32,7 +32,7 @@ import CostSplittingSectionComp from '../components/NewTableRequestScreen/CostSp
 
 const NewTableRequestScreen = (props) => {
 
-    const [dummyParticipants, setDummyParticipants] = useState(
+    const [ currentParticipants, setCurrentParticipants ] = useState(
         [
             {
                 id: null,
@@ -72,8 +72,6 @@ const NewTableRequestScreen = (props) => {
     const [ newPhoneNumberAddErrorShown, setNewPhoneNumberAddErrorShown] = useState(false);
 
     const [ newEmailAddErrorShown, setNewEmailAddErrorShown ] = useState(false);
-
-    const [ currentParticipants, setCurrentParticipants ] = useState(dummyParticipants);
 
     const [ termsCheckboxEnabled, setTermsCheckboxEnabled ] = useState(false);
 
@@ -124,6 +122,8 @@ const NewTableRequestScreen = (props) => {
     //changes table minimum as you select a table option
     const handleModifyTableMin = (min) => {
         setTableMinimum(tableMinimum + min);
+        updateJoiningFee();
+        for ()
     }
 
     //when AM pressed for time of day, this function is called
@@ -171,7 +171,6 @@ const NewTableRequestScreen = (props) => {
             setMinutes(m);
         }
         console.log(tableMinimum, "table min")
-        updateJoiningFee();
         
 
 
@@ -214,7 +213,6 @@ const NewTableRequestScreen = (props) => {
     const updateJoiningFee = () => {
         for (let i = 0; i < currentParticipants.length; i++){
             currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
-            console.log(currentParticipants[i].joiningFee , "currentParticipants[i].joiningFee ")
         }
 
     }
