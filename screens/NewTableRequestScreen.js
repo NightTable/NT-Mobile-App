@@ -51,7 +51,8 @@ import CostSplittingSectionComp from '../components/NewTableRequestScreen/CostSp
 const NewTableRequestScreen = (props) => {
 
 
-    let continueButtonErrorMessages = [];
+
+    const [continueButtonErrorMessages, setContinueButtonErrorMessages] = useState([]);
 
     const [thisUserAsParticipant, setThisUserAsParticipant] = useState(
         [
@@ -152,11 +153,23 @@ const NewTableRequestScreen = (props) => {
     let m = [];
 
 
+    const handleCloseCustomTableMinModal = () => {
+        //setScreenOpacity(1);
+        setCustomTableMinErrorModalVisible(false);
+
+
+    }
+
     const validateCustomTableMin = () => {
-        if (!isPromoter || tableMinimum < defaultTableMinimum){
-            setScreenOpacity(0.5);
-            setCustomTableMinErrorModalVisible(true);
-            setTableMinimum(defaultTableMinimum)
+        console.log(isPromoter, "is promoter");
+        console.log(tableMinimum, defaultTableMinimum, tableMinimum < defaultTableMinimum, "tableMinimum < defaultTableMinimum")
+        if (tableMinimum < defaultTableMinimum){
+            if (!isPromoter){
+                setScreenOpacity(0.5);
+                setCustomTableMinErrorModalVisible(true);
+                setTableMinimum(defaultTableMinimum);
+            }
+
         }
     }
 
@@ -424,9 +437,10 @@ const NewTableRequestScreen = (props) => {
         let timeOfDayNotSelected = (amTextColor ===  Colors.gold && amBGColor === Colors.black) && (pmTextColor === Colors.gold && pmBGColor === Colors.black);
 
         //check to see if table option has been selected
-        if (selectedTables === []){
+        if (selectedTables.length == 0){
             errorMessages.push("Make sure you select your table options")
         }
+        console.log(selectedTables.length, selectedTables, "selectedTables")
 
         //check to see if table minimum is approved
         if (tableMinimum < defaultTableMinimum){
@@ -502,12 +516,12 @@ const NewTableRequestScreen = (props) => {
 
         //     console.log(err);
         // });
-        console.log(errorMessages);
         if (errorMessages === []){
             props.navigation.navigate('edNav-TableRequestConfirmationScreen');
         }
         else{
-            continueButtonErrorMessages = errorMessages;
+            setContinueButtonErrorMessages(errorMessages);
+            console.log(continueButtonErrorMessages);
             setScreenOpacity(0.5);
             setContinueButtonPressShowError(true);
         }
@@ -526,22 +540,23 @@ const NewTableRequestScreen = (props) => {
         <Modal
             animationType={'fade'}
             transparent={true}
-            visible={customTableMinErrorModalVisible}
+            visible={continueButtonPressShowError}
             onRequestClose={() => [setContinueButtonPressShowError(!continueButtonPressShowError), setScreenOpacity(1)]}>
                 <View style={styles.centeredView}>
                     <View 
                         style={{
                             backgroundColor: Colors.black,
                             width: 400 * widthRatioProMax,
-                            height: 150 * heightRatioProMax,
+                            height: 300 * heightRatioProMax,
                             borderRadius: 5 * widthRatioProMax,
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
-                            borderWidth: 10 * widthRatioProMax,
+                            borderWidth: 5 * widthRatioProMax,
                             flexWrap: 'wrap',
                             borderColor: Colors.gold}}>
                             {
                                 continueButtonErrorMessages.map((errorMessage, index) => {
+                                    console.log(errorMessage, "error message");
                                     return (
                                         <View style={{alignContent: 'center', justifyContent: 'center', marginLeft: 10 * widthRatioProMax}}
                                             key={index}>
@@ -550,7 +565,8 @@ const NewTableRequestScreen = (props) => {
                                     );
                                 })
                             }
-                            <View style={{justifyContent: 'center', marginVertical: 10 * heightRatioProMax}}>
+
+                            <View style={{justifyContent: 'center'}}>
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => [setContinueButtonPressShowError(!continueButtonPressShowError), setScreenOpacity(1)]}
@@ -561,6 +577,7 @@ const NewTableRequestScreen = (props) => {
                     </View>
                 </View>
         </Modal>
+
         <Modal
             animationType={'fade'}
             transparent={true}
@@ -578,20 +595,21 @@ const NewTableRequestScreen = (props) => {
                             borderWidth: 10 * widthRatioProMax,
                             flexWrap: 'wrap',
                             borderColor: Colors.gold}}>
-                            <View style={{alignContent: 'center', justifyContent: 'center', marginLeft: 10 * widthRatioProMax}}>
-                                <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Only employees, promoters, VIP hosts, and club staff can modify table minimums</Text>
-                            </View>
+
+                            <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Only employees, promoters, VIP hosts, and club staff can modify table minimums. </Text>
+
                             <View style={{justifyContent: 'center', marginVertical: 10 * heightRatioProMax}}>
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
-                                    onPress={() => [setCustomTableMinErrorModalVisible(!customTableMinErrorModalVisible), setScreenOpacity(1), setTableMinimum(defaultTableMinimum)]}
+                                    onPress={() => [setCustomTableMinErrorModalVisible(!customTableMinErrorModalVisible), setScreenOpacity(1)]}
                                     >
-                                    <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Close</Text>
+                                    <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax}}>Close</Text>
                                 </Pressable>
                             </View>
                     </View>
                 </View>
         </Modal>
+
         <Modal
             animationType={'fade'}
             transparent={true}
