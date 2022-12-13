@@ -893,7 +893,8 @@ const NewTableRequestScreen = (props) => {
                 { selectedTableType === 'snpl' ? <ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
                     participants={currentParticipants}
-                    defaultJoiningFee={defaultParticipantPrice}>
+                    defaultJoiningFee={defaultParticipantPrice}
+                    thisUser={thisUserAsParticipant[0]}>
                 </ParticipantListSectionComp> : null}
 
                 <CostSplittingSectionComp

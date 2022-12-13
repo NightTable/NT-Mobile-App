@@ -56,7 +56,7 @@ const FriendInputComp = (props) => {
                     borderRightWidth: 0,
                     height: 30 * heightRatioProMax,
                     borderBottomColor: Colors.textColorGold,
-                }}></TextInput>
+                }}/>
             </View>
             <TouchableOpacity style={{
                 flex: 2,
