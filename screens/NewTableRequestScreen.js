@@ -10,9 +10,6 @@ Phone number validation isn't working. Fix that.
 
 How do you handle duplicate friends?
 
-Work on continue button error modal
-
-
 
 */
 
@@ -91,6 +88,7 @@ const NewTableRequestScreen = (props) => {
         ]
     )
 
+
     const [ tableConfigList, setTableConfigList ] = useState([]);
 
     const [selectedTables, setSelectedTables] = useState([]);
@@ -145,7 +143,7 @@ const NewTableRequestScreen = (props) => {
 
     const [customTableMinErrorModalVisible, setCustomTableMinErrorModalVisible] = useState(false);
 
-    const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(tableMinimum / currentParticipants.length);
+    const [defaultParticipantPrice, setDefaultParticipantPrice] = useState(0);
 
 
 
@@ -226,12 +224,16 @@ const NewTableRequestScreen = (props) => {
         }
         if (tableMinimum !== ""){
             updateJoiningFee();
+            if (currentParticipants.length !== 0){
+                setDefaultParticipantPrice((tableMinimum) / (currentParticipants.length + 1));
+
+            }
         }
         
 
 
     
-    }, [tableMinimum]);
+    }, [tableMinimum, currentParticipants.length]);
 
     //checking to see if the phone numbers are valid
     const validatePhoneNumber = async (num) => {
@@ -267,6 +269,8 @@ const NewTableRequestScreen = (props) => {
     }
 
     const updateJoiningFee = () => {
+        console.log(tableMinimum, currentParticipants.length, "table min and curr participants from updae joining fee")
+        console.log(defaultParticipantPrice, "def participant price update jf")
         for (let i = 0; i < currentParticipants.length; i++){
             currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
         }
@@ -282,8 +286,16 @@ const NewTableRequestScreen = (props) => {
 
     }
 
-    const handleSearchFriendSubmit = () => {
+    const modifyThisUserJoiningFee = (fee) => {
+        thisUserAsParticipant.joiningFee = fee;
+    }
 
+    const modifyParticipantJoiningFee = (index, fee) => {
+        currentParticipants[index].joiningFee = fee;
+    }
+
+    const handleSearchFriendSubmit = () => {
+        setDefaultParticipantPrice(tableMinimum) / (currentParticipants.length + 2);
         axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/users/name/${searchFriendInputState}`)
         .then((res) => {
 
@@ -304,7 +316,7 @@ const NewTableRequestScreen = (props) => {
                     name: `${res.data[0].firstName} ${res.data[0].lastName}`,
                     joiningFee: 0
             };
-
+            newParticipant.joiningFee = defaultParticipantPrice;
             newParticipantList.push(newParticipant);
 
             setCurrentParticipants([...newParticipantList])
@@ -320,7 +332,7 @@ const NewTableRequestScreen = (props) => {
 
     const handleEnterPhoneSubmit = () => {
 
-        
+        setDefaultParticipantPrice(tableMinimum) / (currentParticipants.length + 2);
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
         if (validatePhoneNumber(currentPhoneNumberInputSnapshot)) {
@@ -341,6 +353,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
+            newExternalParticipant.joiningFee = defaultParticipantPrice;
             newParticipantList.push(newExternalParticipant);
             setNewPhoneNumberAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
@@ -357,6 +370,7 @@ const NewTableRequestScreen = (props) => {
     const handleEnterEmailSubmit = () => {
 
         const currentEmailInputSnapshot = enterEmailInputState;
+        setDefaultParticipantPrice(tableMinimum) / (currentParticipants.length + 2);
 
         if (validateEmail(currentEmailInputSnapshot)) {
 
@@ -379,6 +393,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
+            newExternalParticipant.joiningFee = defaultParticipantPrice;
             newParticipantList.push(newExternalParticipant);
             setNewEmailAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
@@ -894,7 +909,8 @@ const NewTableRequestScreen = (props) => {
                     onDeleteParticipantPress={handleDeleteParticipantPress}
                     participants={currentParticipants}
                     defaultJoiningFee={defaultParticipantPrice}
-                    thisUser={thisUserAsParticipant[0]}>
+                    changePartJoiningfee={modifyParticipantJoiningFee}
+                    changeSelfJoiningFee={modifyThisUserJoiningFee}>
                 </ParticipantListSectionComp> : null}
 
                 <CostSplittingSectionComp

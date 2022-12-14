@@ -68,9 +68,9 @@ const ParticipantListSectionComp = (props) => {
             <View style={{alignContent: 'center', justifyContent: 'space-evenly', flexDirection: 'row'}}>
                 <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, marginLeft: 15 * widthRatioProMax, fontFamily: Fonts.mainFontReg}}> Set Joining Fee </Text>
                 <TextInput
-                    style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 50 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
+                    style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 200 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
                     placeholder={`$`}
-                    value={`$${props.thisUser.joiningFee}`}/>
+                    value={`$${props.defaultJoiningFee}`}/>
                 <TouchableOpacity>
                     <Image
                         style={{
@@ -91,7 +91,7 @@ const ParticipantListSectionComp = (props) => {
                         name={participant.name}
                         imageObj={participant.imageObj}
                         email={participant.email}
-                        joiningFee={participant.joiningFee}
+                        defaultJoiningFee={props.defaultJoiningFee}
                     >
                     </ParticipantBubbleComp>
             ))}
