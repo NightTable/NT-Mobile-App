@@ -91,7 +91,9 @@ const ParticipantListSectionComp = (props) => {
                         name={participant.name}
                         imageObj={participant.imageObj}
                         email={participant.email}
+                        phone={participant.phone}
                         joiningFee={participant.joiningFee}
+                        changePartJoiningFee={props.changePartJoiningfee}
                     >
                     </ParticipantBubbleComp>
             ))}

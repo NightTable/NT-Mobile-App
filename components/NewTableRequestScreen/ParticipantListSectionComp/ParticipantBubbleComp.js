@@ -36,7 +36,7 @@ const ParticipantBubbleComp = (props) => {
                     marginLeft: 10 * widthRatioProMax,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
-                }}>{props.email}</Text>
+                }}>{(props.email === null && props.phone !== 0)? "+" + props.phone : props.email}</Text>
             </View>
             <TouchableOpacity onPress={() => props.localDeleteParticipantPress(props.id)} style={{
                 flexDirection: 'row',
@@ -114,6 +114,7 @@ const ParticipantBubbleComp = (props) => {
                 <TextInput
                     style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 200 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
                     placeholder={'$'}
+                    onChangeText={(val) => props.changePartJoiningfee(props.key, val)}
                     value={`${props.joiningFee}`}/>
                 <TouchableOpacity>
                     <Image

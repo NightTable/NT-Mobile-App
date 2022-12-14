@@ -99,7 +99,7 @@ const NewTableRequestScreen = (props) => {
 
     const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
 
-    const [isPromoter, setIsPromoter] = useState(false);
+    const [isPromoter, setIsPromoter] = useState(true);
 
     const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
 
@@ -163,8 +163,6 @@ const NewTableRequestScreen = (props) => {
     }
 
     const validateCustomTableMin = () => {
-        console.log(isPromoter, "is promoter");
-        console.log(tableMinimum, defaultTableMinimum, tableMinimum < defaultTableMinimum, "tableMinimum < defaultTableMinimum")
         if (tableMinimum < defaultTableMinimum){
             if (!isPromoter){
                 setScreenOpacity(0.5);
@@ -233,19 +231,43 @@ const NewTableRequestScreen = (props) => {
 
             }
         }
+
+        if (selectedTableType === "pnsl"){
+            thisUserAsParticipant[0].joiningFee = defaultTableMinimum;
+        }
+        else{
+            setThisUserAsParticipant(
+                [
+                    {
+                        id: null,
+                        externalUser: false,
+                        phone: 0,
+                        email: "amiyasekhar@nighttable.co",
+                        imageObj: null,
+                        name: "Amiya Sekhar",
+                        joiningFee: ((tableMinimum) / (currentParticipants.length + 1))
+                    }
+                ]
+            )
+        }
         
 
 
     
-    }, [tableMinimum, currentParticipants.length]);
+    }, [tableMinimum, currentParticipants.length, selectedTableType]);
 
     //checking to see if the phone numbers are valid
     const validatePhoneNumber = async (num) => {
         try {
-            console.log(ABSTRACTAPI_PARTIAL_URL + `&phone_number=` + num);
-            const response = await fetch.get(ABSTRACTAPI_PARTIAL_URL + `&phone_number=` + num);
-            console.log(response.json())
-            return response.valid
+            console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
+            axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
+                response => {
+                    return response.data.valid;
+                }
+            )
+            .catch (error => {
+                return false;
+            });
         } catch (error) {
             return false;
         }
@@ -273,13 +295,11 @@ const NewTableRequestScreen = (props) => {
     }
 
     const updateJoiningFee = () => {
-        console.log(tableMinimum, currentParticipants.length, "table min and curr participants from updae joining fee\n")
-        console.log(defaultParticipantPrice, "def participant price update jf\n")
         for (let i = 0; i < currentParticipants.length; i++){
             currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
         }
 
-        if (selectedTableType === "pnsl"){
+        /*if (selectedTableType === "pnsl"){
             thisUserAsParticipant[0].joiningFee = defaultTableMinimum;
         }
 
@@ -297,13 +317,11 @@ const NewTableRequestScreen = (props) => {
                     }
                 ]
             )
-        }
-
-
+        }*/
     }
 
     const modifyThisUserJoiningFee = (fee) => {
-        console.log(fee, "this is new fee input into function\n")
+
         setThisUserAsParticipant(
             [
                 {
@@ -317,7 +335,6 @@ const NewTableRequestScreen = (props) => {
                 }
             ]
         )
-        console.log(thisUserAsParticipant[0].joiningFee, "this users new joining fee after modifying this user\n");
     }
 
     const modifyParticipantJoiningFee = (index, fee) => {
@@ -486,7 +503,9 @@ const NewTableRequestScreen = (props) => {
         if (selectedTables.length == 0){
             errorMessages.push("Make sure you select your table options")
         }
-        console.log(selectedTables.length, selectedTables, "selectedTables")
+        else{
+            errorMessages.push("table option has been selected")
+        }
 
         //check to see if table minimum is approved
         if (tableMinimum < defaultTableMinimum){
@@ -495,22 +514,49 @@ const NewTableRequestScreen = (props) => {
             }
             //check to see, if snpl, whether all joining fees are greater than or equal to the table minimum
             else{
+                errorMessages.push("user is promoter")
                 let totalFunds = 0;
                 for (let i = 0; i < currentParticipants.length; i++){
+                    console.log("your fee: ", thisUserAsParticipant[0].joiningFee);
+                    console.log(i + "-th particpant", currentParticipants[i].joiningFee, )
                     totalFunds = totalFunds + currentParticipants[i].joiningFee;
                 }
-                totalFunds = totalFunds + thisUserAsParticipant.joiningFee;
+                totalFunds = parseInt(totalFunds) + parseInt(thisUserAsParticipant[0].joiningFee);
+                console.log(totalFunds, "total funds", tableMinimum, "table min");
+
                 if (totalFunds < tableMinimum){
                     errorMessages.push("Participants aren't contributing enough money. Reduce the table minimum, reduce your table options, or increase the joining fee");
                 }
+                else{
+                    errorMessages.push("Enough funds");
+                }
             }
-
-
+        }
+        else{
+            errorMessages.push("minimum is sufficient");
+            let totalFunds = 0;
+            for (let i = 0; i < currentParticipants.length; i++){
+                console.log("your fee: ", thisUserAsParticipant[0].joiningFee);
+                console.log(i + "-th particpant", currentParticipants[i].joiningFee, )
+                totalFunds = totalFunds + currentParticipants[i].joiningFee;
+            }
+            totalFunds = parseInt(totalFunds) + parseInt(thisUserAsParticipant[0].joiningFee);
+            console.log(totalFunds, "total funds", tableMinimum, "table min");
+            if (totalFunds < tableMinimum){
+                errorMessages.push("Participants aren't contributing enough money. Reduce the table minimum, reduce your table options, or increase the joining fee");
+            }
+            else{
+                errorMessages.push("Enough funds");
+            }
         }
 
         //check to make sure a proper time has been selected (hour, minute, and time of day)
         if (hourValue === "hours" || minuteValue == "minutes" || timeOfDayNotSelected){
             errorMessages.push("Please select an estimated time of arrival")
+        }
+        else{
+            errorMessages.push("Time has been selected")
+
         }
 
         // const currentParticipantsSnapshot = currentParticipants;
@@ -567,7 +613,7 @@ const NewTableRequestScreen = (props) => {
         }
         else{
             setContinueButtonErrorMessages(errorMessages);
-            console.log(continueButtonErrorMessages);
+            console.log(continueButtonErrorMessages, "error messages");
             setScreenOpacity(0.5);
             setContinueButtonPressShowError(true);
         }
@@ -602,7 +648,6 @@ const NewTableRequestScreen = (props) => {
                             borderColor: Colors.gold}}>
                             {
                                 continueButtonErrorMessages.map((errorMessage, index) => {
-                                    console.log(errorMessage, "error message");
                                     return (
                                         <View style={{alignContent: 'center', justifyContent: 'center', marginLeft: 10 * widthRatioProMax}}
                                             key={index}>
