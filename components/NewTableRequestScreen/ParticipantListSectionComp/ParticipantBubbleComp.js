@@ -114,7 +114,7 @@ const ParticipantBubbleComp = (props) => {
                 <TextInput
                     style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 200 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
                     placeholder={'$'}
-                    value={`$${props.defaultJoiningFee}`}/>
+                    value={`${props.joiningFee}`}/>
                 <TouchableOpacity>
                     <Image
                         style={{

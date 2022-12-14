@@ -65,6 +65,10 @@ const NewTableRequestScreen = (props) => {
         ]
     )
 
+    const [modifyingPrices, setModifyingPrices] = useState(false);
+
+    let [tempModifiedPrice, setTempModifiedPrice] = useState(0);
+
     const [ currentParticipants, setCurrentParticipants ] = useState(
         [
             {
@@ -269,25 +273,51 @@ const NewTableRequestScreen = (props) => {
     }
 
     const updateJoiningFee = () => {
-        console.log(tableMinimum, currentParticipants.length, "table min and curr participants from updae joining fee")
-        console.log(defaultParticipantPrice, "def participant price update jf")
+        console.log(tableMinimum, currentParticipants.length, "table min and curr participants from updae joining fee\n")
+        console.log(defaultParticipantPrice, "def participant price update jf\n")
         for (let i = 0; i < currentParticipants.length; i++){
             currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
         }
 
         if (selectedTableType === "pnsl"){
-            thisUserAsParticipant.joiningFee = defaultTableMinimum;
+            thisUserAsParticipant[0].joiningFee = defaultTableMinimum;
         }
 
         else{
-            thisUserAsParticipant.joiningFee = currentParticipants[0].joiningFee
+            setThisUserAsParticipant(
+                [
+                    {
+                        id: null,
+                        externalUser: false,
+                        phone: 0,
+                        email: "amiyasekhar@nighttable.co",
+                        imageObj: null,
+                        name: "Amiya Sekhar",
+                        joiningFee: ((tableMinimum) / (currentParticipants.length + 1))
+                    }
+                ]
+            )
         }
 
 
     }
 
     const modifyThisUserJoiningFee = (fee) => {
-        thisUserAsParticipant.joiningFee = fee;
+        console.log(fee, "this is new fee input into function\n")
+        setThisUserAsParticipant(
+            [
+                {
+                    id: null,
+                    externalUser: false,
+                    phone: 0,
+                    email: "amiyasekhar@nighttable.co",
+                    imageObj: null,
+                    name: "Amiya Sekhar",
+                    joiningFee: fee
+                }
+            ]
+        )
+        console.log(thisUserAsParticipant[0].joiningFee, "this users new joining fee after modifying this user\n");
     }
 
     const modifyParticipantJoiningFee = (index, fee) => {
@@ -295,7 +325,6 @@ const NewTableRequestScreen = (props) => {
     }
 
     const handleSearchFriendSubmit = () => {
-        setDefaultParticipantPrice(tableMinimum) / (currentParticipants.length + 2);
         axios.get(`${Platform.OS === 'android' ? API_URL_ANDROID : API_URL_IOS }api/users/name/${searchFriendInputState}`)
         .then((res) => {
 
@@ -304,6 +333,7 @@ const NewTableRequestScreen = (props) => {
                 throw new Error("More than one user");
             }
 
+            setDefaultParticipantPrice((tableMinimum) / (currentParticipants.length + 2));
 
             let newParticipantList = currentParticipants;
 
@@ -316,7 +346,8 @@ const NewTableRequestScreen = (props) => {
                     name: `${res.data[0].firstName} ${res.data[0].lastName}`,
                     joiningFee: 0
             };
-            newParticipant.joiningFee = defaultParticipantPrice;
+
+            newParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
             newParticipantList.push(newParticipant);
 
             setCurrentParticipants([...newParticipantList])
@@ -332,7 +363,6 @@ const NewTableRequestScreen = (props) => {
 
     const handleEnterPhoneSubmit = () => {
 
-        setDefaultParticipantPrice(tableMinimum) / (currentParticipants.length + 2);
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
         if (validatePhoneNumber(currentPhoneNumberInputSnapshot)) {
@@ -343,6 +373,7 @@ const NewTableRequestScreen = (props) => {
                     return;
                 }
             }
+            setDefaultParticipantPrice((tableMinimum) / (currentParticipants.length + 2));
             let newParticipantList = currentParticipants;
 
             const newExternalParticipant = {
@@ -353,7 +384,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
-            newExternalParticipant.joiningFee = defaultParticipantPrice;
+            newExternalParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
             newParticipantList.push(newExternalParticipant);
             setNewPhoneNumberAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
@@ -370,7 +401,6 @@ const NewTableRequestScreen = (props) => {
     const handleEnterEmailSubmit = () => {
 
         const currentEmailInputSnapshot = enterEmailInputState;
-        setDefaultParticipantPrice(tableMinimum) / (currentParticipants.length + 2);
 
         if (validateEmail(currentEmailInputSnapshot)) {
 
@@ -382,6 +412,7 @@ const NewTableRequestScreen = (props) => {
                     return
                 }
             }
+            setDefaultParticipantPrice((tableMinimum) / (currentParticipants.length + 2));
 
             let newParticipantList = currentParticipants;
 
@@ -393,7 +424,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
-            newExternalParticipant.joiningFee = defaultParticipantPrice;
+            newExternalParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
             newParticipantList.push(newExternalParticipant);
             setNewEmailAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
@@ -826,7 +857,7 @@ const NewTableRequestScreen = (props) => {
                     <TextInput
                         style={styles.input}
                         onChangeText={setTableMinimum}
-                        placeholder={`$${defaultTableMinimum}`}
+                        placeholder={`${defaultTableMinimum}`}
                         placeholderTextColor={Colors.gold}
                         selectionColor={Colors.gold}
                         value={tableMinimum}
@@ -907,6 +938,7 @@ const NewTableRequestScreen = (props) => {
 
                 { selectedTableType === 'snpl' ? <ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
+                    thisUser={thisUserAsParticipant}
                     participants={currentParticipants}
                     defaultJoiningFee={defaultParticipantPrice}
                     changePartJoiningfee={modifyParticipantJoiningFee}
