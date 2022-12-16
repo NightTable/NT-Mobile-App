@@ -98,7 +98,7 @@ const TableConfigurationComponent = (props) => {
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold, textAlign: 'center', marginTop: 15 * heightRatioProMax}}>Organizer</Text>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold, textAlign: 'center', marginTop: 15 * heightRatioProMax}}>Group Spend</Text>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold, textAlign: 'center', marginTop: 15 * heightRatioProMax}}>Joining Fee</Text>
-                        </View>
+                         </View>
                         {bids.map((bid, index) => (
                             <TableConfigurationBidsComponent
                                 key={index}
