@@ -146,7 +146,7 @@ const ClubMiniDetailScreen = (props) => {
                         backgroundColor: Colors.buttonColorGold}}>
                         <Text style={{color: Colors.textColorBlack,
                         marginTop: Platform.OS === 'android' ? -3 * heightRatioProMax : 0,
-                        fontFamily: Fonts.mainFontBold}}>select club</Text>
+                        fontFamily: Fonts.mainFontReg}}>Select Club</Text>
                     </View>
                 </TouchableOpacity> 
             </View>

@@ -5,6 +5,6 @@
 // when its authorized use is terminated.
 
 export const Fonts = {
-    mainFontReg: 'VerahHumana-Regular',
-    mainFontBold: 'VerahHumana-Bold'
+    mainFontReg: 'VerahHumanaRegular',
+    mainFontBold: 'VerahHumanaBold'
 }

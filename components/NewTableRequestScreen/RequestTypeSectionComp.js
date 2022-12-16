@@ -22,12 +22,15 @@ const RequestTypeSectionComp = (props) => {
 
     return (<View style={styles.requestTypeContainerComp}>
         <View style={{
-            alignSelf: 'flex-start'
+            alignSelf: 'flex-start',
+            marginTop: 20 * heightRatioProMax
         }}>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.textColorGold
-            }}>select request type: </Text>
+                color: Colors.textColorGold,
+                fontSize: 20 * heightRatioProMax,
+
+            }}>Select Request Type: </Text>
         </View>
         <View style={styles.costTypeButtonContainer}>
             <View style={styles.snplButtonContainer}>

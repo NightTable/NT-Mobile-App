@@ -1,83 +1,54 @@
-// NightTable, LLC has been granted a license by John Nydam
-// to use this document and the information contained in it
-// for business objectives pertinent to the company.
-// It must not be copied, duplicated, or used in any manner,
-// or transmitted to others without the written consent of John Nydam.
-// It must be returned to John Nydam if and/or when its authorized use is terminated.
-
-import React, { useState } from 'react';
-
-import { StyleSheet, Dimensions } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import AppNavigatorContainer from './navigators/AppNavigatorContainer';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
-
-import { API_URL } from "@env";
-import { NavigationContainer } from "@react-navigation/native";
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
 import { mainReducer } from './store/reducers/main';
-import AppNavigatorContainer from './navigators/AppNavigatorContainer';
-import TableRequestsHomeScreen from './screens/TableRequestsHomeScreen';
-import PollingRoomScreen from './screens/PollingRoomScreen';
-import TableRequestsNavigator from './navigators/TableRequestsNavigator';
-import EntryDashboardNavigator from './navigators/EntryDashboardNavigator';
-import TableInvitesOverviewScreen from './screens/TableInvitesOverviewScreen';
-import TableInvitesDetailScreen from './screens/TableInvitesDetailScreen'
-import ClubFullDetailScreen from './screens/ClubFullDetailScreen'
-import EntryDashboardScreen from './screens/EntryDashboardScreen';
-import ClubFullDetailScreen2 from './screens/EventTableConfigurationScreen';
+import NewTableRequestScreen from './screens/NewTableRequestScreen';
+
+// expo install expo-font expo-splash-screen
+
 const rootReducer = combineReducers({
   main: mainReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-
-const fetchFonts = () => {
-
-  return Font.loadAsync({
-    'VerahHumana-Regular': require('./assets/fonts/VerahHumana-Regular.ttf'),
-    'VerahHumana-Bold': require('./assets/fonts/VerahHumana-Bold.ttf')
-  });
-};
-
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    VerahHumanaRegular: require("./assets/fonts/VerahHumana-Regular.ttf"),
+    VerahHumanaBold: require("./assets/fonts/VerahHumana-Bold.ttf")
+  });
 
-  console.reportErrorsAsExceptions = false;
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
 
-  const [ fontLoaded, setFontLoaded ] = useState(false);
-
-  if (!fontLoaded) {
-
-    return (
-      <AppLoading
-      startAsync={fetchFonts}
-      onFinish={() => {
-        setFontLoaded(true);
-      }}
-      onError={(err) => {
-        console.log(err);
-      }}
-      >
-      </AppLoading>
-    )
+  if (!fontsLoaded) {
+    return undefined;
+  } else {
+    SplashScreen.hideAsync();
   }
-
-  console.log(API_URL);
 
   return (
     <Provider store={store}>
       <AppNavigatorContainer></AppNavigatorContainer>
     </Provider>
+
   );
 }
-
-      /*<AppNavigatorContainer></AppNavigatorContainer>*/
+//      <AppNavigatorContainer></AppNavigatorContainer>
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

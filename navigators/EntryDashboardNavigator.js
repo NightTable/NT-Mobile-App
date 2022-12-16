@@ -144,7 +144,7 @@ const EntryDashboardNavigator = (props) => {
                 component={EventTableConfigurationScreen}
                 name="edNav-EventTableConfigurationScreen"
                 options={{
-                    headerTitle: "Tables",
+                    headerTitle: "Join and Form Tables",
                     headerTitleStyle: {
                         fontSize: Platform.OS === 'ios' ? 20 * heightRatioProMax : 15 * heightRatioProMax,
                         fontFamily: Fonts.mainFontReg,

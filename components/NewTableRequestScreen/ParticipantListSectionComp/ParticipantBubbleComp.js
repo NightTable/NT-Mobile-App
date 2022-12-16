@@ -11,9 +11,12 @@ import {
     View, 
     Text, 
     Image,
-    TouchableOpacity} from 'react-native';
+    TextInput,
+    TouchableOpacity,
+    } from 'react-native';
 import { Colors } from '../../../colors/Colors';
 
+import goldenCheckImage from '../../../assets/goldentickbox.png'
 import whiteXCircleImage from '../../../assets/whitexcircle.png';
 import { Fonts } from '../../../fonts/Fonts';
 const ParticipantBubbleComp = (props) => {
@@ -31,10 +34,9 @@ const ParticipantBubbleComp = (props) => {
                 <Text style={{
                     fontSize: 15 * heightRatioProMax,
                     marginLeft: 10 * widthRatioProMax,
-                    color: Colors.white,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
-                }}>{props.email}</Text>
+                }}>{(props.email === null && props.phone !== 0)? "+" + props.phone : props.email}</Text>
             </View>
             <TouchableOpacity onPress={() => props.localDeleteParticipantPress(props.id)} style={{
                 flexDirection: 'row',
@@ -70,7 +72,7 @@ const ParticipantBubbleComp = (props) => {
                 flex: 5
             }}>
                 <Text style={{
-                    color: Colors.white,
+                    color: Colors.black,
                     fontFamily: Fonts.mainFontReg
                 }}>{props.name}</Text>
             </View>
@@ -91,18 +93,44 @@ const ParticipantBubbleComp = (props) => {
         )
     }
 
-    return (<View style={{
-        borderRadius: 5 * heightRatioProMax,
-        marginTop: 5 * heightRatioProMax,
-        flex: 1,
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: Colors.textColorGold,
-        height: isExternalUser ? 60 * heightRatioProMax : 75 * heightRatioProMax
-    }}>
-        {dynamicRowRender}
-    </View>)
+    return (
+        <View style={{flexDirection: 'column'}}>
+            <View style={{
+                borderRadius: 5 * heightRatioProMax,
+                marginTop: 5 * heightRatioProMax,
+                flex: 1,
+                width: '100%',
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: Colors.gold,
+                height: isExternalUser ? 60 * heightRatioProMax : 75 * heightRatioProMax
+            }}>
+
+                {dynamicRowRender}
+
+            </View>
+            <View style={{alignContent: 'center', justifyContent: 'space-evenly', flexDirection: 'row'}}>
+                <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, marginLeft: 15 * widthRatioProMax, fontFamily: Fonts.mainFontReg}}> Set Joining Fee </Text>
+                <TextInput
+                    style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 200 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
+                    placeholder={'$'}
+                    onChangeText={(val) => props.changePartJoiningfee(props.key, val)}
+                    value={`${props.joiningFee}`}/>
+                <TouchableOpacity>
+                    <Image
+                        style={{
+                            width: 40 * heightRatioProMax,
+                            height: 40 * heightRatioProMax,
+                        }}
+                        source={goldenCheckImage}>
+                    </Image>
+                </TouchableOpacity>
+
+            </View>
+
+        </View>
+
+        )
 
 };
 

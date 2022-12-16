@@ -4,7 +4,7 @@
 // StrynDev Solutions. It must be returned to StrynDev Solutions 
 // when its authorized use is terminated.
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import { 
     View, 
@@ -13,49 +13,95 @@ import {
     StyleSheet } from 'react-native';
 
 import { Colors } from '../../../colors/Colors';
-import { heightRatioProMax } from '../../../dimensions/Dimensions';
+import { heightRatioProMax, widthRatioProMax } from '../../../dimensions/Dimensions';
 import { Fonts } from '../../../fonts/Fonts';
 
 const TableConfigComp = (props) => {
 
+    const [boxColor, setBoxColor] = useState(Colors.black);
+    const [textColor, setTextColor] = useState(Colors.gold);
 
-    return (<TouchableOpacity style={[
-        {...styles.configCompContainer,
-        borderColor: props.selectedId === props.id ? Colors.textColorGold : null,
-        borderWidth: props.selectedId === props.id ? 1 : 0,},
-        styles.configCompContainerShadow]} onPress={() => props.onTableConfigPress(props.id)}>
-        <View style={{
-            flex: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}>
-            <Text style={{
-                textAlign: 'center',
-                flexDirection: 'column',
-                fontFamily: Fonts.mainFontReg,
-                width: '80%',
-                color: Colors.textColorGold
-            }}>{props.type}</Text>
-        </View>
-        <View style={{
-            flex: 2
-        }}>
-            <Text style={{
-                textAlign: 'center',
-                fontFamily: Fonts.mainFontReg,
-                color: Colors.textColorGold
-            }}>${props.price}</Text>
-        </View>
-        <View style={{
-            flex: 2
-        }}>
-            <Text style={{
-                textAlign: 'center',
-                fontFamily: Fonts.mainFontReg,
-                color: Colors.textColorGold
-            }}>fits {props.size}</Text>
-        </View>
-    </TouchableOpacity>)
+    const handleOnPress = () => {
+        if (boxColor === Colors.black && textColor === Colors.gold){
+            setBoxColor(Colors.gold);
+            setTextColor(Colors.black);
+            let parts = props.price.split('$')
+            props.handletableMin(1*parseInt(parts[1]));
+
+
+        }
+
+        if (boxColor === Colors.gold && textColor === Colors.black){
+            setBoxColor(Colors.black);
+            setTextColor(Colors.gold);
+            let parts = props.price.split('$')
+            props.handletableMin(-1*parseInt(parts[1]));
+
+        }
+
+    }
+
+
+
+    return (
+    <View>
+        <TouchableOpacity style={[
+            {...styles.configCompContainer,
+            borderColor: Colors.gold,
+            backgroundColor: boxColor,
+            borderWidth: 1,},
+            styles.configCompContainerShadow]} onPress={() => {props.onTableConfigPress(props.id); handleOnPress()}}>
+            <View style={{
+                flex: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Text style={{
+                    textAlign: 'center',
+                    flexDirection: 'column',
+                    fontFamily: Fonts.mainFontReg,
+                    width: '80%',
+                    color: textColor
+                }}>{props.id}</Text>
+            </View>        
+            <View style={{
+                flex: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Text style={{
+                    textAlign: 'center',
+                    flexDirection: 'column',
+                    fontFamily: Fonts.mainFontReg,
+                    width: '80%',
+                    color: textColor
+                }}>{props.type}</Text>
+            </View>
+            <View style={{
+                flex: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Text style={{
+                    textAlign: 'center',
+                    fontFamily: Fonts.mainFontReg,
+                    color: textColor
+                }}>{props.price}</Text>
+            </View>
+            <View style={{
+                flex: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Text style={{
+                    textAlign: 'center',
+                    fontFamily: Fonts.mainFontReg,
+                    color: textColor
+                }}>{props.size}</Text>
+            </View>
+        </TouchableOpacity>
+    </View>)
+
 }
 
 const styles = StyleSheet.create({
@@ -69,7 +115,6 @@ const styles = StyleSheet.create({
         height: 50 * heightRatioProMax,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: Colors.black
     },
     configCompContainerShadow: {
         shadowColor: 'black',

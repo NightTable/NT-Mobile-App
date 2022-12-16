@@ -16,6 +16,7 @@ import {
 
 import { Colors } from '../../../colors/Colors';
 
+import goldenCheckImage from '../../../assets/goldentickbox.png'
 import purpleCheckImage from '../../../assets/purplecheckmark.png';
 import { heightRatioProMax} from '../../../dimensions/Dimensions';
 import { Fonts } from '../../../fonts/Fonts';
@@ -23,7 +24,8 @@ import { Fonts } from '../../../fonts/Fonts';
 const FriendInputComp = (props) => {
 
 
-    return (<View style={styles.enterEmailCompContainer}>
+    return (
+    <View style={styles.enterEmailCompContainer}>
         <View>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
@@ -34,6 +36,9 @@ const FriendInputComp = (props) => {
             flexDirection: 'row',
             alignItems: 'center',
         }}>
+            {props.inputText === "Enter Phone Number" ? 
+                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, marginTop: 10 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}> + </Text> : null
+            }
             <View style={{
                 flex: 10
             }}>
@@ -51,7 +56,7 @@ const FriendInputComp = (props) => {
                     borderRightWidth: 0,
                     height: 30 * heightRatioProMax,
                     borderBottomColor: Colors.textColorGold,
-                }}></TextInput>
+                }}/>
             </View>
             <TouchableOpacity style={{
                 flex: 2,
@@ -64,7 +69,7 @@ const FriendInputComp = (props) => {
                         width: 40 * heightRatioProMax,
                         height: 40 * heightRatioProMax,
                     }}
-                    source={purpleCheckImage}></Image>
+                    source={goldenCheckImage}></Image>
             </TouchableOpacity>
         </View>
     </View>)

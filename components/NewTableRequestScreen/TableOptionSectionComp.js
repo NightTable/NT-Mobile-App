@@ -6,8 +6,9 @@
 import React from 'react';
 
 import { View, Text, StyleSheet } from 'react-native';
+import { getLocaleDirection } from 'react-native-web/dist/cjs/modules/useLocale';
 import { Colors } from '../../colors/Colors';
-import { heightRatioProMax } from '../../dimensions/Dimensions';
+import { heightRatioProMax, widthRatioProMax } from '../../dimensions/Dimensions';
 import { Fonts } from '../../fonts/Fonts';
 
 import TableConfigComp from './TableOptionSectionComp/TableConfigComp';
@@ -17,12 +18,11 @@ const TableOptionSectionComp = (props) => {
     const tableConfigListData = props.tableConfigData; 
 
     const handleTableOptionSectionConfigPress = (idParam) => {
-
-        console.log("This is the middle chain");
-
         props.onOuterTableConfigPress(idParam);
 
     }
+
+    let marginFactor = 18;
 
     return (<View style={styles.componentContainer}>
 
@@ -33,9 +33,52 @@ const TableOptionSectionComp = (props) => {
         }}>
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
-                color: Colors.textColorGold
-            }}>select a table option:</Text>
+                color: Colors.textColorGold,
+                fontSize: 20 * heightRatioProMax,
+
+            }}>
+                Select Your Table Options:</Text>
         </View>
+        <View style={{flexDirection: 'row', justifyContent: "space-evenly", alignItems: 'center'}}>
+            <Text style={{
+                        textAlign: 'center',
+                        flexDirection: 'column',
+                        fontFamily: Fonts.mainFontReg,
+                        marginHorizontal: marginFactor * widthRatioProMax,
+                        color: Colors.gold
+                    }}>
+                    Table Map ID
+            </Text>
+            <Text style={{
+                        textAlign: 'center',
+                        flexDirection: 'column',
+                        fontFamily: Fonts.mainFontReg,
+                        marginHorizontal: marginFactor * widthRatioProMax,
+                        color: Colors.gold,
+                        marginRight: 45 * widthRatioProMax
+                    }}>
+                    Type
+            </Text>
+            <Text style={{
+                        textAlign: 'center',
+                        flexDirection: 'column',
+                        fontFamily: Fonts.mainFontReg,
+                        marginHorizontal: marginFactor * widthRatioProMax,
+                        color: Colors.gold
+                    }}>
+                    Minimum
+            </Text>
+            <Text style={{
+                        textAlign: 'center',
+                        flexDirection: 'column',
+                        fontFamily: Fonts.mainFontReg,
+                        marginHorizontal: marginFactor * widthRatioProMax,
+                        color: Colors.gold
+                    }}>
+                    Table Size
+            </Text>
+        </View>
+
         {
             tableConfigListData.map((tableConfig, index) => {
 
@@ -50,9 +93,10 @@ const TableOptionSectionComp = (props) => {
                     key={index}
                     selectedId={props.selectedTableConfigurationId}
                     type={tableConfig.type}
-                    id={tableConfig._id}
-                    price={tableConfig.price}
-                    size={tableConfig.size}
+                    id={tableConfig.id}
+                    price={tableConfig.minimum}
+                    size={tableConfig.fits}
+                    handletableMin={props.handleTableMinimum}
                 ></TableConfigComp>);
             })
         }

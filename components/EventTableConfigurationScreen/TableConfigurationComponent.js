@@ -92,13 +92,13 @@ const TableConfigurationComponent = (props) => {
                         <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.black, textAlign: 'center', marginVertical: 3 * heightRatioProMax}}>{props.tableMinimum}</Text>
                 </View>
             </View>
-            {(collapsed && bids !== []) ? 
+            {(collapsed && bids.length !== 0) ? 
                     <ScrollView>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold, textAlign: 'center', marginTop: 15 * heightRatioProMax}}>Organizer</Text>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold, textAlign: 'center', marginTop: 15 * heightRatioProMax}}>Group Spend</Text>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold, textAlign: 'center', marginTop: 15 * heightRatioProMax}}>Joining Fee</Text>
-                        </View>
+                         </View>
                         {bids.map((bid, index) => (
                             <TableConfigurationBidsComponent
                                 key={index}

@@ -137,10 +137,10 @@ const styles = StyleSheet.create({
         height: 400 * heightRatioProMax
     },
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
+        height: 40 * heightRatioProMax,
+        margin: 12 * heightRatioProMax,
+        borderWidth: 1 * widthRatioProMax,
+        padding: 10 * heightRatioProMax,
         borderBottomColor: Colors.gold,
         borderTopWidth: 0,
         borderRightWidth: 0,
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
         placeholderTextColor: Colors.gold,
         selectionColor: Colors.gold,
         color: Colors.gold,
+        fontFamily: Fonts.mainFontReg
       },
 })
 
