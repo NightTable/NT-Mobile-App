@@ -6,10 +6,6 @@ user attempts to set a custom table minimum, they should not be allowed to move 
 All participants' joining fees, including the organizer's, must add up to be equal to or more than
 the table minimum. 
 
-Phone number validation isn't working. Fix that. 
-
-How do you handle duplicate friends?
-
 
 */
 
@@ -232,10 +228,7 @@ const NewTableRequestScreen = (props) => {
             }
         }
 
-        if (selectedTableType === "pnsl"){
-            thisUserAsParticipant[0].joiningFee = defaultTableMinimum;
-        }
-        else{
+        if (selectedTableType === "snpl" || selectedTableType === "pnsl"){
             setThisUserAsParticipant(
                 [
                     {
@@ -257,12 +250,15 @@ const NewTableRequestScreen = (props) => {
     }, [tableMinimum, currentParticipants.length, selectedTableType]);
 
     //checking to see if the phone numbers are valid
+    const [validNumber, setValidNumber] = useState(false)
     const validatePhoneNumber = async (num) => {
         try {
             console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
             axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
                 response => {
-                    return response.data.valid;
+                    console.log(response.data.valid);
+                    setValidNumber(response.data.valid);
+                    console.log(validNumber);
                 }
             )
             .catch (error => {
@@ -382,7 +378,8 @@ const NewTableRequestScreen = (props) => {
 
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
-        if (validatePhoneNumber(currentPhoneNumberInputSnapshot)) {
+        console.log(validNumber);
+        if (validNumber) {
             // check for duplicate
             for (let i = 0; i < currentParticipants.length; i++){
                 if (currentParticipants[i].phone === currentPhoneNumberInputSnapshot){
@@ -410,7 +407,7 @@ const NewTableRequestScreen = (props) => {
 
             setNewPhoneNumberAddErrorShown(true);
         }
-        //console.log(newPhoneNumberAddErrorShown, ": phone number error")
+        console.log(newPhoneNumberAddErrorShown, ": phone number error")
 
     };
 
@@ -503,9 +500,6 @@ const NewTableRequestScreen = (props) => {
         if (selectedTables.length == 0){
             errorMessages.push("Make sure you select your table options")
         }
-        else{
-            errorMessages.push("table option has been selected")
-        }
 
         //check to see if table minimum is approved
         if (tableMinimum < defaultTableMinimum){
@@ -514,7 +508,6 @@ const NewTableRequestScreen = (props) => {
             }
             //check to see, if snpl, whether all joining fees are greater than or equal to the table minimum
             else{
-                errorMessages.push("user is promoter")
                 let totalFunds = 0;
                 for (let i = 0; i < currentParticipants.length; i++){
                     console.log("your fee: ", thisUserAsParticipant[0].joiningFee);
@@ -527,36 +520,22 @@ const NewTableRequestScreen = (props) => {
                 if (totalFunds < tableMinimum){
                     errorMessages.push("Participants aren't contributing enough money. Reduce the table minimum, reduce your table options, or increase the joining fee");
                 }
-                else{
-                    errorMessages.push("Enough funds");
-                }
             }
         }
         else{
-            errorMessages.push("minimum is sufficient");
             let totalFunds = 0;
             for (let i = 0; i < currentParticipants.length; i++){
-                console.log("your fee: ", thisUserAsParticipant[0].joiningFee);
-                console.log(i + "-th particpant", currentParticipants[i].joiningFee, )
                 totalFunds = totalFunds + currentParticipants[i].joiningFee;
             }
             totalFunds = parseInt(totalFunds) + parseInt(thisUserAsParticipant[0].joiningFee);
-            console.log(totalFunds, "total funds", tableMinimum, "table min");
             if (totalFunds < tableMinimum){
                 errorMessages.push("Participants aren't contributing enough money. Reduce the table minimum, reduce your table options, or increase the joining fee");
-            }
-            else{
-                errorMessages.push("Enough funds");
             }
         }
 
         //check to make sure a proper time has been selected (hour, minute, and time of day)
         if (hourValue === "hours" || minuteValue == "minutes" || timeOfDayNotSelected){
             errorMessages.push("Please select an estimated time of arrival")
-        }
-        else{
-            errorMessages.push("Time has been selected")
-
         }
 
         // const currentParticipantsSnapshot = currentParticipants;
@@ -608,7 +587,7 @@ const NewTableRequestScreen = (props) => {
 
         //     console.log(err);
         // });
-        if (errorMessages === []){
+        if (errorMessages.length === 0){
             props.navigation.navigate('edNav-TableRequestConfirmationScreen');
         }
         else{
@@ -969,7 +948,7 @@ const NewTableRequestScreen = (props) => {
                 </View>
 
 
-                {selectedTableType === 'snpl' ? <InviteFriendSectionComp
+                <InviteFriendSectionComp
                     isNewPhoneNumberAddErrorShown={newPhoneNumberAddErrorShown}
                     isNewEmailAddErrorShown={newEmailAddErrorShown}
                     isNewParticipantAddErrorShown={newParticipantAddErrorShown}
@@ -979,16 +958,16 @@ const NewTableRequestScreen = (props) => {
                     onEmailInputTrigger={handleEmailInputTrigger}
                     onPhoneNumberInputTrigger={handleEnterPhoneInputState}
                     onSearchFriendInputTrigger={handleSearchFriendInputTrigger}>
-                </InviteFriendSectionComp> : null}
+                </InviteFriendSectionComp>
 
-                { selectedTableType === 'snpl' ? <ParticipantListSectionComp
+                <ParticipantListSectionComp
                     onDeleteParticipantPress={handleDeleteParticipantPress}
                     thisUser={thisUserAsParticipant}
                     participants={currentParticipants}
                     defaultJoiningFee={defaultParticipantPrice}
                     changePartJoiningfee={modifyParticipantJoiningFee}
                     changeSelfJoiningFee={modifyThisUserJoiningFee}>
-                </ParticipantListSectionComp> : null}
+                </ParticipantListSectionComp>
 
                 <CostSplittingSectionComp
                     isCheckboxSelected={termsCheckboxEnabled}

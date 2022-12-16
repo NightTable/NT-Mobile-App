@@ -79,8 +79,8 @@ const EventTableConfigurationScreen = (props) => {
     return (
         <View style={{flex: 1, backgroundColor: Colors.black, alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
             <View style={{flex: 1, marginTop: 80 * heightRatioProMax}}>
-                <Text style={{fontFamily: Fonts.mainFontReg, textAlign: 'center', color: Colors.gold, fontSize: 15 * heightRatioProMax}}>
-                    Click on pointers next to the Table Map IDs who all are
+                <Text style={{fontFamily: Fonts.mainFontReg, textAlign: 'center', color: Colors.gold, fontSize: 20 * heightRatioProMax}}>
+                    Click on the pointers next to the Table Map IDs  to see who all are
                     currently bidding to meet or exceed the Table Minimum.{"\n"}
                     {"\n"}
                     Tables are sold to and reserved for those who meet or exceed the Table Minimum
@@ -92,7 +92,7 @@ const EventTableConfigurationScreen = (props) => {
                 </Text>
             </View>
         <View style={{flex: 1}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 * heightRatioProMax}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 30 * heightRatioProMax}}>
                 <View style={{marginLeft: 5 * widthRatioProMax, marginRight: 5 * widthRatioProMax}}>
                     <Text style={{fontFamily: Fonts.mainFontReg, color: Colors.gold}}>Table Map ID</Text>
                 </View>

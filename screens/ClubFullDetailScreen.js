@@ -87,9 +87,10 @@ const ClubFullDetailScreen = (props) => {
                     {eventList.slice(0,5).map((list, index) => (
                         <TouchableOpacity
                             onPress={() => props.navigation.navigate('edNav-EventTableConfigurationScreen')}
+                            key={index}
+
                         >
                             <EventBubbleComp
-                                key={index}
                                 title={list.name}
                                 date={list.eventDate}
                                 timeRange={list.eventTime}
