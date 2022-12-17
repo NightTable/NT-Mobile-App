@@ -6,6 +6,13 @@ user attempts to set a custom table minimum, they should not be allowed to move 
 All participants' joining fees, including the organizer's, must add up to be equal to or more than
 the table minimum. 
 
+Some notes:
+
+Only club employees can organize tables. That means if you want to book a table,
+a host will do it on behalf of you. In a SNPL request, a request is sent out to all 
+pending participants. In PNSL, a request is sent out to only 1 participant who pays it all 
+upfront. THIS HAS NOT BEEN IMPLEMENTED YET AND HAS TO BE IMPLEMENTED. 
+
 
 */
 
@@ -62,6 +69,8 @@ const NewTableRequestScreen = (props) => {
     )
 
     const [modifyingPrices, setModifyingPrices] = useState(false);
+
+    const [validNumber, setValidNumber] = useState(false)
 
     let [tempModifiedPrice, setTempModifiedPrice] = useState(0);
 
@@ -250,7 +259,6 @@ const NewTableRequestScreen = (props) => {
     }, [tableMinimum, currentParticipants.length, selectedTableType]);
 
     //checking to see if the phone numbers are valid
-    const [validNumber, setValidNumber] = useState(false)
     const validatePhoneNumber = async (num) => {
         try {
             console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
@@ -262,10 +270,10 @@ const NewTableRequestScreen = (props) => {
                 }
             )
             .catch (error => {
-                return false;
+                setValidNumber(false);
             });
         } catch (error) {
-            return false;
+            setValidNumber(false);
         }
     }
 
@@ -377,6 +385,7 @@ const NewTableRequestScreen = (props) => {
     const handleEnterPhoneSubmit = () => {
 
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
+        validatePhoneNumber(currentPhoneNumberInputSnapshot);
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
         console.log(validNumber);
         if (validNumber) {
