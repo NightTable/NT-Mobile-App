@@ -36,7 +36,7 @@ const ParticipantBubbleComp = (props) => {
                     marginLeft: 10 * widthRatioProMax,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
-                }}>{(props.email === null && props.phone !== 0)? "+" + props.phone : props.email}</Text>
+                }}>{(props.phone !== 0)? "+" + props.phone : props.email}</Text>
             </View>
             <TouchableOpacity onPress={() => props.localDeleteParticipantPress(props.id)} style={{
                 flexDirection: 'row',

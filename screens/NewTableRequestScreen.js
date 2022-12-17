@@ -262,8 +262,9 @@ const NewTableRequestScreen = (props) => {
     const validatePhoneNumber = async (num) => {
         try {
             console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
-            axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
+            await axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
                 response => {
+                    console.log(response.data, "data");
                     console.log(response.data.valid);
                     setValidNumber(response.data.valid);
                     console.log(validNumber);
@@ -382,12 +383,12 @@ const NewTableRequestScreen = (props) => {
         })
     };
 
-    const handleEnterPhoneSubmit = () => {
+    const handleEnterPhoneSubmit = async () => {
 
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
-        validatePhoneNumber(currentPhoneNumberInputSnapshot);
+        await validatePhoneNumber(currentPhoneNumberInputSnapshot);
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
-        console.log(validNumber);
+        console.log(validNumber, "from handle enter phone");
         if (validNumber) {
             // check for duplicate
             for (let i = 0; i < currentParticipants.length; i++){
@@ -411,6 +412,7 @@ const NewTableRequestScreen = (props) => {
             newParticipantList.push(newExternalParticipant);
             setNewPhoneNumberAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
+            console.log(currentParticipants, "curr parts");
 
         } else {
 
