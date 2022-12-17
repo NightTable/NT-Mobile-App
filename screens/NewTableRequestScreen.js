@@ -467,13 +467,51 @@ const NewTableRequestScreen = (props) => {
 
     const handleTableConfigPress = (idParam) => {
         let selectedTableList = selectedTables;
+        console.log(selectedTableList, "selectedTableList from selection");
+        console.log(selectedTables, "selectedTables from selection\n");
         setSelectedTableConfigId(idParam);
-        for (let i = 0; i < tcs.length; i++){
-            if (tcs[i].id === idParam){
-                selectedTableList.push(tcs[i]);
+        if (selectedTableList.length === 0){
+            for (let i = 0; i < tcs.length; i++){
+                if (tcs[i].id === idParam){
+                    selectedTableList.push(tcs[i]);
+                }
             }
         }
+        else{
+            let found = false;
+            for (let i = 0; i < selectedTableList.length; i++) {
+                if (selectedTableList[i].id === idParam){
+                    found = true;
+                    selectedTableList.splice(i);
+                    break
+                }
+            }
+            if (!found) {
+                for (let i = 0; i < tcs.length; i++){
+                    if (tcs[i].id === idParam){
+                        selectedTableList.push(tcs[i]);
+                    }
+                }
+            } 
+        }
+        /*for (let i = 0; i < tcs.length; i++){
+            console.log(i, "i from for loop")
+            console.log(tcs[i].id, idParam, "tcs[i].id, idParam");
+            if (tcs[i].id === idParam){ //these if statements have a bug
+                //console.log(selectedTableList, "selectedTableList logging")
+                console.log(selectedTableList.includes(tcs[i]), selectedTableList[i]["id"], tcs[i], "selectedTableList.includes(tcs[i]), selectedTableList, tcs[i]")
+                if (!(selectedTableList.includes(tcs[i]))){
+                    selectedTableList.push(tcs[i]);
+                }
+                else{
+                    console.log(selectedTableList.includes(tcs[i]), "table list includes table\n");
+                    selectedTableList.pop();
+                }
+            }
+        }*/
         setSelectedTables(selectedTableList);
+        console.log(selectedTableList, "selectedTableList from selection");
+        console.log(selectedTables, "selectedTables from selection\n");
     }
 
     const handleRequestTypeChange = () => {
@@ -498,8 +536,10 @@ const NewTableRequestScreen = (props) => {
 
         //check to see if table option has been selected
         if (selectedTables.length == 0){
-            errorMessages.push("Make sure you select your table options")
+            errorMessages.push("Make sure you select your table options");
+            console.log(selectedTables, "selectedTables from continue press");
         }
+        console.log(selectedTables, "selectedTables from continue press");
 
         //check to see if table minimum is approved
         if (tableMinimum < defaultTableMinimum){
