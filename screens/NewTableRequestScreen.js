@@ -6,6 +6,13 @@ user attempts to set a custom table minimum, they should not be allowed to move 
 All participants' joining fees, including the organizer's, must add up to be equal to or more than
 the table minimum. 
 
+Some notes:
+
+Only club employees can organize tables. That means if you want to book a table,
+a host will do it on behalf of you. In a SNPL request, a request is sent out to all 
+pending participants. In PNSL, a request is sent out to only 1 participant who pays it all 
+upfront. THIS HAS NOT BEEN IMPLEMENTED YET AND HAS TO BE IMPLEMENTED. 
+
 
 */
 
@@ -62,6 +69,8 @@ const NewTableRequestScreen = (props) => {
     )
 
     const [modifyingPrices, setModifyingPrices] = useState(false);
+
+    const [validNumber, setValidNumber] = useState(false)
 
     let [tempModifiedPrice, setTempModifiedPrice] = useState(0);
 
@@ -238,7 +247,7 @@ const NewTableRequestScreen = (props) => {
                         email: "amiyasekhar@nighttable.co",
                         imageObj: null,
                         name: "Amiya Sekhar",
-                        joiningFee: ((tableMinimum) / (currentParticipants.length + 1))
+                        joiningFee: Math.ceil((tableMinimum) / (currentParticipants.length + 1))
                     }
                 ]
             )
@@ -250,22 +259,22 @@ const NewTableRequestScreen = (props) => {
     }, [tableMinimum, currentParticipants.length, selectedTableType]);
 
     //checking to see if the phone numbers are valid
-    const [validNumber, setValidNumber] = useState(false)
     const validatePhoneNumber = async (num) => {
         try {
             console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
-            axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
+            await axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
                 response => {
+                    console.log(response.data, "data");
                     console.log(response.data.valid);
                     setValidNumber(response.data.valid);
                     console.log(validNumber);
                 }
             )
             .catch (error => {
-                return false;
+                setValidNumber(false);
             });
         } catch (error) {
-            return false;
+            setValidNumber(false);
         }
     }
 
@@ -292,7 +301,7 @@ const NewTableRequestScreen = (props) => {
 
     const updateJoiningFee = () => {
         for (let i = 0; i < currentParticipants.length; i++){
-            currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
+            currentParticipants[i].joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 1));
         }
 
         /*if (selectedTableType === "pnsl"){
@@ -360,7 +369,7 @@ const NewTableRequestScreen = (props) => {
                     joiningFee: 0
             };
 
-            newParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
+            newParticipant.joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 2));
             newParticipantList.push(newParticipant);
 
             setCurrentParticipants([...newParticipantList])
@@ -374,11 +383,12 @@ const NewTableRequestScreen = (props) => {
         })
     };
 
-    const handleEnterPhoneSubmit = () => {
+    const handleEnterPhoneSubmit = async () => {
 
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
+        await validatePhoneNumber(currentPhoneNumberInputSnapshot);
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
-        console.log(validNumber);
+        console.log(validNumber, "from handle enter phone");
         if (validNumber) {
             // check for duplicate
             for (let i = 0; i < currentParticipants.length; i++){
@@ -398,10 +408,11 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
-            newExternalParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
+            newExternalParticipant.joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 2));
             newParticipantList.push(newExternalParticipant);
             setNewPhoneNumberAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
+            console.log(currentParticipants, "curr parts");
 
         } else {
 
@@ -438,7 +449,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
-            newExternalParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
+            newExternalParticipant.joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 2));
             newParticipantList.push(newExternalParticipant);
             setNewEmailAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
@@ -467,13 +478,51 @@ const NewTableRequestScreen = (props) => {
 
     const handleTableConfigPress = (idParam) => {
         let selectedTableList = selectedTables;
+        console.log(selectedTableList, "selectedTableList from selection");
+        console.log(selectedTables, "selectedTables from selection\n");
         setSelectedTableConfigId(idParam);
-        for (let i = 0; i < tcs.length; i++){
-            if (tcs[i].id === idParam){
-                selectedTableList.push(tcs[i]);
+        if (selectedTableList.length === 0){
+            for (let i = 0; i < tcs.length; i++){
+                if (tcs[i].id === idParam){
+                    selectedTableList.push(tcs[i]);
+                }
             }
         }
+        else{
+            let found = false;
+            for (let i = 0; i < selectedTableList.length; i++) {
+                if (selectedTableList[i].id === idParam){
+                    found = true;
+                    selectedTableList.splice(i);
+                    break
+                }
+            }
+            if (!found) {
+                for (let i = 0; i < tcs.length; i++){
+                    if (tcs[i].id === idParam){
+                        selectedTableList.push(tcs[i]);
+                    }
+                }
+            } 
+        }
+        /*for (let i = 0; i < tcs.length; i++){
+            console.log(i, "i from for loop")
+            console.log(tcs[i].id, idParam, "tcs[i].id, idParam");
+            if (tcs[i].id === idParam){ //these if statements have a bug
+                //console.log(selectedTableList, "selectedTableList logging")
+                console.log(selectedTableList.includes(tcs[i]), selectedTableList[i]["id"], tcs[i], "selectedTableList.includes(tcs[i]), selectedTableList, tcs[i]")
+                if (!(selectedTableList.includes(tcs[i]))){
+                    selectedTableList.push(tcs[i]);
+                }
+                else{
+                    console.log(selectedTableList.includes(tcs[i]), "table list includes table\n");
+                    selectedTableList.pop();
+                }
+            }
+        }*/
         setSelectedTables(selectedTableList);
+        console.log(selectedTableList, "selectedTableList from selection");
+        console.log(selectedTables, "selectedTables from selection\n");
     }
 
     const handleRequestTypeChange = () => {
@@ -498,8 +547,10 @@ const NewTableRequestScreen = (props) => {
 
         //check to see if table option has been selected
         if (selectedTables.length == 0){
-            errorMessages.push("Make sure you select your table options")
+            errorMessages.push("Make sure you select your table options");
+            console.log(selectedTables, "selectedTables from continue press");
         }
+        console.log(selectedTables, "selectedTables from continue press");
 
         //check to see if table minimum is approved
         if (tableMinimum < defaultTableMinimum){
