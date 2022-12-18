@@ -247,7 +247,7 @@ const NewTableRequestScreen = (props) => {
                         email: "amiyasekhar@nighttable.co",
                         imageObj: null,
                         name: "Amiya Sekhar",
-                        joiningFee: ((tableMinimum) / (currentParticipants.length + 1))
+                        joiningFee: Math.ceil((tableMinimum) / (currentParticipants.length + 1))
                     }
                 ]
             )
@@ -301,7 +301,7 @@ const NewTableRequestScreen = (props) => {
 
     const updateJoiningFee = () => {
         for (let i = 0; i < currentParticipants.length; i++){
-            currentParticipants[i].joiningFee = (tableMinimum) / (currentParticipants.length + 1);
+            currentParticipants[i].joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 1));
         }
 
         /*if (selectedTableType === "pnsl"){
@@ -369,7 +369,7 @@ const NewTableRequestScreen = (props) => {
                     joiningFee: 0
             };
 
-            newParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
+            newParticipant.joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 2));
             newParticipantList.push(newParticipant);
 
             setCurrentParticipants([...newParticipantList])
@@ -408,7 +408,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
-            newExternalParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
+            newExternalParticipant.joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 2));
             newParticipantList.push(newExternalParticipant);
             setNewPhoneNumberAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
@@ -449,7 +449,7 @@ const NewTableRequestScreen = (props) => {
                 joiningFee: 0
             };
 
-            newExternalParticipant.joiningFee = (tableMinimum) / (currentParticipants.length + 2);
+            newExternalParticipant.joiningFee = Math.ceil((tableMinimum) / (currentParticipants.length + 2));
             newParticipantList.push(newExternalParticipant);
             setNewEmailAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
