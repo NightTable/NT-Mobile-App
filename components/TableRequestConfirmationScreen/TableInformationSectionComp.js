@@ -1,12 +1,7 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React from 'react';
 
 import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Colors } from '../../colors/Colors';
 import { heightRatioProMax, widthRatioProMax } from '../../dimensions/Dimensions';
 
@@ -14,31 +9,54 @@ import { Fonts } from '../../fonts/Fonts';
 
 const TableInformationSectionComp = (props) => {
 
-    return (<View style={styles.informationSectionContainer}>
-        <View style={{
-            marginTop: 20 * heightRatioProMax,
-            marginBottom: 30 * heightRatioProMax,
-        }}>
-            <Text style={{
-                fontFamily: Fonts.mainFontReg,
-                fontSize: 20 * heightRatioProMax,
-                color: Colors.textColorGold
-            }}>table information</Text>
-        </View>
-        <View style={styles.textViewContainer}>
-            <Text style={styles.textLabelDescriptionStyle}>type: <Text style={{
-                color: Colors.textColorGold
-            }}>{props.type}</Text></Text>
-        </View>
-        <View style={styles.textViewContainer}>
-            <Text style={styles.textLabelDescriptionStyle}>table price:<Text style={{color: Colors.textColorGold}}> ${props.price}</Text></Text>
-        </View>
-        <View style={styles.textViewContainer}>
-            <Text style={styles.textLabelDescriptionStyle}>table size:<Text style={{
-                color: Colors.textColorGold
-            }}> {props.size}</Text></Text>
-        </View>
-    </View>)
+    const tableObj = props.table
+
+    return (
+    <ScrollView style={styles.informationSectionContainer}>
+        {
+            tableObj.map((table, index) => {
+                return (
+                    <View 
+                        style={{flex: 1, flexDirection: 'row',justifyContent: 'center', margin: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderColor: Colors.gold, borderRadius: 5 * widthRatioProMax}}
+                        key={index}>
+                        <View style={styles.textViewContainer}>
+                            <Text style={{
+                                color: Colors.textColorGold,
+                                fontFamily: Fonts.mainFontReg,
+                                justifyContent: 'center',
+                                marginHorizontal: 25 * widthRatioProMax
+                            }}>{table.id}</Text>
+                        </View>
+                        <View style={styles.textViewContainer}>
+                            <Text style={{
+                                color: Colors.textColorGold,
+                                fontFamily: Fonts.mainFontReg,
+                                justifyContent: 'center',
+                                marginHorizontal: 25 * widthRatioProMax
+                            }}>{table.type}</Text>
+                        </View>
+                        <View style={styles.textViewContainer}>
+                            <Text style={{
+                                color: Colors.textColorGold,
+                                fontFamily: Fonts.mainFontReg,
+                                justifyContent: 'center',
+                                marginHorizontal: 25 * widthRatioProMax
+                            }}>${table.minimum}</Text>
+                        </View>
+                        <View style={styles.textViewContainer}>
+                            <Text style={{
+                                color: Colors.textColorGold,
+                                fontFamily: Fonts.mainFontReg,
+                                justifyContent: 'center',
+                                marginHorizontal: 25 * widthRatioProMax
+                            }}>{table.fits}</Text>
+                        </View>
+                    </View>
+                );
+            })
+        }
+
+    </ScrollView>)
 }
 
 const styles = StyleSheet.create({
@@ -46,6 +64,9 @@ const styles = StyleSheet.create({
         marginTop: 30 * heightRatioProMax,
         width: '85%',
         marginBottom: 30 * heightRatioProMax,
+        borderWidth: 1 * widthRatioProMax,
+        borderColor: Colors.gold,
+        borderRadius: 5
     },
     textLabelDescriptionStyle: {
         marginLeft: 15 * widthRatioProMax,
@@ -55,6 +76,7 @@ const styles = StyleSheet.create({
     },
     textViewContainer: {
         marginBottom: 20 * heightRatioProMax,
+        marginTop: 20 * heightRatioProMax
     }
 })
 

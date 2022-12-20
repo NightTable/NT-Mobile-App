@@ -14,6 +14,7 @@ import { Fonts } from '../../fonts/Fonts';
 
 const HeaderComp = (props) => {
 
+    let paymentType = props.paymentType === "pnsl" ? "pay-now-split-later" : "split-now-pay-later";
 
     return (<View style={{
         marginTop: 30 * heightRatioProMax,
@@ -23,14 +24,14 @@ const HeaderComp = (props) => {
             fontSize: 20 * heightRatioProMax,
             fontFamily: Fonts.mainFontBold,
             color: Colors.gold
-        }}>your table request</Text>
+        }}>Your Table Request</Text>
         <Text style={{
-            color: Colors.orange,
             fontFamily: Fonts.mainFontBold,
             marginLeft: 35 * heightRatioProMax,
             marginTop: 15 * heightRatioProMax,
-            color: Colors.gold
-        }}>split-now-pay-later</Text>
+            fontSize: 20 * heightRatioProMax,
+            color: Colors.purple
+        }}>{paymentType}</Text>
     </View>)
 }
 

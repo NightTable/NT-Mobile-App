@@ -68,11 +68,7 @@ const NewTableRequestScreen = (props) => {
         ]
     )
 
-    const [modifyingPrices, setModifyingPrices] = useState(false);
-
     const [validNumber, setValidNumber] = useState(false)
-
-    let [tempModifiedPrice, setTempModifiedPrice] = useState(0);
 
     const [ currentParticipants, setCurrentParticipants ] = useState(
         [
@@ -159,14 +155,6 @@ const NewTableRequestScreen = (props) => {
     let h = [];
     let m = [];
 
-
-    const handleCloseCustomTableMinModal = () => {
-        //setScreenOpacity(1);
-        setCustomTableMinErrorModalVisible(false);
-
-
-    }
-
     const validateCustomTableMin = () => {
         if (tableMinimum < defaultTableMinimum){
             if (!isPromoter){
@@ -210,8 +198,9 @@ const NewTableRequestScreen = (props) => {
     let tc1 = {id: "S1", type: "Stage", minimum: "$4000", fits: 5}; 
     let tc2 = {id: "S2", type: "Stage", minimum: "$8000", fits: 15}; 
     let tc3 = {id: "D1", type: "floor", minimum: "$3000", fits: 10}; 
+    let tc4 = {id: "D2", type: "floor", minimum: "$3000", fits: 10}; 
 
-    let tcs = [tc1, tc2, tc3];
+    let tcs = [tc1, tc2, tc3, tc4];
 
 
     //setting table configuration list to the table configurations
@@ -639,7 +628,13 @@ const NewTableRequestScreen = (props) => {
         //     console.log(err);
         // });
         if (errorMessages.length === 0){
-            props.navigation.navigate('edNav-TableRequestConfirmationScreen');
+            console.log(thisUserAsParticipant);
+            props.navigation.navigate('edNav-TableRequestConfirmationScreen', {
+                paymentType: selectedTableType,
+                tables: selectedTables,
+                participants: currentParticipants,
+                thisUser: thisUserAsParticipant
+            });
         }
         else{
             setContinueButtonErrorMessages(errorMessages);

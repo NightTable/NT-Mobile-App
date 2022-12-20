@@ -27,7 +27,7 @@ const ParticipantBubbleComp = (props) => {
             marginLeft: 10 * widthRatioProMax,
             fontFamily: Fonts.mainFontReg,
             color: Colors.black
-        }}>{props.email}</Text>
+        }}>{props.email || "+" + props.phone}</Text>
         : <View style={{
             flexDirection: 'row'
         }}>

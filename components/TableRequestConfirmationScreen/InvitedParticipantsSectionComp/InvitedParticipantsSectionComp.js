@@ -24,14 +24,16 @@ const InvitiedParticipantsSectionComp = (props) => {
             fontFamily: Fonts.mainFontReg,
             fontSize: 20 * heightRatioProMax,
             color: Colors.textColorGold
-        }}>invited participants</Text>
+        }}>Invited Participants</Text>
         {props.participants.map((participant, index) => (
             <ParticipantBubbleComp
-            key={index}
-            avatarImage={participant.image}
-            name={participant.name}
-            externalUser={participant.externalUser}
-            email={participant.email}></ParticipantBubbleComp>
+                key={index}
+                avatarImage={participant.imageObj}
+                name={participant.name}
+                externalUser={participant.externalUser}
+                email={participant.email}
+                phone={participant.phone}>
+            </ParticipantBubbleComp>
         ))}
     </View>)
 }

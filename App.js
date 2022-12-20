@@ -9,6 +9,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { mainReducer } from './store/reducers/main';
 import NewTableRequestScreen from './screens/NewTableRequestScreen';
+import TableRequestConfirmationScreen from './screens/TableRequestConfirmationScreen';
 
 // expo install expo-font expo-splash-screen
 
@@ -43,6 +44,7 @@ export default function App() {
 
   );
 }
+//       <AppNavigatorContainer></AppNavigatorContainer>
 //      <AppNavigatorContainer></AppNavigatorContainer>
 
 const styles = StyleSheet.create({
