@@ -43,7 +43,6 @@ const TableConfigurationComponent = (props) => {
             setChevronImageSrc(ChevronArrowNormal);
             setCollapsed(false);
         }
- 
     }
 
     useEffect(() => {

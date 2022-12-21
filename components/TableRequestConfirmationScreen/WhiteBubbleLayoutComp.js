@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Colors.black,
         borderRadius: 75 * heightRatioProMax,
-        borderColor: Colors.textColorGold,
+        borderColor: Colors.gold,
         borderWidth: 1
     }
 })
