@@ -131,7 +131,8 @@ const TableRequestConfirmationScreen = (props) => {
                         fontFamily: Fonts.mainFontReg
                     }}>{paymentType}</Text>
                     {"\n"}method to split costs.{"\n\n"}
-                    {endingMessage}
+                    {"\n"}{endingMessage}{"\n\n"}
+                    By pressing create request, you will be taken to the screen where you can choose your alcohol of choice or add money to general table tab.
                     </Text>
                 </View>
                 <View style={{

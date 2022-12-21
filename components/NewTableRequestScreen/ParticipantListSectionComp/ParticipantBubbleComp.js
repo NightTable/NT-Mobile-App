@@ -22,6 +22,7 @@ import { Fonts } from '../../../fonts/Fonts';
 const ParticipantBubbleComp = (props) => {
 
     const isExternalUser = props.externalUser;
+    let contact = props.email ||  "+"+props.phone;
 
     let dynamicRowRender;
 
@@ -36,7 +37,7 @@ const ParticipantBubbleComp = (props) => {
                     marginLeft: 10 * widthRatioProMax,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
-                }}>{(props.phone !== 0)? "+" + props.phone : props.email}</Text>
+                }}>{contact}</Text>
             </View>
             <TouchableOpacity onPress={() => props.localDeleteParticipantPress(props.id)} style={{
                 flexDirection: 'row',

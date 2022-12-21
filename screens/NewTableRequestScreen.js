@@ -14,6 +14,8 @@ pending participants. In PNSL, a request is sent out to only 1 participant who p
 upfront. THIS HAS NOT BEEN IMPLEMENTED YET AND HAS TO BE IMPLEMENTED. 
 
 
+//fix the ability to dyanimically update participant prices when a new phone number is added
+
 */
 
 import React, { useEffect, useState} from 'react';
@@ -249,7 +251,9 @@ const NewTableRequestScreen = (props) => {
 
     //checking to see if the phone numbers are valid
     const validatePhoneNumber = async (num) => {
+        console.log("entering validate phone number\n")
         try {
+            console.log("In the try block\n")
             console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
             await axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
                 response => {
@@ -257,13 +261,21 @@ const NewTableRequestScreen = (props) => {
                     console.log(response.data.valid);
                     setValidNumber(response.data.valid);
                     console.log(validNumber);
+                    if (response.data.valid){
+                        console.log("trueeee")
+                        return true;
+                    }
+                    console.log("falseeee")
+                    return false;
                 }
             )
             .catch (error => {
                 setValidNumber(false);
+                return false;
             });
         } catch (error) {
             setValidNumber(false);
+            return false;
         }
     }
 
@@ -375,10 +387,27 @@ const NewTableRequestScreen = (props) => {
     const handleEnterPhoneSubmit = async () => {
 
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
-        await validatePhoneNumber(currentPhoneNumberInputSnapshot);
+        let isValid = await axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + currentPhoneNumberInputSnapshot).then(
+            response => {
+                console.log(response.data, "data");
+                console.log(response.data.valid);
+                setValidNumber(response.data.valid);
+                console.log(validNumber);
+                if (response.data.valid){
+                    console.log("trueeee")
+                    return true;
+                }
+                console.log("falseeee")
+                return false;
+            }
+        )
+        .catch (error => {
+            setValidNumber(false);
+            return false;
+        });
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
-        console.log(validNumber, "from handle enter phone");
-        if (validNumber) {
+        console.log(isValid, "from handle enter phone");
+        if (isValid) {
             // check for duplicate
             for (let i = 0; i < currentParticipants.length; i++){
                 if (currentParticipants[i].phone === currentPhoneNumberInputSnapshot){
@@ -417,7 +446,7 @@ const NewTableRequestScreen = (props) => {
         const currentEmailInputSnapshot = enterEmailInputState;
 
         if (validateEmail(currentEmailInputSnapshot)) {
-
+            console.log("a valid email")
             //check for duplicate email
 
             for (let i = 0; i < currentParticipants.length; i++){
@@ -444,7 +473,6 @@ const NewTableRequestScreen = (props) => {
             setCurrentParticipants([...newParticipantList]);
 
         } else {
-
             setNewEmailAddErrorShown(true);
         }
 
