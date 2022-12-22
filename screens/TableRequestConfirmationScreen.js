@@ -18,6 +18,7 @@ import HeaderComp from '../components/TableRequestConfirmationScreen/HeaderComp'
 import InvitiedParticipantsSectionComp from '../components/TableRequestConfirmationScreen/InvitedParticipantsSectionComp/InvitedParticipantsSectionComp';
 import TableInformationSectionComp from '../components/TableRequestConfirmationScreen/TableInformationSectionComp';
 import WhiteBubbleLayoutComp from '../components/TableRequestConfirmationScreen/WhiteBubbleLayoutComp';
+import CategoryComponentComp from '../components/TableRequestConfirmationScreen/MenuSlideUpModalComp/CategoryComponentComp';
 
 import ChevronArrowNormal from '../assets/chevron-back-outline.png'
 import ChevronCollapsed from '../assets/chevron-back-outline-collapsed.png'
@@ -70,14 +71,14 @@ const TableRequestConfirmationScreen = (props) => {
         },
         {
             id: "63a30878218a36ab6fc0bf5b",
-            itemCategoryId: "63a30950255f67d95e468065",
+            itemCategoryId: "63a306169abc002f9c255cac",
             itemName: "Dom Perignon Rosé",
             itemQuantity: 900,
             itemPrice: 500,
         },
         {
             id: "63a30878218a36ab6fc0bf5b",
-            itemCategoryId: "63a309585b28f2ccaad8185f",
+            itemCategoryId: "63a306169abc002f9c255cac",
             itemName: "Cristal",
             itemQuantity: 500,
             itemPrice: 900,
@@ -86,21 +87,21 @@ const TableRequestConfirmationScreen = (props) => {
 
         {
             id: "63a307da0ba71d3d49cb8561",
-            itemCategoryId: "63a309585b28f2ccaad8185f",
+            itemCategoryId: "63a307da0ba71d3d49cb8561",
             itemName: "Drapier Melchizedek 30L",
             itemQuantity: 500,
             itemPrice: 180000,
         },
         {
             id: "63a30af64c8b35d38eac035d",
-            itemCategoryId: "63a309585b28f2ccaad8185f",
+            itemCategoryId: "63a307da0ba71d3d49cb8561",
             itemName: "Ace of Spades Nebuchadnezzar 15L",
             itemQuantity: 500,
             itemPrice: 20000,
         },
         {
             id: "63a30ba7899025ae50948a6c",
-            itemCategoryId: "63a309585b28f2ccaad8185f",
+            itemCategoryId: "63a307da0ba71d3d49cb8561",
             itemName: "Bollinger Sovereign 25L",
             itemQuantity: 500,
             itemPrice: 50000,
@@ -270,17 +271,30 @@ const TableRequestConfirmationScreen = (props) => {
             modalVisible={menuVisible}
             ContentModal={
                 <View style={styles.containerContent}>
-                    <TouchableOpacity
-                        onPress={handleMenuPress}>
-                        <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 20 * heightRatioProMax, color: Colors.gold}}>This is touchable opacity</Text>
-                    </TouchableOpacity>
+                    <ScrollView style={{marginTop: 10 * heightRatioProMax}}>
+                        {
+                            menuCategories.map((category, index) => {
+                                console.log(menuItems, "menuItems");
+                                return (
+                                    <CategoryComponentComp
+                                        key={index}
+                                        category={category.categoryName}
+                                        id={category.id}
+                                        fullMenu={menuItems}>
+                                    </CategoryComponentComp>
+
+                                );
+                            })
+                        }
+                    </ScrollView>
+
                 </View>
             }
             HeaderStyle={styles.headerContent}
             ContentModalStyle={styles.Modal}
             HeaderContent={
                 <View style={styles.containerHeader}>
-                    <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 20 * heightRatioProMax, color: Colors.gold}}>Menu</Text>
+                    <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 60 * heightRatioProMax, color: Colors.gold}}>Menu</Text>
 
 
                 </View>
@@ -481,7 +495,7 @@ const styles = StyleSheet.create({
     },
     containerContent: {
         flex: 1, 
-        marginTop: 40,
+        marginTop: 40 * heightRatioProMax,
         alignContent: 'center',
         alignItems: 'center',     
         
@@ -493,8 +507,8 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 200,
-        padding: 10
+        marginTop: 200 * heightRatioProMax,
+        padding: 10 * widthRatioProMax
         //backgroundColor: Colors.red,
 
         
@@ -507,10 +521,13 @@ const styles = StyleSheet.create({
 
         borderRadius: 75 * heightRatioProMax,
         backgroundColor: Colors.black,
-        marginTop: 200,
-        height: 80,
-        borderWidth: 5,
-        borderColor: Colors.gold
+        marginTop: 200 * heightRatioProMax,
+        height: 80 * heightRatioProMax,
+        borderWidth: 5 * widthRatioProMax,
+        borderColor: Colors.gold,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderBottomWidth: 0
     }
 })
 

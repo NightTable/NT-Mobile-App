@@ -251,21 +251,14 @@ const NewTableRequestScreen = (props) => {
 
     //checking to see if the phone numbers are valid
     const validatePhoneNumber = async (num) => {
-        console.log("entering validate phone number\n")
         try {
-            console.log("In the try block\n")
-            console.log(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num);
+
             await axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + num).then(
                 response => {
-                    console.log(response.data, "data");
-                    console.log(response.data.valid);
                     setValidNumber(response.data.valid);
-                    console.log(validNumber);
                     if (response.data.valid){
-                        console.log("trueeee")
                         return true;
                     }
-                    console.log("falseeee")
                     return false;
                 }
             )
@@ -389,15 +382,10 @@ const NewTableRequestScreen = (props) => {
         const currentPhoneNumberInputSnapshot = enterPhoneNumberInputState;
         let isValid = await axios.get(ABSTRACTAPI_PARTIAL_URL + `&phone=` + currentPhoneNumberInputSnapshot).then(
             response => {
-                console.log(response.data, "data");
-                console.log(response.data.valid);
                 setValidNumber(response.data.valid);
-                console.log(validNumber);
                 if (response.data.valid){
-                    console.log("trueeee")
                     return true;
                 }
-                console.log("falseeee")
                 return false;
             }
         )
@@ -406,7 +394,6 @@ const NewTableRequestScreen = (props) => {
             return false;
         });
         //console.log(validatePhoneNumber(currentPhoneNumberInputSnapshot));
-        console.log(isValid, "from handle enter phone");
         if (isValid) {
             // check for duplicate
             for (let i = 0; i < currentParticipants.length; i++){
@@ -430,13 +417,11 @@ const NewTableRequestScreen = (props) => {
             newParticipantList.push(newExternalParticipant);
             setNewPhoneNumberAddErrorShown(false);
             setCurrentParticipants([...newParticipantList]);
-            console.log(currentParticipants, "curr parts");
 
         } else {
 
             setNewPhoneNumberAddErrorShown(true);
         }
-        console.log(newPhoneNumberAddErrorShown, ": phone number error")
 
     };
 
@@ -446,7 +431,6 @@ const NewTableRequestScreen = (props) => {
         const currentEmailInputSnapshot = enterEmailInputState;
 
         if (validateEmail(currentEmailInputSnapshot)) {
-            console.log("a valid email")
             //check for duplicate email
 
             for (let i = 0; i < currentParticipants.length; i++){
@@ -495,8 +479,6 @@ const NewTableRequestScreen = (props) => {
 
     const handleTableConfigPress = (idParam) => {
         let selectedTableList = selectedTables;
-        console.log(selectedTableList, "selectedTableList from selection");
-        console.log(selectedTables, "selectedTables from selection\n");
         setSelectedTableConfigId(idParam);
         if (selectedTableList.length === 0){
             for (let i = 0; i < tcs.length; i++){
@@ -538,8 +520,6 @@ const NewTableRequestScreen = (props) => {
             }
         }*/
         setSelectedTables(selectedTableList);
-        console.log(selectedTableList, "selectedTableList from selection");
-        console.log(selectedTables, "selectedTables from selection\n");
     }
 
     const handleRequestTypeChange = () => {
@@ -565,9 +545,7 @@ const NewTableRequestScreen = (props) => {
         //check to see if table option has been selected
         if (selectedTables.length == 0){
             errorMessages.push("Make sure you select your table options");
-            console.log(selectedTables, "selectedTables from continue press");
         }
-        console.log(selectedTables, "selectedTables from continue press");
 
         //check to see if table minimum is approved
         if (tableMinimum < defaultTableMinimum){
@@ -578,12 +556,10 @@ const NewTableRequestScreen = (props) => {
             else{
                 let totalFunds = 0;
                 for (let i = 0; i < currentParticipants.length; i++){
-                    console.log("your fee: ", thisUserAsParticipant[0].joiningFee);
-                    console.log(i + "-th particpant", currentParticipants[i].joiningFee, )
+
                     totalFunds = totalFunds + currentParticipants[i].joiningFee;
                 }
                 totalFunds = parseInt(totalFunds) + parseInt(thisUserAsParticipant[0].joiningFee);
-                console.log(totalFunds, "total funds", tableMinimum, "table min");
 
                 if (totalFunds < tableMinimum){
                     errorMessages.push("Participants aren't contributing enough money. Reduce the table minimum, reduce your table options, or increase the joining fee");
@@ -656,7 +632,6 @@ const NewTableRequestScreen = (props) => {
         //     console.log(err);
         // });
         if (errorMessages.length === 0){
-            console.log(thisUserAsParticipant);
             props.navigation.navigate('edNav-TableRequestConfirmationScreen', {
                 paymentType: selectedTableType,
                 tables: selectedTables,
@@ -666,7 +641,6 @@ const NewTableRequestScreen = (props) => {
         }
         else{
             setContinueButtonErrorMessages(errorMessages);
-            console.log(continueButtonErrorMessages, "error messages");
             setScreenOpacity(0.5);
             setContinueButtonPressShowError(true);
         }

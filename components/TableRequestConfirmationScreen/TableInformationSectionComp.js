@@ -42,7 +42,7 @@ const TableInformationSectionComp = (props) => {
                                 fontFamily: Fonts.mainFontReg,
                                 justifyContent: 'center',
                                 marginHorizontal: 25 * widthRatioProMax
-                            }}>${table.minimum}</Text>
+                            }}>{table.minimum}</Text>
                         </View>
                         <View style={styles.textViewContainer}>
                             <Text style={{
