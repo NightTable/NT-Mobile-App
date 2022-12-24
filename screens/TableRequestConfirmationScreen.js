@@ -26,17 +26,22 @@ import sampleGirlImage from '../assets/younggirl1.jpeg';
 import johnPic from '../assets/johnpic.jpeg';
 import { heightRatioProMax, widthRatioProMax, windowHeight } from '../dimensions/Dimensions';
 import { Fonts } from '../fonts/Fonts';
+import MenuCart from '../components/TableRequestConfirmationScreen/MenuCart';
 
 const TableRequestConfirmationScreen = (props) => {
 
 
     const route = useRoute();
 
+    let [showCart, setShowCart] = useState(false)
+
     let [animateModal, setanimateModal] = useState(false);
 
     const [collapsed, setCollapsed] = useState(false);
 
     const [chevronImageSrc, setChevronImageSrc] = useState(ChevronArrowNormal);
+
+    let [itemCart, setItemCart] = useState(["hi"])
 
     let menuCategories = [
         {
@@ -203,6 +208,24 @@ const TableRequestConfirmationScreen = (props) => {
         //setanimateModal(!animateModal);
     }
 
+    const addToCart = (item, qty) => {
+        let tempCart = itemCart;
+        for (let i = 0; i < tempCart.length; i++){
+            if (tempCart[i].itemObj.itemName === item.itemName){
+                tempCart[i].quantity = tempCart[i].quantity + qty;
+                tempCart[i].quantity =  quantity * item.itemPrice;
+            }
+        }
+
+        let orderItem = {
+            quantity: qty,
+            itemObj: item,
+            totalPrice: qty * item.itemPrice
+        }
+
+        tempCart.push(orderItem)
+    }
+
 
     /*let tableRequestObj = 
         [
@@ -258,10 +281,12 @@ const TableRequestConfirmationScreen = (props) => {
         if (chevronImageSrc === ChevronArrowNormal){
             setChevronImageSrc(ChevronCollapsed);
             setCollapsed(true);
+            setShowCart(true)
         }
         if (chevronImageSrc === ChevronCollapsed){
             setChevronImageSrc(ChevronArrowNormal);
             setCollapsed(false);
+            setShowCart(false);
         }
     }
 
@@ -319,7 +344,7 @@ const TableRequestConfirmationScreen = (props) => {
                             <Text style={{color: Colors.gold, marginHorizontal: 20 * widthRatioProMax, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Table ID</Text>
                             <Text style={{color: Colors.gold, marginHorizontal: 20 * widthRatioProMax, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Type</Text>
                             <Text style={{color: Colors.gold, marginHorizontal: 20 * widthRatioProMax, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Minimum</Text>
-                            <Text style={{color: Colors.gold, marginHorizontal: 20 * widthRatioProMax, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Fits</Text>
+                            <Text style={{color: Colors.gold, marginHorizontal: 20 * widthRatioProMax, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Table Size</Text>
                         </View>
                         <TableInformationSectionComp
                             table={tableRequestObj}
@@ -348,6 +373,7 @@ const TableRequestConfirmationScreen = (props) => {
                         <View style={{
                                 marginBottom: 10 * heightRatioProMax,
                                 width: '40%',
+                                marginTop: 10 * heightRatioProMax,
                             }}> 
                                 <TouchableOpacity 
                                 onPress={handleMenuPress}
@@ -377,6 +403,7 @@ const TableRequestConfirmationScreen = (props) => {
                             <View style={{
                                 marginBottom: 10 * heightRatioProMax,
                                 width: '40%',
+                                marginTop: 10 * heightRatioProMax,
                             }}> 
                                 <View 
                                     style={[{
@@ -409,11 +436,19 @@ const TableRequestConfirmationScreen = (props) => {
                                                 fontFamily: Fonts.mainFontReg,
                                                 color: Colors.black
                                             }}>View Cart</Text>
-
                                 </View>
                             </View>
+                            {showCart ? 
+                                <MenuCart
+                                    cart={itemCart}>
+                                </MenuCart>
+                                :
+                                null
+                            }
+
                             <View style={{
                                 marginBottom: 10 * heightRatioProMax,
+                                marginTop: 10 * heightRatioProMax,
                                 width: '40%',
                             }}> 
                                 <TouchableOpacity 
