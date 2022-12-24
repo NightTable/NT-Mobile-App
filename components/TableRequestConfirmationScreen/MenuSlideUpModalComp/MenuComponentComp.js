@@ -22,10 +22,24 @@ const MenuComponentComp = (props) => {
 
     const [openDescription, setOpenDescription] = useState(false);
     const [descs, setDescs] = useState([]);
+    const [messageObject, setMessageObject] = useState(
+        {
+            "id": "63a30dc0d5e2c2161ba72e0f",
+            "itemCategoryId": "63a307efccbf8388495ef6e5",
+            "itemDescription": "20 Bollinger Sovereign, 10 Draper Melchizedek",
+            "itemName": "Genghis's Treasures",
+            "itemPrice": 700000,
+            "itemQuantity": 500,
+          }
+    );
 
 
     const handleOpenDescription = () => {
         setOpenDescription(!openDescription);
+    }
+
+    const setObject = (object) => {
+        setMessageObject(object);
     }
 
 
@@ -44,14 +58,17 @@ const MenuComponentComp = (props) => {
                                 <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, color: Colors.black, textAlign: 'center', marginVertical: 2 * heightRatioProMax}}>
                                     {menuItem.itemName}
                                 </Text>
-                                {menuItem.itemDescription !== undefined ?
-                                
+
+                                 {(menuItem.itemDescription /*!== undefined || menuItem.itemDescription !== null*/) ?
                                     <TouchableOpacity
-                                        onPress={handleOpenDescription}>
+                                        onPress={() => [handleOpenDescription(), setObject(menuItem)]}>
                                         <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, color: Colors.black, textAlign: 'center', marginVertical: 2 * heightRatioProMax}}>
                                             Press for Description
                                         </Text>
                                         <MenuComponentModalComp
+                                            ind={index}
+                                            item={messageObject}
+                                            fullMenu={props.fullMenu}
                                             desc={menuItem.itemDescription}
                                             isOpen={openDescription}
                                             handleOpenModal={handleOpenDescription}>

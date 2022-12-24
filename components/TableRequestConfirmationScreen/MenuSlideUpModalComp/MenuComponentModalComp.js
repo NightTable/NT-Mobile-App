@@ -24,6 +24,10 @@ const MenuComponentModalComp = (props) => {
 
     const [openDescription, setOpenDescription] = useState(false);
 
+    useEffect(() => {
+        console.log(props.item, "props.item");
+      }, []);
+
     return (
         <Modal
         animationType={'fade'}
@@ -37,22 +41,25 @@ const MenuComponentModalComp = (props) => {
                         width: 400 * widthRatioProMax,
                         height: 300 * heightRatioProMax,
                         borderRadius: 5 * widthRatioProMax,
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
                         borderWidth: 5 * widthRatioProMax,
-                        flexWrap: 'wrap',
+                        
                         borderColor: Colors.gold}}>
-                         
-                        <View style={{alignContent: 'center', justifyContent: 'center', marginTop: 70 * heightRatioProMax}}>
-                            <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>{props.desc}</Text>
-                        </View>
-                        <View style={{justifyContent: 'center', marginVertical: 80 * heightRatioProMax}}>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
+                         {props.item.itemDescription ? 
+                            <View style={{alignContent: 'center', justifyContent: 'center', marginTop: 70 * heightRatioProMax, flexDirection: 'column'}}>
+                                <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>{props.item.itemDescription}</Text>
+                                <Pressable
+                                style={[styles.button, styles.buttonClose, {alignSelf: 'center', width: '30%', marginTop: 90 * heightRatioProMax}]}
                                 onPress={props.handleOpenModal}
                                 >
                                 <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Close</Text>
                             </Pressable>
+                            </View> : 
+                            null
+                         }
+                          <View style={{justifyContent: 'center', marginVertical: 80 * heightRatioProMax, flexWrap: 'wrap', alignContent: 'center', alignSelf: 'center', alignItems: 'center'}}>
+
                         </View>
                 </View>
             </View>
@@ -60,6 +67,8 @@ const MenuComponentModalComp = (props) => {
 
     )
 }
+
+//props.fullMenu[props.ind].itemDescription
 
 const styles = StyleSheet.create({
 
