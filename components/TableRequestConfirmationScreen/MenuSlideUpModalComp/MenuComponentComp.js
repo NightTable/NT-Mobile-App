@@ -1,9 +1,3 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
-
 import React, {useState, useEffect} from 'react';
 
 import { 
@@ -17,11 +11,13 @@ import { Colors } from '../../../colors/Colors';
 import { heightRatioProMax, widthRatioProMax } from '../../../dimensions/Dimensions';
 import MenuComponentModalComp from './MenuComponentModalComp';
 import { Fonts } from '../../../fonts/Fonts';
+import MenuTextInputComp from './MenuTextInputComp';
 
 const MenuComponentComp = (props) => {
 
     const [openDescription, setOpenDescription] = useState(false);
     const [descs, setDescs] = useState([]);
+    let [qtyVal, setQtyVal] = useState(0);
     const [messageObject, setMessageObject] = useState(
         {
             "id": "63a30dc0d5e2c2161ba72e0f",
@@ -40,6 +36,10 @@ const MenuComponentComp = (props) => {
 
     const setObject = (object) => {
         setMessageObject(object);
+    }
+
+    const atc = (item, qty) => {
+        props.addToCart(item, qty)
     }
 
 
@@ -80,18 +80,12 @@ const MenuComponentComp = (props) => {
                                     ${menuItem.itemPrice}
                                 </Text>
                             </View>
-                            <View style={{alignContent: 'center', justifyContent: 'space-evenly', flexDirection: 'row'}}>
-                                <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, fontFamily: Fonts.mainFontReg}}>Qty</Text>
-                                <TextInput
-                                    style={{color: Colors.gold, textAlign: 'center', marginVertical: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderBottomColor: Colors.gold, width: 50 * widthRatioProMax, justifyContent: 'center', fontSize: 20 * heightRatioProMax}}
-                                />
-                                <Text style={{color: Colors.gold, textAlign: 'center', marginTop: 20 * heightRatioProMax, marginLeft: 15 * widthRatioProMax, fontFamily: Fonts.mainFontReg}}>$0</Text>
-                                <TouchableOpacity style={{justifyContent: 'center', flexDirection: 'row', backgroundColor: Colors.green, alignItems: 'center', borderWidth: 1, borderRadius: 5}}>
-                                    <View style={{justifyContent: 'center', flexDirection: 'row', backgroundColor: Colors.green, alignItems: 'center'}}>
-                                        <Text style={{color: Colors.white, textAlign: 'center',fontFamily: Fonts.mainFontReg, textAlign: 'center'}}> Add to Cart </Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                            <MenuTextInputComp
+                                menuItem={menuItem}
+                                addToCart={atc}>
+
+                            </MenuTextInputComp>
+
                         </View>
                     );
                 })

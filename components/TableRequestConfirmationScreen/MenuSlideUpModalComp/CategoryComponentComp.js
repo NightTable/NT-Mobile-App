@@ -37,6 +37,10 @@ const CategoryComponentComp = (props) => {
 
       }, []);
 
+      const atc = (item, quantity) => {
+        props.addToCart(item, quantity);
+      }
+
 
     return (
         <View style={{marginVertical: 50 * heightRatioProMax}}>
@@ -45,7 +49,7 @@ const CategoryComponentComp = (props) => {
             </Text>
             <MenuComponentComp
                 fullMenu={menuItems}
-            >  
+                addToCart={atc}>  
             </MenuComponentComp>
 
 

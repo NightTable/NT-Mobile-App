@@ -7,6 +7,7 @@
 import React from 'react';
 
 import { View, Text} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Colors } from '../../colors/Colors';
 import { heightRatioProMax, widthRatioProMax } from '../../dimensions/Dimensions';
@@ -15,8 +16,13 @@ import { Fonts } from '../../fonts/Fonts';
 const MenuCart = (props) => {
 
     let paymentType = props.paymentType === "pnsl" ? "pay-now-split-later" : "split-now-pay-later";
-
+/*
+    {props.cart.map(item, index) => (
+    ))}
+*/
     return (
+        
+
     <View style={{
         borderWidth: 1 * widthRatioProMax,
         borderColor: Colors.gold,
@@ -33,20 +39,45 @@ const MenuCart = (props) => {
         :
         <View style={{flex: 1, flexDirection: 'row', marginVertical: 10 * heightRatioProMax, justifyContent: 'center'}}>
             <View style={{flex: 1}}>
-                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Qty</Text>
-                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 10 * heightRatioProMax}}>1</Text>
+                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}>Qty</Text>
+                {   
+
+                    props.cart.map((item, index) => {
+                        return (
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}>{item.quantity}</Text>
+                        );
+                    })
+                }
 
             </View>
             <View style={{flex: 1}}>
                 <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Item</Text>
-                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 10 * heightRatioProMax}}>Ace of Spades Magnum</Text>
+                {   
 
+                    props.cart.map((item, index) => {
+                        return (
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 20 * heightRatioProMax}}>{item.itemObj.itemName}</Text>
+                        );
+                    })
+                }
             </View>
             <View style={{flex: 1}}>
                 <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Cost</Text>
-                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 10 * heightRatioProMax}}>$1000</Text>
-            </View>
+                {   
 
+                    props.cart.map((item, index) => {
+                        return (
+                            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 5 * widthRatioProMax}}>${item.totalPrice}</Text>
+                                <TouchableOpacity
+                                    style={{backgroundColor: Colors.red, marginVertical: 25 * heightRatioProMax, borderRadius: 5}}>
+                                    <Text style={{color: Colors.white, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, padding: 5 * heightRatioProMax}}>Remove</Text>
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    })
+                }
+            </View>
         </View>
 
         }

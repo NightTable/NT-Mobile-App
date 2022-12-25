@@ -41,7 +41,7 @@ const TableRequestConfirmationScreen = (props) => {
 
     const [chevronImageSrc, setChevronImageSrc] = useState(ChevronArrowNormal);
 
-    let [itemCart, setItemCart] = useState(["hi"])
+    let [itemCart, setItemCart] = useState([])
 
     let menuCategories = [
         {
@@ -211,19 +211,36 @@ const TableRequestConfirmationScreen = (props) => {
     const addToCart = (item, qty) => {
         let tempCart = itemCart;
         for (let i = 0; i < tempCart.length; i++){
+            console.log(tempCart[i])
             if (tempCart[i].itemObj.itemName === item.itemName){
-                tempCart[i].quantity = tempCart[i].quantity + qty;
-                tempCart[i].quantity =  quantity * item.itemPrice;
+
+                let orderItem = {
+                    quantity: parseInt(tempCart[i].quantity) + parseInt(qty),
+                    itemObj: item,
+                    totalPrice: (parseInt(tempCart[i].quantity) + parseInt(qty)) * parseInt(item.itemPrice)
+                }
+                tempCart.splice(i)
+                tempCart.push(orderItem)
+                setItemCart(tempCart);
+                console.log(itemCart);
+                console.log("\n");
+                console.log(tempCart);
+                console.log("\n");
+                return;
             }
         }
 
         let orderItem = {
-            quantity: qty,
+            quantity: parseInt(qty),
             itemObj: item,
-            totalPrice: qty * item.itemPrice
+            totalPrice: parseInt(qty) * parseInt(item.itemPrice)
         }
 
         tempCart.push(orderItem)
+        setItemCart(tempCart);
+        console.log(itemCart);
+        console.log("\n");
+        console.log(tempCart);
     }
 
 
@@ -305,7 +322,8 @@ const TableRequestConfirmationScreen = (props) => {
                                         key={index}
                                         category={category.categoryName}
                                         id={category.id}
-                                        fullMenu={menuItems}>
+                                        fullMenu={menuItems}
+                                        addToCart={addToCart}>
                                     </CategoryComponentComp>
 
                                 );
@@ -320,8 +338,6 @@ const TableRequestConfirmationScreen = (props) => {
             HeaderContent={
                 <View style={styles.containerHeader}>
                     <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 60 * heightRatioProMax, color: Colors.gold}}>Menu</Text>
-
-
                 </View>
                 }
                 onClose={() => {
