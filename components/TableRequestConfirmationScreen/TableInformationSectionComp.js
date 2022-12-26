@@ -15,7 +15,6 @@ const TableInformationSectionComp = (props) => {
     <ScrollView style={styles.informationSectionContainer}>
         {
             tableObj.map((table, index) => {
-                console.log(table, "confirmed table");
                 return (
                     <View 
                         style={{flex: 1, flexDirection: 'row',justifyContent: 'center', margin: 10 * heightRatioProMax, borderWidth: 1 * widthRatioProMax, borderColor: Colors.gold, borderRadius: 5 * widthRatioProMax}}

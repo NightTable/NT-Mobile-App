@@ -24,9 +24,7 @@ const MenuComponentModalComp = (props) => {
 
     const [openDescription, setOpenDescription] = useState(false);
 
-    useEffect(() => {
-        console.log(props.item, "props.item");
-      }, []);
+
 
     return (
         <Modal

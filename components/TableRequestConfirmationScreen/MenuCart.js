@@ -20,6 +20,9 @@ const MenuCart = (props) => {
     {props.cart.map(item, index) => (
     ))}
 */
+    
+    let cart = props.cart;
+
     return (
         
 
@@ -42,21 +45,30 @@ const MenuCart = (props) => {
                 <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}>Qty</Text>
                 {   
 
-                    props.cart.map((item, index) => {
+                    cart.map((item, index) => {
                         return (
-                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}>{item.quantity}</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}
+                                key={index}>
+
+                                {item.quantity}
+                            </Text>
                         );
                     })
                 }
 
             </View>
             <View style={{flex: 1}}>
-                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Item</Text>
+                <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>
+                    Item
+                </Text>
                 {   
 
-                    props.cart.map((item, index) => {
+                    cart.map((item, index) => {
                         return (
-                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 20 * heightRatioProMax}}>{item.itemObj.itemName}</Text>
+                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 20 * heightRatioProMax}}
+                                key={index}>
+                                {item.itemObj.itemName}
+                            </Text>
                         );
                     })
                 }
@@ -65,12 +77,14 @@ const MenuCart = (props) => {
                 <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Cost</Text>
                 {   
 
-                    props.cart.map((item, index) => {
+                    cart.map((item, index) => {
                         return (
-                            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}
+                                key={index}>
                                 <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 5 * widthRatioProMax}}>${item.totalPrice}</Text>
                                 <TouchableOpacity
-                                    style={{backgroundColor: Colors.red, marginVertical: 25 * heightRatioProMax, borderRadius: 5}}>
+                                    style={{backgroundColor: Colors.red, marginVertical: 25 * heightRatioProMax, borderRadius: 5}}
+                                    onPress={() => props.removeItem(index)}>
                                     <Text style={{color: Colors.white, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, padding: 5 * heightRatioProMax}}>Remove</Text>
                                 </TouchableOpacity>
                             </View>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { 
     View, 
@@ -33,6 +33,12 @@ const TableRequestConfirmationScreen = (props) => {
 
     const route = useRoute();
 
+    const [subtotal, setSubtotal] = useState(0);
+
+    const [appBookingFee, setAppBookingFee] = useState(0.18);
+
+    const [clubFees, setClubFees] = useState(0.3312);
+
     let [showCart, setShowCart] = useState(false)
 
     let [animateModal, setanimateModal] = useState(false);
@@ -41,7 +47,7 @@ const TableRequestConfirmationScreen = (props) => {
 
     const [chevronImageSrc, setChevronImageSrc] = useState(ChevronArrowNormal);
 
-    let [itemCart, setItemCart] = useState([])
+    let [itemCart, setItemCart] = useState([]);
 
     let menuCategories = [
         {
@@ -65,6 +71,11 @@ const TableRequestConfirmationScreen = (props) => {
             categoryName: "Specials"
         }
     ]
+    let fugazziCart = [];
+
+    useEffect(() => {
+        calculateSubtotal()
+      }, [itemCart]);
 
     let menuItems = [
         {
@@ -211,7 +222,6 @@ const TableRequestConfirmationScreen = (props) => {
     const addToCart = (item, qty) => {
         let tempCart = itemCart;
         for (let i = 0; i < tempCart.length; i++){
-            console.log(tempCart[i])
             if (tempCart[i].itemObj.itemName === item.itemName){
 
                 let orderItem = {
@@ -222,10 +232,8 @@ const TableRequestConfirmationScreen = (props) => {
                 tempCart.splice(i)
                 tempCart.push(orderItem)
                 setItemCart(tempCart);
-                console.log(itemCart);
-                console.log("\n");
-                console.log(tempCart);
-                console.log("\n");
+                fugazziCart=tempCart;
+                calculateSubtotal();
                 return;
             }
         }
@@ -238,10 +246,24 @@ const TableRequestConfirmationScreen = (props) => {
 
         tempCart.push(orderItem)
         setItemCart(tempCart);
-        console.log(itemCart);
-        console.log("\n");
-        console.log(tempCart);
+        calculateSubtotal();
+        fugazziCart=tempCart;
     }
+
+    const removeItem = (index) => {
+        let itemCartCopy = itemCart.filter((item, i) => i !== index); // create a new array with the element at the given index removed
+        setItemCart(itemCartCopy); // set the itemCart to the modified copy
+        fugazziCart = itemCartCopy; // update the fugazziCart variable with the modified array
+      }
+
+    /*const removeItem = (index) => {
+        let tempCart = itemCart;
+        console.log(itemCart)
+        tempCart.splice(index);
+        setItemCart(tempCart);
+        fugazziCart=tempCart;
+        console.log(itemCart)
+    }/*
 
 
     /*let tableRequestObj = 
@@ -294,6 +316,17 @@ const TableRequestConfirmationScreen = (props) => {
         }
     ]*/
 
+    const calculateSubtotal = () => {
+        let sum = 0;
+        console.log(itemCart, "itemCart")
+        for (let i = 0; i < itemCart.length; i++){
+            console.log(itemCart[i], "item cart[i]");
+            sum = sum + parseInt(itemCart[i].totalPrice);
+            console.log(sum, "this is supposed to be subtotal")
+        }
+        setSubtotal(sum)
+    }
+
     const handleChevronClick = () => {
         if (chevronImageSrc === ChevronArrowNormal){
             setChevronImageSrc(ChevronCollapsed);
@@ -316,7 +349,6 @@ const TableRequestConfirmationScreen = (props) => {
                     <ScrollView style={{marginTop: 10 * heightRatioProMax}}>
                         {
                             menuCategories.map((category, index) => {
-                                console.log(menuItems, "menuItems");
                                 return (
                                     <CategoryComponentComp
                                         key={index}
@@ -454,13 +486,108 @@ const TableRequestConfirmationScreen = (props) => {
                                             }}>View Cart</Text>
                                 </View>
                             </View>
-                            {showCart ? 
-                                <MenuCart
-                                    cart={itemCart}>
-                                </MenuCart>
-                                :
-                                null
-                            }
+                            {showCart ? <View style={{
+                                borderWidth: 1 * widthRatioProMax,
+                                borderColor: Colors.gold,
+                                width: '95%',
+                            }}>
+                                {itemCart.length === 0 ? 
+                                    <Text style={{
+                                        textAlign: 'center',
+                                        fontFamily: Fonts.mainFontReg,
+                                        color: Colors.gold,
+                                        fontSize: 20 * heightRatioProMax
+                                    }}>Your cart is empty. Take a look at the menu and add some items.
+                                    </Text> :
+                                    <View style={{flex: 1, flexDirection: 'row', marginVertical: 10 * heightRatioProMax, justifyContent: 'center'}}>
+                                        <View style={{flex: 1}}>
+                                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}>Qty</Text>
+                                            {   
+
+                                                itemCart.map((item, index) => {
+                                                    return (
+                                                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}
+                                                            key={index}>
+
+                                                            {item.quantity}
+                                                        </Text>
+                                                    );
+                                                })
+                                            }
+                                        </View>
+                                        <View style={{flex: 1}}>
+                                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>
+                                                Item
+                                            </Text>
+                                            {   
+
+                                                itemCart.map((item, index) => {
+                                                    return (
+                                                        <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 10 * widthRatioProMax}}
+                                                            key={index}>
+                                                            {item.itemObj.itemName}
+                                                        </Text>
+                                                    );
+                                                })
+                                            }
+                                        </View>
+                                        <View style={{flex: 1}}>
+                                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>Cost</Text>
+                                            {   
+
+                                                itemCart.map((item, index) => {
+                                                    return (
+                                                        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}
+                                                            key={index}>
+                                                            <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, marginVertical: 25 * heightRatioProMax, marginHorizontal: 5 * widthRatioProMax}}>${item.totalPrice}</Text>
+                                                            <TouchableOpacity
+                                                                style={{backgroundColor: Colors.red, marginVertical: 25 * heightRatioProMax, borderRadius: 5}}
+                                                                onPress={() => removeItem(index)}>
+                                                                <Text style={{color: Colors.white, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, padding: 5 * heightRatioProMax}}>Remove</Text>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    );
+                                                })
+                                            }
+                                        </View>
+                                    </View>                  
+                                }
+                                <View style={{flex: 1, justifyContent: 'center', alignContent: 'center', alignItems: 'center', marginVertical: 30 * heightRatioProMax}}>
+                                    <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax}}>
+                                        Total Cost of Items: ${parseInt(subtotal)}
+                                    </Text>
+                                    <Text style={{color: Colors.gold, fontFamily: Fonts.mainFontReg, fontSize: 15 * heightRatioProMax, textAlign: 'center', marginVertical: 10 * heightRatioProMax}}>
+                                        Upon placing your order, you will be also be levied a {(appBookingFee + clubFees) * 100}% fee that covers gratuity, tax, and other costs of service. Feel free to tip the cocktail server more at the venue.
+                                    </Text>
+                                    <TouchableOpacity 
+                                        onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
+                                        style={[{
+                                            borderRadius: 10 * heightRatioProMax,
+
+                                            backgroundColor: Colors.green,
+                                            padding: 15 * heightRatioProMax,
+                                            width: '50%'
+                                        }, {
+                                            shadowColor: Colors.black,
+                                            shadowRadius: 2,
+                                            shadowOpacity: 0.7,
+                                            shadowOffset: {
+                                                width: 0,
+                                                height: 0
+                                            },
+                                            elevation: 3
+                                        }]}>
+                                            <Text style={{
+                                                textAlign: 'center',
+                                                fontFamily: Fonts.mainFontReg,
+                                                color: Colors.white,
+                                                fontSize: 20 * heightRatioProMax
+                                            }}>Checkout</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                            </View> : null}
+
 
                             <View style={{
                                 marginBottom: 10 * heightRatioProMax,
@@ -526,6 +653,32 @@ const TableRequestConfirmationScreen = (props) => {
     </View>)
 
 }
+/*
+                                <TouchableOpacity 
+                                onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
+                                style={[{
+                                    borderRadius: 10 * heightRatioProMax,
+
+                                    backgroundColor: Colors.textColorGold,
+                                    padding: 15 * heightRatioProMax,
+                                    width: '100%'
+                                }, {
+                                    shadowColor: Colors.black,
+                                    shadowRadius: 2,
+                                    shadowOpacity: 0.7,
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 0
+                                    },
+                                    elevation: 3
+                                }]}>
+                                    <Text style={{
+                                        textAlign: 'center',
+                                        fontFamily: Fonts.mainFontReg,
+                                        color: Colors.black
+                                    }}>Add to General Tab</Text>
+                                </TouchableOpacity>
+*/
 
 const styles = StyleSheet.create({
     confirmationScreenContainer: {

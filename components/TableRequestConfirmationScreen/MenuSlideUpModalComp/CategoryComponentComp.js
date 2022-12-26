@@ -25,14 +25,11 @@ const CategoryComponentComp = (props) => {
     let relevantMenuItems = [];
 
     useEffect(() => {
-        console.log(props.fullMenu, "props.fullMenu");
         for (let i = 0; i < props.fullMenu.length; i++){
             if (props.fullMenu[i].itemCategoryId === props.id){
-                console.log(props.category, props.fullMenu[i], "props.fullMenu[i]", i);
                 relevantMenuItems.push(props.fullMenu[i]);
             } 
         }
-        console.log(relevantMenuItems, "relevantMenuItems")
         setMenuItems(relevantMenuItems);
 
       }, []);
