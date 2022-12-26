@@ -8,7 +8,9 @@ import {
     StyleSheet,
     Image,
     Button,
-    Dimensions} from 'react-native';
+    Pressable,
+    Dimensions, 
+    Modal} from 'react-native';
 import { Colors } from '../colors/Colors';
 
 import { useRoute } from '@react-navigation/native';
@@ -33,6 +35,8 @@ const TableRequestConfirmationScreen = (props) => {
 
     const route = useRoute();
 
+    const [continueError, setContinueError] = useState(false);
+
     const [subtotal, setSubtotal] = useState(0);
 
     const [appBookingFee, setAppBookingFee] = useState(0.18);
@@ -48,6 +52,8 @@ const TableRequestConfirmationScreen = (props) => {
     const [chevronImageSrc, setChevronImageSrc] = useState(ChevronArrowNormal);
 
     let [itemCart, setItemCart] = useState([]);
+
+    const [screenOpacity, setScreenOpacity] = useState(1);
 
     let menuCategories = [
         {
@@ -219,6 +225,18 @@ const TableRequestConfirmationScreen = (props) => {
         //setanimateModal(!animateModal);
     }
 
+    const addToGeneralTab = () => {
+        if (joiningFee === 0){
+            props.navigation.navigate('edNav-PollingRoomScreen');
+        }
+        else{
+            props.navigation.navigate('edNav-InitialPaymentScreen', {
+                joiningFee: joiningFee,
+                requestType: route.params.paymentType
+            });
+        }
+    }
+
     const addToCart = (item, qty) => {
         let tempCart = itemCart;
         for (let i = 0; i < tempCart.length; i++){
@@ -254,7 +272,27 @@ const TableRequestConfirmationScreen = (props) => {
         let itemCartCopy = itemCart.filter((item, i) => i !== index); // create a new array with the element at the given index removed
         setItemCart(itemCartCopy); // set the itemCart to the modified copy
         fugazziCart = itemCartCopy; // update the fugazziCart variable with the modified array
-      }
+    }
+
+    const goToNextScreen = () => {
+        console.log(route.thisUser)
+        if (joiningFee === 0){
+            props.navigation.navigate('edNav-PollingRoomScreen');
+        }
+        else{
+            if (joiningFee <= subtotal){
+                let billTotal = subtotal * (1 + (appBookingFee + clubFees));
+                props.navigation.navigate('edNav-InitialPaymentScreen', {
+                    cardCharge: billTotal,
+                    requestType: route.params.paymentType
+                });
+            }
+            else{
+                setContinueError(true);
+                setScreenOpacity(0.5);
+            }
+        }
+    }
 
     /*const removeItem = (index) => {
         let tempCart = itemCart;
@@ -341,7 +379,41 @@ const TableRequestConfirmationScreen = (props) => {
     }
 
 
-    return (<View style={styles.confirmationScreenContainer}>
+    return (<View style={{flex: 1, flexDirection: 'column', backgroundColor: Colors.black, opacity: screenOpacity}}>
+        <Modal
+            animationType={'fade'}
+            transparent={true}
+            visible={continueError}
+            onRequestClose={() => [setContinueError(false), setScreenOpacity(0.5)]}>
+                <View style={styles.centeredView}>
+                    <View 
+                        style={{
+                            backgroundColor: Colors.black,
+                            width: 400 * widthRatioProMax,
+                            height: 300 * heightRatioProMax,
+                            borderRadius: 5 * widthRatioProMax,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            borderWidth: 5 * widthRatioProMax,
+                            flexWrap: 'wrap',
+                            borderColor: Colors.gold}}>
+
+                            <View style={{alignContent: 'center', justifyContent: 'center', marginLeft: 10 * widthRatioProMax}}>
+                                <Text style={{color: Colors.gold, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Please place an order that is more than or equal to in value to your joining fee</Text>
+                            </View> 
+
+
+                            <View style={{justifyContent: 'center'}}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => [setContinueError(false), setScreenOpacity(1)]}
+                                    >
+                                    <Text style={{color: Colors.black, textAlign: 'center', fontFamily: Fonts.mainFontReg, margin: 5 * heightRatioProMax, fontSize: 20 * heightRatioProMax}}>Close</Text>
+                                </Pressable>
+                            </View>
+                    </View>
+                </View>
+        </Modal>
         <SwipeUpDownModal
             modalVisible={menuVisible}
             ContentModal={
@@ -560,7 +632,7 @@ const TableRequestConfirmationScreen = (props) => {
                                         Upon placing your order, you will be also be levied a {(appBookingFee + clubFees) * 100}% fee that covers gratuity, tax, and other costs of service. Feel free to tip the cocktail server more at the venue.
                                     </Text>
                                     <TouchableOpacity 
-                                        onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
+                                        onPress={goToNextScreen}
                                         style={[{
                                             borderRadius: 10 * heightRatioProMax,
 
@@ -595,7 +667,7 @@ const TableRequestConfirmationScreen = (props) => {
                                 width: '40%',
                             }}> 
                                 <TouchableOpacity 
-                                onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
+                                onPress={addToGeneralTab}
                                 style={[{
                                     borderRadius: 10 * heightRatioProMax,
 
@@ -624,7 +696,7 @@ const TableRequestConfirmationScreen = (props) => {
                             width: '40%'
                         }}>
                             <TouchableOpacity 
-                            onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
+                            onPress={goToNextScreen}
                             style={[{
                                 borderRadius: 10 * heightRatioProMax,
 
@@ -684,7 +756,7 @@ const styles = StyleSheet.create({
     confirmationScreenContainer: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.black
+        backgroundColor: Colors.black,
     },
     tinyLogoNormal: {
         width: 10 * widthRatioProMax,
@@ -732,7 +804,19 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
         borderBottomWidth: 0
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        flexDirection: 'column',
+    },
+    buttonClose: {
+        backgroundColor: Colors.gold,
+        borderRadius: 5 * widthRatioProMax,
+    },
+
 })
 
 export default TableRequestConfirmationScreen;

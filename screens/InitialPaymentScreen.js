@@ -83,7 +83,7 @@ const InitialPaymentScreen = (props) => {
             justifyContent: 'center'
         }}>
             <TouchableOpacity
-            onPress={() => props.navigation.navigate('edNav-TableRequestConfirmationScreen')}
+            onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
             style={[{
                 padding: 20 * heightRatioProMax,
                 width: '60%',
