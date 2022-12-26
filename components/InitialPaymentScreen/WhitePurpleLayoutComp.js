@@ -22,7 +22,7 @@ const WhitePurpleBubbleLayoutComp = (props) => {
         borderRadius: 50 * heightRatioProMax,
         alignItems: 'center',
         flexDirection: 'column',
-        height: 450 * heightRatioProMax,
+        height: 550 * heightRatioProMax,
     }}>
         {props.children}
     </View>)

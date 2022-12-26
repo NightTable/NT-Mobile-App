@@ -632,11 +632,23 @@ const NewTableRequestScreen = (props) => {
         //     console.log(err);
         // });
         if (errorMessages.length === 0){
+            let amOrPm = null;
+            if (amTextColor === Colors.black){
+                amOrPm = "AM";
+            }
+            else if (pmTextColor === Colors.black){
+                amOrPm = "PM";
+            }
+            console.log(amOrPm, "am or pm");
             props.navigation.navigate('edNav-TableRequestConfirmationScreen', {
                 paymentType: selectedTableType,
                 tables: selectedTables,
                 participants: currentParticipants,
-                thisUser: thisUserAsParticipant
+                thisUser: thisUserAsParticipant,
+                tableMinimum: tableMinimum,
+                hour: hourValue,
+                minute: minuteValue, 
+                timeOfDay: amOrPm
             });
         }
         else{

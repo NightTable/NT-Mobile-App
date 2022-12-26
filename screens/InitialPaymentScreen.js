@@ -22,7 +22,8 @@ const InitialPaymentScreen = (props) => {
     >
     <View style={{
         backgroundColor: Colors.black,
-        marginTop: 50 * heightRatioProMax
+        //marginTop: 50 * heightRatioProMax,
+        height: '100%'
     }}>
         <WhitePurpleBubbleLayoutComp>
             <View style={{
@@ -30,14 +31,19 @@ const InitialPaymentScreen = (props) => {
                 width: '80%'
             }}>
                 <Text style={{
-                    fontSize: windowHeight < 700 ? 20 * heightRatioProMax : 15 * heightRatioProMax ,
+                    fontSize: windowHeight < 700 ? 20 * heightRatioProMax : 20 * heightRatioProMax ,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.gold
-                }}>NightTable requires that all new users
-                    give out credit/debit card information, so that they
-                    will be able to join tables when one opens up.
+                }}>
+                    If you have made a pay-now-split later request, you will be charged
+                    the required full amount to create your table request. You will not be entitled to a refund 
+                    unless a club employee cancels your table request.  
                     {"\n\n"}
-                    Please enter in the required information below:
+                    If you have made a split-now-pay-later request, a pre-authorization charge will be made,
+                    and the amount charged will be placed on hold. This amount may be refunded in the event that the 
+                    organizer, VIP host, promoter, or any club employee cancels your table request.
+                    {"\n\n"}
+                    Please enter in the required card information below:
                 </Text>
             </View>
             <View style={{
@@ -57,25 +63,7 @@ const InitialPaymentScreen = (props) => {
                 height: 50 * heightRatioProMax,
             }}></CardField>
             </View>
-            <View style={{
-                marginTop: 15 * heightRatioProMax,
-            }}>
-                <Text>Or</Text>
-            </View>
-            <View style={{
-                marginTop: 20 * heightRatioProMax
-            }}>
-                <TouchableOpacity style={{
-                    backgroundColor: Colors.gold,
-                    padding: 10 * heightRatioProMax,
-                    borderRadius: 10 * heightRatioProMax,
-                }}>
-                    <Text style={{
-                        fontFamily: Fonts.mainFontReg,
-                        color: Colors.black
-                    }}>pay with crypto</Text>
-                </TouchableOpacity>
-            </View>
+
         </WhitePurpleBubbleLayoutComp>
         <View style={{
             marginTop: 100 * heightRatioProMax,

@@ -284,7 +284,14 @@ const TableRequestConfirmationScreen = (props) => {
                 let billTotal = subtotal * (1 + (appBookingFee + clubFees));
                 props.navigation.navigate('edNav-InitialPaymentScreen', {
                     cardCharge: billTotal,
-                    requestType: route.params.paymentType
+                    requestType: route.params.paymentType,
+                    tableMinimum: route.params.tableMinimum,
+                    tables: route.params.tables,
+                    hour: route.params.hour,
+                    minute: route.params.minute,
+                    timeOfDay: route.params.timeOfDay,
+                    menu: [menuCategories, menuItems],
+                    orders: itemCart
                 });
             }
             else{
