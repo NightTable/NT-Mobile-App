@@ -702,30 +702,6 @@ const TableRequestConfirmationScreen = (props) => {
                             marginBottom: 50 * heightRatioProMax,
                             width: '40%'
                         }}>
-                            <TouchableOpacity 
-                            onPress={goToNextScreen}
-                            style={[{
-                                borderRadius: 10 * heightRatioProMax,
-
-                                backgroundColor: Colors.textColorGold,
-                                padding: 15 * heightRatioProMax,
-                                width: '100%'
-                            }, {
-                                shadowColor: Colors.black,
-                                shadowRadius: 2,
-                                shadowOpacity: 0.7,
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 0
-                                },
-                                elevation: 3
-                            }]}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    fontFamily: Fonts.mainFontReg,
-                                    color: Colors.black
-                                }}>create request!</Text>
-                            </TouchableOpacity>
                         </View>
                 </WhiteBubbleLayoutComp>
         </ScrollView>

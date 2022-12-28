@@ -9,6 +9,7 @@ import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 import MemoireFloorplan from '../../assets/MemoireFloorplan.png';
 import GrandFloorplan from '../../assets/TheGrandFloorplan.png';
 
+// we got to fix the floorplans
 
 import TableConfigComp from './TableOptionSectionComp/TableConfigComp';
 
