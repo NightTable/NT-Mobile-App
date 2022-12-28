@@ -639,7 +639,6 @@ const NewTableRequestScreen = (props) => {
             else if (pmTextColor === Colors.black){
                 amOrPm = "PM";
             }
-            console.log(amOrPm, "am or pm");
             props.navigation.navigate('edNav-TableRequestConfirmationScreen', {
                 paymentType: selectedTableType,
                 tables: selectedTables,
