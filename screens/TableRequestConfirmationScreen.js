@@ -24,11 +24,8 @@ import CategoryComponentComp from '../components/TableRequestConfirmationScreen/
 
 import ChevronArrowNormal from '../assets/chevron-back-outline.png'
 import ChevronCollapsed from '../assets/chevron-back-outline-collapsed.png'
-import sampleGirlImage from '../assets/younggirl1.jpeg';
-import johnPic from '../assets/johnpic.jpeg';
 import { heightRatioProMax, widthRatioProMax, windowHeight } from '../dimensions/Dimensions';
 import { Fonts } from '../fonts/Fonts';
-import MenuCart from '../components/TableRequestConfirmationScreen/MenuCart';
 
 const TableRequestConfirmationScreen = (props) => {
 
@@ -227,13 +224,46 @@ const TableRequestConfirmationScreen = (props) => {
 
     const addToGeneralTab = () => {
         if (joiningFee === 0){
-            props.navigation.navigate('edNav-PollingRoomScreen');
+            props.navigation.navigate('edNav-PollingRoomScreen', {
+                cardCharge: 0,
+                requestType: route.params.paymentType,
+                tableMinimum: route.params.tableMinimum,
+                tables: route.params.tables,
+                hour: route.params.hour,
+                minute: route.params.minute,
+                timeOfDay: route.params.timeOfDay,
+                menu: [menuCategories, menuItems],
+                orders: [],
+                subtotal: 0,
+                thisUser: route.params.thisUser
+            });
         }
         else{
+            let billTotal = route.params.thisUser[0].joiningFee * (1+(appBookingFee + clubFees));
             props.navigation.navigate('edNav-InitialPaymentScreen', {
-                joiningFee: joiningFee,
-                requestType: route.params.paymentType
+                cardCharge: billTotal,
+                requestType: route.params.paymentType,
+                tableMinimum: route.params.tableMinimum,
+                tables: route.params.tables,
+                hour: route.params.hour,
+                minute: route.params.minute,
+                timeOfDay: route.params.timeOfDay,
+                menu: [menuCategories, menuItems],
+                orders: [],
+                subtotal: route.params.thisUser[0].joiningFee,
+                thisUser: route.params.thisUser
             });
+            console.log("Params from new table req confirm screen general tab");
+            console.log(joiningFee, "joiningFee");
+            console.log(route.params.paymentType, "route.params.paymentType");
+            console.log(route.params.tableMinimum, "route.params.tableMinimum");
+            console.log(route.params.tables, "route.params.tables");
+            console.log(route.params.hour, "route.params.hour");
+            console.log(route.params.minute, "route.params.minute");
+            console.log(route.params.timeOfDay, "route.params.timeOfDay");
+            console.log([menuCategories, menuItems], "[menuCategories, menuItems]");
+            console.log(route.params.thisUser, "route.params.thisUser")
+            console.log("\n");
         }
     }
 
@@ -291,8 +321,23 @@ const TableRequestConfirmationScreen = (props) => {
                     minute: route.params.minute,
                     timeOfDay: route.params.timeOfDay,
                     menu: [menuCategories, menuItems],
-                    orders: itemCart
+                    orders: itemCart,
+                    subtotal: subtotal,
+                    thisUser: route.params.thisUser
                 });
+                console.log("Params from new table req confirm screen checkout");
+                console.log(billTotal, "billTotal");
+                console.log(route.params.paymentType, "route.params.paymentType");
+                console.log(route.params.tableMinimum, "route.params.tableMinimum");
+                console.log(route.params.tables, "route.params.tables");
+                console.log(route.params.hour, "route.params.hour");
+                console.log(route.params.minute, "route.params.minute");
+                console.log(route.params.timeOfDay, "route.params.timeOfDay");
+                console.log([menuCategories, menuItems], "[menuCategories, menuItems]");
+                console.log(itemCart, "itemCart");
+                console.log(subtotal, "subtotal")
+                console.log(route.params.thisUser, "route.params.thisUser")
+                console.log("\n");
             }
             else{
                 setContinueError(true);

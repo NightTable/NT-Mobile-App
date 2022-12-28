@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import { 
     View, 
@@ -16,23 +16,36 @@ import { Colors } from '../../colors/Colors';
 import { heightRatioProMax } from '../../dimensions/Dimensions';
 import { Fonts } from '../../fonts/Fonts';
 
-const WaitingInfoLabelComp = (props) => {
+const TableInfoLabelComp = (props) => {
+
+    useEffect(() => {
+        if (!props.tables){
+            console.log(props.tables, "error");
+        }
+      }, []);
 
     return (<View style={styles.container}>
         <Text style={{
             color: Colors.white,
             fontFamily: Fonts.mainFontReg,
             color: Colors.textColorGold
-        }}>Waiting for <Text style={{
-            color: Colors.orange
-        }}>3</Text>  more people...</Text>
+        }}>Tables: {" "} 
+        {/*props.tables.map((table, index) => (
+            <Text style={{
+                color: Colors.orange
+            }}
+            key={index}>
+            
+                {table.id + " "}
+            </Text>
+        ))*/}  
+        </Text>
     </View>)
 
 };
 
 const styles = StyleSheet.create({
-    container: {
-        //marginTop: 10 * heightRatioProMax,
+    containerTableInfo: {
         backgroundColor: Colors.black,
         height: 50 * heightRatioProMax,
         width: '70%',
@@ -41,4 +54,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default WaitingInfoLabelComp;
+export default TableInfoLabelComp;

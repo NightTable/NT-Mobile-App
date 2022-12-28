@@ -6,6 +6,7 @@ import { View,
     TouchableOpacity} from 'react-native';
 import { Colors } from '../colors/Colors';
 
+import { useRoute } from '@react-navigation/native';
 import { CardField, StripeContainer } from '@stripe/stripe-react-native';
 import { heightRatioProMax } from '../dimensions/Dimensions';
 
@@ -15,6 +16,36 @@ import WhitePurpleBubbleLayoutComp from '../components/InitialPaymentScreen/Whit
 import { Fonts } from '../fonts/Fonts';
 
 const InitialPaymentScreen = (props) => {
+
+    const route = useRoute()
+
+    const navToPollingRoom = () => {
+        console.log(route.params.tables);
+        props.navigation.navigate('edNav-PollingRoomScreen', {
+            cardCharge: route.params.cardCharge,
+            requestType: route.params.requestType,
+            tableMinimum: route.params.tableMinimum,
+            tables: route.params.tables,
+            hour: route.params.hour,
+            minute: route.params.minute,
+            timeOfDay: route.params.timeOfDay,
+            menu: route.params.menu,
+            orders: route.params.orders,
+            subtotal: route.params.subtotal,
+            thisUser: route.params.thisUser
+        })
+        console.log("Params from initial payment screen");
+        console.log(route.params.cardCharge, "route.params.cardCharge");
+        console.log(route.params.requestType, "route.params.requestType");
+        console.log(route.params.tableMinimum, "route.params.tableMinimum");
+        console.log(route.params.tables, "route.params.tables");
+        console.log(route.params.hour, "route.params.hour");
+        console.log(route.params.minute, "route.params.minute");
+        console.log(route.params.timeOfDay, "route.params.timeOfDay");
+        console.log(route.params.menu, "route.params.menu");
+        console.log(route.params.thisUser, "route.params.thisUser")
+        console.log("\n");
+    }
 
     return (
     <StripeContainer
@@ -71,7 +102,7 @@ const InitialPaymentScreen = (props) => {
             justifyContent: 'center'
         }}>
             <TouchableOpacity
-            onPress={() => props.navigation.navigate('edNav-PollingRoomScreen')}
+            onPress={navToPollingRoom}
             style={[{
                 padding: 20 * heightRatioProMax,
                 width: '60%',

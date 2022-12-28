@@ -16,16 +16,14 @@ import { Colors } from '../../colors/Colors';
 import { heightRatioProMax } from '../../dimensions/Dimensions';
 import { Fonts } from '../../fonts/Fonts';
 
-const WaitingInfoLabelComp = (props) => {
+const TimeInfoLabelComp = (props) => {
 
     return (<View style={styles.container}>
         <Text style={{
             color: Colors.white,
             fontFamily: Fonts.mainFontReg,
             color: Colors.textColorGold
-        }}>Waiting for <Text style={{
-            color: Colors.orange
-        }}>3</Text>  more people...</Text>
+        }}>{props.hour}:{props.minute + " "}{props.timeOfDay}</Text>
     </View>)
 
 };
@@ -41,4 +39,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default WaitingInfoLabelComp;
+export default TimeInfoLabelComp;

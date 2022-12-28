@@ -1,4 +1,11 @@
-import React, {useState} from 'react';
+/*
+
+Date of the event will be convenient to have
+
+*/
+
+import React, {useState, useEffect} from 'react';
+import { useRoute } from '@react-navigation/native';
 
 import { 
     View, 
@@ -13,11 +20,12 @@ import sampleNightClubImage from '../assets/samplenightclub.jpeg';
 
 import HeaderLabelComp from '../components/PollingRoomScreen/HeaderLabelComp';
 import ParticipantInfoComp from '../components/PollingRoomScreen/ParticipantInfoComp';
-import PersonBarComp from '../components/PollingRoomScreen/PersonBarComp';
 import WaitingInfoLabelComp from '../components/PollingRoomScreen/WaitingInfoLabelComp';
 import WhiteBubbleLayoutComp from '../components/PollingRoomScreen/WhiteBubbleLayoutComp';
 import OrganizerInfoComp from '../components/PollingRoomScreen/OrganizerInfoComp';
 import PendingPartHorizComp from '../components/PollingRoomScreen/PendingPartHorizComp';
+import TableInfoLabelComp from '../components/PollingRoomScreen/TableInfoLabelComp'
+import TimeInfoLabelComp from '../components/PollingRoomScreen/TableInfoLabelComp'
 
 import youngGirl from '../assets/younggirl1.jpeg';
 
@@ -39,6 +47,14 @@ const PollingRoomScreen = (props) => {
     const [ leaveGroupModalVisible, setLeaveGroupModalVisible ] = useState(false);
     const [ removeParticipantsModalVisible, setRemoveParticipantsModalVisible ] = useState(false);
     const [ pollingConfToActiveModalVisible, setPollingConfToActiveModalVisible ] = useState(false);
+
+    const route = useRoute();
+
+    const tables = route.params.tables
+
+    useEffect(() => {
+        console.log(route.params.tables, "tables in polling room")
+      }, []);
 
     let dummyParticipants = [
         {
@@ -197,25 +213,47 @@ const PollingRoomScreen = (props) => {
                     visible={pollingConfToActiveModalVisible}
                     onPollingConfModalClose={pollingConfToActiveGroupModalHandler}></PollingConfirmationToActiveTableGroupModal> 
                 <View style={{
-                    marginTop: 60 * heightRatioProMax,
+                    marginTop: 10 * heightRatioProMax,
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
                     width: '100%'
                 }}>
                     <HeaderLabelComp 
-                        name="Amanda May" 
+                        name={route.params.thisUser[0].name} 
                         orgImageObj={youngGirl}></HeaderLabelComp>
                 </View>
                 <View style={{
                     marginBottom: 30 * heightRatioProMax
                 }}>
                     <WaitingInfoLabelComp></WaitingInfoLabelComp>
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center'
-                }}>
-                    <PersonBarComp></PersonBarComp>
+                    <View style={styles.containerTableInfo}>
+                        <Text style={{
+                            color: Colors.white,
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.textColorGold
+                        }}>Tables: {" "} 
+                        {tables.map((table, index) => (
+                            <Text style={{
+                                color: Colors.orange
+                            }}
+                            key={index}>
+                            
+                                {table.id + " "}
+                            </Text>
+                        ))}  
+                        </Text>
+                    </View>
+
+                    <View style={styles.containerTableInfo}>
+                        <Text style={{
+                            color: Colors.white,
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.gold
+                        }}>Time: <Text style={{color: Colors.orange}}>
+                                {route.params.hour}:{route.params.minute + " "}{route.params.timeOfDay}    
+                            </Text>  
+                        </Text>
+                    </View>
                 </View>
             </ImageBackground>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -442,6 +480,13 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.gold,
         borderRadius: 10 * heightRatioProMax,
 
+    },
+    containerTableInfo: {
+        backgroundColor: Colors.black,
+        height: 50 * heightRatioProMax,
+        width: '70%',
+        flexDirection: 'column',
+        justifyContent: 'center'
     }
 })
 

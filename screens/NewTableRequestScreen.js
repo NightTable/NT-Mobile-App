@@ -649,6 +649,17 @@ const NewTableRequestScreen = (props) => {
                 minute: minuteValue, 
                 timeOfDay: amOrPm
             });
+            console.log("Params from new table request screen");
+            console.log(selectedTableType, "selectedTableType");
+            console.log(selectedTables, "selectedTables");
+            console.log(currentParticipants, "currentParticipants");
+            console.log(thisUserAsParticipant, "thisUserAsParticipant");
+            console.log(tableMinimum, "tableMinimum");
+            console.log(hourValue, "hourValue");
+            console.log(minuteValue, "minuteValue");
+            console.log(amOrPm, "amOrPm");
+            console.log("\n");
+
         }
         else{
             setContinueButtonErrorMessages(errorMessages);
