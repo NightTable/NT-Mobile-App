@@ -1,3 +1,9 @@
+/*
+
+What if joining fee is 0, and you decide to order a bottle anyways?
+
+*/
+
 import React, {useEffect, useState} from 'react';
 
 import { 
@@ -226,6 +232,7 @@ const TableRequestConfirmationScreen = (props) => {
         if (joiningFee === 0){
             props.navigation.navigate('edNav-PollingRoomScreen', {
                 cardCharge: 0,
+                participants: route.params.participants,
                 requestType: route.params.paymentType,
                 tableMinimum: route.params.tableMinimum,
                 tables: route.params.tables,
@@ -242,6 +249,7 @@ const TableRequestConfirmationScreen = (props) => {
             let billTotal = route.params.thisUser[0].joiningFee * (1+(appBookingFee + clubFees));
             props.navigation.navigate('edNav-InitialPaymentScreen', {
                 cardCharge: billTotal,
+                participants: route.params.participants,
                 requestType: route.params.paymentType,
                 tableMinimum: route.params.tableMinimum,
                 tables: route.params.tables,
@@ -307,13 +315,27 @@ const TableRequestConfirmationScreen = (props) => {
     const goToNextScreen = () => {
         console.log(route.thisUser)
         if (joiningFee === 0){
-            props.navigation.navigate('edNav-PollingRoomScreen');
+            props.navigation.navigate('edNav-PollingRoomScreen', {
+                cardCharge: 0,
+                participants: route.params.participants,
+                requestType: route.params.paymentType,
+                tableMinimum: route.params.tableMinimum,
+                tables: route.params.tables,
+                hour: route.params.hour,
+                minute: route.params.minute,
+                timeOfDay: route.params.timeOfDay,
+                menu: [menuCategories, menuItems],
+                orders: itemCart,
+                subtotal: subtotal,
+                thisUser: route.params.thisUser
+            });
         }
         else{
             if (joiningFee <= subtotal){
                 let billTotal = subtotal * (1 + (appBookingFee + clubFees));
                 props.navigation.navigate('edNav-InitialPaymentScreen', {
                     cardCharge: billTotal,
+                    participants: route.params.participants,
                     requestType: route.params.paymentType,
                     tableMinimum: route.params.tableMinimum,
                     tables: route.params.tables,

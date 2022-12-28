@@ -57,7 +57,6 @@ const EntryDashboardScreen = (props) => {
     }, []);
 
     const handleBubblePress = () => {
-
         props.navigation.navigate('edNav-ClubMiniDetailScreen');
     }
 

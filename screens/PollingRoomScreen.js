@@ -1,6 +1,7 @@
 /*
 
 Date of the event will be convenient to have
+In a PNSL request, you should not be able to modify your share, as you've already paid
 
 */
 
@@ -53,7 +54,8 @@ const PollingRoomScreen = (props) => {
     const tables = route.params.tables
 
     useEffect(() => {
-        console.log(route.params.tables, "tables in polling room")
+        console.log(route.params.tables, "tables in polling room");
+        console.log()
       }, []);
 
     let dummyParticipants = [
@@ -263,9 +265,10 @@ const PollingRoomScreen = (props) => {
                         width: '80%'
                     }}>
                         <Text style={{
-                            fontFamily: Fonts.mainFontReg,
-                            color: Colors.textColorGold
-                        }}>current cost breakdown</Text>
+                            fontFamily: Fonts.mainFontBold,
+                            color: Colors.textColorGold,
+                            fontSize: 25 * heightRatioProMax
+                        }}>Current cost breakdown</Text>
                     </View>
                     <WhiteBubbleLayoutComp>
                         <OrganizerInfoComp>

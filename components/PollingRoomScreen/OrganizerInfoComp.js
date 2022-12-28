@@ -44,8 +44,9 @@ const OrganizerInfoComp = (props) => {
                 fontFamily: Fonts.mainFontReg,
                 fontSize: 18 * heightRatioProMax,
                 marginLeft: 15 * widthRatioProMax,
-                color: Colors.gold
-            }}>your share: <Text style={{
+                color: Colors.gold,
+                textAlign: 'center'
+            }}>Your share: <Text style={{
                 color: Colors.purple,
                 fontFamily: Fonts.mainFontBold,
                 color: Colors.gold
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 40 * heightRatioProMax,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.red,
         borderColor: Colors.gold,
         borderWidth: 1,
         height: 50 * heightRatioProMax,
