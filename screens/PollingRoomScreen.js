@@ -3,9 +3,11 @@
 Date of the event will be convenient to have
 In a PNSL request, you should not be able to modify your share, as you've already paid
 
+PNSL tables should be moved into active table room screen and not polling room screen
+
 */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,} from 'react';
 import { useRoute } from '@react-navigation/native';
 
 import { 
@@ -15,6 +17,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Modal,
+    Image,
     ImageBackground} from 'react-native';
 
 import sampleNightClubImage from '../assets/samplenightclub.jpeg';
@@ -24,16 +27,16 @@ import ParticipantInfoComp from '../components/PollingRoomScreen/ParticipantInfo
 import WaitingInfoLabelComp from '../components/PollingRoomScreen/WaitingInfoLabelComp';
 import WhiteBubbleLayoutComp from '../components/PollingRoomScreen/WhiteBubbleLayoutComp';
 import OrganizerInfoComp from '../components/PollingRoomScreen/OrganizerInfoComp';
-import PendingPartHorizComp from '../components/PollingRoomScreen/PendingPartHorizComp';
-import TableInfoLabelComp from '../components/PollingRoomScreen/TableInfoLabelComp'
-import TimeInfoLabelComp from '../components/PollingRoomScreen/TableInfoLabelComp'
+import CategoryComponentComp from '../components/TableRequestConfirmationScreen/MenuSlideUpModalComp/CategoryComponentComp';
 
+import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 import youngGirl from '../assets/younggirl1.jpeg';
 
 import { heightRatioProMax, widthRatioProMax } from '../dimensions/Dimensions';
 import { Fonts } from '../fonts/Fonts';
 import { Colors } from '../colors/Colors';
 
+import LeaveGroupModal2 from '../modals/SharedPollingScreens/LeaveGroupModal2';
 import AddParticipantModal from '../modals/SharedPollingScreens/AddParticipantModal';
 import LeaveGroupModal from '../modals/SharedPollingScreens/LeaveGroupModal';
 import RemoveParticipantsModal from '../modals/SharedPollingScreens/RemoveParticipantsModal';
@@ -41,22 +44,36 @@ import girlOnePic from '../assets/younggirl1.jpeg';
 import girlTwoPic from '../assets/younguy2.jpeg';
 import johnPic from '../assets/johnpic.jpeg';
 import PollingConfirmationToActiveTableGroupModal from '../modals/PollingRoomScreen/PollingConfirmationToActiveTableGroupModal';
+import MemoireFloorplan from '../assets/Memoire.png';
+import GrandFloorplan from '../assets/Shrine.png';
 
 const PollingRoomScreen = (props) => {
-    
+
+    let [animateModal, setanimateModal] = useState(false);
+    const [subtotal, setSubtotal] = useState(0);
     const [ addParticipantModalVisible, setAddParticipantModalVisible ] = useState(false);
     const [ leaveGroupModalVisible, setLeaveGroupModalVisible ] = useState(false);
     const [ removeParticipantsModalVisible, setRemoveParticipantsModalVisible ] = useState(false);
     const [ pollingConfToActiveModalVisible, setPollingConfToActiveModalVisible ] = useState(false);
+    const [openFloorplanModal, setOpenFloorplanModal] = useState(false)
+    const [floorplans, setFloorplans] = useState([{id: "63aacc91067da026d4bf7138", floorMap: GrandFloorplan}, {id: "63aacca4d71fb9accdffa5be", floorMap: MemoireFloorplan}]);
+    let [menuVisible, setMenuVisible] = useState(false);
+    let [itemCart, setItemCart] = useState([]);
+    const [cartVisible, setCartVisible] = useState(false);
 
     const route = useRoute();
 
     const tables = route.params.tables
+    let menuCategories = route.params.menu[0];
+    let menuItems = route.params.menu[1];
 
     useEffect(() => {
-        console.log(route.params.tables, "tables in polling room");
-        console.log()
-      }, []);
+        calculateSubtotal()
+    }, [itemCart]);
+
+    useEffect(() => {
+        setItemCart(route.params.orders);
+    }, []);
 
     let dummyParticipants = [
         {
@@ -73,7 +90,17 @@ const PollingRoomScreen = (props) => {
             name: "John Nydam",
             imageObj: johnPic,
             finalCostContribution: 400
-        }
+        },
+        {
+            name: "John Nydam",
+            imageObj: johnPic,
+            finalCostContribution: 400
+        },
+        {
+            name: "John Nydam",
+            imageObj: johnPic,
+            finalCostContribution: 400
+        },
     ];
 
 
@@ -114,13 +141,58 @@ const PollingRoomScreen = (props) => {
     ];
 
 
+    const removeItem = (index) => {
+        let itemCartCopy = itemCart.filter((item, i) => i !== index); // create a new array with the element at the given index removed
+        setItemCart(itemCartCopy); // set the itemCart to the modified copy
+    }
+
     const range = (start, stop, step) => {
         
         return Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
     
     };
 
-    let pendingPartHorizNumLength = dummyPendingParticipantsData.length / 2;
+    const calculateSubtotal = () => {
+        let sum = 0;
+        console.log(itemCart, "itemCart")
+        for (let i = 0; i < itemCart.length; i++){
+            console.log(itemCart[i], "item cart[i]");
+            sum = sum + parseInt(itemCart[i].totalPrice);
+            console.log(sum, "this is supposed to be subtotal")
+        }
+        setSubtotal(sum)
+    }
+
+    const addToCart = (item, qty) => {
+        let tempCart = itemCart;
+        for (let i = 0; i < tempCart.length; i++){
+            if (tempCart[i].itemObj.itemName === item.itemName){
+
+                let orderItem = {
+                    quantity: parseInt(tempCart[i].quantity) + parseInt(qty),
+                    itemObj: item,
+                    totalPrice: (parseInt(tempCart[i].quantity) + parseInt(qty)) * parseInt(item.itemPrice)
+                }
+                tempCart.splice(i)
+                tempCart.push(orderItem)
+                setItemCart(tempCart);
+                calculateSubtotal();
+                return;
+            }
+        }
+
+        let orderItem = {
+            quantity: parseInt(qty),
+            itemObj: item,
+            totalPrice: parseInt(qty) * parseInt(item.itemPrice)
+        }
+
+        tempCart.push(orderItem)
+        setItemCart(tempCart);
+        calculateSubtotal();
+        fugazziCart=tempCart;
+    }
+
 
     const addParticipantModalHandler = () => {
 
@@ -131,6 +203,11 @@ const PollingRoomScreen = (props) => {
     const leaveGroupModalHandler = () => {
 
         setLeaveGroupModalVisible((state) => !state);
+    }
+
+    const toggleViewCart = () => {
+
+        setCartVisible((state) => !state);
     }
     
     const removeParticipantsModalHandler = () => {
@@ -178,6 +255,106 @@ const PollingRoomScreen = (props) => {
 
     return (
         <View style={styles.screenContainer}>
+            
+            <SwipeUpDownModal
+                modalVisible={openFloorplanModal}
+                ContentModal={
+                    <View style={styles.containerContent}>
+                        <ScrollView style={{ width: '100%', margin: 150 * widthRatioProMax, borderWidth: 1 * widthRatioProMax, borderColor: Colors.gold}}>
+                            {
+                                floorplans.map((floorplan, index) => {
+                                    return (
+                                        <View style={{alignContent: 'center', justifyContent: 'center', alignItems: 'center', height: '10%'}}
+                                            key={index}>
+                                            <Image
+                                                style={{width: '100%'}}
+
+                                                source={floorplan.floorMap}
+                                                resizeMode='contain'
+                                            />
+                                        </View> 
+                                        );
+                                    })
+                            }
+                        </ScrollView>
+
+                    </View>
+                }
+                HeaderStyle={styles.headerContent}
+                ContentModalStyle={styles.Modal}
+                HeaderContent={
+                    <View style={styles.containerHeader}>
+                        <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 60 * heightRatioProMax, color: Colors.gold}}>Club Map</Text>
+                    </View>
+                    }
+                    onClose={() => {
+                        setOpenFloorplanModal(false)
+                    }}
+            />
+            
+
+            <SwipeUpDownModal
+                modalVisible={menuVisible}
+                ContentModal={
+                    <View style={{
+                        flex: 1, 
+                        marginTop: 40 * heightRatioProMax,
+                        alignContent: 'center',
+                        alignItems: 'center',     
+                    }}>
+                        <ScrollView style={{marginTop: 10 * heightRatioProMax}}>
+                            {
+                                menuCategories.map((category, index) => {
+                                    return (
+                                        <CategoryComponentComp
+                                            key={index}
+                                            category={category.categoryName}
+                                            id={category.id}
+                                            fullMenu={menuItems}
+                                            addToCart={addToCart}>
+                                        </CategoryComponentComp>
+
+                                    );
+                                })
+                            }
+                        </ScrollView>
+
+                    </View>
+                }
+                HeaderStyle={{
+                    marginTop: 0,
+                    backgroundColor: 'transparent',
+                }}
+                ContentModalStyle={{
+                    borderRadius: 75 * heightRatioProMax,
+                    backgroundColor: Colors.black,
+                    marginTop: 200 * heightRatioProMax,
+                    height: 80 * heightRatioProMax,
+                    borderWidth: 5 * widthRatioProMax,
+                    borderColor: Colors.gold,
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    borderBottomWidth: 0
+                }}
+                HeaderContent={
+                    <View style={{
+                        flex: 1,
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 200 * heightRatioProMax,
+                        padding: 10 * widthRatioProMax
+                        //backgroundColor: Colors.red,
+                    }}>
+                        <Text style={{fontFamily: Fonts.mainFontReg, fontSize: 60 * heightRatioProMax, color: Colors.gold}}>Menu</Text>
+                    </View>
+                    }
+                    onClose={() => {
+                        setMenuVisible(false);
+                        setanimateModal(false);
+                    }}
+            />
+
             <ImageBackground style={{
                 width: '100%',
                 height: 320 * heightRatioProMax
@@ -185,7 +362,7 @@ const PollingRoomScreen = (props) => {
                 <Modal
                     onRequestClose={() => {
                         setAddParticipantModalVisible((state) => !state);
-                       }}
+                    }}
                     style={{
                         flexDirection: 'column',
                         justifyContent: 'flex-end'
@@ -203,7 +380,15 @@ const PollingRoomScreen = (props) => {
                     onRequestClose={() => {
                         setLeaveGroupModalVisible((state) => !state);
                     }}
-                ></LeaveGroupModal> 
+                ></LeaveGroupModal>
+                <LeaveGroupModal2
+                    visible={cartVisible}
+                    itemCart={itemCart}
+                    removeItem={removeItem}
+                    onRequestClose={() => {
+                        setCartVisible((state) => !state);
+                    }}
+                ></LeaveGroupModal2>  
                 <RemoveParticipantsModal
                     visible={removeParticipantsModalVisible}
                     onRequestClose={() => {
@@ -270,85 +455,199 @@ const PollingRoomScreen = (props) => {
                             fontSize: 25 * heightRatioProMax
                         }}>Current cost breakdown</Text>
                     </View>
+                    <View style={{
+                        marginTop: 20 * heightRatioProMax,
+                        width: '80%'
+                    }}>
+                        <Text style={{
+                            fontFamily: Fonts.mainFontReg,
+                            color: Colors.textColorGold,
+                            fontSize: 20 * heightRatioProMax
+                        }}>Invited Current Participants</Text>
+                    </View>
                     <WhiteBubbleLayoutComp>
                         <OrganizerInfoComp>
                         </OrganizerInfoComp>
-                        {dummyParticipants.map((participant, index) => (
-                            <ParticipantInfoComp
-                                key={index}
-                                name={participant.name}
-                                imageObj={participant.imageObj}
-                                contribution={participant.finalCostContribution}
-                            >
-                            </ParticipantInfoComp>
-                        ))}
+                            <ScrollView
+                                nestedScrollEnabled={true}
+                                style={{width: '100%', alignContent: 'center'}}>
+                                {dummyParticipants.map((participant, index) => (
+                                        <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
+                                            <ParticipantInfoComp
+                                                key={index}
+                                                name={participant.name}
+                                                imageObj={participant.imageObj}
+                                                contribution={participant.finalCostContribution}
+                                            >
+                                            </ParticipantInfoComp>
+                                        </View>
+
+                                ))}
+                            </ScrollView>
                         <View style={styles.tablePriceContainer}>
                             <Text style={{
                                 color: Colors.purple,
                                 fontSize: 18 * heightRatioProMax,
                                 fontFamily: Fonts.mainFontReg,
                                 color: Colors.gold
-                            }}>table price: <Text style={{
+                            }}>Table Minimum: <Text style={{
                                 fontFamily: Fonts.mainFontBold,
                                 color: Colors.gold
-                            }}>$510</Text></Text>
+                            }}>${route.params.tableMinimum}</Text></Text>
+                            <Text style={{
+                                color: Colors.purple,
+                                fontSize: 18 * heightRatioProMax,
+                                fontFamily: Fonts.mainFontReg,
+                                color: Colors.gold
+                            }}>Group Spend: <Text style={{
+                                fontFamily: Fonts.mainFontBold,
+                                color: Colors.gold
+                            }}>${route.params.tableMinimum}</Text></Text>
                         </View>
                     </WhiteBubbleLayoutComp>
+                    <TouchableOpacity>
+                        <View style={{
+                            marginTop: 20 * heightRatioProMax,
+                            width: '80%',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            alignItems: 'center',
+                            borderWidth: 1 * widthRatioProMax,
+                            borderColor: Colors.gold,
+                            borderRadius: 10 * widthRatioProMax,
+                            padding: 10 * widthRatioProMax,
+                        }}>
+                            <Text style={{
+                                fontFamily: Fonts.mainFontReg,
+                                color: Colors.textColorGold,
+                                fontSize: 20 * heightRatioProMax
+                            }}>5 Custom Share Request(s)</Text>
+                        </View>
+                    </TouchableOpacity>
+
                     <View style={{
                         marginTop: 20 * heightRatioProMax,
                         width: '80%'
                     }}>
                         <Text style={{
                             fontFamily: Fonts.mainFontReg,
-                            color: Colors.textColorGold
-                        }}>pending participants</Text>
+                            color: Colors.textColorGold,
+                            fontSize: 20 * heightRatioProMax
+                        }}>Invited Pending Participants</Text>
                     </View>
+
                     <WhiteBubbleLayoutComp>
-                        <ScrollView 
-                        nestedScrollEnabled={true}
-                        showsVerticalScrollIndicator={false}>
-                        {range(0, dummyPendingParticipantsData.length - 2, 2).map((index) => (
-                            <PendingPartHorizComp 
-                                imageObjOne={dummyPendingParticipantsData[index].imageObj}
-                                imageObjTwo={dummyPendingParticipantsData[index + 1].imageObj}
-                                nameLabelOne={dummyPendingParticipantsData[index].name}
-                                nameLabelTwo={dummyPendingParticipantsData[index + 1].name}
-                                handlePress={handleNavToUserProfile}
-                                key={index}>
-                            </PendingPartHorizComp>
-                        ))}
-                        </ScrollView>
+                            <ScrollView
+                                nestedScrollEnabled={true}
+                                style={{width: '100%', alignContent: 'center', height: '10%', margin: 10 * widthRatioProMax}}>
+                                {dummyParticipants.map((participant, index) => (
+                                        <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
+                                            <ParticipantInfoComp
+                                                key={index}
+                                                name={participant.name}
+                                                imageObj={participant.imageObj}
+                                                contribution={participant.finalCostContribution}
+                                                seeProfile={handleNavToUserProfile}
+                                            >
+                                            </ParticipantInfoComp>
+                                        </View>
+
+                                ))}
+                            </ScrollView>
                     </WhiteBubbleLayoutComp>
+
                     <View style={{
                         marginTop: 20 * heightRatioProMax,
-                        width: '80%'
+                        width: '80%',
                     }}>
                         <Text style={{
                             fontFamily: Fonts.mainFontReg,
-                            color: Colors.textColorGold
-                        }}>current participants (3)</Text>
+                            color: Colors.textColorGold,
+                            fontSize: 20 * heightRatioProMax,
+                            textAlign: 'center'
+                        }}>Click on the photos of each participant to view their profiles</Text>
                     </View>
-                    <WhiteBubbleLayoutComp>
-                        <ScrollView 
-                        nestedScrollEnabled={true}
-                        showsVerticalScrollIndicator={false}>
-                        {range(0, dummyPendingParticipantsData.length - 2, 2).map((index) => (
-                            <PendingPartHorizComp 
-                                imageObjOne={dummyPendingParticipantsData[index].imageObj}
-                                imageObjTwo={dummyPendingParticipantsData[index + 1].imageObj}
-                                nameLabelOne={dummyPendingParticipantsData[index].name}
-                                nameLabelTwo={dummyPendingParticipantsData[index + 1].name}
-                                handlePress={handleNavToUserProfile}
-                                key={index}>
-                            </PendingPartHorizComp>
-                        ))}
-                        </ScrollView>
-                    </WhiteBubbleLayoutComp>
+
+
                     <View style={{
                         marginTop: 30 * heightRatioProMax,
                         alignSelf: 'flex-start',
                         marginBottom: 30 * heightRatioProMax
                     }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            justifyContent: 'space-between',
+                            marginBottom: 10 * heightRatioProMax,
+                            height: 50 * heightRatioProMax
+                        }}>
+                            <TouchableOpacity
+                                style={
+                                    {
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        marginLeft: 30 * widthRatioProMax,
+                                        width: 180 * widthRatioProMax,
+                                        borderColor: Colors.gold,
+                                        borderWidth: 1,
+                                        backgroundColor: Colors.black,
+                                        borderRadius: 10 * heightRatioProMax,
+                                        shadowColor: Colors.black,
+                                        shadowRadius: 5,
+                                        shadowOpacity: 0.4,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 0
+                                        },
+                                        elevation: 3
+                                    }   
+
+                                }
+                                onPress={() => setMenuVisible(true)}
+                            >
+                                <Text style={{
+                                    color: Colors.green,
+                                    fontFamily: Fonts.mainFontReg,
+                                    textAlign: 'center',
+                                    fontSize: 15 * heightRatioProMax,
+                                    color: Colors.gold
+                                }}>Menu</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => setOpenFloorplanModal(true)}
+                                style={
+                                    {
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        marginRight: 30 * widthRatioProMax,
+                                        width: 180 * widthRatioProMax,
+                                        borderColor: Colors.gold,
+                                        borderWidth: 1,
+                                        backgroundColor: Colors.black,
+                                        borderRadius: 10 * heightRatioProMax,
+                                        shadowColor: Colors.black,
+                                        shadowRadius: 5,
+                                        shadowOpacity: 0.4,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 0
+                                        },
+                                        elevation: 3
+                                
+                                    }
+                                }
+                            >
+                                <Text style={{
+                                    color: Colors.orange,
+                                    fontFamily: Fonts.mainFontReg,
+                                    textAlign: 'center',
+                                    fontSize: 15 * heightRatioProMax,
+                                    color: Colors.gold
+                                }}>Floor Plan</Text>
+                            </TouchableOpacity>
+                        </View>
+
                         <View style={{
                             flexDirection: 'row',
                             width: '100%',
@@ -368,6 +667,7 @@ const PollingRoomScreen = (props) => {
                                     color: Colors.white
                                 }}>add participants</Text>
                             </TouchableOpacity>
+
                             <TouchableOpacity
                                 onPress={removeParticipantsModalHandler}
                                 style={[styles.removeParticipantsButtonStyle, styles.lowerButtonShadowStyle]}
@@ -381,6 +681,7 @@ const PollingRoomScreen = (props) => {
                                 }}>remove participants</Text>
                             </TouchableOpacity>
                         </View>
+
                         <View style={{
                             flexDirection: 'row',
                             width: '100%',
@@ -407,7 +708,75 @@ const PollingRoomScreen = (props) => {
                                     fontFamily: Fonts.mainFontReg,
                                     textAlign: 'center',
                                     fontSize: 15 * heightRatioProMax,
-                                }}>approve request</Text>
+                                }}>Approve Request</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            justifyContent: 'space-between',
+                            marginBottom: 10 * heightRatioProMax,
+                            height: 50 * heightRatioProMax
+                        }}>
+                            <TouchableOpacity
+                                onPress={toggleViewCart}
+                                style={
+                                    {
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        marginLeft: 30 * widthRatioProMax,
+                                        width: 180 * widthRatioProMax,
+                                        borderWidth: 1 * widthRatioProMax,
+                                        borderColor: Colors.gold,
+                                        backgroundColor: Colors.goldDark,
+                                        borderRadius: 10 * heightRatioProMax,
+                                        shadowColor: Colors.black,
+                                        shadowRadius: 5,
+                                        shadowOpacity: 0.4,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 0
+                                        },
+                                        elevation: 3
+                                
+                                    }
+                                }>
+                                <Text style={{
+                                    color: Colors.red,
+                                    fontFamily: Fonts.mainFontReg,
+                                    textAlign: 'center',
+                                    fontSize: 15 * heightRatioProMax,
+                                    color: Colors.black
+                                }}>View Cart</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={pollingConfToActiveGroupModalHandler}
+                                style={
+                                    {
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        marginRight: 30 * widthRatioProMax,
+                                        width: 180 * widthRatioProMax,
+                                        backgroundColor: Colors.goldDark,
+                                        borderColor: Colors.gold,
+                                        borderWidth: 1 * widthRatioProMax,
+                                        borderRadius: 10 * heightRatioProMax,
+                                        shadowColor: Colors.black,
+                                        shadowRadius: 5,
+                                        shadowOpacity: 0.4,
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 0
+                                        },
+                                        elevation: 3
+                                    }
+                                }>
+                                <Text style={{
+                                    color: Colors.black,
+                                    fontFamily: Fonts.mainFontReg,
+                                    textAlign: 'center',
+                                    fontSize: 15 * heightRatioProMax,
+                                }}>Add to General Tab</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -490,7 +859,40 @@ const styles = StyleSheet.create({
         width: '70%',
         flexDirection: 'column',
         justifyContent: 'center'
-    }
+    },
+    Modal: {
+        borderRadius: 75 * heightRatioProMax,
+        backgroundColor: Colors.black,
+        marginTop: 200 * heightRatioProMax,
+        height: 80 * heightRatioProMax,
+        borderWidth: 5 * widthRatioProMax,
+        borderColor: Colors.gold,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderBottomWidth: 0
+    },
+    containerHeader: {
+        flex: 1,
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 200 * heightRatioProMax,
+        padding: 10 * widthRatioProMax
+    },
+    headerContent:{
+        marginTop: 0,
+        backgroundColor: 'transparent',
+    },
+    containerContent: {
+        //flex: 1, 
+        //marginTop: 40 * heightRatioProMax,
+        alignContent: 'center',
+        alignItems: 'center',     
+        
+
+        //justifyContent: 'center',
+    },
+
 })
 
 export default PollingRoomScreen;

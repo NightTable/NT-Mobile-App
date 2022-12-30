@@ -36,7 +36,7 @@ const HeaderLabelComp = (props) => {
                     fontFamily: Fonts.mainFontReg,
                     textAlign: 'center',
                     color: Colors.textColorGold
-                    }}>table request organized by</Text>
+                    }}>Table request organized by</Text>
                 <Text style={{
                     textAlign: 'left',
                     color: Colors.textColorGold,

@@ -26,6 +26,7 @@ export const Colors = {
     dashboardCompGrey: '#707070',
     textColorBlack: '#000000',
     buttonColorGold: '#E4D0B5',
-    gold: '#E4D0B5'
+    gold: '#E4D0B5',
+    goldDark: '#CBAE83'
 
 };

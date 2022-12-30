@@ -6,8 +6,9 @@ import { heightRatioProMax, widthRatioProMax } from '../../dimensions/Dimensions
 import { Fonts } from '../../fonts/Fonts';
 import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 
-import MemoireFloorplan from '../../assets/MemoireFloorplan.png';
-import GrandFloorplan from '../../assets/TheGrandFloorplan.png';
+import Floorplan from '../Floorplan';
+import MemoireFloorplan from '../../assets/Memoire.png';
+import GrandFloorplan from '../../assets/Shrine.png';
 
 // we got to fix the floorplans
 
@@ -58,20 +59,22 @@ const TableOptionSectionComp = (props) => {
             modalVisible={openModal}
             ContentModal={
                 <View style={styles.containerContent}>
-                    <ScrollView style={{marginTop: 10 * heightRatioProMax}}>
-                        <FlatList
-                            style={{width: '50%'}}
-                            data={floorplans}
-                            resizeMode="contain"
-                            keyExtractor={item => item.id}
-                            horizontal
-                            renderItem={({item}) => 
-                                <Image
-                                    source={item.floorMap}
-                                />
-                            }
-                            onEndReachedThreshold={0.5}
-                        />
+                    <ScrollView style={{ width: '100%', margin: 150 * widthRatioProMax, borderWidth: 1 * widthRatioProMax, borderColor: Colors.gold}}>
+                        {
+                            floorplans.map((floorplan, index) => {
+                                return (
+                                    <View style={{alignContent: 'center', justifyContent: 'center', alignItems: 'center', height: '10%'}}
+                                        key={index}>
+                                        <Image
+                                            style={{width: '100%'}}
+
+                                            source={floorplan.floorMap}
+                                            resizeMode='contain'
+                                        />
+                                    </View> 
+                                    );
+                                })
+                        }
                     </ScrollView>
 
                 </View>
@@ -197,9 +200,7 @@ const styles = StyleSheet.create({
         marginTop: 40 * heightRatioProMax,
         alignContent: 'center',
         alignItems: 'center',     
-        
-
-        //justifyContent: 'center',
+        justifyContent: 'center',
     },
     containerHeader: {
         flex: 1,
@@ -208,9 +209,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 200 * heightRatioProMax,
         padding: 10 * widthRatioProMax
-        //backgroundColor: Colors.red,
-
-        
     },
     headerContent:{
         marginTop: 0,

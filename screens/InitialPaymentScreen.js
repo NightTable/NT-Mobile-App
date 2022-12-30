@@ -34,6 +34,7 @@ const InitialPaymentScreen = (props) => {
             subtotal: route.params.subtotal,
             thisUser: route.params.thisUser
         })
+
         console.log("Params from initial payment screen");
         console.log(route.params.cardCharge, "route.params.cardCharge");
         console.log(route.params.requestType, "route.params.requestType");

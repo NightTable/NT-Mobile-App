@@ -14,7 +14,9 @@ pending participants. In PNSL, a request is sent out to only 1 participant who p
 upfront. THIS HAS NOT BEEN IMPLEMENTED YET AND HAS TO BE IMPLEMENTED. 
 
 
-//fix the ability to dyanimically update participant prices when a new phone number is added
+fix the floorplan
+props.changePartJoining fee is not a function - fix the error
+
 
 */
 

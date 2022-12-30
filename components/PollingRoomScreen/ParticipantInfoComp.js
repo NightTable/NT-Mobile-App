@@ -28,14 +28,18 @@ const ParticipantInfoComp = (props) => {
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
-                <Image 
-                    style={{
-                        marginRight: 10 * widthRatioProMax,
-                        width: 50 * heightRatioProMax,
-                        height: 50 * heightRatioProMax,
-                        borderRadius: 25 * heightRatioProMax
-                    }}
-                    source={props.imageObj}></Image>
+                <TouchableOpacity
+                    onPress={props.seeProfile}>
+                    <Image 
+                        style={{
+                            marginRight: 10 * widthRatioProMax,
+                            width: 50 * heightRatioProMax,
+                            height: 50 * heightRatioProMax,
+                            borderRadius: 25 * heightRatioProMax
+                        }}
+                        source={props.imageObj}></Image>
+                </TouchableOpacity>
+
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black

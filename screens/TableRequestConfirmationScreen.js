@@ -1,6 +1,7 @@
 /*
 
 What if joining fee is 0, and you decide to order a bottle anyways?
+Fix add to general tab button
 
 */
 
@@ -226,6 +227,37 @@ const TableRequestConfirmationScreen = (props) => {
     const handleMenuPress = () => {
         setMenuVisible(!menuVisible);
         //setanimateModal(!animateModal);
+    }
+
+    const nextScreen = () => {
+        if (subtotal >= joiningFee){
+            let billTotal = subtotal * (1 + (appBookingFee + clubFees));
+            let edNavObjParam = {
+                cardCharge: billTotal,
+                participants: route.params.participants,
+                requestType: route.params.paymentType,
+                tableMinimum: route.params.tableMinimum,
+                tables: route.params.tables,
+                hour: route.params.hour,
+                minute: route.params.minute,
+                timeOfDay: route.params.timeOfDay,
+                menu: [menuCategories, menuItems],
+                orders: itemCart,
+                subtotal: subtotal,
+                thisUser: route.params.thisUser
+            }
+            if (joiningFee === 0){
+                props.navigation.navigate('edNav-PollingRoomScreen', edNavObjParam);
+            }
+            else{
+
+            }
+            props.navigation.navigate('edNav-InitialPaymentScreen', edNavObjParam);
+        }
+        else{
+            setContinueError(true);
+            setScreenOpacity(0.5);
+        }
     }
 
     const addToGeneralTab = () => {
@@ -706,7 +738,7 @@ const TableRequestConfirmationScreen = (props) => {
                                         Upon placing your order, you will be also be levied a {(appBookingFee + clubFees) * 100}% fee that covers gratuity, tax, and other costs of service. Feel free to tip the cocktail server more at the venue.
                                     </Text>
                                     <TouchableOpacity 
-                                        onPress={goToNextScreen}
+                                        onPress={nextScreen}
                                         style={[{
                                             borderRadius: 10 * heightRatioProMax,
 
@@ -741,7 +773,7 @@ const TableRequestConfirmationScreen = (props) => {
                                 width: '40%',
                             }}> 
                                 <TouchableOpacity 
-                                onPress={addToGeneralTab}
+                                onPress={nextScreen}
                                 style={[{
                                     borderRadius: 10 * heightRatioProMax,
 
@@ -844,7 +876,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     Modal: {
-
         borderRadius: 75 * heightRatioProMax,
         backgroundColor: Colors.black,
         marginTop: 200 * heightRatioProMax,

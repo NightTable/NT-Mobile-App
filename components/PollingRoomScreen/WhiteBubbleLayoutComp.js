@@ -10,6 +10,7 @@ import React from 'react';
 import { 
     View, 
     StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import { Colors } from '../../colors/Colors';
 import { heightRatioProMax } from '../../dimensions/Dimensions';
@@ -17,7 +18,9 @@ import { heightRatioProMax } from '../../dimensions/Dimensions';
 const WhiteBubbleLayoutComp = (props) => {
 
     return (<View style={styles.container}>
-        {props.children}
+            {props.children}
+
+
     </View>)
 };
 
