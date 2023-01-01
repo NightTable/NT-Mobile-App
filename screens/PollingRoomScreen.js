@@ -10,6 +10,7 @@ All current participants are users who have signed up to be on the platform,
 meaning they have a profile picture, and an overall properly set up profile
 
 When modifying share contributions, a new invite is sent to them with a new joining fee. 
+Cuurent participants are made into pending participants. 
 
 */
 
@@ -53,7 +54,7 @@ import johnPic from '../assets/johnpic.jpeg';
 import PollingConfirmationToActiveTableGroupModal from '../modals/PollingRoomScreen/PollingConfirmationToActiveTableGroupModal';
 import MemoireFloorplan from '../assets/Memoire.png';
 import GrandFloorplan from '../assets/Shrine.png';
-import { createIconSetFromFontello } from 'react-native-vector-icons';
+
 
 const PollingRoomScreen = (props) => {
     const route = useRoute();
@@ -144,7 +145,7 @@ const PollingRoomScreen = (props) => {
     }
 
     useEffect(() => {
-        setGroupSpend(parseInt(sumFees));
+        setGroupSpend(parseInt(sumFees) + parseInt(organizerJoiningFee));
         console.log(groupSpend, "group spend")
     }, [dummyParticipants]);
 
@@ -615,7 +616,8 @@ const PollingRoomScreen = (props) => {
                                                 contribution={participant.joiningFee}
                                                 seeProfile={handleNavToUserProfile}
                                                 modifyFee={showPartModifyModal}
-
+                                                participantType={"current"}
+                                                requestType={requestType}
                                             >
                                             </ParticipantInfoComp>
                                         </View>

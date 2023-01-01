@@ -1,8 +1,11 @@
-// All information, source code contained in this document 
-// is the property of StrynDev Solutions, LLC. It must not 
-// be transmitted to others without the written consent of 
-// StrynDev Solutions. It must be returned to StrynDev Solutions 
-// when its authorized use is terminated.
+/*
+
+If participant type is current, and if request type is pnsl, don't display pencil
+If participant type is current, and reqquest type is snpl, display pencil
+
+If participant is pending, display pencil
+
+*/
 
 import React from 'react';
 
@@ -23,6 +26,34 @@ const ParticipantInfoComp = (props) => {
 
     const isExternalUser = props.isExternalUser
 
+    const pencilDisplay = () => {
+        if (props.participantType === 'current' && props.requestType === "pnsl"){
+            return null;
+        }
+        if (props.requestType === "snpl" || props.participantType === "pending"){
+            return (
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{
+                        marginRight: 10 * widthRatioProMax,
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
+                    }}>${props.contribution}</Text>
+                    <TouchableOpacity
+                        onPress={() => props.modifyFee(props.index)}>
+                        <Image 
+                            source={blackPencilImg}
+                            style={{
+                                width: 30 * heightRatioProMax,
+                                height: 30 * heightRatioProMax
+                            }}></Image>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -61,26 +92,29 @@ const ParticipantInfoComp = (props) => {
                 </Text>
             </View>
             }
+            {props.participantType === 'current' && props.requestType === "pnsl" ? null 
+                :
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{
+                        marginRight: 10 * widthRatioProMax,
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
+                    }}>${props.contribution}</Text>
+                    <TouchableOpacity
+                        onPress={() => props.modifyFee(props.index)}>
+                        <Image 
+                            source={blackPencilImg}
+                            style={{
+                                width: 30 * heightRatioProMax,
+                                height: 30 * heightRatioProMax
+                            }}></Image>
+                    </TouchableOpacity>
+                </View>
+            }
 
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center'
-            }}>
-                <Text style={{
-                    marginRight: 10 * widthRatioProMax,
-                    fontFamily: Fonts.mainFontReg,
-                    color: Colors.black
-                }}>${props.contribution}</Text>
-                <TouchableOpacity
-                    onPress={() => props.modifyFee(props.index)}>
-                    <Image 
-                        source={blackPencilImg}
-                        style={{
-                            width: 30 * heightRatioProMax,
-                            height: 30 * heightRatioProMax
-                        }}></Image>
-                </TouchableOpacity>
-            </View>
         </View>
     )
 
