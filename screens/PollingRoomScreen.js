@@ -72,14 +72,16 @@ const PollingRoomScreen = (props) => {
     const [partModifModalVisible, setPartModifModalVisible] = useState(false);
     const [fee, setFee] = useState(0);
     const [index, setIndex] = useState(0);
+    const [groupSpend, setGroupSpend] = useState(0);
     
     let [itemCart, setItemCart] = useState(route.params.orders);
     let [tableMinimum, setTableMinimum] = useState(route.params.tableMinimum);
     let [organizerJoiningFee, setOrganizerJoiningFee] = useState(route.params.thisUser[0].joiningFee);
     let [participants, setParticipants] = useState(route.params.participants);
     const [cartVisible, setCartVisible] = useState(false);
-    const [tables, setTables] = useState(route.params.tables)
+    const [tables, setTables] = useState(route.params.tables);
 
+    let requestType = route.params.requestType;
     let organizer = route.params.thisUser[0].name
     let menuCategories = route.params.menu[0];
     let menuItems = route.params.menu[1];
@@ -87,9 +89,64 @@ const PollingRoomScreen = (props) => {
     let minute = route.params.minute;
     let amOrpm = route.params.timeOfDay
 
+    let [dummyParticipants, setDummyParticipants] = useState([
+        {
+            name: "Janelle May",
+            imageObj: girlOnePic,
+            joiningFee: 200,
+            phone: 0,
+            email: null,
+            externalUser: false,
+            id: "63b107027b3feb4bd74d340b"
+        },
+        {
+            name: "Jack Smith",
+            imageObj: girlTwoPic,
+            joiningFee: 300,
+            phone: 0,
+            email: null,
+            externalUser: false,
+            id: "63b10712f56eb2e193c698b0"
+        },
+        {
+            name: "John Nydam",
+            imageObj: johnPic,
+            joiningFee: 400,
+            phone: 0,
+            email: null,
+            externalUser: false,
+            id: "63b10724b81e1ac467f5a6bd"
+        },
+        {
+            name: "John Nydam",
+            imageObj: johnPic,
+            joiningFee: 400,
+            phone: 0,
+            email: null,
+            externalUser: false,
+            id: "63b107331377c88a961fb37c"
+        },
+        {
+            name: "John Nydam",
+            imageObj: johnPic,
+            joiningFee: 400,
+            phone: 0,
+            email: null,
+            externalUser: false,
+            id: "63b1073ce1bb37135b5db43c"
+        },
+    ]);
+
+    let sumFees = dummyParticipants.reduce((total, parts) => total + parts.joiningFee, 0);
+
     const modifyOrganizerFee = (number) => {
         setOrganizerJoiningFee(number);
     }
+
+    useEffect(() => {
+        setGroupSpend(parseInt(sumFees));
+        console.log(groupSpend, "group spend")
+    }, [dummyParticipants]);
 
     useEffect(() => {
         console.log(participants, "participants polling room")
@@ -107,85 +164,7 @@ const PollingRoomScreen = (props) => {
         console.log(participants, "participants");        
     }
 
-    let dummyParticipants = [
-        {
-            name: "Janelle May",
-            imageObj: girlOnePic,
-            joiningFee: 200,
-            phone: 0,
-            email: null,
-            externalUser: false
-        },
-        {
-            name: "Jack Smith",
-            imageObj: girlTwoPic,
-            joiningFee: 300,
-            phone: 0,
-            email: null,
-            externalUser: false
-        },
-        {
-            name: "John Nydam",
-            imageObj: johnPic,
-            joiningFee: 400,
-            phone: 0,
-            email: null,
-            externalUser: false
-        },
-        {
-            name: "John Nydam",
-            imageObj: johnPic,
-            joiningFee: 400,
-            phone: 0,
-            email: null,
-            externalUser: false
-        },
-        {
-            name: "John Nydam",
-            imageObj: johnPic,
-            joiningFee: 400,
-            phone: 0,
-            email: null,
-            externalUser: false
-        },
-    ];
 
-
-    let dummyPendingParticipantsData = [
-        {
-            name: "Jack Smith",
-            imageObj: girlOnePic
-
-        },
-        {
-            name: "John Nydam",
-            imageObj: johnPic
-        },
-        {
-            name: "Janelle May",
-            imageObj: girlTwoPic
-        },
-        {
-            name: "Margaret Hue",
-            imageObj: girlOnePic
-        },
-        {
-            name: "Person 5",
-            imageObj: girlTwoPic
-        },
-        {
-            name: "Person 6",
-            imageObj: girlOnePic
-        },
-        {
-            name: "Person 7",
-            imageObj: girlTwoPic
-        },
-        {
-            name: "Person 8",
-            imageObj: girlOnePic
-        },
-    ];
 
 
     const removeItem = (index) => {
@@ -661,7 +640,7 @@ const PollingRoomScreen = (props) => {
                             }}>Group Spend: <Text style={{
                                 fontFamily: Fonts.mainFontBold,
                                 color: Colors.gold
-                            }}>${route.params.tableMinimum}</Text></Text>
+                            }}>${groupSpend}</Text></Text>
                         </View>
                     </WhiteBubbleLayoutComp>
                     <TouchableOpacity>
