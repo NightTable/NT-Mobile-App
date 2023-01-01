@@ -1,9 +1,15 @@
 /*
 
-Date of the event will be convenient to have
+Date of the event will be convenient to have, as well as name of event
+
 In a PNSL request, you should not be able to modify your share, as you've already paid
 
 PNSL tables should be moved into active table room screen and not polling room screen
+
+All current participants are users who have signed up to be on the platform, 
+meaning they have a profile picture, and an overall properly set up profile
+
+When modifying share contributions, a new invite is sent to them with a new joining fee. 
 
 */
 
@@ -18,7 +24,8 @@ import {
     TouchableOpacity,
     Modal,
     Image,
-    ImageBackground} from 'react-native';
+    ImageBackground,
+    TextInput} from 'react-native';
 
 import sampleNightClubImage from '../assets/samplenightclub.jpeg';
 
@@ -32,7 +39,7 @@ import CategoryComponentComp from '../components/TableRequestConfirmationScreen/
 import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 import youngGirl from '../assets/younggirl1.jpeg';
 
-import { heightRatioProMax, widthRatioProMax } from '../dimensions/Dimensions';
+import { windowHeight, heightRatioProMax, widthRatioProMax } from '../dimensions/Dimensions';
 import { Fonts } from '../fonts/Fonts';
 import { Colors } from '../colors/Colors';
 
@@ -46,8 +53,11 @@ import johnPic from '../assets/johnpic.jpeg';
 import PollingConfirmationToActiveTableGroupModal from '../modals/PollingRoomScreen/PollingConfirmationToActiveTableGroupModal';
 import MemoireFloorplan from '../assets/Memoire.png';
 import GrandFloorplan from '../assets/Shrine.png';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
 
 const PollingRoomScreen = (props) => {
+    const route = useRoute();
+
 
     let [animateModal, setanimateModal] = useState(false);
     const [subtotal, setSubtotal] = useState(0);
@@ -58,48 +68,85 @@ const PollingRoomScreen = (props) => {
     const [openFloorplanModal, setOpenFloorplanModal] = useState(false)
     const [floorplans, setFloorplans] = useState([{id: "63aacc91067da026d4bf7138", floorMap: GrandFloorplan}, {id: "63aacca4d71fb9accdffa5be", floorMap: MemoireFloorplan}]);
     let [menuVisible, setMenuVisible] = useState(false);
-    let [itemCart, setItemCart] = useState([]);
+
+    const [partModifModalVisible, setPartModifModalVisible] = useState(false);
+    const [fee, setFee] = useState(0);
+    const [index, setIndex] = useState(0);
+    
+    let [itemCart, setItemCart] = useState(route.params.orders);
+    let [tableMinimum, setTableMinimum] = useState(route.params.tableMinimum);
+    let [organizerJoiningFee, setOrganizerJoiningFee] = useState(route.params.thisUser[0].joiningFee);
+    let [participants, setParticipants] = useState(route.params.participants);
     const [cartVisible, setCartVisible] = useState(false);
+    const [tables, setTables] = useState(route.params.tables)
 
-    const route = useRoute();
-
-    const tables = route.params.tables
+    let organizer = route.params.thisUser[0].name
     let menuCategories = route.params.menu[0];
     let menuItems = route.params.menu[1];
+    let timeHour = route.params.hour;
+    let minute = route.params.minute;
+    let amOrpm = route.params.timeOfDay
+
+    const modifyOrganizerFee = (number) => {
+        setOrganizerJoiningFee(number);
+    }
+
+    useEffect(() => {
+        console.log(participants, "participants polling room")
+    }, []);
 
     useEffect(() => {
         calculateSubtotal()
     }, [itemCart]);
 
     useEffect(() => {
-        setItemCart(route.params.orders);
-    }, []);
+        console.log(fee, index);
+    }, [fee]);
+
+    const initialisePendingNonPending = () => {
+        console.log(participants, "participants");        
+    }
 
     let dummyParticipants = [
         {
             name: "Janelle May",
             imageObj: girlOnePic,
-            finalCostContribution: 200
+            joiningFee: 200,
+            phone: 0,
+            email: null,
+            externalUser: false
         },
         {
             name: "Jack Smith",
             imageObj: girlTwoPic,
-            finalCostContribution: 300
+            joiningFee: 300,
+            phone: 0,
+            email: null,
+            externalUser: false
         },
         {
             name: "John Nydam",
             imageObj: johnPic,
-            finalCostContribution: 400
+            joiningFee: 400,
+            phone: 0,
+            email: null,
+            externalUser: false
         },
         {
             name: "John Nydam",
             imageObj: johnPic,
-            finalCostContribution: 400
+            joiningFee: 400,
+            phone: 0,
+            email: null,
+            externalUser: false
         },
         {
             name: "John Nydam",
             imageObj: johnPic,
-            finalCostContribution: 400
+            joiningFee: 400,
+            phone: 0,
+            email: null,
+            externalUser: false
         },
     ];
 
@@ -145,6 +192,23 @@ const PollingRoomScreen = (props) => {
         let itemCartCopy = itemCart.filter((item, i) => i !== index); // create a new array with the element at the given index removed
         setItemCart(itemCartCopy); // set the itemCart to the modified copy
     }
+
+    const showPartModifyModal = (number) => {
+        setPartModifModalVisible(true)
+        setIndex(number)
+    }
+
+    const modifyCurrentParticipantJoiningFee = () => {
+        console.log(index, fee)
+        if (index >= 0 && index < participants.length){
+            let modifiedParts = [...participants];
+            modifiedParts[index].joiningFee = fee;
+            console.log(modifiedParts, "MODIFIED PARTS")
+            setParticipants(modifiedParts);
+        }
+        setPartModifModalVisible(false)
+
+    }   
 
     const range = (start, stop, step) => {
         
@@ -255,7 +319,97 @@ const PollingRoomScreen = (props) => {
 
     return (
         <View style={styles.screenContainer}>
+
+            <Modal 
+                style={{
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end'
+                }}
+                animationType="slide"
+                transparent={true}
+                visible={partModifModalVisible}>
+                    
+                <View style={{
+                    opacity: 1,
+                    height: (windowHeight < 700 || Platform.OS === 'android') ? '110%' : '100%',
+                    backgroundColor: 'transparent',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end'
+                }}>
+                    <View style={{
+                        height: windowHeight < 700 || Platform.OS === 'android' ? '80%' : '70%',
+                        backgroundColor: Colors.black,
+                        borderRadius: 50 * heightRatioProMax,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <View style={{
+                            marginTop: 50 * heightRatioProMax,
+                            height: '100%',
+                            width: '100%',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center'
+                        }}>
+                            <View style={{
+                                marginTop: 10 * heightRatioProMax,
+                                width: '100%',
+                                alignItems: 'center'
+                            }}>
+                                <View style={{
+                                    width: '70%'
+                                }}>
+                                    <View>
+                                        <Text style={{
+                                            fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
+                                            fontFamily: Fonts.mainFontBold,
+                                            color: Colors.gold
+                                        }}>How much would you like to chip in?
+                                        </Text>
+                                    </View>
+                                    <View style={{marginTop: 40*heightRatioProMax, flexDirection: 'row', justifyContent: 'center'}}>
+                                        <Text style={{
+                                            fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
+                                            fontFamily: Fonts.mainFontBold, color: Colors.purple, textAlign: 'center',
+                                            color: Colors.gold
+                                        }}>$
+                                        </Text>
+                                        <TextInput style={{borderWidth: 2, borderColor: 'transparent',
+                                            fontSize: Platform.OS === 'ios' && windowHeight < 700 ? 20 * heightRatioProMax : 17 * heightRatioProMax,
+                                            fontFamily: Fonts.mainFontBold, textAlign: 'center', borderBottomColor: Colors.gold, borderBottomWidth: 1, textAlign: 'center', color: Colors.gold
+                                        }}
+                                        value={fee}
+                                        placeholder='0'
+                                        keyboardType="numeric"
+                                        returnKeyType={Platform.OS === 'ios' ? 'done' : 'next'}
+                                        autoFocus={true}
+                                        onChangeText={(text) => setFee(text)}
+                                        />
+                                    </View>
+                                    <View style={{marginTop: 420*heightRatioProMax, flexDirection: 'row', justifyContent: 'center'}}>
+                                        <TouchableOpacity
+                                            onPress={modifyCurrentParticipantJoiningFee}>
+                                            <View style={{width: '300%', justifyContent: 'center', alignSelf: 'center', borderRadius: 10 * heightRatioProMax, backgroundColor: Colors.gold,
+                                                shadowColor: Colors.black,
+                                                shadowOffset: {width: 0, height: 0},
+                                                shadowOpacity: 0.5 * heightRatioProMax,
+                                                shadowRadius: 10 * heightRatioProMax,
+                                                elevation: 10 * heightRatioProMax}}>
+                                                <Text style={{
+                                                    fontSize: 20 * heightRatioProMax,
+                                                    fontFamily: Fonts.mainFontBold, color: Colors.purple, textAlign: 'center', padding: 10*heightRatioProMax,
+                                                    color: Colors.black
+                                                }}>save
+                                                </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
             
+            </Modal>            
             <SwipeUpDownModal
                 modalVisible={openFloorplanModal}
                 ContentModal={
@@ -466,7 +620,9 @@ const PollingRoomScreen = (props) => {
                         }}>Invited Current Participants</Text>
                     </View>
                     <WhiteBubbleLayoutComp>
-                        <OrganizerInfoComp>
+                        <OrganizerInfoComp
+                            joiningFee={organizerJoiningFee}
+                            modifyJoiningFee={modifyOrganizerFee}>
                         </OrganizerInfoComp>
                             <ScrollView
                                 nestedScrollEnabled={true}
@@ -477,7 +633,10 @@ const PollingRoomScreen = (props) => {
                                                 key={index}
                                                 name={participant.name}
                                                 imageObj={participant.imageObj}
-                                                contribution={participant.finalCostContribution}
+                                                contribution={participant.joiningFee}
+                                                seeProfile={handleNavToUserProfile}
+                                                modifyFee={showPartModifyModal}
+
                                             >
                                             </ParticipantInfoComp>
                                         </View>
@@ -540,14 +699,20 @@ const PollingRoomScreen = (props) => {
                             <ScrollView
                                 nestedScrollEnabled={true}
                                 style={{width: '100%', alignContent: 'center', height: '10%', margin: 10 * widthRatioProMax}}>
-                                {dummyParticipants.map((participant, index) => (
+                                {participants.map((participant, index) => (
                                         <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}>
                                             <ParticipantInfoComp
                                                 key={index}
+                                                index={index}
                                                 name={participant.name}
                                                 imageObj={participant.imageObj}
-                                                contribution={participant.finalCostContribution}
+                                                isExternalUser={participant.externalUser}
+                                                email={participant.email}
+                                                phone={participant.phone}
+                                                contribution={participant.joiningFee}
                                                 seeProfile={handleNavToUserProfile}
+                                                modifyFee={showPartModifyModal}
+
                                             >
                                             </ParticipantInfoComp>
                                         </View>

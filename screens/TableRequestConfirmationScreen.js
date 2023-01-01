@@ -3,6 +3,13 @@
 What if joining fee is 0, and you decide to order a bottle anyways?
 Fix add to general tab button
 
+function goToNext(buttonName){
+
+    CASE 1: JOINING FEE IS 0, FULL CART
+    CASE 2: JOINING FEE IS 0, EMPTY CART
+
+}
+
 */
 
 import React, {useEffect, useState} from 'react';
@@ -229,8 +236,39 @@ const TableRequestConfirmationScreen = (props) => {
         //setanimateModal(!animateModal);
     }
 
-    const nextScreen = () => {
-        if (subtotal >= joiningFee){
+    const nextScreen = (button) => {
+        if (button === "CHECKOUT"){
+            if (subtotal === 0){
+                setContinueError(true);
+                setScreenOpacity(0.5);
+            }
+            else{
+                if (subtotal >= joiningFee){
+                    let billTotal = subtotal * (1 + (appBookingFee + clubFees));
+                    let edNavObjParam = {
+                        cardCharge: billTotal,
+                        participants: route.params.participants,
+                        requestType: route.params.paymentType,
+                        tableMinimum: route.params.tableMinimum,
+                        tables: route.params.tables,
+                        hour: route.params.hour,
+                        minute: route.params.minute,
+                        timeOfDay: route.params.timeOfDay,
+                        menu: [menuCategories, menuItems],
+                        orders: itemCart,
+                        subtotal: subtotal,
+                        thisUser: route.params.thisUser
+                    }
+                    props.navigation.navigate('edNav-InitialPaymentScreen', edNavObjParam);
+                }
+                else{
+                    setContinueError(true);
+                    setScreenOpacity(0.5);
+                }
+            }
+        }
+
+        if (button === "ATGT"){
             let billTotal = subtotal * (1 + (appBookingFee + clubFees));
             let edNavObjParam = {
                 cardCharge: billTotal,
@@ -245,18 +283,14 @@ const TableRequestConfirmationScreen = (props) => {
                 orders: itemCart,
                 subtotal: subtotal,
                 thisUser: route.params.thisUser
-            }
+            };
             if (joiningFee === 0){
                 props.navigation.navigate('edNav-PollingRoomScreen', edNavObjParam);
             }
             else{
-
+                edNavObjParam.cardCharge = joiningFee * (1 + (appBookingFee + clubFees));
+                props.navigation.navigate('edNav-InitialPaymentScreen', edNavObjParam);
             }
-            props.navigation.navigate('edNav-InitialPaymentScreen', edNavObjParam);
-        }
-        else{
-            setContinueError(true);
-            setScreenOpacity(0.5);
         }
     }
 
@@ -738,7 +772,7 @@ const TableRequestConfirmationScreen = (props) => {
                                         Upon placing your order, you will be also be levied a {(appBookingFee + clubFees) * 100}% fee that covers gratuity, tax, and other costs of service. Feel free to tip the cocktail server more at the venue.
                                     </Text>
                                     <TouchableOpacity 
-                                        onPress={nextScreen}
+                                        onPress={() => nextScreen("CHECKOUT")}
                                         style={[{
                                             borderRadius: 10 * heightRatioProMax,
 
@@ -773,7 +807,7 @@ const TableRequestConfirmationScreen = (props) => {
                                 width: '40%',
                             }}> 
                                 <TouchableOpacity 
-                                onPress={nextScreen}
+                                onPress={() => nextScreen("ATGT")}
                                 style={[{
                                     borderRadius: 10 * heightRatioProMax,
 

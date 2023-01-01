@@ -21,13 +21,27 @@ import { Fonts } from '../../fonts/Fonts';
 
 const ParticipantInfoComp = (props) => {
 
+    const isExternalUser = props.isExternalUser
+
 
     return (
         <View style={styles.container}>
+            {props.isExternalUser ? 
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
+                    }}>{props.email || props.phone}
+                    </Text>
+                </View> : 
             <View style={{
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
+                
                 <TouchableOpacity
                     onPress={props.seeProfile}>
                     <Image 
@@ -43,19 +57,22 @@ const ParticipantInfoComp = (props) => {
                 <Text style={{
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
-                }}>{props.name}</Text>
+                }}>{props.name}
+                </Text>
             </View>
+            }
+
             <View style={{
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
                 <Text style={{
-                    color: Colors.purple,
                     marginRight: 10 * widthRatioProMax,
                     fontFamily: Fonts.mainFontReg,
                     color: Colors.black
-                }}>$100</Text>
-                <TouchableOpacity>
+                }}>${props.contribution}</Text>
+                <TouchableOpacity
+                    onPress={() => props.modifyFee(props.index)}>
                     <Image 
                         source={blackPencilImg}
                         style={{

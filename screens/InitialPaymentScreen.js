@@ -32,7 +32,8 @@ const InitialPaymentScreen = (props) => {
             menu: route.params.menu,
             orders: route.params.orders,
             subtotal: route.params.subtotal,
-            thisUser: route.params.thisUser
+            thisUser: route.params.thisUser,
+            participants: route.params.participants
         })
 
         console.log("Params from initial payment screen");

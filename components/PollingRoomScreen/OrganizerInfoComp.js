@@ -22,7 +22,7 @@ import UpdateShareModal from '../../modals/SharedPollingScreens/UpdateShareModal
 
 const OrganizerInfoComp = (props) => {
     const [updateShareModalVisible, setUpdateShareModalVisible] = useState(false);
-    const [share, setShare] = useState(370)
+    const [share, setShare] = useState(props.joiningFee)
 
     const handleShare = (number) => {
         setShare(number)
