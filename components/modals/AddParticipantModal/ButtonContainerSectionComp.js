@@ -17,15 +17,39 @@ import { Fonts } from '../../../fonts/Fonts';
 const ButtonContainerSectionComp = (props) => {
 
     return (<View style={{
-        marginTop: 100 * heightRatioProMax,
+        marginVertical: 100 * heightRatioProMax,
         flexDirection: 'column',
         width: '70%'
     }}>
         <TouchableOpacity
-        onPress={props.onAddPartButtonHandler}
+        onPress={() => props.addParticipant(props.participantsToAdd)}
         style={[{
             height: 50 * heightRatioProMax,
             backgroundColor: Colors.green,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 10 * heightRatioProMax,
+            marginVertical: 5 * heightRatioProMax
+        }, {
+            shadowColor: Colors.black,
+            shadowRadius: 2,
+            shadowOpacity: 0.4,
+            shadowOffset: {
+                width: 0,
+                height: 0
+            },
+            elevation: 3
+        }]}>
+            <Text style={{
+                color: Colors.white,
+                fontFamily: Fonts.mainFontReg
+            }}>Add {props.length} participants</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+        onPress={props.onAddPartButtonHandler}
+        style={[{
+            height: 50 * heightRatioProMax,
+            backgroundColor: Colors.orange,
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 10 * heightRatioProMax,
@@ -42,7 +66,7 @@ const ButtonContainerSectionComp = (props) => {
             <Text style={{
                 color: Colors.white,
                 fontFamily: Fonts.mainFontReg
-            }}>Add 2 participants</Text>
+            }}>Cancel</Text>
         </TouchableOpacity>
     </View>)
 }

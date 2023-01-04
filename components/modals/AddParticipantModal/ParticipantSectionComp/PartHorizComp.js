@@ -13,7 +13,7 @@ import { Fonts } from '../../../../fonts/Fonts';
 
 const PartHorizComp = (props) => {
 
-
+    console.log(props.email);
     let dynamicRender;
 
 
@@ -23,7 +23,7 @@ const PartHorizComp = (props) => {
             <Text style={{
                 fontFamily: Fonts.mainFontReg,
                 color: Colors.black
-            }}>{props.email}</Text>
+            }}>{props.email || "+"+props.phone}</Text>
         </View>)
 
     } else {

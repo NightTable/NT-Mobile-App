@@ -25,39 +25,11 @@ import { Fonts } from '../../fonts/Fonts';
 const ParticipantInfoComp = (props) => {
 
     const isExternalUser = props.isExternalUser
-
-    const pencilDisplay = () => {
-        if (props.participantType === 'current' && props.requestType === "pnsl"){
-            return null;
-        }
-        if (props.requestType === "snpl" || props.participantType === "pending"){
-            return (
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                }}>
-                    <Text style={{
-                        marginRight: 10 * widthRatioProMax,
-                        fontFamily: Fonts.mainFontReg,
-                        color: Colors.black
-                    }}>${props.contribution}</Text>
-                    <TouchableOpacity
-                        onPress={() => props.modifyFee(props.index)}>
-                        <Image 
-                            source={blackPencilImg}
-                            style={{
-                                width: 30 * heightRatioProMax,
-                                height: 30 * heightRatioProMax
-                            }}></Image>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
-    }
+    console.log(props.contribution, props.email || props.phone, "external user or not")
 
     return (
         <View style={styles.container}>
-            {props.isExternalUser ? 
+            {props.isExternalUser ?
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center'
@@ -65,35 +37,35 @@ const ParticipantInfoComp = (props) => {
                     <Text style={{
                         fontFamily: Fonts.mainFontReg,
                         color: Colors.black
-                    }}>{props.email || props.phone}
+                    }}>{props.email || "+"+props.phone}
                     </Text>
                 </View> : 
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center'
-            }}>
-                
-                <TouchableOpacity
-                    onPress={props.seeProfile}>
-                    <Image 
-                        style={{
-                            marginRight: 10 * widthRatioProMax,
-                            width: 50 * heightRatioProMax,
-                            height: 50 * heightRatioProMax,
-                            borderRadius: 25 * heightRatioProMax
-                        }}
-                        source={props.imageObj}></Image>
-                </TouchableOpacity>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                }}>
+                    
+                    <TouchableOpacity
+                        onPress={props.seeProfile}>
+                        <Image 
+                            style={{
+                                marginRight: 10 * widthRatioProMax,
+                                width: 50 * heightRatioProMax,
+                                height: 50 * heightRatioProMax,
+                                borderRadius: 25 * heightRatioProMax
+                            }}
+                            source={props.imageObj}></Image>
+                    </TouchableOpacity>
 
-                <Text style={{
-                    fontFamily: Fonts.mainFontReg,
-                    color: Colors.black
-                }}>{props.name}
-                </Text>
-            </View>
+                    <Text style={{
+                        fontFamily: Fonts.mainFontReg,
+                        color: Colors.black
+                    }}>{props.name}
+                    </Text>
+                </View>
             }
-            {props.participantType === 'current' && props.requestType === "pnsl" ? null 
-                :
+            
+                
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center'
@@ -113,7 +85,7 @@ const ParticipantInfoComp = (props) => {
                             }}></Image>
                     </TouchableOpacity>
                 </View>
-            }
+            
 
         </View>
     )

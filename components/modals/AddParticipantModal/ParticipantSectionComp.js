@@ -26,8 +26,9 @@ const ParticipantSectionComp = (props) => {
                 key={index}
                 name={participant.name}
                 image={participant.image}
-                isExternalUser={participant.isExternalUser}
-                email={participant.email}>
+                isExternalUser={participant.externalUser}
+                email={participant.email}
+                phone={participant.phone}>
             </PartHorizComp>
         ))}
     </View>)

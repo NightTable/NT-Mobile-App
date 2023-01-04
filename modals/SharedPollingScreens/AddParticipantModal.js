@@ -4,12 +4,13 @@
 // StrynDev Solutions. It must be returned to StrynDev Solutions 
 // when its authorized use is terminated.
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import { View,
     KeyboardAvoidingView,
     Platform,
-    Text } from 'react-native';
+    Text,
+    TouchableOpacity} from 'react-native';
 import { Colors } from '../../colors/Colors';
 import { heightRatioProMax, windowHeight } from '../../dimensions/Dimensions';
 import { Fonts } from '../../fonts/Fonts';
@@ -19,21 +20,28 @@ import sampleGirl from '../../assets/younggirl1.jpeg';
 import ParticipantSectionComp from '../../components/modals/AddParticipantModal/ParticipantSectionComp';
 import SearchInputSectionComp from '../../components/modals/AddParticipantModal/SearchInputCompSection';
 import ButtonContainerSectionComp from '../../components/modals/AddParticipantModal/ButtonContainerSectionComp';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const AddParticipantModal = (props) => {
 
-    let dummyAddedParticipants = [
-        {
-            isExternalUser: false,
-            name: "Janelle May",
-            image: sampleGirl
-        },
-        {
-            isExternalUser: true,
-            email: "jnydam@me.com"
+
+    let [dummyAddedParticipants, setDummyAddedParticipants] = useState([]);
+
+    /*useEffect(() => {
+        console.log(dummyAddedParticipants, "dummy participants");
+    }, [dummyAddedParticipants]);
+    */
+
+    const addInvitedParticipant = (participant) => {
+        if (!dummyAddedParticipants.some(p => p.email === participant.email)){
+            setDummyAddedParticipants(prevState => [...prevState, participant]);
         }
-    ];
+        else if (!dummyAddedParticipants.some(p => p.phone === participant.phone)){
+            setDummyAddedParticipants(prevState => [...prevState, participant]);
+        }
+
+    }
 
     return (
         <KeyboardAvoidingView
@@ -72,14 +80,28 @@ const AddParticipantModal = (props) => {
                                 fontFamily: Fonts.mainFontBold,
                                 fontSize: windowHeight < 700 ? 20 * heightRatioProMax :  15 * heightRatioProMax,
                                 color: Colors.gold
-                            }}>Please type in name or emails of people
-                                you would like to add to your group: </Text>
+                            }}>In the first input line, please type in name, number (including the country code without "+") or emails of people,
+                                that you would like to add to your group. In the second input line, type in how much you'd like them to contribute </Text>
                         </View>
-                        <SearchInputSectionComp></SearchInputSectionComp>
-                        <ParticipantSectionComp
-                            participants={dummyAddedParticipants}></ParticipantSectionComp>
+                        <SearchInputSectionComp
+                            addParticipant={addInvitedParticipant}>
+
+                        </SearchInputSectionComp>
+                        <ScrollView style={{width: '100%'}}>
+                            <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center', marginVertical: 2 * heightRatioProMax}}>
+                                <ParticipantSectionComp
+                                    participants={dummyAddedParticipants}></ParticipantSectionComp>
+                            </View>
+
+                        </ScrollView>
+
                         <ButtonContainerSectionComp
-                            onAddPartButtonHandler={props.onAddParticipantRequestClose}></ButtonContainerSectionComp>
+                            onAddPartButtonHandler={props.onAddParticipantRequestClose}
+                            addParticipant={props.addParticipant}
+                            length={dummyAddedParticipants.length}
+                            participantsToAdd={dummyAddedParticipants}>
+                        </ButtonContainerSectionComp>
+
                     </View>
                 </View>
                 </View>

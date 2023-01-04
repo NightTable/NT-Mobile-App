@@ -150,8 +150,14 @@ const PollingRoomScreen = (props) => {
     }, [dummyParticipants]);
 
     useEffect(() => {
+        for (let participant of participants){
+            console.log(participant, "participant");
+        }
+    }, [participants]);
+
+    useEffect(() => {
         console.log(participants, "participants polling room")
-    }, []);
+    }, [participants]);
 
     useEffect(() => {
         calculateSubtotal()
@@ -294,6 +300,16 @@ const PollingRoomScreen = (props) => {
             props.navigation.navigate('invNav-UserProfileScreen');
 
         }
+    }
+
+    const addParticipants = (newParticipants) => {
+        const uniqueParticipants = new Set(newParticipants);
+        for (let participant of uniqueParticipants) {
+            if (!participants.includes(participant)) {
+              setParticipants([...participants, participant]);
+            }
+        }
+        setAddParticipantModalVisible((state) => !state)
     }
 
 
@@ -507,7 +523,10 @@ const PollingRoomScreen = (props) => {
                     <AddParticipantModal
                         onAddParticipantRequestClose={() => {
                             setAddParticipantModalVisible((state) => !state);
-                        }}></AddParticipantModal>
+                        }}
+                        addParticipant={addParticipants}>
+
+                        </AddParticipantModal>
                 </Modal>
                 <LeaveGroupModal
                     visible={leaveGroupModalVisible}
@@ -618,6 +637,9 @@ const PollingRoomScreen = (props) => {
                                                 modifyFee={showPartModifyModal}
                                                 participantType={"current"}
                                                 requestType={requestType}
+                                                email={participant.email}
+                                                phone={participant.phone}
+                                                isExternalUser={participant.externalUser}
                                             >
                                             </ParticipantInfoComp>
                                         </View>
@@ -693,7 +715,6 @@ const PollingRoomScreen = (props) => {
                                                 contribution={participant.joiningFee}
                                                 seeProfile={handleNavToUserProfile}
                                                 modifyFee={showPartModifyModal}
-
                                             >
                                             </ParticipantInfoComp>
                                         </View>
