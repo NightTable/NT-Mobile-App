@@ -12,6 +12,10 @@ meaning they have a profile picture, and an overall properly set up profile
 When modifying share contributions, a new invite is sent to them with a new joining fee. 
 Cuurent participants are made into pending participants. 
 
+When modyfing organizers fee, group spend should update accordingly
+
+When modyfing current participants fees, they should automatically be put in pending participants
+
 */
 
 import React, {useState, useEffect,} from 'react';
