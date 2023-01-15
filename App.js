@@ -1,57 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useEffect } from 'react';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import AppNavigatorContainer from './navigators/AppNavigatorContainer';
-import { Provider } from 'react-redux';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
-import { mainReducer } from './store/reducers/main';
-import NewTableRequestScreen from './screens/NewTableRequestScreen';
-import TableRequestConfirmationScreen from './screens/TableRequestConfirmationScreen';
+import React from "react";
+import "react-native-gesture-handler";
+//Components
 
-// expo install expo-font expo-splash-screen
+//libraries
+import { NativeBaseProvider } from "native-base";
+//Navigation
+import { NavigationContainer } from "@react-navigation/native";
+import RootStack from "./src/Navigation/RootStack";
 
-const rootReducer = combineReducers({
-  main: mainReducer
-});
+//REDUX
+// import { Provider } from "react-redux";
+// import configuredStore  from "./src/Redux/Store";
 
-export const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-export default function App() {
-  const [fontsLoaded] = useFonts({
-    VerahHumanaRegular: require("./assets/fonts/VerahHumana-Regular.ttf"),
-    VerahHumanaBold: require("./assets/fonts/VerahHumana-Bold.ttf")
-  });
+//Utils
 
-  useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
-    }
-    prepare();
-  }, []);
+// const store = configuredStore();
 
-  if (!fontsLoaded) {
-    return undefined;
-  } else {
-    SplashScreen.hideAsync();
-  }
-
+const App = () => {
   return (
-    <Provider store={store}>
-      <AppNavigatorContainer></AppNavigatorContainer>
-    </Provider>
-
+    <>
+      <NativeBaseProvider>
+        {/* <Provider store={store}> */}
+          <NavigationContainer>
+            <RootStack />
+          </NavigationContainer>
+        {/* </Provider> */}
+      </NativeBaseProvider>
+    </>
   );
-}
-//       <AppNavigatorContainer></AppNavigatorContainer>
-//      <AppNavigatorContainer></AppNavigatorContainer>
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
