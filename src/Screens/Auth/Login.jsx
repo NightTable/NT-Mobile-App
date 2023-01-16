@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react"; // navigation.navigate('Logi
 
 import {
   SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
   View,
+  KeyboardAvoidingView,
   TextInput,
-  Platform,
+  StyleSheet,
   Text,
-  Image,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { RouteProp, StackActions } from "@react-navigation/native";
 import { Box } from "native-base";
@@ -23,16 +24,15 @@ import { Dropdown } from "../../Components/Dropdown";
 
 //json file
 import { countryCodes } from "../../json/countriesCode";
+import { colors } from "../../Theme/colors";
 const Login = ({ navigation }) => {
-
- // console.log("countryCodes===>",countryCodes);
- 
+  // console.log("countryCodes===>",countryCodes);
 
   const [phoneNumber, setphoneNumber] = useState("");
   const [number, onChangeNumber] = React.useState("");
 
   //dropdown value changed
-  const [countryCodeData, setcountryCodeData] = useState(countryCodes)
+  const [countryCodeData, setcountryCodeData] = useState(countryCodes);
   const [selectedCountry, setselectedCountry] = useState("");
 
   //validating number
@@ -43,34 +43,36 @@ const Login = ({ navigation }) => {
 
   return (
     <>
-      <Box
-        SafeArea
-         bgColor={"black"}
-        flex={1}
-        p={1}
-      >
-        <Box flexDir={"row"} pt={12}>
-          <Box>
-            <Dropdown
-              width={100}
-              bgColor={"red"}
-              data={countryCodeData}
-              value={selectedCountry}
-              placeholder={"COuntry"}
-              defaultValue={"India"}
-              onValueChange={(item) => {
-                setselectedCountry(item);
-              }}
-            />
-          </Box>
-          <Box>
-            <TextInput
-              style={styles.input}
-              onChangeText={onChangeNumber}
-              value={number}
-              placeholder="Phone Number"
-              keyboardType="numeric"
-            />
+      <Box SafeArea bgColor={"black"} flex={1} p={1}>
+        <Box pt={12}>
+          <Box
+            style={{ paddingHorizontal: 10 }}
+            flexDir={"row"}
+            width={"100%"}
+            alignItems={"center"}
+          >
+            <Box justifyContent={"center"} style={{ height: 40 }} width={"30%"}>
+              <Dropdown
+                width={"100%"}
+                bgColor={colors.white.white0}
+                data={countryCodeData}
+                value={selectedCountry}
+                placeholder={"Country"}
+                defaultValue={"India"}
+                onValueChange={(item) => {
+                  setselectedCountry(item);
+                }}
+              />
+            </Box>
+            <Box style={{ paddingHorizontal: 10 }} width={"70%"}>
+              <TextInput
+                style={styles.input}
+                onChangeText={onChangeNumber}
+                value={number}
+                placeholder="Phone Number"
+                keyboardType="numeric"
+              />
+            </Box>
           </Box>
         </Box>
         {/* <Button text={'Click on it'}
@@ -83,11 +85,12 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
   input: {
     height: 40,
-    margin: 12,
+    //margin: 12,
     borderWidth: 1,
-    // padding: 10,
+    padding: 6,
     backgroundColor: "white",
     borderColor: "white",
+    borderRadius: 6,
   },
 });
 

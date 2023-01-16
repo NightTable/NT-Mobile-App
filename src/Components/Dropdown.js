@@ -24,10 +24,10 @@ export const Dropdown = (props) => {
         //select face
         
         
-        // minWidth={minWidth}
+        minWidth={minWidth}
 
-        // minheight={minheight}
-        height={10}
+        minheight={minheight}
+        height={'100%'}
         width={props.width}
         //face text color
         color={colors.white.white0}
@@ -36,12 +36,12 @@ export const Dropdown = (props) => {
         dropdownIcon={
           <EntypoIcon
             name={"chevron-small-down"}
-            color={colors.white.white0}
+            color={'#000000'}
             size={30}
           />
         }
         bgColor={props.bgColor}
-        placeholderTextColor={colors.white.white0}
+        placeholderTextColor={'#000000'}
         selectedValue={props.value}
         //values
         placeholder={props.placeholder}
@@ -56,6 +56,8 @@ export const Dropdown = (props) => {
         }}
       >
         {props.data.map((item) => {
+
+          console.log("item===>",item);
           return (
             <Select.Item
               key={item.id}
