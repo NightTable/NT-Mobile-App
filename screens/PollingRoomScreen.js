@@ -142,16 +142,13 @@ const PollingRoomScreen = (props) => {
         },
     ]);
 
-    let sumFees = dummyParticipants.reduce((total, parts) => total + parts.joiningFee, 0);
 
-    const modifyOrganizerFee = (number) => {
-        setOrganizerJoiningFee(number);
-    }
+
 
     useEffect(() => {
-        setGroupSpend(parseInt(sumFees) + parseInt(organizerJoiningFee));
+        modifyGroupSpend();
         console.log(groupSpend, "group spend")
-    }, [dummyParticipants]);
+    }, [organizerJoiningFee]);
 
     useEffect(() => {
         for (let participant of participants){
@@ -171,12 +168,24 @@ const PollingRoomScreen = (props) => {
         console.log(fee, index);
     }, [fee]);
 
+    useEffect(() => {
+        console.log(organizerJoiningFee, "organizerJoiningFee");
+    }, [organizerJoiningFee]);
+
     const initialisePendingNonPending = () => {
         console.log(participants, "participants");        
     }
 
+    const modifyOrganizerFee = (number) => {
+        setOrganizerJoiningFee(number);
+    }
 
-
+    const modifyGroupSpend = () => {
+        let fees = dummyParticipants.reduce((total, parts) => total + parts.joiningFee, 0) + parseInt(organizerJoiningFee);
+        console.log(fees, "fees from modification")
+        setGroupSpend(fees);
+        console.log(groupSpend, "should be modified");
+    }
 
     const removeItem = (index) => {
         let itemCartCopy = itemCart.filter((item, i) => i !== index); // create a new array with the element at the given index removed
