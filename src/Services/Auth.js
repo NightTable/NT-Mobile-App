@@ -11,8 +11,6 @@ export const loginorSignUp = async (phoneNumber) => {
   return new Promise((resolve, reject) => {
     try {
 
-
-      console.log("phoneNumber==>",phoneNumber);
       var axios = require("axios");
       var data = JSON.stringify({
         phoneNumberParam: `${phoneNumber}`,
@@ -29,6 +27,7 @@ export const loginorSignUp = async (phoneNumber) => {
 
       axios(config)
         .then(function (response) {
+          resolve(response.data)
           console.log(JSON.stringify(response.data));
         })
         .catch(function (error) {

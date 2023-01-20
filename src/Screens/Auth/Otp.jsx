@@ -1,6 +1,6 @@
 // Imported Libraries
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -9,13 +9,14 @@ import {
   StatusBar,
   Image,
   Alert,
-} from 'react-native';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+} from "react-native";
+import OTPInputView from "@twotalltotems/react-native-otp-input";
+import OTPTextView from "react-native-otp-textinput";
 
 //Moment
 
 //Main Function
-const  Otp = ({route, navigation}) => {
+const Otp = ({ route, navigation }) => {
   const [confirm, setConfirm] = useState(null);
   const [isLoding, setIsLoading] = useState(false);
   //const [enableResendBut, setenableResendBut] = useState(false);
@@ -23,12 +24,22 @@ const  Otp = ({route, navigation}) => {
   //ResendOtp-Button State
   const [resendOtp, setresendOtp] = useState(true);
 
+  const otpInput = useRef(null);
+
+  const clearText = () => {
+    otpInput.current.clear();
+  };
+
+  const setText = () => {
+    otpInput.current.setValue("1234");
+  };
+
   return (
     <>
       <View>
-        <Text>please enter otp  </Text>
-        <View style={{alignItems: 'center'}}>
-          <OTPInputView
+        <Text>please enter otp </Text>
+        <View style={{ alignItems: "center" }}>
+          {/* <OTPInputView
             style={{width: '80%', height: 200}}
             pinCount={6}
             // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
@@ -39,7 +50,16 @@ const  Otp = ({route, navigation}) => {
             onCodeFilled={code => {
               console.log(`Code is ${code}, you are good to go!`);
             }}
-          />
+          /> */}
+          <View>
+            <OTPTextView
+              handleTextChange={(e) => {}}
+              // ref={(e) => (otpInput = e)}
+              inputCount={4}
+              keyboardType="numeric"
+            />
+            {/* <Button title="clear" onClick={clearText}></Button> */}
+          </View>
         </View>
       </View>
 
@@ -48,7 +68,7 @@ const  Otp = ({route, navigation}) => {
      */}
     </>
   );
-}
+};
 
 // const styles = StyleSheet.create({
 //   Container: {
@@ -147,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   borderStyleHighLighted: {
-    borderColor: '#03DAC6',
+    borderColor: "#03DAC6",
   },
 
   underlineStyleBase: {
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
   },
 
   underlineStyleHighLighted: {
-    borderColor: '#03DAC6',
+    borderColor: "#03DAC6",
   },
 });
 

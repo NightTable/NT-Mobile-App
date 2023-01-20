@@ -33,7 +33,6 @@ const { height, width } = Dimensions.get("screen");
 import { colors } from "../../Theme/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const Login = ({ navigation, route }) => {
-  const [phoneNumber, setphoneNumber] = useState("");
   const [number, onChangeNumber] = useState("");
 
   //dropdown value changed
@@ -49,7 +48,7 @@ const Login = ({ navigation, route }) => {
   };
 
   const validation = () => {
-    // if (phoneNumber.length < 14) {
+    // if (number.length < 14) {
     //   Alert.alert("Please enter the correct number");
     // } else {
       console.log("triggered===>");
@@ -59,14 +58,14 @@ const Login = ({ navigation, route }) => {
 
   //API CALL
   const triggerOtp = async () => {
-    const data = await loginorSignUp(`+${selectedCountry}${phoneNumber}`);
-    console.log("loginorSignUp:data====>", data);
-    if(data.status === 'true'){
+    // const data = await loginorSignUp(`+${selectedCountry}${number}`);
+    // console.log("loginorSignUp:data====>", data.status);
+    // if(data.status === true){
       navigation.navigate("Otp",{
-        number: `${selectedCountry}${phoneNumber}`
+        number: `${selectedCountry}${number}`
       });
 
-    }
+    //}
   };
 
   //NAVIGATION
@@ -85,7 +84,7 @@ const Login = ({ navigation, route }) => {
               <Box pt={20}>
                 <Box style={{ padding: 12 }}>
                   <Image
-                    resizeMode="contain"
+                    resizeMode="cover"
                     style={{ height: 80, width: 80 }}
                     source={require("../../../assets/logo/logo.png")}
                   />

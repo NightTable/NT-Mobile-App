@@ -7,6 +7,9 @@ import { GetRequest } from "../Utils/Axios";
 //get countries code
 
 export const getCountriesCode = async () => {
+
+
+  console.log(`${LOCAL_URL}${COUNTRY_CODE}`);
   const data = await GetRequest(`${LOCAL_URL}${COUNTRY_CODE}`, "");
   return data;
 };
