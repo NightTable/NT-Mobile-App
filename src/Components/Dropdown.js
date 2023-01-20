@@ -143,8 +143,9 @@ const styles = StyleSheet.create({
     height: 40,
     // borderColor: "gray",
     // borderWidth: 0.5,
-    // borderRadius: 8,
+    borderRadius: 8,
     alignItems: "flex-end",
+    backgroundColor: "white",
   },
   icon: {
     // marginRight: 5,
@@ -152,6 +153,7 @@ const styles = StyleSheet.create({
   label: {
     position: "absolute",
     backgroundColor: "white",
+    // borderRadius: 8,
     //  left: 22,
     top: 8,
     zIndex: 999,
@@ -160,11 +162,11 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    color:'white'
+    color: "black",
   },
   selectedTextStyle: {
     fontSize: 16,
-    color:'white'
+    color: "black",
   },
   iconStyle: {
     width: 20,

@@ -39,6 +39,10 @@ const Splash = ({ navigation }) => {
     if (data.status === undefined) {
     } else {
       data.data.map((item) => {
+        // console.log(item);
+        item.phoneNumberCode[0] === "+"
+          ? (item.phoneNumberCode = item.phoneNumberCode.replace("+", ""))
+          : (item.phoneNumberCode = item.phoneNumberCode);
         tempArr.push({
           label: `+${item.phoneNumberCode}`,
           value: item.phoneNumberCode,

@@ -103,7 +103,7 @@ const Login = ({ navigation, route }) => {
                   <Box
                     justifyContent={"center"}
                     style={{ height: 40 }}
-                    width={"30%"}
+                    width={"22%"}
                   >
                     {/* <Dropdown
                 width={"100%"}
@@ -124,7 +124,7 @@ const Login = ({ navigation, route }) => {
                       data={countryCodeData}
                     />
                   </Box>
-                  <Box style={{ paddingHorizontal: 10 }} width={"70%"}>
+                  <Box style={{ paddingHorizontal: 10 }} width={"78%"}>
                     <TextInput
                       autoFocus={true}
                       style={styles.input}
