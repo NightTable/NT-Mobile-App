@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react"; // navigation.navigate('Login')
-
+import React, { useEffect, useState } from "react"; 
 import { StatusBar, StyleSheet, Platform, Text, Image } from "react-native";
-import { RouteProp, StackActions } from "@react-navigation/native";
 import { Box } from "native-base";
 
+//utils 
+import { GetLocalPhoneData } from "../Utils/SensitiveData";
+
 //api call for country codes
-import { countryCodes } from "../json/countriesCode";
 import { getCountriesCode } from "../Services/Countries";
+import { sessionTokenVerify } from "../Services/Auth";
+
 
 //Splash main function
 const Splash = ({ navigation }) => {
@@ -33,6 +35,15 @@ const Splash = ({ navigation }) => {
     };
   }, [navigation]);
 
+
+
+  //checkAuthSession 
+  const checkUserDatainLocal = async () => {
+    const data = GetLocalPhoneData('');
+    console.log(data,"data====> ")
+  }
+
+  //loading country codes data
   const getCountryCodes = async () => {
     let tempArr = [];
     const data = await getCountriesCode();

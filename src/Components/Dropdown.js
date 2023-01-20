@@ -52,7 +52,6 @@ export const Dropdown = (props) => {
         }}
       >
         {props.data.map((item) => {
-          console.log("item===>", item);
           return (
             <Select.Item
               key={item.id}
@@ -71,13 +70,16 @@ export const Dropdown = (props) => {
 };
 
 export const ElementDropdown = (props) => {
-
-
   return (
     <>
       <View style={styles.container}>
         <ElDropdown
           style={[styles.dropdown]}
+          itemTextStyle={{
+            color: colors.gold.gold100,
+          }}
+          containerStyle={{ backgroundColor: "black", color: "red" }}
+          activeColor={"red"}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -88,7 +90,7 @@ export const ElementDropdown = (props) => {
           labelField="label"
           valueField="value"
           placeholder={"+91"}
-          searchPlaceholder="Search..."
+          searchPlaceholder="Search."
           value={props.value}
           onChange={(item) => {
             props.onValueChange(item.value);
@@ -136,39 +138,32 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 40,
-    // borderColor: "gray",
-    // borderWidth: 0.5,
+    borderColor: colors.gold.gold100,
+    borderWidth: 1,
     borderRadius: 8,
-    alignItems: "flex-end",
-    backgroundColor: "white",
+    backgroundColor: colors.black.black800,
+    alignItems: "center",
   },
   icon: {
     // marginRight: 5,
   },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    // borderRadius: 8,
-    //  left: 22,
-    top: 8,
-    zIndex: 999,
-    // paddingHorizontal: 8,
-    fontSize: 14,
-  },
   placeholderStyle: {
     fontSize: 16,
-    color: "black",
+    color: colors.gold.gold100,
+    textAlign: "center",
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: "black",
+    color: colors.gold.gold100,
+    textAlign: "center",
   },
   iconStyle: {
     width: 20,
     height: 20,
   },
   inputSearchStyle: {
-    height: 40,
     fontSize: 16,
+    color: colors.gold.gold100,
+    backgroundColor: colors.black.black800,
   },
 });

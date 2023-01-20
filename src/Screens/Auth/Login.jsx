@@ -49,26 +49,22 @@ const Login = ({ navigation, route }) => {
   };
 
   const validation = () => {
-    // if (number.length < 14) {
-    //   Alert.alert("Please enter the correct number");
-    // } else {
-    triggerOtp();
-    //}
+    if (number.length < 8) {
+      Alert.alert("Please enter the correct number");
+    } else {
+      triggerOtp();
+    }
   };
 
   //API CALL
   const triggerOtp = async () => {
-    console.log(
-      "`+${selectedCountry}${number}`",
-      `+${selectedCountry}${number}`
-    );
-    const data = await loginorSignUp(`+${selectedCountry}${number}`);
-    console.log("loginorSignUp:data====>", data.status);
-    if (data.status === true) {
-      navigation.navigate("Otp", {
-        number: `+${selectedCountry}${number}`,
-      });
-    }
+    //for now bypassing the login api :===>
+    // const data = await loginorSignUp(`+${selectedCountry}${number}`);
+    // if (data.status === true) {
+    navigation.navigate("Otp", {
+      number: `+${selectedCountry}${number}`,
+    });
+    //}
   };
 
   //NAVIGATION
@@ -90,7 +86,7 @@ const Login = ({ navigation, route }) => {
                     style={{
                       fontSize: 34,
                       paddingTop: 12,
-                      color: colors.gold.gold200,
+                      color: colors.gold.gold100,
                     }}
                   >
                     NightTable{" "}
@@ -99,7 +95,7 @@ const Login = ({ navigation, route }) => {
                     style={{
                       fontSize: 24,
                       paddingTop: 18,
-                      color: colors.gold.gold200,
+                      color: colors.gold.gold100,
                     }}
                   >
                     Sign up or login

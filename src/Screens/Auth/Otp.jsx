@@ -79,6 +79,7 @@ const Otp = ({ route, navigation }) => {
           <View style={{ height: "50%" }}>
             <View style={{ paddinTop: 30 }}>
               <OTPTextView
+              textInputStyle={{color:'green',backgroundColor:'red'}}
                 autoFocus={true}
                 style={{ color: "white" }}
                 handleTextChange={(e) => {
