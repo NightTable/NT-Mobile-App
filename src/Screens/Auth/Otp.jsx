@@ -8,22 +8,31 @@ import {
   TouchableOpacity,
   StatusBar,
   Image,
+  Dimensions,
   Alert,
 } from "react-native";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
 import OTPTextView from "react-native-otp-textinput";
+//libraries
+import { Box } from "native-base";
+//components
+import { Button } from "../../Components/Buttons";
 
-//Moment
+//Themes
+import { colors } from "../../Theme/colors";
+//services
+import { otpVerify } from "../../Services/Auth";
+//Utils
+import { StoretoLocalData } from "../../Utils/SensitiveData";
 
+const { height, width } = Dimensions.get("screen");
 //Main Function
 const Otp = ({ route, navigation }) => {
-  const [confirm, setConfirm] = useState(null);
   const [isLoding, setIsLoading] = useState(false);
   //const [enableResendBut, setenableResendBut] = useState(false);
 
   //ResendOtp-Button State
   const [resendOtp, setresendOtp] = useState(true);
-
+  const [otp, setotp] = useState("");
   const otpInput = useRef(null);
 
   const clearText = () => {
@@ -34,119 +43,68 @@ const Otp = ({ route, navigation }) => {
     otpInput.current.setValue("1234");
   };
 
+  const submit = async () => {
+    if (otp.length < 4) {
+      Alert.alert("Please enter the otp");
+    } else {
+      const data = await otpVerify(route.params.number, otp);
+      console.log("data==>", data);
+      if (data.status === true) {
+        saveUserData(data);
+        // navigation.navigate('Dashboard')
+      }
+    }
+  };
+
+  const saveUserData = async (data) => {
+    const saveData = await StoretoLocalData(JSON.stringify(data));
+    console.log("saveData===>", saveData);
+  };
+
   return (
     <>
-      <View>
-        <Text>please enter otp </Text>
-        <View style={{ alignItems: "center" }}>
-          <View>
-            <OTPTextView
-              handleTextChange={(e) => {}}
-              // ref={(e) => (otpInput = e)}
-              inputCount={4}
-              keyboardType="numeric"
-            />
+      <Box
+        safeArea
+        style={{
+          backgroundColor: "black",
+          flex: 1,
+          padding: 20,
+          paddinTop: 24,
+        }}
+      >
+        <Text style={{ fontSize: 22, paddingTop: 18, color: "white" }}>
+          Please enter the otp{" "}
+        </Text>
+        <View style={{ height: height }}>
+          <View style={{ height: "50%" }}>
+            <View style={{ paddinTop: 30 }}>
+              <OTPTextView
+                autoFocus={true}
+                style={{ color: "white" }}
+                handleTextChange={(e) => {
+                  setotp(e);
+                }}
+                // ref={(e) => (otpInput = e)}
+                inputCount={6}
+                keyboardType="numeric"
+              />
+            </View>
           </View>
+          <Box style={{ padding: 12, backgroundColor: "black", flex: 1 }}>
+            <Button
+              onSubmit={() => {
+                submit();
+              }}
+              backgroundColor={colors.gold.gold100}
+              text={"Verify Otp"}
+            />
+          </Box>
         </View>
-      </View>
-
-      {/* 
-        {isLoding ? <LoaderModel /> : null}
-     */}
+      </Box>
     </>
   );
 };
 
-// const styles = StyleSheet.create({
-//   Container: {
-//     margin: 0,
-//     borderTopRightRadius: 30,
-//     backgroundColor: 'white',
-//     borderTopLeftRadius: 30,
-//     height: '100%',
-//     width: '100%',
-//     left: 0,
-//     bottom: 0,
-//     justifyContent: 'flex-start',
-//   },
-//   HelpingContainer: {
-//     ...Platform.select({
-//       ios: {
-//         height: verticalScale(64),
-//       },
-//       android: {
-//         height: verticalScale(30),
-//       },
-//       default: {
-//         // other platforms, web for example
-//         height: verticalScale(30),
-//       },
-//     }),
-//     backgroundColor: 'transparent',
-//     width: '100%',
-//   },
-//   ImgContainer: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     paddingVertical: 20,
-//   },
-//   ImgStyle: {
-//     height: 48,
-//     width: 48,
-//     justifyContent: 'center',
-//     alignContent: 'center',
-//     alignItems: 'center',
-//   },
-//   Box: {
-//     paddingHorizontal: 20,
-
-//     ...Platform.select({
-//       ios: {
-//         paddingTop: 20,
-//       },
-//       android: {
-//         paddingTop: 20,
-//       },
-//     }),
-//   },
-//   Boxtxt1: {
-//     fontSize: verticalScale(20),
-//     color: 'white',
-//   },
-//   Boxtxt2: {
-//     color: 'white',
-
-//     fontSize: verticalScale(12),
-//   },
-//   HelpingContainer2: {
-//     ...Platform.select({
-//       ios: {
-//         height: verticalScale(10),
-//       },
-//       android: {
-//         //  height: verticalScale(10),
-//       },
-//     }),
-//     backgroundColor: 'transparent',
-//     width: '100%',
-//   },
-//   borderStyleBase: {
-//     width: 30,
-//     height: 45,
-//   },
-//   borderStyleHighLighted: {
-//     borderColor: '#03DAC6',
-//   },
-//   underlineStyleBase: {
-//     width: 30,
-//     height: 45,
-//     borderWidth: 0,
-//     borderBottomWidth: 1,
-//   },
-//   underlineStyleHighLighted: {
-//     borderColor: 'black',
-//   },
-// });
 const styles = StyleSheet.create({
   borderStyleBase: {
     width: 40,

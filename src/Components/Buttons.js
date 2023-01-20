@@ -94,6 +94,7 @@ export const Button = (props) => {
                     textColor: props.textColor,
                     justifyContent: "center",
                     alignItems: "center",
+                    fontWeight:'bold'
                   }}
                 >
                   {props.text}

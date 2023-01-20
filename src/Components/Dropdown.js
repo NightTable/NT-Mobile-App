@@ -71,12 +71,7 @@ export const Dropdown = (props) => {
 };
 
 export const ElementDropdown = (props) => {
-  const renderLabel = () => {
-    if (props.value) {
-      return <Text style={[styles.label, { color: "blue" }]}>Country </Text>;
-    }
-    return null;
-  };
+
 
   return (
     <>

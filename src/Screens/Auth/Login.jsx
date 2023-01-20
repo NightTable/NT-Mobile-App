@@ -32,6 +32,7 @@ import { Dropdown, ElementDropdown } from "../../Components/Dropdown";
 const { height, width } = Dimensions.get("screen");
 import { colors } from "../../Theme/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { color } from "react-native-reanimated";
 const Login = ({ navigation, route }) => {
   const [number, onChangeNumber] = useState("");
 
@@ -51,21 +52,23 @@ const Login = ({ navigation, route }) => {
     // if (number.length < 14) {
     //   Alert.alert("Please enter the correct number");
     // } else {
-      console.log("triggered===>");
-      triggerOtp();
+    triggerOtp();
     //}
   };
 
   //API CALL
   const triggerOtp = async () => {
-    // const data = await loginorSignUp(`+${selectedCountry}${number}`);
-    // console.log("loginorSignUp:data====>", data.status);
-    // if(data.status === true){
-      navigation.navigate("Otp",{
-        number: `${selectedCountry}${number}`
+    console.log(
+      "`+${selectedCountry}${number}`",
+      `+${selectedCountry}${number}`
+    );
+    const data = await loginorSignUp(`+${selectedCountry}${number}`);
+    console.log("loginorSignUp:data====>", data.status);
+    if (data.status === true) {
+      navigation.navigate("Otp", {
+        number: `+${selectedCountry}${number}`,
       });
-
-    //}
+    }
   };
 
   //NAVIGATION
@@ -83,19 +86,27 @@ const Login = ({ navigation, route }) => {
             <Box style={styles.container} SafeArea bgColor={"black"}>
               <Box pt={20}>
                 <Box style={{ padding: 12 }}>
-                  <Image
-                    resizeMode="cover"
-                    style={{ height: 80, width: 80 }}
-                    source={require("../../../assets/logo/logo.png")}
-                  />
                   <Text
-                    style={{ fontSize: 28, paddingTop: 12, color: "white" }}
+                    style={{
+                      fontSize: 34,
+                      paddingTop: 12,
+                      color: colors.gold.gold200,
+                    }}
                   >
-                    Sign up or login by entering your phone number
+                    NightTable{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 24,
+                      paddingTop: 18,
+                      color: colors.gold.gold200,
+                    }}
+                  >
+                    Sign up or login
                   </Text>
                 </Box>
                 <Box
-                  style={{ paddingHorizontal: 10 }}
+                  style={{ paddingHorizontal: 10, paddingTop: 18 }}
                   flexDir={"row"}
                   width={"100%"}
                   alignItems={"center"}
@@ -171,9 +182,10 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     padding: 6,
-    backgroundColor: "white",
-    borderColor: "white",
+    backgroundColor: "black",
+    borderColor: colors.gold.gold100,
     borderRadius: 6,
+    color: colors.gold.gold200,
   },
   container: {
     height: "50%",
