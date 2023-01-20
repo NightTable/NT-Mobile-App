@@ -39,18 +39,6 @@ const Otp = ({ route, navigation }) => {
       <View>
         <Text>please enter otp </Text>
         <View style={{ alignItems: "center" }}>
-          {/* <OTPInputView
-            style={{width: '80%', height: 200}}
-            pinCount={6}
-            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-            // onCodeChanged = {code => { this.setState({code})}}
-            autoFocusOnLoad
-            codeInputFieldStyle={styles.underlineStyleBase}
-            codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={code => {
-              console.log(`Code is ${code}, you are good to go!`);
-            }}
-          /> */}
           <View>
             <OTPTextView
               handleTextChange={(e) => {}}
@@ -58,7 +46,6 @@ const Otp = ({ route, navigation }) => {
               inputCount={4}
               keyboardType="numeric"
             />
-            {/* <Button title="clear" onClick={clearText}></Button> */}
           </View>
         </View>
       </View>
