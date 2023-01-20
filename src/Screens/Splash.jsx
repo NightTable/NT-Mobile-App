@@ -6,6 +6,7 @@ import { Box } from "native-base";
 
 //api call for country codes
 import { countryCodes } from "../json/countriesCode";
+import { getCountriesCode } from "../Services/Countries";
 
 //Splash main function
 const Splash = ({ navigation }) => {
@@ -21,7 +22,6 @@ const Splash = ({ navigation }) => {
       } else {
         getCountryCodes();
         //navigation.navigate("Login");
-        console.log("SPLASH SCREEN");
       }
     };
 
@@ -31,22 +31,24 @@ const Splash = ({ navigation }) => {
     unsubscribe = () => {
       return init();
     };
-  }, []);
+  }, [navigation]);
 
   const getCountryCodes = async () => {
     let tempArr = [];
-    const data = await countryCodes;
-
-    data.map((item) => {
-      tempArr.push({
-        label: item.phonecode,
-        value: item.phonecode,
+    const data = await getCountriesCode();
+    if (data.status === undefined) {
+    } else {
+      data.data.map((item) => {
+        tempArr.push({
+          label: `+${item.phoneNumberCode}`,
+          value: item.phoneNumberCode,
+        });
       });
-    });
 
-    navigation.navigate("Login", {
-      countryCodes: tempArr,
-    });
+      navigation.navigate("Login", {
+        countryCodes: tempArr,
+      });
+    }
   };
 
   return (
@@ -56,7 +58,7 @@ const Splash = ({ navigation }) => {
         bgColor={"black"}
         safeArea
       >
-        <Text color={"white"}>SPLASH SCREEN</Text>
+        {/* <Text color={"white"}>SPLASH SCREEN</Text> */}
         <Image
           style={{ height: 200, width: 220 }}
           source={require("../../assets/logo/logo.png")}

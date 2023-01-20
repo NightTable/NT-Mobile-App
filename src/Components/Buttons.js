@@ -1,11 +1,23 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Button as NBButton } from "native-base";
 import Feather from "react-native-vector-icons/Feather";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { ActivityLoader } from "./Loaders";
 import { screenWidth, screenHeight } from "../Utils/Dimensions";
 import { Box } from "native-base";
-
+import {
+  SafeAreaView,
+  View,
+  KeyboardAvoidingView,
+  TextInput,
+  StyleSheet,
+  Text,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Image,
+  Dimensions,
+  Alert,Pressable
+} from "react-native"
 //USEAGE
 // Step 1:::> import {Button} from "_component_Directory_"
 // Step 2:::> Use below code to render component and pass props according to requirement
@@ -25,36 +37,72 @@ import { Box } from "native-base";
 }
 
 export const Button = (props) => {
-
-  const [loader, setloader] = useState(true)
+  const [loader, setloader] = useState(true);
   return (
     <>
-      <TouchableOpacity style={{width : screenWidth , height : 40, backgroundColor:'red'}}>
-        <Box justifyContent={'center'} alignItem={'center'}
-        // leftIcon={
-        //   props.iconName == undefined || props.iconName.length < 0 ? null : (
-        //     <Feather name={props.iconName} size={22} />
-        //   )
-        // }
-        // fontSize="sm"
-        // colorScheme={props.textColor}
-        // variant={props?.variant}
-        // bgColor={props.bgColor}
-        // onPress={() => {
-        //   props.onSubmit();
-        // }}
-        // _icon={{
-        //   color: props.textColor,
-        // }}
-        // _text={{
-        //   color: props.textColor,
-        //   fontWeight: props.fontweight,
-        // }}
-        // borderColor={props.borderColor}
+      <Pressable
+        onPress={() => {
+          console.log("submit ====>");
+          props.onSubmit();
+        }}
+        style={{ width: "100%", height: 40 }}
+      >
+        <Box
+          justifyContent={"center"}
+          alignItem={"center"}
+          // leftIcon={
+          //   props.iconName == undefined || props.iconName.length < 0 ? null : (
+          //     <Feather name={props.iconName} size={22} />
+          //   )
+          // }
+          // fontSize="sm"
+          // colorScheme={props.textColor}
+          // variant={props?.variant}
+          // bgColor={props.bgColor}
+          // onPress={() => {
+          //   props.onSubmit();
+          // }}
+          // _icon={{
+          //   color: props.textColor,
+          // }}
+          // _text={{
+          //   color: props.textColor,
+          //   fontWeight: props.fontweight,
+          // }}
+          // borderColor={props.borderColor}
         >
-          {loader === true ? <ActivityLoader /> : <Text> {props.text}</Text>}
+          {loader === false ? (
+            <Box style={{ alignItem: "center", justifyContent: "center" }}>
+              <ActivityLoader />
+            </Box>
+          ) : (
+            <>
+              <Box
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 40,
+                  backgroundColor: props.backgroundColor,
+                  borderRadius:4
+                }}
+                onPress={() => {
+                  props.OnClick();
+                }}
+              >
+                <Text
+                  style={{
+                    textColor: props.textColor,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {props.text}
+                </Text>
+              </Box>
+            </>
+          )}
         </Box>
-      </TouchableOpacity>
+      </Pressable>
     </>
   );
 };
