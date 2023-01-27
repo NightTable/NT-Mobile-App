@@ -25,6 +25,7 @@ export const GetRequest = async (session_url, body) => {
 
       await axios(config).then((response) => {
         {
+          console.log("response.data==>",response.data)
           resolve(response.data);
         }
       });

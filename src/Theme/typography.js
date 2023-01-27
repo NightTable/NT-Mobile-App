@@ -8,7 +8,7 @@
 export const typography = {
     //Bold font
     bold: {
-      bold8: {fontFamily: 'OpenSans-Bold', fontSize: 8},
+      bold8: {fontFamily: 'Comfortaa-Bold', fontSize: 8},
       bold10: {
         fontFamily: 'OpenSans-Bold',
         fontSize: 10,

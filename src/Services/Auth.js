@@ -6,6 +6,9 @@ import {
   LOCAL_URL_HOME_VG,
 } from "@env";
 
+
+console.log("LOCAL_URL_HOME_VG",LOCAL_URL_HOME_VG)
+
 //FOR TIGGERING THE OTP
 export const loginorSignUp = async (phoneNumber) => {
   return new Promise((resolve, reject) => {
@@ -18,7 +21,7 @@ export const loginorSignUp = async (phoneNumber) => {
 
       var config = {
         method: "post",
-        url: `${LOCAL_URL}${LOGIN_OTP}`,
+        url: `${LOCAL_URL_HOME_VG}${LOGIN_OTP}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -51,7 +54,7 @@ export const otpVerify = async (phoneNumber, otp) => {
 
       var config = {
         method: "post",
-        url: `${LOCAL_URL}${OTP_VERIFY}`,
+        url: `${LOCAL_URL_HOME_VG}${OTP_VERIFY}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -79,7 +82,7 @@ export const sessionTokenVerify = async () => {
 
       var config = {
         method: "get",
-        url: `${LOCAL_URL}${SESSION_VERIFICATION}`,
+        url: `${LOCAL_URL_HOME_VG}${SESSION_VERIFICATION}`,
         headers: {
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2M0ZDcyYjMwMjgwNTMyYTIzMzJmYWYiLCJpYXQiOjE2NzM5MjcyMTZ9.1Bw5J0puwxKj3OV-kYrkj5nxUlfQozFd8JbCjXC61fI",

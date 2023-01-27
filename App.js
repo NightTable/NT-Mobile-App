@@ -7,7 +7,8 @@ import { NativeBaseProvider } from "native-base";
 //Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import RootStack from "./src/Navigation/RootStack";
-
+import * as RegularFont from './assets/fonts/VerahHumana-Regular.ttf';
+import * as BoldFont from './assets/fonts/VerahHumana-Bold.ttf';
 //REDUX
 // import { Provider } from "react-redux";
 // import configuredStore  from "./src/Redux/Store";
@@ -16,7 +17,23 @@ import RootStack from "./src/Navigation/RootStack";
 
 // const store = configuredStore();
 
+const fetchFonts = () => {
+
+  /*let fontHasLoaded =  Font.useFonts({
+    VerahHumanaRegular: './assets/fonts/VerahHumana-Regular.ttf',
+    VerahHumanaBold: './assets/fonts/VerahHumana-Bold.ttf'
+  })
+  return fontHasLoaded;*/
+  return Font.loadAsync({
+    'VerahHumanaRegular': require('./assets/fonts/VerahHumana-Regular.ttf'),
+    'VerahHumanaBold': require('./assets/fonts/VerahHumana-Bold.ttf')
+  });
+};
+
+
 const App = () => {
+  console.reportErrorsAsExceptions = false;
+
   return (
     <>
       <NativeBaseProvider>

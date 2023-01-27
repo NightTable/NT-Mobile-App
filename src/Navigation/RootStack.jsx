@@ -1,6 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthStack from '../Navigation/AuthStack';
+import DrawerNavigator from './DrawerStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,13 +20,13 @@ const RootStack = () => {
         }}
       />
 
-      {/* <Stack.Screen
+      <Stack.Screen
         name="DrawerNavigator"
         component={DrawerNavigator}
         options={{
           headerShown: false,
         }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

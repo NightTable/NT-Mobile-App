@@ -23,6 +23,7 @@ import { colors } from "../../Theme/colors";
 import { otpVerify } from "../../Services/Auth";
 //Utils
 import { StoretoLocalData } from "../../Utils/SensitiveData";
+import { typography } from "../../Theme/typography";
 
 const { height, width } = Dimensions.get("screen");
 //Main Function
@@ -72,24 +73,29 @@ const Otp = ({ route, navigation }) => {
           paddinTop: 24,
         }}
       >
-        <Text style={{ fontSize: 22, paddingTop: 18, color: "white" }}>
+        <Text
+          style={[
+            typography.bold.bold8,
+            { fontSize: 22, paddingTop: 18, color: colors.gold.gold100 },
+          ]}
+        >
           Please enter the otp{" "}
         </Text>
-        <View style={{ height: height }}>
+        <View style={{ marginTop: 100 }}>
+          <OTPTextView
+            tintColor="#000000"
+            autoFocus={true}
+            style={styles.roundedTextInput}
+            handleTextChange={(e) => {
+              setotp(e);
+            }}
+            inputCount={6}
+            keyboardType="numeric"
+          />
+        </View>
+        <View>
           <View style={{ height: "50%" }}>
-            <View style={{ paddinTop: 30 }}>
-              <OTPTextView
-              textInputStyle={{color:'green',backgroundColor:'red'}}
-                autoFocus={true}
-                style={{ color: "white" }}
-                handleTextChange={(e) => {
-                  setotp(e);
-                }}
-                // ref={(e) => (otpInput = e)}
-                inputCount={6}
-                keyboardType="numeric"
-              />
-            </View>
+            <View style={{ paddinTop: 30 }}></View>
           </View>
           <Box style={{ padding: 12, backgroundColor: "black", flex: 1 }}>
             <Button
@@ -112,19 +118,14 @@ const styles = StyleSheet.create({
     height: 45,
   },
 
-  borderStyleHighLighted: {
-    borderColor: "#03DAC6",
-  },
-
-  underlineStyleBase: {
-    width: 30,
-    height: 45,
-    borderWidth: 2,
-    borderBottomWidth: 1,
-  },
-
-  underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
+  roundedTextInput: {
+    borderRadius: 6,
+    borderWidth: 4,
+    borderColor: colors.gold.gold200,
+    height: 60,
+    width: 40,
+    paddingLeft: 10,
+    color: "white",
   },
 });
 

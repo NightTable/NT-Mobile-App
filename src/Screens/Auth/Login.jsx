@@ -67,6 +67,7 @@ const Login = ({ navigation, route }) => {
     //}
   };
 
+
   //NAVIGATION
   const navigateTo = () => {
     navigation.navigate("Otp");
@@ -112,17 +113,6 @@ const Login = ({ navigation, route }) => {
                     style={{ height: 40 }}
                     width={"22%"}
                   >
-                    {/* <Dropdown
-                width={"100%"}
-                bgColor={colors.white.white0}
-                data={countryCodeData}
-                value={selectedCountry}
-                placeholder={"Country"}
-                defaultValue={"India"}
-                onValueChange={(item) => {
-                  setselectedCountry(item);
-                }}
-              /> */}
                     <ElementDropdown
                       value={selectedCountry}
                       onValueChange={(item) => {

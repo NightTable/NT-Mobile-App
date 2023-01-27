@@ -37,7 +37,7 @@ import {
 }
 
 export const Button = (props) => {
-  const [loader, setloader] = useState(true);
+  const [loader, setloader] = useState(props.loader);
   return (
     <>
       <Pressable
