@@ -20,6 +20,7 @@ const Splash = ({ navigation }) => {
     const init = async () => {
       //check navigation
       if (LoggedIn === true) {
+        console.log(LoggedIn)
         // navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
       } else {
         getCountryCodes();

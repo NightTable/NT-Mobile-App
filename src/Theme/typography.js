@@ -8,14 +8,14 @@
 export const typography = {
     //Bold font
     bold: {
-      bold8: {fontFamily: 'Comfortaa-Bold', fontSize: 8},
+      bold8: {fontFamily: 'VerahHumanaBold', fontSize: 8},
       bold10: {
-        fontFamily: 'OpenSans-Bold',
+        fontFamily: 'VerahHumanaBold-Bold',
         fontSize: 10,
       },
-      bold12: {fontFamily: 'OpenSans-Bold', fontSize: 12},
-      bold14: {fontFamily: 'OpenSans-Bold', fontSize: 14},
-      bold16: {fontFamily: 'OpenSans-Bold', fontSize: 16},
+      bold12: {fontFamily: 'VerahHumanaBold', fontSize: 12},
+      bold14: {fontFamily: 'VerahHumanaBold', fontSize: 14},
+      bold16: {fontFamily: 'VerahHumanaBold', fontSize: 16},
     },
     //Semi-Bold
     semBold: {
@@ -42,26 +42,26 @@ export const typography = {
   
     //Regular font
     regular: {
-      regular8: {fontFamily: 'OpenSans-Regular', fontSize: 8},
+      regular8: {fontFamily: 'VerahHumanaRegular', fontSize: 8},
   
       regular10: {
-        fontFamily: 'OpenSans-Regular',
+        fontFamily: 'VerahHumanaRegular',
         fontSize: 10,
       },
-      regular12: {fontFamily: 'OpenSans-Regular', fontSize: 12},
-      regular14: {fontFamily: 'OpenSans-Regular', fontSize: 14},
-      regular16: {fontFamily: 'OpenSans-Regular', fontSize: 16},
+      regular12: {fontFamily: 'VerahHumanaRegular', fontSize: 12},
+      regular14: {fontFamily: 'VerahHumanaRegular', fontSize: 14},
+      regular16: {fontFamily: 'VerahHumanaRegular', fontSize: 16},
     },
   
     light: {
-      light8: {fontFamily: 'OpenSans-Light', fontSize: 10},
+      light8: {fontFamily: 'VerahHumanaRegular', fontSize: 10},
       light10: {
-        fontFamily: 'OpenSans-Light',
+        fontFamily: 'VerahHumanaRegular',
         fontSize: 10,
       },
-      light12: {fontFamily: 'OpenSans-Light', fontSize: 12},
-      light14: {fontFamily: 'OpenSans-Light', fontSize: 14},
-      light16: {fontFamily: 'OpenSans-Light', fontSize: 16},
+      light12: {fontFamily: 'VerahHumanaRegular', fontSize: 12},
+      light14: {fontFamily: 'VerahHumanaRegular', fontSize: 14},
+      light16: {fontFamily: 'VerahHumanaRegular', fontSize: 16},
     },
   };
   

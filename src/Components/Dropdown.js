@@ -22,7 +22,7 @@ export const Dropdown = (props) => {
       <Select
         //face
         //border color
-        borderColor={colors.grey.grey500}
+        borderColor={colors.gold.gold100}
         //select face
 
         minWidth={minWidth}
@@ -30,7 +30,7 @@ export const Dropdown = (props) => {
         height={"100%"}
         width={props.width}
         //face text color
-        color={colors.white.white0}
+        color={colors.gold.gold100}
         //bg color
 
         dropdownIcon={
@@ -48,7 +48,7 @@ export const Dropdown = (props) => {
           bgColor: colors.grey.grey500,
         }}
         _selectedItem={{
-          bg: colors.grey.grey600,
+          bg: colors.gold.gold100,
         }}
       >
         {props.data.map((item) => {
@@ -112,7 +112,7 @@ export const ElementDropdown = (props) => {
 
 const styles = StyleSheet.create({
   name: {
-    color: colors.white.white0,
+    color: colors.gold.gold100,
   },
   header: {
     flexDirection: "row",

@@ -142,7 +142,7 @@ const Login = ({ navigation, route }) => {
                   validation();
                 }}
                 backgroundColor={colors.gold.gold100}
-                text={"Get Otp"}
+                text={"Login / Signup"}
               />
 
               <Text
@@ -150,7 +150,7 @@ const Login = ({ navigation, route }) => {
                   fontSize: 12,
                   paddingTop: 12,
                   textAlign: "center",
-                  color: "white",
+                  color: colors.gold.gold100,
                 }}
               >
                 By logging in,you agree to the Terms of Use and Privacy Policy{" "}
