@@ -53,7 +53,7 @@ const Otp = ({ route, navigation }) => {
       console.log("data==>", data.status);
       if (data.status === true) {
         // await saveUserData("userData",data);
-        navigation.navigate('Dashboard')
+        navigation.navigate('DrawerNavigator')
       }
     }
   };

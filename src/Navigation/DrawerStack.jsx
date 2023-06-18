@@ -2,14 +2,15 @@ import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 // import EntryDashboardNavigator from "../../navigators/EntryDashboardNavigator";
-import Dashboard from "../../src/Screens/Dashboard/Dashboard";
-import { Image, StyleSheet } from "react-native";
+import Dashboard from "../Screens/Dashboard/Dashboard";
+import Club from '../Screens/Dashboard/Club'
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 
 const DrawerNavigator = () => {
   return (
-    <NavigationContainer>
       <Drawer.Navigator
         screenOptions={{
           headerShown: false,
@@ -48,18 +49,7 @@ const DrawerNavigator = () => {
         }}
       />
       </Drawer.Navigator>
-    </NavigationContainer>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-//   icon: {
-//     height: 35 * heightRatioNorm,
-//     width: 35 * heightRatioNorm,
-//   },
-});
+
 export default DrawerNavigator;
