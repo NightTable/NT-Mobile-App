@@ -5,80 +5,53 @@ import {
   LOCAL_URL,
   LOCAL_URL_HOME_VG,
 } from "@env";
+const axios = require("axios");
 
-
-console.log("LOCAL_URL_HOME_VG",LOCAL_URL_HOME_VG)
+console.log("LOCAL_URL_HOME_VG", LOCAL_URL_HOME_VG);
 
 //FOR TIGGERING THE OTP
 export const loginorSignUp = async (phoneNumber) => {
-  return new Promise((resolve, reject) => {
-    try {
-
-      var axios = require("axios");
-      var data = JSON.stringify({
-        phoneNumberParam: `${phoneNumber}`,
-      });
-
-      var config = {
-        method: "post",
-        url: `${LOCAL_URL_HOME_VG}${LOGIN_OTP}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      axios(config)
-        .then(function (response) {
-          resolve(response.data)
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } catch (error) {
-      resolve(error);
-    }
-  });
+  try {
+    const data = {
+      phoneNumberParam: `${phoneNumber}`,
+    };
+    const response = await axios.post(`${LOCAL_URL_HOME_VG}${LOGIN_OTP}`, data);
+    return response;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 //FOR VERIFYING THE TRIGGERED OTP
 export const otpVerify = async (phoneNumber, otp) => {
-  return new Promise((resolve, reject) => {
-    try {
-      var axios = require("axios");
-      var data = JSON.stringify({
-        reqPhoneNumber: `${phoneNumber}`,
-        reqOtp: `${otp}`,
-      });
+  try {
+    const data = {
+      reqPhoneNumber: `${phoneNumber}`,
+      reqOtp: `${otp}`,
+    };
 
-      var config = {
-        method: "post",
-        url: `${LOCAL_URL_HOME_VG}${OTP_VERIFY}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
+    const config = {
+      method: "post",
+      url: `${LOCAL_URL_HOME_VG}${OTP_VERIFY}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
 
-      axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } catch (error) {
-      resolve(error);
-    }
-  });
+    const response = await axios(config);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log("catch block for otp verify", error);
+  }
 };
 
 //FOR VERIFYING THE SESSION TOKEN
 export const sessionTokenVerify = async () => {
   return new Promise((resolve, reject) => {
     try {
-      var axios = require("axios");
+      // var axios = require("axios");
 
       var config = {
         method: "get",

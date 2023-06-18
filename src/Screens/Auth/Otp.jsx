@@ -45,20 +45,21 @@ const Otp = ({ route, navigation }) => {
   };
 
   const submit = async () => {
-    if (otp.length < 4) {
+    if (otp.length < 6) {
       Alert.alert("Please enter the otp");
     } else {
+      console.log("otp before verify ", otp)
       const data = await otpVerify(route.params.number, otp);
-      console.log("data==>", data);
+      console.log("data==>", data.status);
       if (data.status === true) {
-        saveUserData(data);
-        // navigation.navigate('Dashboard')
+        // await saveUserData("userData",data);
+        navigation.navigate('Dashboard')
       }
     }
   };
 
-  const saveUserData = async (data) => {
-    const saveData = await StoretoLocalData(JSON.stringify(data));
+  const saveUserData = async (key, data) => {
+    const saveData = await StoretoLocalData(key, data);
     console.log("saveData===>", saveData);
   };
 

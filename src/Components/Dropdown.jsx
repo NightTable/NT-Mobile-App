@@ -7,7 +7,7 @@ import { paddingValue } from "../Theme/spacing";
 
 //Theme
 import { colors } from "../Theme/colors";
-import { EntypoIcon } from "../Components/Icons";
+import { EntypoIcon } from "./Icons";
 import { Dropdown as ElDropdown } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
@@ -89,7 +89,7 @@ export const ElementDropdown = (props) => {
           maxHeight={600}
           labelField="label"
           valueField="value"
-          placeholder={"+91"}
+          placeholder={"Code"}
           searchPlaceholder="Search."
           value={props.value}
           onChange={(item) => {

@@ -15,7 +15,7 @@ import {
   Alert,
   Pressable,
 } from "react-native";
-import { RouteProp, StackActions } from "@react-navigation/native";
+// import { RouteProp, StackActions } from "@react-navigation/native";
 import { Box } from "native-base";
 import { Button } from "../../Components/Buttons";
 
@@ -31,8 +31,8 @@ import { Dropdown, ElementDropdown } from "../../Components/Dropdown";
 
 const { height, width } = Dimensions.get("screen");
 import { colors } from "../../Theme/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { color } from "react-native-reanimated";
+// import { TouchableOpacity } from "react-native-gesture-handler";
+// import { color } from "react-native-reanimated";
 const Login = ({ navigation, route }) => {
   const [number, onChangeNumber] = useState("");
 
@@ -59,14 +59,14 @@ const Login = ({ navigation, route }) => {
   //API CALL
   const triggerOtp = async () => {
     //for now bypassing the login api :===>
-    // const data = await loginorSignUp(`+${selectedCountry}${number}`);
-    // if (data.status === true) {
-    navigation.navigate("Otp", {
-      number: `+${selectedCountry}${number}`,
-    });
-    //}
+    const data = await loginorSignUp(`+${selectedCountry}${number}`);
+    if (data.data.status === true) {
+      console.log("response from login api",data.data);
+      navigation.navigate("Otp", {
+        number: `+${selectedCountry}${number}`,
+      });
+    }
   };
-
 
   //NAVIGATION
   const navigateTo = () => {

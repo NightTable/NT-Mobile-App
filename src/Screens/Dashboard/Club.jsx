@@ -28,12 +28,12 @@ import { API_URL_IOS, API_URL_ANDROID } from "@env";
 const { width, height } = Dimensions.get("screen");
 import { HeaderWithLeftIcon } from "../../Components/Header";
 
-const Dashboard = (props) => {
-  const [userName, setUserName] = useState("Amiya");
-  const [city, setCity] = useState("");
-  const [clubList, setClubList] = useState([]);
+const Club = (props) => {
+//   const [userName, setUserName] = useState("Amiya");
+//   const [city, setCity] = useState("");
+  const [club, setClub] = useState('');
   const handleChangeText = (inputText) => {
-    setCity(inputText);
+    // setCity(inputText);
   };
   //   useEffect(() => {
   //     axios
@@ -67,9 +67,9 @@ const Dashboard = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={{ width: "100%" }}>
         <HeaderWithLeftIcon
-          title={"NightTable"}
-          icon={"menu"}
-          iconDirectory={"Entypo"}
+          title={club}
+          icon={"arrowleft"}
+          iconDirectory={"AntDesign"}
           onSubmit={() => {
             //   navigation.navigate("Dashboard");
           }}
@@ -90,7 +90,7 @@ const Dashboard = (props) => {
             fontWeight: "500",
           }}
         >
-          Welcome back, {userName}
+          Welcome back, {}
         </Text>
       </View>
       <View
@@ -109,11 +109,11 @@ const Dashboard = (props) => {
             fontWeight: "500",
           }}
         >
-          Enter City :{"  "}
+          {/* Enter City :{"  "} */}
         </Text>
         <TextInput
-          value={city}
-          onChangeText={handleChangeText}
+        //   value={city}
+        //   onChangeText={handleChangeText}
           placeholder="                 "
           style={{
             borderBottomWidth: 2,
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dashboard;
+export default Club;

@@ -1,13 +1,8 @@
-// All information, source code contained in this document
-// is the property of StrynDev Solutions, LLC. It must not
-// be transmitted to others without the written consent of
-// StrynDev Solutions. It must be returned to StrynDev Solutions
-// when its authorized use is terminated.
-
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import EntryDashboardNavigator from "../../navigators/EntryDashboardNavigator";
+// import EntryDashboardNavigator from "../../navigators/EntryDashboardNavigator";
+import Dashboard from "../../src/Screens/Dashboard/Dashboard";
 import { Image, StyleSheet } from "react-native";
 
 const Drawer = createDrawerNavigator();
@@ -33,8 +28,8 @@ const DrawerNavigator = () => {
         }}
       >
         <Drawer.Screen
-          name="dashboard"
-          component={EntryDashboardNavigator}
+          name="Dashboard"
+          component={Dashboard}
           // options={{
           //     drawerIcon: () => (
           //         <Image
@@ -44,6 +39,14 @@ const DrawerNavigator = () => {
           //     ),
           // }}
         />
+        
+       <Stack.Screen
+        name="Club"
+        component={Club}
+        options={{
+          headerShown: false,
+        }}
+      />
       </Drawer.Navigator>
     </NavigationContainer>
   );

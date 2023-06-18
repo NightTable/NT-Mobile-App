@@ -1,12 +1,13 @@
-import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //Screens
-import Login from '../Screens/Auth/Login';
-import Otp from "../Screens/Auth/Otp"
-
+import Login from "../Screens/Auth/Login";
+import Otp from "../Screens/Auth/Otp";
+import Dashboard from "../Screens/Dashboard/Dashboard";
+import Club from "../Screens/Dashboard/Club"
 // import ForgotPassword from '../screens/Auth/ForgotPassword';
-import Splash from '../Screens/Splash';
+import Splash from "../Screens/Splash";
 //Stack Hooks
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,6 @@ const AuthStack = () => {
           headerShown: false,
         }}
       />
-
       <Stack.Screen
         name="Login"
         component={Login}
