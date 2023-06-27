@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"; 
 import { StatusBar, StyleSheet, Platform, Text, Image } from "react-native";
 import { Box } from "native-base";
+import { useNavigation, StackActions } from '@react-navigation/native';
 
 //utils 
 import { GetLocalPhoneData } from "../Utils/SensitiveData";
@@ -13,7 +14,7 @@ import { sessionTokenVerify } from "../Services/Auth";
 //Splash main function
 const Splash = ({ navigation }) => {
   //states
-  const [LoggedIn, setLoggedIn] = useState(false);
+  const [LoggedIn, setLoggedIn] = useState(true);
 
   //check auth
   useEffect(() => {
@@ -21,7 +22,7 @@ const Splash = ({ navigation }) => {
       //check navigation
       if (LoggedIn === true) {
         console.log(LoggedIn)
-        // navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
+        navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
       } else {
         getCountryCodes();
         //navigation.navigate("Login");

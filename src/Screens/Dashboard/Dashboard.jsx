@@ -13,6 +13,9 @@ import {
   TextInput,
   Dimensions,
   SafeAreaView,
+  Alert,
+  FlatList,
+  Pressable,
 } from "react-native";
 
 // import { getDistanceFromLatLonInMi } from "./algo";
@@ -23,7 +26,7 @@ import axios from "axios";
 // import curvedWhiteLinePic from "../assets/whitecurvesmall.png";
 // import reignPic from "../assets/reignpic.png";
 
-import { API_URL_IOS, API_URL_ANDROID } from "@env";
+import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
 
 const { width, height } = Dimensions.get("screen");
 import { HeaderWithLeftIcon } from "../../Components/Header";
@@ -32,32 +35,62 @@ const Dashboard = (props) => {
   const [userName, setUserName] = useState("Amiya");
   const [city, setCity] = useState("");
   const [clubList, setClubList] = useState([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
   const handleChangeText = (inputText) => {
     setCity(inputText);
   };
-  //   useEffect(() => {
-  //     axios
-  //       .get(
-  //         `${
-  //           Platform.OS === "android" ? API_URL_ANDROID : API_URL_IOS
-  //         }api/clubs/coordinates/42.35313/-71.047218`
-  //       )
-  //       .then((res) => {
-  //         let firstResponse = res.data;
+  useEffect(() => {
+    //need to integrate location from connect -- geolocation service
+    let getNearByClubs = async () => {
+      // let clubs = await axios.get(`${LOCAL_URL}api/clubs/coordinates/:lat/:long`);
+      let clubs = await axios.get(
+        `${LOCAL_URL}api/clubs/coordinates/38.494/-74.443`
+      );
 
-  //         firstResponse = firstResponse.map((result) => {
-  //           return {
-  //             ...result,
-  //             picture: reignPic,
-  //           };
-  //         });
+      // if (clubs.length) {
+      setClubList(clubs.data.data);
+      setIsDataLoaded(true);
+      // console.log("clubs api response", clubs.data.data);
 
-  //         setClubList(firstResponse);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, []);
+      // console.log(clubs.data.data);
+      // } else {
+      // Alert.alert("No Club Found within 50Kms.");
+      // }
+    };
+
+    getNearByClubs();
+  }, []);
+
+  const ClubCards = (props) => {
+    console.log("props+++>>>>>", props.props.name, props.props.distance);
+
+    return (
+      <Pressable
+        style={{
+          backgroundColor: colors.gold.gold200,
+          width: "90%",
+          flexDirection: "row",
+          margin: 6,
+          borderRadius: 4,
+          padding: 4,
+          // justifyContent: "space-evenly",
+          paddingHorizontal: 8,
+        }}
+        onPress={()=>{
+          alert(`${props.props.name} pressed.`)
+        }}
+      >
+        <View style={{ width: "50%" }}>
+          <Text>{props.props.name}</Text>
+        </View>
+        <View style={{ width: "50%", alignItems: "flex-end" }}>
+          <Text>
+            {Math.round(props.props.distance.calculated * 0.00062137119)}.0 mi
+          </Text>
+        </View>
+      </Pressable>
+    );
+  };
 
   //   const handleBubblePress = () => {
   //     props.navigation.navigate("edNav-ClubMiniDetailScreen");
@@ -120,6 +153,22 @@ const Dashboard = (props) => {
             borderBottomColor: colors.gold.gold200,
           }}
         ></TextInput>
+      </View>
+
+      <View style={{ alignItems: "center", width: "100%" }}>
+        {/* {console.log("clubs around me", clubList, isDataLoaded)} */}
+        {/* {isDataLoaded ? ( */}
+        <FlatList
+          data={clubList}
+          renderItem={({ item }) => {
+            console.log("item======>>>>>>>>", item);
+            return <ClubCards props={item} />;
+          }}
+          keyExtractor={(item) => item._id.toString()}
+        />
+        {/* ) : (
+          <Text>No Clubs Found</Text>
+        )}  */}
       </View>
     </SafeAreaView>
   );
