@@ -17,8 +17,7 @@ import {
   FlatList,
   Pressable,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
-
+import { useNavigation } from "@react-navigation/native";
 
 // import { getDistanceFromLatLonInMi } from "./algo";
 
@@ -112,7 +111,7 @@ const Dashboard = (props) => {
           icon={"menu"}
           iconDirectory={"Entypo"}
           onSubmit={() => {
-              navigation.openDrawer();
+            navigation.openDrawer();
           }}
         />
       </View>
@@ -159,6 +158,7 @@ const Dashboard = (props) => {
           style={{
             borderBottomWidth: 2,
             borderBottomColor: colors.gold.gold200,
+            color: colors.gold.gold200,
           }}
         ></TextInput>
       </View>

@@ -35,13 +35,13 @@ export const HeaderWithLeftIcon = (props) => {
     <>
       <View
         style={[
-          //   styles.justification,
+            styles.justification,
           styles.container,
           //   styles.leftPadding,
           //   styles.alignCenter,
         ]}
       >
-        <View style={{ marginTop: 20, marginRight: 40 }}>
+        <View style={{ marginTop: 20, marginRight: 20, justifyContent:'center', alignItems:'center' }}>
           <Pressable
             onPress={() => {
               props.onSubmit();
@@ -50,7 +50,7 @@ export const HeaderWithLeftIcon = (props) => {
             {headerIcon(props.iconDirectory)}
           </Pressable>
         </View>
-        <View style={{ marginLeft: 30, marginTop: 20 }}>
+        <View style={{ marginLeft: 30, marginTop: 20, justifyContent:'center', alignItems:'center' }}>
           <Text
             style={[
               // typography.semBold.semBold18,

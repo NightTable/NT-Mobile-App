@@ -89,6 +89,7 @@ const Club = (props) => {
                 // justifyContent: "center",
                 alignItems: "center",
               }}
+              
             >
               <Image
                 style={{ width: "70%", height: "60%" }}
@@ -214,13 +215,19 @@ const Club = (props) => {
           {route?.params?.clubData?.phoneNumber}
         </Text>
       </View>
-      
-      <View style={{ width: "70%", alignSelf: "center" , margin:20}}>
+
+      <View style={{ width: "70%", alignSelf: "center", margin: 20 }}>
         <Button
           onSubmit={() => {
             // validation();
+            navigation.navigate("ClubEvents", {
+              clubId: route?.params?.clubData?._id,
+              clubName: route?.params?.clubData?.name,
+              // clubPhotos: route?.params?.clubData?.photos[0]
+              clubPhotos: clubPhotosArray[0],
+            });
           }}
-          backgroundColor={colors.gold.gold100}
+          backgroundColor={colors.gold.gold200}
           text={"Select Club"}
         />
       </View>
