@@ -17,6 +17,8 @@ import {
   FlatList,
   Pressable,
 } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+
 
 // import { getDistanceFromLatLonInMi } from "./algo";
 
@@ -36,6 +38,8 @@ const Dashboard = (props) => {
   const [city, setCity] = useState("");
   const [clubList, setClubList] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [index, setIndex] = useState(null);
+  const navigation = useNavigation();
   const handleChangeText = (inputText) => {
     setCity(inputText);
   };
@@ -62,7 +66,7 @@ const Dashboard = (props) => {
   }, []);
 
   const ClubCards = (props) => {
-    console.log("props+++>>>>>", props.props.name, props.props.distance);
+    // console.log("props+++>>>>>", props.props.name, props.props.distance);
 
     return (
       <Pressable
@@ -76,8 +80,12 @@ const Dashboard = (props) => {
           // justifyContent: "space-evenly",
           paddingHorizontal: 8,
         }}
-        onPress={()=>{
-          alert(`${props.props.name} pressed.`)
+        onPress={() => {
+          // console.log("++++_____======",props)
+          // alert(`${props.props.name} pressed.`);
+          navigation.navigate("Club", {
+            clubData: props.props,
+          });
         }}
       >
         <View style={{ width: "50%" }}>
@@ -104,7 +112,7 @@ const Dashboard = (props) => {
           icon={"menu"}
           iconDirectory={"Entypo"}
           onSubmit={() => {
-            //   navigation.navigate("Dashboard");
+              navigation.openDrawer();
           }}
         />
       </View>
@@ -161,7 +169,7 @@ const Dashboard = (props) => {
         <FlatList
           data={clubList}
           renderItem={({ item }) => {
-            console.log("item======>>>>>>>>", item);
+            // console.log("item======>>>>>>>>", item);
             return <ClubCards props={item} />;
           }}
           keyExtractor={(item) => item._id.toString()}

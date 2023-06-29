@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignContent: "center",
     paddingHorizontal: 20,
+    marginTop: 20
   },
 
   color: {

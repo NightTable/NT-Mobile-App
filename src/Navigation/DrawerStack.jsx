@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Dashboard from "../Screens/Dashboard/Dashboard";
 import Club from "../Screens/Dashboard/Club";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { colors } from "../Theme/colors";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -16,16 +17,19 @@ const DrawerNavigator = () => {
         headerShown: false,
         drawerStyle: {
           backgroundColor: "black",
+          borderWidth:2,
+          borderColor:colors.gold.gold200,
+          paddingVertical:20
         },
-        //   drawerActiveBackgroundColor: Colors.purple,
-        //   drawerActiveTintColor: Colors.white,
-        //   drawerInactiveTintColor: Colors.black,
-        //   drawerLabelStyle: {
-        //     marginLeft: -20 * widthRatioNorm,
-        //     fontFamily: Fonts.mainFontReg,
-        //     fontSize: 15 * heightRatioNorm,
-        //     color: Colors.gold,
-        //   },
+          drawerActiveBackgroundColor: colors.grey.grey600,
+          // drawerActiveTintColor: colors.black.black400,
+          // drawerInactiveTintColor: colors.gold.gold200,
+          drawerLabelStyle: {
+            marginLeft: 20 ,
+            // fontFamily: Fonts.mainFontReg,
+            fontSize: 15,
+            color: colors.gold.gold200,
+          },
       }}
     >
       <Drawer.Screen

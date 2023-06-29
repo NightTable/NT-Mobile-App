@@ -9,6 +9,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import RootStack from "./src/Navigation/RootStack";
 import * as RegularFont from './assets/fonts/VerahHumana-Regular.ttf';
 import * as BoldFont from './assets/fonts/VerahHumana-Bold.ttf';
+import { StatusBar } from "expo-status-bar";
+import{colors} from './src/Theme/colors';
 //REDUX
 // import { Provider } from "react-redux";
 // import configuredStore  from "./src/Redux/Store";
@@ -36,6 +38,7 @@ const App = () => {
 
   return (
     <>
+    <StatusBar backgroundColor={colors.gold.gold200}/>
       <NativeBaseProvider>
         {/* <Provider store={store}> */}
           <NavigationContainer>

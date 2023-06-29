@@ -14,6 +14,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 // import { getDistanceFromLatLonInMi } from "./algo";
 
@@ -27,51 +28,25 @@ import { API_URL_IOS, API_URL_ANDROID } from "@env";
 
 const { width, height } = Dimensions.get("screen");
 import { HeaderWithLeftIcon } from "../../Components/Header";
+import { Button } from "../../Components/Buttons";
 
 const Club = (props) => {
-//   const [userName, setUserName] = useState("Amiya");
-//   const [city, setCity] = useState("");
-  const [club, setClub] = useState('');
-  const handleChangeText = (inputText) => {
-    // setCity(inputText);
-  };
-  //   useEffect(() => {
-  //     axios
-  //       .get(
-  //         `${
-  //           Platform.OS === "android" ? API_URL_ANDROID : API_URL_IOS
-  //         }api/clubs/coordinates/42.35313/-71.047218`
-  //       )
-  //       .then((res) => {
-  //         let firstResponse = res.data;
-
-  //         firstResponse = firstResponse.map((result) => {
-  //           return {
-  //             ...result,
-  //             picture: reignPic,
-  //           };
-  //         });
-
-  //         setClubList(firstResponse);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, []);
-
-  //   const handleBubblePress = () => {
-  //     props.navigation.navigate("edNav-ClubMiniDetailScreen");
-  //   };
-
+  const navigation = useNavigation();
+  const route = useRoute();
+  console.log("route====>>>>>", route.params);
+  const [clubPhotosArray, setClubPhotosArray] = useState([
+    "https://images.unsplash.com/photo-1581417478175-a9ef18f210c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+    "https://images.unsplash.com/photo-1581417478175-a9ef18f210c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+  ]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ width: "100%" }}>
         <HeaderWithLeftIcon
-          title={club}
+          title={route?.params?.clubData?.name}
           icon={"arrowleft"}
           iconDirectory={"AntDesign"}
           onSubmit={() => {
-            //   navigation.navigate("Dashboard");
+            navigation.navigate("Dashboard");
           }}
         />
       </View>
@@ -80,7 +55,7 @@ const Club = (props) => {
           width: "100%",
           justifyContent: "center",
           paddingLeft: 20,
-          paddingTop: 10,
+          padding: 20,
         }}
       >
         <Text
@@ -90,15 +65,48 @@ const Club = (props) => {
             fontWeight: "500",
           }}
         >
-          Welcome back, {}
+          {route?.params?.clubData?.name}
         </Text>
       </View>
       <View
         style={{
-          height: "20%",
+          height: "40%",
           justifyContent: "center",
           width: "100%",
           alignItems: "center",
+          // margin: 20,
+          // backgroundColor: "red",
+          // flexDirection: "row",
+        }}
+      >
+        {clubPhotosArray.map((ele) => {
+          return (
+            <View
+              style={{
+                // backgroundColor: "green",
+                height: "50%",
+                width: "70%",
+                // justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                style={{ width: "70%", height: "60%" }}
+                // source={{ uri: encodeURIComponent(route?.params?.clubData?.photos[0]) }}
+                source={{
+                  uri: ele,
+                }}
+              />
+            </View>
+          );
+        })}
+      </View>
+      <View
+        style={{
+          width: "100%",
+          // justifyContent: "center",
+          paddingLeft: 20,
+          padding: 10,
           flexDirection: "row",
         }}
       >
@@ -109,17 +117,112 @@ const Club = (props) => {
             fontWeight: "500",
           }}
         >
-          {/* Enter City :{"  "} */}
+          Address : {"     "}
         </Text>
-        <TextInput
-        //   value={city}
-        //   onChangeText={handleChangeText}
-          placeholder="                 "
+        <Text
           style={{
-            borderBottomWidth: 2,
-            borderBottomColor: colors.gold.gold200,
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
           }}
-        ></TextInput>
+        >
+          {route?.params?.clubData?.Address?.Address}
+        </Text>
+      </View>
+      <View
+        style={{
+          width: "100%",
+          // justifyContent: "center",
+          paddingLeft: 20,
+          padding: 10,
+          flexDirection: "row",
+        }}
+      >
+        <Text
+          style={{
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
+          }}
+        >
+          Website : {"     "}
+        </Text>
+        <Text
+          style={{
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
+          }}
+        >
+          {route?.params?.clubData?.website}
+        </Text>
+      </View>
+      <View
+        style={{
+          width: "100%",
+          // justifyContent: "center",
+          paddingLeft: 20,
+          padding: 10,
+          flexDirection: "row",
+        }}
+      >
+        <Text
+          style={{
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
+          }}
+        >
+          Instagram : {"     "}
+        </Text>
+        <Text
+          style={{
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
+          }}
+        >
+          {route?.params?.clubData?.instaHandle}
+        </Text>
+      </View>
+
+      <View
+        style={{
+          width: "100%",
+          // justifyContent: "center",
+          paddingLeft: 20,
+          padding: 10,
+          flexDirection: "row",
+        }}
+      >
+        <Text
+          style={{
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
+          }}
+        >
+          Phone Number : {"     "}
+        </Text>
+        <Text
+          style={{
+            color: colors.gold.gold200,
+            fontSize: 14,
+            fontWeight: "500",
+          }}
+        >
+          {route?.params?.clubData?.phoneNumber}
+        </Text>
+      </View>
+      
+      <View style={{ width: "70%", alignSelf: "center" , margin:20}}>
+        <Button
+          onSubmit={() => {
+            // validation();
+          }}
+          backgroundColor={colors.gold.gold100}
+          text={"Select Club"}
+        />
       </View>
     </SafeAreaView>
   );
