@@ -2,7 +2,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 
 import {loginReducer} from '../reducer/loginReducer';
-import {getCountries} from '../../services/Countries';
+import {getCountries} from '../../services/country';
 
 const {loginSucess, logout, setLoading,updateCountryData} = loginReducer.actions;
 
@@ -33,8 +33,10 @@ export const loginUser = credentials => {
 
 export const getAllCountriesData = params => {
   return async dispatch => {
-    const apiData = await getCountries ();
-    console.log ('Api - Data======>', apiData);
+    // console.log ('Api - getAllCountriesData======>',);
+
+    const apiData = await getCountries();
+    // console.log ('Api - Data======>', apiData);
     dispatch (updateCountryData (apiData));
   };
 };

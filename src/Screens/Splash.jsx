@@ -1,39 +1,36 @@
 import React, { useEffect, useState } from "react"; 
 import { StatusBar, StyleSheet, Platform, Text, Image } from "react-native";
-import { Box } from "native-base";
-import {useDispatch, useSelector} from 'react-redux';
+import { Box , Button} from "native-base";
+import {Provider, useSelector, useDispatch} from 'react-redux';
 
 //utils 
 import { GetLocalPhoneData } from "../Utils/SensitiveData";
+import { getAllCountriesData } from "../store/action/login";
 
 //api call for country codes
+// import { getCountriesCode } from "../Services/Countries";
 // import { sessionTokenVerify } from "../Services/Auth";
-import { getAllCountriesData } from "../store/action/login";
+
 
 //Splash main function
 const Splash = ({ navigation }) => {
-  //states
-  const loginReducer = useSelector (state => state.login);
 
-
-
-  // const [LoggedIn, setLoggedIn] = useState(false);
   const dispatch = useDispatch ();
+  //states
+  const [LoggedIn, setLoggedIn] = useState(false);
 
   //check auth
   useEffect(() => {
     const init = async () => {
-      dispatch(getAllCountriesData())
-      console.log('loginReducer====>',loginReducer)
-      //check navigation
+      // //check navigation
       // if (LoggedIn === true) {
       //   console.log(LoggedIn)
       //   // navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
       // } else {
-      //   getCountryCodes();
-      //   //navigation.navigate("Login");
+      //   // getCountryCodes();
+       dispatch( getAllCountriesData())
+    //    navigation.navigate("Login");
       // }
-
     };
 
     init();
@@ -42,38 +39,38 @@ const Splash = ({ navigation }) => {
     // unsubscribe = () => {
     //   return init();
     // };
-  }, [dispatch]);
+  }, []);
 
 
 
-  //checkAuthSession 
-  const checkUserDatainLocal = async () => {
-    const data = GetLocalPhoneData('');
-    console.log(data,"data====> ")
-  }
+  // //checkAuthSession 
+  // const checkUserDatainLocal = async () => {
+  //   const data = GetLocalPhoneData('');
+  //   console.log(data,"data====> ")
+  // }
 
-  //loading country codes data
-  const getCountryCodes = async () => {
-    let tempArr = [];
-    const data = await getCountriesCode();
-    if (data.status === undefined) {
-    } else {
-      data.data.map((item) => {
-        // console.log(item);
-        item.phoneNumberCode[0] === "+"
-          ? (item.phoneNumberCode = item.phoneNumberCode.replace("+", ""))
-          : (item.phoneNumberCode = item.phoneNumberCode);
-        tempArr.push({
-          label: `+${item.phoneNumberCode}`,
-          value: item.phoneNumberCode,
-        });
-      });
+  // //loading country codes data
+  // const getCountryCodes = async () => {
+  //   let tempArr = [];
+  //   const data = await getCountriesCode();
+  //   if (data.status === undefined) {
+  //   } else {
+  //     data.data.map((item) => {
+  //       // console.log(item);
+  //       item.phoneNumberCode[0] === "+"
+  //         ? (item.phoneNumberCode = item.phoneNumberCode.replace("+", ""))
+  //         : (item.phoneNumberCode = item.phoneNumberCode);
+  //       tempArr.push({
+  //         label: `+${item.phoneNumberCode}`,
+  //         value: item.phoneNumberCode,
+  //       });
+  //     });
 
-      navigation.navigate("Login", {
-        countryCodes: tempArr,
-      });
-    }
-  };
+  //     navigation.navigate("Login", {
+  //       countryCodes: tempArr,
+  //     });
+  //   }
+  // };
 
   return (
     <>
@@ -82,6 +79,9 @@ const Splash = ({ navigation }) => {
         bgColor={"black"}
         safeArea
       >
+      <Button onPress={()=>{
+        navigation.navigate('Login')
+      }} > GO TO LOGIN SCREEN</Button>
         {/* <Text color={"white"}>SPLASH SCREEN</Text> */}
         <Image
           style={{ height: 200, width: 220 }}

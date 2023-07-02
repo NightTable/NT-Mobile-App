@@ -18,9 +18,10 @@ import {
 // import { RouteProp, StackActions } from "@react-navigation/native";
 import { Box } from "native-base";
 import { Button } from "../../Components/Buttons";
+import { Provider, useSelector, useDispatch } from "react-redux";
 
 //API CALL
-import { loginorSignUp } from "../../Services/Auth";
+// import { loginorSignUp } from "../../Services/Auth";
 // //Redux
 
 // import { resetLoader } from "../../Redux/Actions/loader";
@@ -34,47 +35,56 @@ import { colors } from "../../Theme/colors";
 // import { TouchableOpacity } from "react-native-gesture-handler";
 // import { color } from "react-native-reanimated";
 const Login = ({ navigation, route }) => {
-  const [number, onChangeNumber] = useState("");
+  const dispatch = useDispatch();
 
-  //dropdown value changed
-  const [countryCodeData, setcountryCodeData] = useState(
-    route.params.countryCodes
-  );
-  const [selectedCountry, setselectedCountry] = useState("");
+  const loginReducer = useSelector((state) => state.login);
 
-  //validating number
-  const validatePhoneNumber = () => {
-    var regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
-    return regexp.test(phoneNumber);
-  };
+  // const [number, onChangeNumber] = useState("");
 
-  const validation = () => {
-    if (number.length < 8) {
-      Alert.alert("Please enter the correct number");
-    } else {
-      triggerOtp();
-    }
-  };
+  // //dropdown value changed
+  // const [countryCodeData, setcountryCodeData] = useState(
 
-  //API CALL
-  const triggerOtp = async () => {
-    //for now bypassing the login api :===>
-    const data = await loginorSignUp(`+${selectedCountry}${number}`);
-    if (data.data.status === true) {
-      console.log("response from login api",data.data);
-      navigation.navigate("Otp", {
-        number: `+${selectedCountry}${number}`,
-      });
-    }
-  };
+  // );
+  // const [selectedCountry, setselectedCountry] = useState("");
 
-  //NAVIGATION
-  const navigateTo = () => {
-    navigation.navigate("Otp");
-  };
+  // //validating number
+  // const validatePhoneNumber = () => {
+  //   var regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
+  //   return regexp.test(phoneNumber);
+  // };
+
+  // const validation = () => {
+  //   if (number.length < 8) {
+  //     Alert.alert("Please enter the correct number");
+  //   } else {
+  //     triggerOtp();
+  //   }
+  // };
+
+  // //API CALL
+  // const triggerOtp = async () => {
+  //   //for now bypassing the login api :===>
+  //   const data = await loginorSignUp(`+${selectedCountry}${number}`);
+  //   if (data.data.status === true) {
+  //     console.log("response from login api",data.data);
+  //     navigation.navigate("Otp", {
+  //       number: `+${selectedCountry}${number}`,
+  //     });
+  //   }
+  // };
+
+  // //NAVIGATION
+  // const navigateTo = () => {
+  //   navigation.navigate("Otp");
+  // };
+
+  useEffect(() => {
+    console.log("loginReducer====>", loginReducer);
+  }, []);
+
   return (
     <>
-      <KeyboardAvoidingView
+      {/* <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
@@ -141,7 +151,7 @@ const Login = ({ navigation, route }) => {
                 onSubmit={() => {
                   validation();
                 }}
-                backgroundColor={colors.gold.gold100}
+                backgroundColor={'#CBAE83'}
                 text={"Login / Signup"}
               />
 
@@ -150,7 +160,7 @@ const Login = ({ navigation, route }) => {
                   fontSize: 12,
                   paddingTop: 12,
                   textAlign: "center",
-                  color: colors.gold.gold100,
+                  color: '#CBAE83',
                 }}
               >
                 By logging in,you agree to the Terms of Use and Privacy Policy{" "}
@@ -158,7 +168,7 @@ const Login = ({ navigation, route }) => {
             </Box>
           </Box>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView> */}
     </>
   );
 };
