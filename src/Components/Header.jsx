@@ -15,8 +15,8 @@ import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 //Theme
-import { colors } from "../Theme/colors";
-import { typography } from "../Theme/colors";
+import { colors } from "../theme/colors";
+import { typography } from "../theme/colors";
 
 export const HeaderWithLeftIcon = (props) => {
   const headerIcon = (iconDirectory) => {

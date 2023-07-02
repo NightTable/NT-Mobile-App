@@ -1,10 +1,10 @@
-import {
-  SESSION_VERIFICATION,
-  LOGIN_OTP,
-  OTP_VERIFY,
-  LOCAL_URL,
-  LOCAL_URL_HOME_VG,
-} from "@env";
+// import {
+//   SESSION_VERIFICATION,
+//   LOGIN_OTP,
+//   OTP_VERIFY,
+//   LOCAL_URL,
+//   LOCAL_URL_HOME_VG,
+// } from "@env";
 const axios = require("axios");
 
 console.log("LOCAL_URL_HOME_VG", LOCAL_URL_HOME_VG);

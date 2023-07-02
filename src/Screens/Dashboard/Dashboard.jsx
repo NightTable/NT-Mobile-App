@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { colors } from "../../Theme/colors";
+import { colors } from "../../theme/colors";
 // import { Fonts } from "../fonts/Fonts";
 
 import {
@@ -23,10 +23,10 @@ import axios from "axios";
 // import curvedWhiteLinePic from "../assets/whitecurvesmall.png";
 // import reignPic from "../assets/reignpic.png";
 
-import { API_URL_IOS, API_URL_ANDROID } from "@env";
+// import { API_URL_IOS, API_URL_ANDROID } from "@env";
 
 const { width, height } = Dimensions.get("screen");
-import { HeaderWithLeftIcon } from "../../Components/Header";
+import { HeaderWithLeftIcon } from "../../components/Header";
 
 const Dashboard = (props) => {
   const [userName, setUserName] = useState("Amiya");

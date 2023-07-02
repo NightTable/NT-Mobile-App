@@ -1,40 +1,48 @@
 import React, { useEffect, useState } from "react"; 
 import { StatusBar, StyleSheet, Platform, Text, Image } from "react-native";
 import { Box } from "native-base";
+import {useDispatch, useSelector} from 'react-redux';
 
 //utils 
 import { GetLocalPhoneData } from "../Utils/SensitiveData";
 
 //api call for country codes
-import { getCountriesCode } from "../Services/Countries";
-import { sessionTokenVerify } from "../Services/Auth";
-
+// import { sessionTokenVerify } from "../Services/Auth";
+import { getAllCountriesData } from "../store/action/login";
 
 //Splash main function
 const Splash = ({ navigation }) => {
   //states
-  const [LoggedIn, setLoggedIn] = useState(false);
+  const loginReducer = useSelector (state => state.login);
+
+
+
+  // const [LoggedIn, setLoggedIn] = useState(false);
+  const dispatch = useDispatch ();
 
   //check auth
   useEffect(() => {
     const init = async () => {
+      dispatch(getAllCountriesData())
+      console.log('loginReducer====>',loginReducer)
       //check navigation
-      if (LoggedIn === true) {
-        console.log(LoggedIn)
-        // navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
-      } else {
-        getCountryCodes();
-        //navigation.navigate("Login");
-      }
+      // if (LoggedIn === true) {
+      //   console.log(LoggedIn)
+      //   // navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
+      // } else {
+      //   getCountryCodes();
+      //   //navigation.navigate("Login");
+      // }
+
     };
 
     init();
 
     //un subscribing the function
-    unsubscribe = () => {
-      return init();
-    };
-  }, [navigation]);
+    // unsubscribe = () => {
+    //   return init();
+    // };
+  }, [dispatch]);
 
 
 
