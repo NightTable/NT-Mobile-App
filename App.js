@@ -10,7 +10,7 @@ import ReduxThunk from 'redux-thunk';
 import { mainReducer } from './store/reducers/main';
 import NewTableRequestScreen from './screens/NewTableRequestScreen';
 import TableRequestConfirmationScreen from './screens/TableRequestConfirmationScreen';
-
+import AuthNavigator from './navigators/AuthNavigator';
 // expo install expo-font expo-splash-screen
 
 const rootReducer = combineReducers({
