@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Dashboard from "../Screens/Dashboard/Dashboard";
 import Club from "../Screens/Dashboard/Club";
 import ClubEvents from "../Screens/Dashboard/ClubEvents";
+import TableConfigurations from '../Screens/Dashboard/TableConfigurations'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { colors } from "../Theme/colors";
 
@@ -59,6 +60,18 @@ const DrawerNavigator = () => {
         component={ClubEvents}
         options={{
           headerShown: false,
+          //uncomment below line to hide this screen from drawer navigator
+          // drawerItemStyle:{display:'none'}
+        }}
+      />
+
+      <Drawer.Screen
+        name="TableConfigurations"
+        component={TableConfigurations}
+        options={{
+          headerShown: false,
+          //uncomment below line to hide this screen from drawer navigator
+          // drawerItemStyle:{display:'none'}
         }}
       />
     </Drawer.Navigator>

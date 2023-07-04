@@ -33,7 +33,7 @@ import { Button } from "../../Components/Buttons";
 const Club = (props) => {
   const navigation = useNavigation();
   const route = useRoute();
-  console.log("route====>>>>>", route.params);
+  // console.log("route====>>>>>", route.params);
   const [clubPhotosArray, setClubPhotosArray] = useState([
     "https://images.unsplash.com/photo-1581417478175-a9ef18f210c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     "https://images.unsplash.com/photo-1581417478175-a9ef18f210c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
@@ -223,8 +223,9 @@ const Club = (props) => {
             navigation.navigate("ClubEvents", {
               clubId: route?.params?.clubData?._id,
               clubName: route?.params?.clubData?.name,
-              // clubPhotos: route?.params?.clubData?.photos[0]
+              // // clubPhotos: route?.params?.clubData?.photos[0]
               clubPhotos: clubPhotosArray[0],
+              clubData: route?.params?.clubData
             });
           }}
           backgroundColor={colors.gold.gold200}

@@ -5,6 +5,7 @@ import {
   View,
   Image,
   FlatList,
+  Pressable,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -19,15 +20,15 @@ const ClubEvents = (props) => {
   const navigation = useNavigation();
   const route = useRoute();
   const [eventsData, setEventsData] = useState([]);
-  console.log("route", route);
+  // console.log("route", route);
 
   useEffect(() => {
     let getEventsForClub = async () => {
-      console.log(`${LOCAL_URL}api/events/club/${route?.params?.clubId}`);
+      // console.log("route params====>>>>>>>>>", route?.params?.clubData);
       let events = await axios.get(
         `${LOCAL_URL}api/events/club/${route?.params?.clubId}`
       );
-      console.log("events===>>>", events.data.data);
+      // console.log("events===>>>", events.data.data);
       setEventsData(events.data.data);
     };
     getEventsForClub();
@@ -48,7 +49,9 @@ const ClubEvents = (props) => {
         icon={"arrowleft"}
         iconDirectory={"AntDesign"}
         onSubmit={() => {
-          navigation.navigate("Club");
+          navigation.navigate("Club", {
+            clubData: route?.params?.clubData,
+          });
         }}
       />
       <View style={{ width: "100%", height: "40%", alignItems: "center" }}>
@@ -75,9 +78,13 @@ const ClubEvents = (props) => {
         </View>
         {eventsData?.length
           ? eventsData.map((ele) => {
-              console.log("ele", ele);
+              // console.log("ele", ele);
+              //put the return block in this if statement to activate istableconfigadded filter 
+              // if(ele.isTableConfigAdded){
+                
+              // }
               return (
-                <View
+                <Pressable
                   style={{
                     flexDirection: "row",
                     backgroundColor: colors.gold.gold200,
@@ -85,6 +92,9 @@ const ClubEvents = (props) => {
                     opacity: 0.9,
                   }}
                   key={ele._id}
+                  onPress={()=>{
+                    alert(`${JSON.stringify(ele)}`)
+                  }}
                 >
                   <View
                     style={{
@@ -129,7 +139,7 @@ const ClubEvents = (props) => {
                   </View>
 
                   {/* <Text style={{color:'white'}}>{ele.name}</Text> */}
-                </View>
+                </Pressable>
               );
             })
           : null}
