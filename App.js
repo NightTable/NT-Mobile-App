@@ -1,105 +1,75 @@
-import {StatusBar} from 'expo-status-bar';
-import {Button, StyleSheet, Text, View} from 'react-native';
-import {Provider, useSelector, useDispatch} from 'react-redux';
-import {useEffect} from 'react';
-import {store} from './src/store/store';
-import {loginUser} from './src/store/action/login';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Splash from './src/screens/Splash';
-import { NativeBaseProvider } from 'native-base';
+import { Button, StyleSheet, Text, View } from "react-native";
+import { Provider, useSelector, useDispatch } from "react-redux";
+import { NativeBaseProvider } from "native-base";
+//STORE
+import { store } from "./src/store/store";
+//NAVIGATION
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+//SCREENS
+import Splash from "./src/Screens/Splash";
+import Login from "./src/Screens/Auth/Login";
 
-import Login from './src/Screens/Auth/Login';
-// import * as dotenv from "dotenv";
-// dotenv.config();
-// console.log("process.env",process.env);
+function DetailsScreen() {
+  const dispatch = useDispatch();
 
-
-// const UIRender = ({navigation}) => {
-//   // const {loginStore} = useStore();
-//   // const {loginUser} = loginStore();
-//   const dispatch = useDispatch ();
-
-//   const loginReducer = useSelector (state => state.login);
-
-//   useEffect (() => {
-//     console.log ('loginReducer', loginReducer);
-     
-//      console.log ('loginReducer', loginReducer);
-
-
-//      setInterval(() => {
-//       // dispatch (loginUser ('VISHESH'));
-//      }, 2000);
-
-//     //  navigation.navigate('DetailsScreen')
-//   }, []);
-//   console.log ('loginReducer', loginReducer);
-
-//   return (
-//     <View style={styles.container}>
-//       <Text>Hello this web</Text>
-//       <Text>{loginReducer?.token}</Text>
-
-//       <StatusBar style="auto" />
-//       <Button
-//         onPress={() => {
-//           dispatch (loginUser ('VISHESH'));
-//           navigation.navigate('Details');
-//         }}
-//         style={{
-//           marginTop:30
-//         }}
-//         title="NAVIGATE"
-//       />
-//     </View>
-//   );
-// };
-
-// function HomeScreen () {
-//   return (
-//     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
-function DetailsScreen () {
-  const dispatch = useDispatch ();
-
-  const loginReducer = useSelector (state => state.login);
+  const loginReducer = useSelector((state) => state.login);
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Details Screen</Text>
       <Text>{loginReducer?.token}</Text>
     </View>
   );
 }
-const Stack = createNativeStackNavigator ();
+const Stack = createNativeStackNavigator();
 
-export default function App () {
+export default function App() {
   return (
     <Provider store={store}>
-       <NativeBaseProvider>
-
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Splash" component={Splash} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Details" component={DetailsScreen} />
-
-        </Stack.Navigator>
-      </NavigationContainer>
+      <NativeBaseProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Splash"
+              component={Splash}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false,
+              }}
+            />
+            {/* <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Details"
+              component={DetailsScreen}
+              options={{
+                headerShown: false,
+              }}
+            /> */}
+          </Stack.Navigator>
+        </NavigationContainer>
       </NativeBaseProvider>
     </Provider>
   );
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

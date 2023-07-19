@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { StatusBar, StyleSheet, Platform, Text, Image } from "react-native";
-import { Box , Button} from "native-base";
-import {Provider, useSelector, useDispatch} from 'react-redux';
+import { Box, Button } from "native-base";
+import { Provider, useSelector, useDispatch } from "react-redux";
 
-//utils 
-import { GetLocalPhoneData } from "../Utils/SensitiveData";
+//utils
+// import { GetLocalPhoneData } from "../Utils/SensitiveData";
 import { getAllCountriesData } from "../store/action/login";
 
 //api call for country codes
 // import { getCountriesCode } from "../Services/Countries";
 // import { sessionTokenVerify } from "../Services/Auth";
 
-
 //Splash main function
 const Splash = ({ navigation }) => {
-
-  const dispatch = useDispatch ();
+  const dispatch = useDispatch();
   //states
   const [LoggedIn, setLoggedIn] = useState(false);
+  
+
+  
 
   //check auth
   useEffect(() => {
@@ -28,8 +29,8 @@ const Splash = ({ navigation }) => {
       //   // navigation.dispatch(StackActions.replace('DrawerNavigator', {}));
       // } else {
       //   // getCountryCodes();
-       dispatch( getAllCountriesData())
-    //    navigation.navigate("Login");
+      dispatch(getAllCountriesData());
+      navigation.navigate("Login");
       // }
     };
 
@@ -41,9 +42,7 @@ const Splash = ({ navigation }) => {
     // };
   }, []);
 
-
-
-  // //checkAuthSession 
+  // //checkAuthSession
   // const checkUserDatainLocal = async () => {
   //   const data = GetLocalPhoneData('');
   //   console.log(data,"data====> ")
@@ -79,9 +78,9 @@ const Splash = ({ navigation }) => {
         bgColor={"black"}
         safeArea
       >
-      <Button onPress={()=>{
+        {/* <Button onPress={()=>{
         navigation.navigate('Login')
-      }} > GO TO LOGIN SCREEN</Button>
+      }} > GO TO LOGIN SCREEN</Button> */}
         {/* <Text color={"white"}>SPLASH SCREEN</Text> */}
         <Image
           style={{ height: 200, width: 220 }}

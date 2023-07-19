@@ -17,19 +17,18 @@ import {
 } from "react-native";
 // import { RouteProp, StackActions } from "@react-navigation/native";
 import { Box } from "native-base";
-import { Button } from "../../Components/Buttons";
-import { Provider, useSelector, useDispatch } from "react-redux";
+
+import SearchDropdown from '../../components/Dropdown';
+
+
+// import { Button } from "../../Components/Buttons";
 
 //API CALL
 // import { loginorSignUp } from "../../Services/Auth";
 // //Redux
 
 // import { resetLoader } from "../../Redux/Actions/loader";
-// import { shallowEqual, useDispatch, useSelector } from "react-redux";
-
-//Components
-import { Dropdown, ElementDropdown } from "../../Components/Dropdown";
-
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 const { height, width } = Dimensions.get("screen");
 import { colors } from "../../Theme/colors";
 // import { TouchableOpacity } from "react-native-gesture-handler";
@@ -39,27 +38,28 @@ const Login = ({ navigation, route }) => {
 
   const loginReducer = useSelector((state) => state.login);
 
-  // const [number, onChangeNumber] = useState("");
+  // console.log("loginReducer", loginReducer.countryData);
 
-  // //dropdown value changed
+  const [number, onChangeNumber] = useState("");
+
+  //dropdown value changed
   // const [countryCodeData, setcountryCodeData] = useState(
-
   // );
-  // const [selectedCountry, setselectedCountry] = useState("");
+  const [selectedCountry, setselectedCountry] = useState("");
 
-  // //validating number
-  // const validatePhoneNumber = () => {
-  //   var regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
-  //   return regexp.test(phoneNumber);
-  // };
+  //validating number
+  const validatePhoneNumber = () => {
+    var regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
+    return regexp.test(phoneNumber);
+  };
 
-  // const validation = () => {
-  //   if (number.length < 8) {
-  //     Alert.alert("Please enter the correct number");
-  //   } else {
-  //     triggerOtp();
-  //   }
-  // };
+  const validation = () => {
+    if (number.length < 8) {
+      Alert.alert("Please enter the correct number");
+    } else {
+      // triggerOtp();
+    }
+  };
 
   // //API CALL
   // const triggerOtp = async () => {
@@ -78,12 +78,52 @@ const Login = ({ navigation, route }) => {
   //   navigation.navigate("Otp");
   // };
 
-  useEffect(() => {
-    console.log("loginReducer====>", loginReducer);
-  }, []);
-
   return (
     <>
+      <Box>
+        <Box style={[styles.container]} SafeArea bgColor={"black"}>
+          <Box
+            style={{
+              padding: 30,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 34,
+                paddingTop: 12,
+                color: colors.gold.gold100,
+              }}
+            >
+              NightTable{" "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                paddingTop: 18,
+                color: colors.gold.gold100,
+              }}
+            >
+              Sign up or login
+            </Text>
+          </Box>
+        </Box>
+        <Box
+          style={{ paddingHorizontal: 10, paddingTop: 18 }}
+          flexDir={"row"}
+          width={"100%"}
+          alignItems={"center"}
+        >
+          <Box justifyContent={"center"} style={{ height: 40 }} width={"22%"}>
+            {/* <ElementDropdown
+              value={selectedCountry}
+              onValueChange={(item) => {
+                setselectedCountry(item);
+              }}
+              data={[]}
+            /> */}
+          </Box>
+        </Box>
+      </Box>
       {/* <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
@@ -184,7 +224,7 @@ const styles = StyleSheet.create({
     color: colors.gold.gold200,
   },
   container: {
-    height: "50%",
+    // flex:1
   },
 });
 

@@ -29,9 +29,9 @@ export const loginReducer = createSlice ({
       state.countryData = payload;
 
 
-      console.log('====================================');
-      console.log('state.countryData',payload);
-      console.log('====================================');
+      // console.log('====================================');
+      // console.log('state.countryData',payload);
+      // console.log('====================================');
     },
   },
 });
