@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, KeyboardAvoidingView, ScrollView, Select } from "native-base";
 import {
   TextInput,
-  View,
   Text,
   TouchableOpacity,
   Modal,
@@ -79,17 +78,14 @@ const SearchDropdown = (props) => {
   return (
     <>
       <TouchableOpacity
-        style={{
-          minWidth: 94,
-          minheight: 16,
-          width: props?.width,
-          height: props?.height,
-          backgroundColor: props.bgColor,
-          justifyContent: "center",
-          borderColor: colors.gold.gold100,
-          borderWidth: 1,
-          borderRadius: 6,
-        }}
+        style={[
+          styles.container,
+          {
+            width: props?.width,
+            height: props?.height,
+            backgroundColor: props.bgColor,
+          },
+        ]}
         onPress={() => {
           setopenActionSheet(true);
         }}
@@ -165,43 +161,41 @@ const SearchDropdown = (props) => {
               borderTopRightRadius: 22,
             }}
           >
-            <Box>
-              <Box
+            <Box
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingHorizontal: 12,
+              }}
+            >
+              <Text
+                style={[
+                  typography.bold.bold16,
+                  {
+                    color: colors.white.white1,
+                    width: "80%",
+                    paddingVertical: 14,
+                  },
+                ]}
+              >
+                {props?.searchPopupHeading}
+              </Text>
+              <TouchableOpacity
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingHorizontal: 12,
+                  width: "20%",
+                  alignItems: "flex-end",
+                  paddingVertical: 14,
+                }}
+                onPress={() => {
+                  setopenActionSheet(false);
                 }}
               >
-                <Text
-                  style={[
-                    typography.bold.bold16,
-                    {
-                      color: colors.white.white1,
-                      width: "80%",
-                      paddingVertical: 14,
-                    },
-                  ]}
-                >
-                  {props?.searchPopupHeading}
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    width: "20%",
-                    alignItems: "flex-end",
-                    paddingVertical: 14,
-                  }}
-                  onPress={() => {
-                    setopenActionSheet(false);
-                  }}
-                >
-                  <MaterialCommunityIcon
-                    name={"close"}
-                    color={colors.white.white0}
-                    size={24}
-                  />
-                </TouchableOpacity>
-              </Box>
+                <MaterialCommunityIcon
+                  name={"close"}
+                  color={colors.white.white0}
+                  size={24}
+                />
+              </TouchableOpacity>
             </Box>
             <Box
               style={{
@@ -264,7 +258,7 @@ const SearchDropdown = (props) => {
                   <>
                     <Pressable
                       key={() => {
-                        return String(index);
+                        return String(item);
                       }}
                       style={{
                         padding: 12,
@@ -319,6 +313,15 @@ const SearchDropdown = (props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    minWidth: 94,
+    minheight: 16,
+
+    justifyContent: "center",
+    borderColor: colors.gold.gold100,
+    borderWidth: 1,
+    borderRadius: 6,
+  },
   searchSection: {
     flex: 1,
     flexDirection: "row",
@@ -331,14 +334,10 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    // paddingTop: 10,
-    // paddingRight: 10,
-    // paddingBottom: 10,
-    //paddingLeft: 0,
+
     backgroundColor: "transparent",
     color: colors.white.white0,
     borderRadius: 6,
-    //  width: '100%',
   },
 });
 

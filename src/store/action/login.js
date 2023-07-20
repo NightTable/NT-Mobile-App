@@ -3,10 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { loginReducer } from "../reducer/loginReducer";
 import { getCountries } from "../../services/country";
-import { loginApi } from "../../services/auths";
+import { loginApi, otpVerify } from "../../services/auths";
 
-const { otpGeneratedData, loginSucess, logout, setLoading, updateCountryData } =
-  loginReducer.actions;
+const {
+  logout,
+  checkUserLoggedIn,
+  updateUserToken,
+  isProfileSetup,
+  updateCountryData,
+  otpGeneratedData,
+  verifyGeneratedData,
+} = loginReducer.actions;
 
 export const loginUser = (number) => {
   return async (dispatch) => {
@@ -14,8 +21,6 @@ export const loginUser = (number) => {
       phoneNumberParam: number,
     };
     const apiCall = await loginApi(obj);
-
-    console.log("apiCall.data====>", apiCall.data);
     dispatch(otpGeneratedData(apiCall.data));
   };
 };
@@ -37,6 +42,39 @@ export const getAllCountriesData = () => {
       });
     });
     dispatch(updateCountryData(tempArr));
+  };
+};
+
+export const verifyOtp = (otp) => {
+  return async (dispatch, getState) => {
+    const loginData = getState().login.otpNumberData;
+    let obj = {
+      isrepresentative: false,
+      reqPhoneNumber: loginData.data.phoneNumber,
+      reqOtp: otp,
+    };
+    const otpVerifyData = await otpVerify(obj);
+    if (
+      otpVerifyData?.toString() ==
+      `AxiosError: Request failed with status code 403`
+    ) {
+      dispatch(
+        verifyGeneratedData({
+          messasge: "Verification failed! Please try again.",
+        })
+      );
+    } else {
+      dispatch(verifyGeneratedData(otpVerifyData.data));
+    }
+    // dispatch(verifyGeneratedData(otpVerifyData));
+  };
+};
+
+export const updateToken = (data) => {
+  return async (dispatch) => {
+    dispatch(updateUserToken(data?.token));
+    dispatch(isProfileSetup(data?.data?.isProfileSetup));
+    dispatch(checkUserLoggedIn());
   };
 };
 

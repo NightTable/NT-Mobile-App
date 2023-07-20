@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-import { colors } from "../../theme";
-// import { Fonts } from "../fonts/Fonts";
-
+import { Box } from "native-base";
 import {
-  View,
   Text,
   StyleSheet,
-  Image,
-  ScrollView,
-  Platform,
   TextInput,
   Dimensions,
   SafeAreaView,
-  Alert,
   FlatList,
   Pressable,
 } from "react-native";
@@ -28,12 +20,14 @@ import { useNavigation } from "@react-navigation/native";
 // import reignPic from "../assets/reignpic.png";
 
 // import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
+//THEME
+import { colors, typography } from "../../theme";
 
 const { width, height } = Dimensions.get("screen");
-// import { HeaderWithLeftIcon } from "../../components/Header";
+import { HeaderWithLeftIcon } from "../../components/Header";
 
 const Dashboard = (props) => {
-  const [userName, setUserName] = useState("Amiya");
+  const [userName, setUserName] = useState("");
   const [city, setCity] = useState("");
   const [clubList, setClubList] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -87,53 +81,49 @@ const Dashboard = (props) => {
           });
         }}
       >
-        <View style={{ width: "50%" }}>
+        <Box style={{ width: "50%" }}>
           <Text>{props.props.name}</Text>
-        </View>
-        <View style={{ width: "50%", alignItems: "flex-end" }}>
+        </Box>
+        <Box style={{ width: "50%", alignItems: "flex-end" }}>
           <Text>
             {Math.round(props.props.distance.calculated * 0.00062137119)}.0 mi
           </Text>
-        </View>
+        </Box>
       </Pressable>
     );
   };
 
-  //   const handleBubblePress = () => {
-  //     props.navigation.navigate("edNav-ClubMiniDetailScreen");
-  //   };
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ width: "100%" }}>
-        {/* <HeaderWithLeftIcon
-          title={"NightTable"}
-          icon={"menu"}
-          iconDirectory={"Entypo"}
-          onSubmit={() => {
-            navigation.openDrawer();
-          }}
-        /> */}
-      </View>
-      <View
+      <HeaderWithLeftIcon
+        title={"NightTable"}
+        icon={"menu"}
+        iconDirectory={"Entypo"}
+        onSubmit={() => {
+          navigation.openDrawer();
+        }}
+      />
+      <Box
         style={{
-          width: "100%",
-          justifyContent: "center",
-          paddingLeft: 20,
-          paddingTop: 10,
+          backgroundColor: "green",
+
+          paddingHorizontal: 18,
+          flex: 1,
         }}
       >
         <Text
-          style={{
-            color: colors.gold.gold200,
-            fontSize: 14,
-            fontWeight: "500",
-          }}
+          style={[
+            typography.bold.bold16,
+            {
+              color: colors.gold.gold200,
+              paddingTop: 20,
+            },
+          ]}
         >
           Welcome back, {userName}
         </Text>
-      </View>
-      <View
+      </Box>
+      <Box
         style={{
           height: "20%",
           justifyContent: "center",
@@ -161,15 +151,12 @@ const Dashboard = (props) => {
             color: colors.gold.gold200,
           }}
         ></TextInput>
-      </View>
+      </Box>
 
-      <View style={{ alignItems: "center", width: "100%" }}>
-        {/* {console.log("clubs around me", clubList, isDataLoaded)} */}
-        {/* {isDataLoaded ? ( */}
+      <Box style={{ alignItems: "center", width: "100%" }}>
         <FlatList
           data={clubList}
           renderItem={({ item }) => {
-            // console.log("item======>>>>>>>>", item);
             return <ClubCards props={item} />;
           }}
           keyExtractor={(item) => item._id.toString()}
@@ -177,7 +164,7 @@ const Dashboard = (props) => {
         {/* ) : (
           <Text>No Clubs Found</Text>
         )}  */}
-      </View>
+      </Box>
     </SafeAreaView>
   );
 };
@@ -186,7 +173,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black.black800,
-    // position: "relative",
   },
   clubListContainer: {
     flexDirection: "column",

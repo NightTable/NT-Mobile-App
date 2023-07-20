@@ -1,35 +1,44 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  verifyNumberData: [],
   otpNumberData: [],
   countryData: [],
-  isLoading: false,
   userData: [],
-  token: 'default_token',
+  token: "",
+  isProfileSetup: false,
+  isUserLoggedIn: false,
 };
 
-export const loginReducer = createSlice ({
-  name: 'login',
+export const loginReducer = createSlice({
+  name: "login",
   initialState,
   reducers: {
-    loginSucess: (state, {payload}) => {
-      state.token = payload;
-    },
-
-    logout: state => {
+    logout: (state) => {
       return {
         ...initialState,
       };
     },
-
-    setLoading: (state, {payload}) => {
-      state.isLoading = payload;
+    updateUserData: (state, { payload }) => {
+      state.userData = payload;
     },
-    updateCountryData: (state, {payload}) => {
+    updateCountryData: (state, { payload }) => {
       state.countryData = payload;
     },
-    otpGeneratedData :(state , {payload}) =>{
-      state.otpNumberData  = payload;
-    }
+    otpGeneratedData: (state, { payload }) => {
+      state.otpNumberData = payload;
+    },
+    verifyGeneratedData: (state, { payload }) => {
+      state.verifyNumberData = payload;
+    },
+    checkUserLoggedIn: (state, { payload }) => {
+      state.isUserLoggedIn = true;
+    },
+    isProfileSetup: (state, { payload }) => {
+      state.isProfileSetup = payload;
+    },
+    updateUserToken: (state, { payload }) => {
+      state.token = payload;
+    },
   },
 });

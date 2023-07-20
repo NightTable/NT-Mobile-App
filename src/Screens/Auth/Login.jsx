@@ -84,7 +84,6 @@ const Login = ({ navigation, route }) => {
                 defaultValue={""}
                 placeholder={""}
                 onValueChange={(itemValue) => {
-                  console.log("itemValue====>", itemValue);
                   setselectedCountry(itemValue.value);
                 }}
                 height={58}

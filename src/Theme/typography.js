@@ -16,6 +16,8 @@ export const typography = {
       bold12: {fontFamily: 'vh-bold', fontSize: 12},
       bold14: {fontFamily: 'vh-bold', fontSize: 14},
       bold16: {fontFamily: 'vh-bold', fontSize: 16},
+      bold24: {fontFamily: 'vh-bold', fontSize: 24},
+
     },
     //Semi-Bold
     semBold: {

@@ -26,7 +26,7 @@ export const enableLoader = () => {
     Heading: "",
     img: "", //cross img
     renderfn: <ActivityIndicatorLoader />,
-    closingTime: 200000,
+    closingTime: 2000000000000,
     closeBtnEnable: false,
   };
   EventRegister.emit("popupTriggerd", obj);

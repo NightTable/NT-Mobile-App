@@ -11,7 +11,7 @@ const LogoSplash = () => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: colors.black.black900,
+          backgroundColor: colors.black.black800,
         }}
         safeArea
       >

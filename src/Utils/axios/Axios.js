@@ -40,7 +40,7 @@ export const GetRequest = async (session_url, body, params, header = null) => {
 };
 
 export const PostRequest = async (session_url, body, token = null) => {
-  console.log("session_url, body, params, header = null", session_url);
+  // console.log("session_url, body, params, header = null", session_url);
   var config;
   if (token) {
     config = {
@@ -52,7 +52,9 @@ export const PostRequest = async (session_url, body, token = null) => {
     config = "";
   }
   try {
-    return await axios.post(session_url, body, config);
+    const data = await axios.post(session_url, body, config);
+
+    return data;
   } catch (error) {
     return error;
   }

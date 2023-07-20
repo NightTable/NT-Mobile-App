@@ -1,38 +1,37 @@
 // Imported Libraries
 
 import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-  Image,
-  Dimensions,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, Dimensions, Alert } from "react-native";
 import OTPTextView from "react-native-otp-textinput";
 //libraries
 import { Box } from "native-base";
+//REDUX
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //components
 import { Button } from "../../components/Buttons";
-
-//services
-// import { otpVerify } from "../../Services/Auth";
 //Utils
 import { StoretoLocalData } from "../../utils/SensitiveData/SensitiveData";
 //Theme
-import { colors } from "../../theme/colors";
-import { typography } from "../../theme";
+import { typography, colors } from "../../theme";
+import { updateToken, verifyOtp } from "../../store/action/login";
+import {
+  disableLoader,
+  enableLoader,
+} from "../../components/popUp/loader/trigger";
 const { height, width } = Dimensions.get("screen");
 //Main Function
+
 const Otp = ({ route, navigation }) => {
-  const [isLoding, setIsLoading] = useState(false);
-  //const [enableResendBut, setenableResendBut] = useState(false);
+  //REDUX
+  const dispatch = useDispatch();
+
+  //login store
+  const loginStore = useSelector((state) => state.login);
 
   //ResendOtp-Button State
   const [resendOtp, setresendOtp] = useState(true);
   const [otp, setotp] = useState("");
+  const [error_msg, seterror_msg] = useState("");
   const otpInput = useRef(null);
 
   const clearText = () => {
@@ -44,17 +43,14 @@ const Otp = ({ route, navigation }) => {
   };
 
   const submit = async () => {
-    if (otp.length < 6) {
-      Alert.alert("Please enter the otp");
-    } else {
-      console.log("otp before verify ", otp);
-      // const data = await otpVerify(route.params.number, otp);
-      // console.log("data==>", data.status);
-      // if (data.status === true) {
-      //   // await saveUserData("userData",data);
-      //   navigation.navigate("DrawerNavigator");
-      // }
-    }
+    enableLoader();
+    const data = dispatch(verifyOtp(otp));
+    // const data = await otpVerify(route.params.number, otp);
+    // console.log("data==>", data.status);
+    // if (data.status === true) {
+    //   // await saveUserData("userData",data);
+    //   navigation.navigate("DrawerNavigator");
+    // }
   };
 
   const saveUserData = async (key, data) => {
@@ -62,28 +58,38 @@ const Otp = ({ route, navigation }) => {
     console.log("saveData===>", saveData);
   };
 
+  useEffect(() => {
+    if (
+      loginStore?.verifyNumberData?.message ==
+      "Verification failed! Please try again."
+    ) {
+      seterror_msg("Verification failed! Please try again.");
+    } else {
+      
+      if (loginStore?.verifyNumberData?.data?.isProfileSetup === false) {
+        dispatch(updateToken(loginStore?.verifyNumberData));
+        disableLoader();
+        console.log("GO TO PROFILE PAGE ====>");
+        navigation.navigate("DrawerNavigator");
+      } else if (loginStore?.verifyNumberData?.data?.isProfileSetup === true) {
+        dispatch(updateToken(loginStore?.verifyNumberData));
+        disableLoader();
+        console.log("GO TO DASHBOARD");
+      }
+    }
+
+    return () => {};
+  }, [loginStore?.verifyNumberData]);
+
   return (
     <>
-      <Box
-        safeArea
-        style={{
-          backgroundColor: "black",
-          flex: 1,
-          padding: 20,
-          paddinTop: 24,
-        }}
-      >
-        <Text
-          style={[
-            typography.bold.bold8,
-            { fontSize: 22, paddingTop: 18, color: colors.gold.gold100 },
-          ]}
-        >
+      <Box safeArea style={styles.container}>
+        <Text style={[typography.bold.bold16, styles.heading]}>
           Please enter the otp{" "}
         </Text>
-        <View style={{ marginTop: 100 }}>
+        <Box style={{ marginTop: 100 }}>
           <OTPTextView
-            tintColor="#000000"
+            tintColor={colors.black.black800}
             autoFocus={true}
             style={styles.roundedTextInput}
             handleTextChange={(e) => {
@@ -92,27 +98,40 @@ const Otp = ({ route, navigation }) => {
             inputCount={6}
             keyboardType="numeric"
           />
-        </View>
-        <View>
-          <View style={{ height: "50%" }}>
-            <View style={{ paddinTop: 30 }}></View>
-          </View>
-          <Box style={{ padding: 12, backgroundColor: "black", flex: 1 }}>
+        </Box>
+        <Box>
+          <Box style={{ height: "50%" }}>
+            <Box style={{ paddinTop: 30 }}></Box>
+          </Box>
+          <Box
+            style={{
+              padding: 12,
+              backgroundColor: colors.black.black800,
+              flex: 1,
+            }}
+          >
             <Button
               onSubmit={() => {
                 submit();
               }}
+              disabled={otp.length === 6 ? false : true}
               backgroundColor={colors.gold.gold100}
               text={"Verify Otp"}
             />
           </Box>
-        </View>
+        </Box>
       </Box>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.black.black800,
+    flex: 1,
+    padding: 18,
+  },
+
   borderStyleBase: {
     width: 40,
     height: 45,
@@ -120,13 +139,14 @@ const styles = StyleSheet.create({
 
   roundedTextInput: {
     borderRadius: 6,
-    borderWidth: 4,
+    borderWidth: 2,
     borderColor: colors.gold.gold200,
     height: 60,
     width: 40,
     paddingLeft: 10,
     color: "white",
   },
+  heading: { fontSize: 22, paddingTop: 18, color: colors.gold.gold100 },
 });
 
 export default Otp;

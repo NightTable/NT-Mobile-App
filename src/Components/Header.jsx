@@ -1,19 +1,9 @@
 import React from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Image,
-  View,
-  Pressable,
-  Text,
-} from "react-native";
-//NAVIGATION
-import { useNavigation } from "@react-navigation/native";
-
+import { StyleSheet, Pressable, Text } from "react-native";
+import { Box } from "native-base";
 //Component
 import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
-
 //Theme
 import { typography, colors } from "../theme";
 
@@ -32,18 +22,9 @@ export const HeaderWithLeftIcon = (props) => {
 
   return (
     <>
-      <View
-        style={[
-          styles.justification,
-          styles.container,
-          //   styles.leftPadding,
-          //   styles.alignCenter,
-        ]}
-      >
-        <View
+      <Box style={[styles.justification, styles.container]}>
+        <Box
           style={{
-            marginTop: 20,
-            marginRight: 20,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -55,28 +36,19 @@ export const HeaderWithLeftIcon = (props) => {
           >
             {headerIcon(props.iconDirectory)}
           </Pressable>
-        </View>
-        <View
+        </Box>
+        <Box
           style={{
             marginLeft: 30,
-            marginTop: 20,
-            justifyContent: "center",
             alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <Text
-            style={[
-              // typography.semBold.semBold18,
-              // styles.marginLeft,
-              styles.color,
-              { fontSize: 22, fontWeight: "400" },
-            ]}
-          >
+          <Text style={[typography.bold.bold24, styles.color]}>
             {props.title}
           </Text>
-        </View>
-        {/* <Divider color={colors.grey.grey300} /> */}
-      </View>
+        </Box>
+      </Box>
     </>
   );
 };
@@ -85,14 +57,11 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingVertical: 10,
-    // height: "30%",
     backgroundColor: colors.black.black800,
-    // backgroundColor: "red",
     flexDirection: "row",
     justifyContent: "flex-start",
     alignContent: "center",
     paddingHorizontal: 20,
-    marginTop: 20,
   },
 
   color: {
