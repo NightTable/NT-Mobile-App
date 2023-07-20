@@ -63,13 +63,12 @@ export const PopUpAlertUi = (props) => {
             width: width,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "colors.shadowColor",
+            backgroundColor: colors.shadowColor,
           }}
         >
           <Box
             style={{
-              width: width - 60,
-              backgroundColor: colors.red.red800,
+              width: width,
               borderRadius: 12,
             }}
           >

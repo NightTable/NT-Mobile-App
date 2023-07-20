@@ -4,17 +4,17 @@ import { TextInput, StyleSheet, Text, Dimensions, Alert } from "react-native";
 //Components
 import SearchDropdown from "../../components/SearchDropdown";
 import { Button } from "../../components/Buttons";
-// import {checkLocationPermission} from '../../permissions/location';
-
-// import { loginorSignUp } from "../../Services/Auth";
-// //Redux
+//Redux
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //Theme
 import { colors } from "../../theme/colors";
 import { typography } from "../../theme";
-import Device from "expo-device";
-import * as Location from "expo-location";
+
 import { loginUser } from "../../store/action/login";
+import {
+  disableLoader,
+  enableLoader,
+} from "../../components/popUp/loader/trigger";
 //DIMENSIONS
 const { height, width } = Dimensions.get("screen");
 
@@ -24,7 +24,7 @@ const Login = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   //SELECTORS
-  const loginReducer = useSelector((state) => state.login);
+  const loginReducer = useSelector((state) => state.login, shallowEqual);
 
   //STATES
   const [number, onChangeNumber] = useState("");
@@ -36,49 +36,23 @@ const Login = ({ navigation, route }) => {
   // //API CALL
   const triggerOtp = async () => {
     console.log("number::", `${selectedCountry}${number}`);
+    enableLoader();
     dispatch(loginUser(`${selectedCountry}${number}`));
     seterror_msg("");
-
   };
 
   useEffect(() => {
-    console.log("====================================");
-    console.log("otpGeneratedData", loginReducer?.otpNumberData?.status);
-    console.log("====================================");
-
     if (loginReducer?.otpNumberData?.status === false) {
       seterror_msg(loginReducer?.otpNumberData?.message);
+      disableLoader();
+      // dispatch(loginsuccess())
     } else if (loginReducer?.otpNumberData?.status === true) {
+      disableLoader();
       navigation.navigate("Otp");
-    } else {
-      alert("Something went wrong ");
-      //setloader(false);
     }
 
-    // return () => {
-
-    // }
+    return () => {};
   }, [loginReducer]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (Platform.OS === "android" && !Device.isDevice) {
-  //       // setErrorMsg(
-  //       //   "Oops, this will not work on Snack in an Android Emulator. Try it on your device!"
-  //       // );
-  //       return;
-  //     }
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       //setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     // setLocation(location);
-  //     // console.log("location ========>", location);
-  //   })();
-  // }, []);
 
   return (
     <>
@@ -132,6 +106,7 @@ const Login = ({ navigation, route }) => {
                 }}
                 value={number}
                 placeholder="Phone Number"
+                placeholderTextColor={colors.grey.grey800}
                 keyboardType="numeric"
               />
             </Box>

@@ -27,6 +27,8 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
     "react-native-eject": "^0.2.0",
+    "react-native-event-listener": "^1.0.2",
+    "react-native-event-listeners": "^1.0.7",
     "react-native-web": "~0.18.10",
     "react-redux": "^8.1.1",
     "redux-thunk": "^2.4.2"
