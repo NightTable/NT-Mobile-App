@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
 import { TextInput, StyleSheet, Text, Dimensions, Alert } from "react-native";
-//Components
+//components
 import SearchDropdown from "../../components/SearchDropdown";
 import { Button } from "../../components/Buttons";
 //Redux
@@ -35,7 +35,7 @@ const Login = ({ navigation, route }) => {
 
   // //API CALL
   const triggerOtp = async () => {
-    console.log("number::", `${selectedCountry}${number}`);
+    // console.log("number::", `${selectedCountry}${number}`);
     enableLoader();
     dispatch(loginUser(`${selectedCountry}${number}`));
     seterror_msg("");
@@ -45,7 +45,6 @@ const Login = ({ navigation, route }) => {
     if (loginReducer?.otpNumberData?.status === false) {
       seterror_msg(loginReducer?.otpNumberData?.message);
       disableLoader();
-      // dispatch(loginsuccess())
     } else if (loginReducer?.otpNumberData?.status === true) {
       disableLoader();
       navigation.navigate("Otp");

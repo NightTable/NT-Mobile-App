@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 //Screens
 import Login from '../screens/Auth/Login';
 import Splash from '../screens/Splash';
+import Otp from '../screens/Auth/Otp';
 
 //Stack Hooks
 const Stack = createNativeStackNavigator();
@@ -29,7 +30,14 @@ const AuthenticationStack = () => {
           gestureEnabled:false,
         }}
       />
-      
+      <Stack.Screen
+        name="Otp"
+        component={Otp}
+        options={{
+          headerShown: false,
+          gestureEnabled:false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

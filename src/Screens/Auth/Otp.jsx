@@ -15,16 +15,15 @@ import OTPTextView from "react-native-otp-textinput";
 //libraries
 import { Box } from "native-base";
 //components
-import { Button } from "../../Components/Buttons";
+import { Button } from "../../components/Buttons";
 
-//Themes
-import { colors } from "../../Theme/colors";
 //services
-import { otpVerify } from "../../Services/Auth";
+// import { otpVerify } from "../../Services/Auth";
 //Utils
-import { StoretoLocalData } from "../../Utils/SensitiveData";
-import { typography } from "../../Theme/typography";
-
+import { StoretoLocalData } from "../../utils/SensitiveData/SensitiveData";
+//Theme
+import { colors } from "../../theme/colors";
+import { typography } from "../../theme";
 const { height, width } = Dimensions.get("screen");
 //Main Function
 const Otp = ({ route, navigation }) => {
@@ -48,13 +47,13 @@ const Otp = ({ route, navigation }) => {
     if (otp.length < 6) {
       Alert.alert("Please enter the otp");
     } else {
-      console.log("otp before verify ", otp)
-      const data = await otpVerify(route.params.number, otp);
-      console.log("data==>", data.status);
-      if (data.status === true) {
-        // await saveUserData("userData",data);
-        navigation.navigate('DrawerNavigator')
-      }
+      console.log("otp before verify ", otp);
+      // const data = await otpVerify(route.params.number, otp);
+      // console.log("data==>", data.status);
+      // if (data.status === true) {
+      //   // await saveUserData("userData",data);
+      //   navigation.navigate("DrawerNavigator");
+      // }
     }
   };
 

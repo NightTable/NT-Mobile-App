@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from "react-native";
 
-//Components
+//components
 import {
   AntDesignIcon,
   EntypoIcon,

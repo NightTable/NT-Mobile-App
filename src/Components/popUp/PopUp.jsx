@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//Components
+//components
 
 //libraries
 import { Box, Text } from "native-base";
@@ -101,7 +101,6 @@ export const PopUpAlertUi = (props) => {
                 typography.bold.bold16,
                 {
                   color: props.headingColor,
-
                   textAlign: "center",
                   paddingVertical:
                     props?.message?.length > 0 ? value.regular : 0,

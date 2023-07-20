@@ -1,5 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import DrawerNavigator from './DrawerStack';
+
 import AuthenticationStack from "./AuthenticationStack";
 
 //screens
@@ -22,8 +25,17 @@ const RootStack = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="DrawerNavigator"
+        component={DrawerNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
 export default RootStack;
+
+
