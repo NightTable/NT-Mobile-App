@@ -1,230 +1,225 @@
-import React, { useEffect, useState } from "react"; // navigation.navigate('Login')
-
-import {
-  SafeAreaView,
-  View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Text,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  Dimensions,
-  Alert,
-  Pressable,
-} from "react-native";
-// import { RouteProp, StackActions } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
+import { TextInput, StyleSheet, Text, Dimensions, Alert } from "react-native";
+//Components
+import SearchDropdown from "../../components/SearchDropdown";
+import { Button } from "../../components/Buttons";
+// import {checkLocationPermission} from '../../permissions/location';
 
-import SearchDropdown from '../../components/Dropdown';
-
-
-// import { Button } from "../../Components/Buttons";
-
-//API CALL
 // import { loginorSignUp } from "../../Services/Auth";
 // //Redux
-
-// import { resetLoader } from "../../Redux/Actions/loader";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+//Theme
+import { colors } from "../../theme/colors";
+import { typography } from "../../theme";
+import Device from "expo-device";
+import * as Location from "expo-location";
+import { loginUser } from "../../store/action/login";
+//DIMENSIONS
 const { height, width } = Dimensions.get("screen");
-import { colors } from "../../Theme/colors";
-// import { TouchableOpacity } from "react-native-gesture-handler";
-// import { color } from "react-native-reanimated";
+
+//MAIN FUNCTION
 const Login = ({ navigation, route }) => {
+  //REDUX
   const dispatch = useDispatch();
 
+  //SELECTORS
   const loginReducer = useSelector((state) => state.login);
 
-  // console.log("loginReducer", loginReducer.countryData);
-
+  //STATES
   const [number, onChangeNumber] = useState("");
-
-  //dropdown value changed
-  // const [countryCodeData, setcountryCodeData] = useState(
-  // );
+  //SELECTED COUNTRY DATA
   const [selectedCountry, setselectedCountry] = useState("");
-
-  //validating number
-  const validatePhoneNumber = () => {
-    var regexp = /^\+[0-9]?()[0-9](\s|\S)(\d[0-9]{8,16})$/;
-    return regexp.test(phoneNumber);
-  };
-
-  const validation = () => {
-    if (number.length < 8) {
-      Alert.alert("Please enter the correct number");
-    } else {
-      // triggerOtp();
-    }
-  };
+  //ERROR MSG
+  const [error_msg, seterror_msg] = useState("");
 
   // //API CALL
-  // const triggerOtp = async () => {
-  //   //for now bypassing the login api :===>
-  //   const data = await loginorSignUp(`+${selectedCountry}${number}`);
-  //   if (data.data.status === true) {
-  //     console.log("response from login api",data.data);
-  //     navigation.navigate("Otp", {
-  //       number: `+${selectedCountry}${number}`,
-  //     });
-  //   }
-  // };
+  const triggerOtp = async () => {
+    console.log("number::", `${selectedCountry}${number}`);
+    dispatch(loginUser(`${selectedCountry}${number}`));
+    seterror_msg("");
 
-  // //NAVIGATION
-  // const navigateTo = () => {
-  //   navigation.navigate("Otp");
-  // };
+  };
+
+  useEffect(() => {
+    console.log("====================================");
+    console.log("otpGeneratedData", loginReducer?.otpNumberData?.status);
+    console.log("====================================");
+
+    if (loginReducer?.otpNumberData?.status === false) {
+      seterror_msg(loginReducer?.otpNumberData?.message);
+    } else if (loginReducer?.otpNumberData?.status === true) {
+      navigation.navigate("Otp");
+    } else {
+      alert("Something went wrong ");
+      //setloader(false);
+    }
+
+    // return () => {
+
+    // }
+  }, [loginReducer]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (Platform.OS === "android" && !Device.isDevice) {
+  //       // setErrorMsg(
+  //       //   "Oops, this will not work on Snack in an Android Emulator. Try it on your device!"
+  //       // );
+  //       return;
+  //     }
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       //setErrorMsg("Permission to access location was denied");
+  //       return;
+  //     }
+
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     // setLocation(location);
+  //     // console.log("location ========>", location);
+  //   })();
+  // }, []);
 
   return (
     <>
-      <Box>
-        <Box style={[styles.container]} SafeArea bgColor={"black"}>
-          <Box
-            style={{
-              padding: 30,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 34,
-                paddingTop: 12,
-                color: colors.gold.gold100,
-              }}
-            >
-              NightTable{" "}
-            </Text>
-            <Text
-              style={{
-                fontSize: 24,
-                paddingTop: 18,
-                color: colors.gold.gold100,
-              }}
-            >
-              Sign up or login
-            </Text>
+      <Box safeArea style={styles.mainBox}>
+        <Box style={[styles.container]}>
+          <Text style={[typography.bold.bold16, styles.heading]}>
+            NightTable{" "}
+          </Text>
+          <Text style={[typography.regular.regular16, styles.subtitle]}>
+            tell us your mobile number
+          </Text>
+          <Box style={styles.mobileNumberContainer}>
+            <Box style={styles.dropdownContainer1}>
+              <SearchDropdown
+                key={() => {
+                  return Number(1);
+                }}
+                leftIconName={"search"}
+                leftIconColor={"white"}
+                leftIconDirectoryName={"Feather"}
+                search={true}
+                searchPopupHeading={"Select Country"}
+                bgColor={colors.grey.grey275}
+                borderColor={colors.gold.gold100}
+                textColor={colors.white.white0}
+                iconColor={colors.white.white0}
+                actionSheetBgColor={colors.red.red800}
+                selectedItemBgColor={colors.red.red800}
+                data={loginReducer.countryData}
+                defaultValue={""}
+                placeholder={""}
+                onValueChange={(itemValue) => {
+                  console.log("itemValue====>", itemValue);
+                  setselectedCountry(itemValue.value);
+                }}
+                height={58}
+                width={"100%"}
+                value={"Country"}
+              />
+            </Box>
+
+            <Box style={styles.dropdownContainer2}>
+              <TextInput
+                autoFocus={true}
+                style={[typography.regular.regular16, styles.input]}
+                onChangeText={(text) => {
+                  const numberRegex = /^[0-9]*\.?[0-9]*$/;
+                  if (numberRegex.test(text)) {
+                    onChangeNumber(text);
+                  }
+                }}
+                value={number}
+                placeholder="Phone Number"
+                keyboardType="numeric"
+              />
+            </Box>
           </Box>
-        </Box>
-        <Box
-          style={{ paddingHorizontal: 10, paddingTop: 18 }}
-          flexDir={"row"}
-          width={"100%"}
-          alignItems={"center"}
-        >
-          <Box justifyContent={"center"} style={{ height: 40 }} width={"22%"}>
-            {/* <ElementDropdown
-              value={selectedCountry}
-              onValueChange={(item) => {
-                setselectedCountry(item);
+
+          <Text
+            style={[
+              styles.termandconditionText,
+              {
+                color: colors.red.red300,
+              },
+            ]}
+          >
+            {error_msg}{" "}
+          </Text>
+
+          <Box style={{ paddingTop: 160 }}>
+            <Button
+              disabled={number.length >= 10 ? false : true}
+              onSubmit={() => {
+                if (selectedCountry.length >= 1) {
+                  triggerOtp();
+                } else {
+                  seterror_msg("please select the country");
+                }
               }}
-              data={[]}
-            /> */}
+              backgroundColor={colors.gold.gold100}
+              text={"Agree & Continue "}
+            />
+
+            <Text
+              style={[
+                styles.termandconditionText,
+                {
+                  color: colors.gold.gold100,
+                  textAlign: "center",
+                },
+              ]}
+            >
+              By logging in,you agree to the Terms of Use and Privacy Policy{" "}
+            </Text>
           </Box>
         </Box>
       </Box>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Box height={height}>
-            <Box style={styles.container} SafeArea bgColor={"black"}>
-              <Box pt={20}>
-                <Box style={{ padding: 12 }}>
-                  <Text
-                    style={{
-                      fontSize: 34,
-                      paddingTop: 12,
-                      color: colors.gold.gold100,
-                    }}
-                  >
-                    NightTable{" "}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      paddingTop: 18,
-                      color: colors.gold.gold100,
-                    }}
-                  >
-                    Sign up or login
-                  </Text>
-                </Box>
-                <Box
-                  style={{ paddingHorizontal: 10, paddingTop: 18 }}
-                  flexDir={"row"}
-                  width={"100%"}
-                  alignItems={"center"}
-                >
-                  <Box
-                    justifyContent={"center"}
-                    style={{ height: 40 }}
-                    width={"22%"}
-                  >
-                    <ElementDropdown
-                      value={selectedCountry}
-                      onValueChange={(item) => {
-                        setselectedCountry(item);
-                      }}
-                      data={countryCodeData}
-                    />
-                  </Box>
-                  <Box style={{ paddingHorizontal: 10 }} width={"78%"}>
-                    <TextInput
-                      autoFocus={true}
-                      style={styles.input}
-                      onChangeText={(text) => {
-                        onChangeNumber(text);
-                      }}
-                      value={number}
-                      placeholder="Phone Number"
-                      keyboardType="numeric"
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-            <Box style={{ padding: 12, backgroundColor: "black", flex: 1 }}>
-              <Button
-                onSubmit={() => {
-                  validation();
-                }}
-                backgroundColor={'#CBAE83'}
-                text={"Login / Signup"}
-              />
-
-              <Text
-                style={{
-                  fontSize: 12,
-                  paddingTop: 12,
-                  textAlign: "center",
-                  color: '#CBAE83',
-                }}
-              >
-                By logging in,you agree to the Terms of Use and Privacy Policy{" "}
-              </Text>
-            </Box>
-          </Box>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView> */}
     </>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    height: 58,
     borderWidth: 1,
     padding: 6,
-    backgroundColor: "black",
+    backgroundColor: colors.black.black900,
     borderColor: colors.gold.gold100,
     borderRadius: 6,
-    color: colors.gold.gold200,
+    color: colors.gold.gold100,
+    fontSize: 22,
   },
   container: {
-    // flex:1
+    padding: 18,
+  },
+  mainBox: { flex: 1, backgroundColor: colors.black.black900 },
+  heading: {
+    fontSize: 34,
+    color: colors.gold.gold100,
+  },
+  subtitle: {
+    fontSize: 24,
+    paddingTop: 18,
+    color: colors.gold.gold100,
+  },
+  mobileNumberContainer: {
+    marginTop: 60,
+    width: "100%",
+    flexDirection: "row",
+  },
+  dropdownContainer1: {
+    width: "30%",
+  },
+  dropdownContainer2: {
+    width: "70%",
+    paddingLeft: 10,
+  },
+  termandconditionText: {
+    fontSize: 12,
+    paddingTop: 12,
+    color: colors.gold.gold100,
   },
 });
 

@@ -1,47 +1,46 @@
 // import axios from "axios";
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import {loginReducer} from '../reducer/loginReducer';
-import {getCountries} from '../../services/country';
+import { loginReducer } from "../reducer/loginReducer";
+import { getCountries } from "../../services/country";
+import { loginApi } from "../../services/auths";
 
-const {loginSucess, logout, setLoading,updateCountryData} = loginReducer.actions;
+const { otpGeneratedData, loginSucess, logout, setLoading, updateCountryData } =
+  loginReducer.actions;
 
-export const loginUser = credentials => {
-  return dispatch => {
-    console.log ('credentials====>', credentials);
-    // API request to authenticate user
-    //dispatch (setLoading (true));
-    // axios.post('https://dummyjson.com/auth/login', credentials)
-    //     .then((response) => {
-    //         const { token } = response.data;
+export const loginUser = (number) => {
+  return async (dispatch) => {
+    let obj = {
+      phoneNumberParam: number,
+    };
+    const apiCall = await loginApi(obj);
 
-    //         // Dispatch login success action with the JWT
-    dispatch (loginSucess (credentials));
-    //         dispatch(clearLogin());
-    // dispatch(setLoading (true));
-
-    //console.log('username',username);
-
-    //         // Save token to local storage for persistent login
-    //       //  localStorage.setItem('token', token);
-    //     })
-    //     .catch((error) => {
-    //         // Handle login error
-    //     });
+    console.log("apiCall.data====>", apiCall.data);
+    dispatch(otpGeneratedData(apiCall.data));
   };
 };
 
-export const getAllCountriesData = params => {
-  return async dispatch => {
-    // console.log ('Api - getAllCountriesData======>',);
-
+export const getAllCountriesData = () => {
+  return async (dispatch) => {
+    let tempArr = [];
     const apiData = await getCountries();
-    // console.log ('Api - Data======>', apiData);
-    dispatch (updateCountryData (apiData));
+    apiData.map((item) => {
+      tempArr.push({
+        label:
+          item.phoneNumberCode.slice(0, 1) == "+"
+            ? `${item.phoneNumberCode}`
+            : `+${item.phoneNumberCode}`,
+        value:
+          item.phoneNumberCode.slice(0, 1) == "+"
+            ? `${item.phoneNumberCode}`
+            : `+${item.phoneNumberCode}`,
+      });
+    });
+    dispatch(updateCountryData(tempArr));
   };
 };
 
-export function loginStore () {
+export function loginStore() {
   // const username = useSelector((state) => state.login.username);
   // const password = useSelector((state) => state.login.password);
   // const token = useSelector((state) => state.login.token);
@@ -56,6 +55,5 @@ export function loginStore () {
   //     logout: () => dispatch(logout()),
   //     setLoading: (val) => dispatch(setLoading(val)),
   // };
-
-  console.log ('LOGIN STORE===::>>');
+  // console.log("LOGIN STORE===::>>");
 }

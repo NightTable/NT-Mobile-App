@@ -8,60 +8,60 @@
 export const typography = {
     //Bold font
     bold: {
-      bold8: {fontFamily: 'VerahHumanaBold', fontSize: 8},
+      bold8: {fontFamily: 'vh-bold', fontSize: 8},
       bold10: {
-        fontFamily: 'VerahHumanaBold-Bold',
+        fontFamily: 'vh-bold-Bold',
         fontSize: 10,
       },
-      bold12: {fontFamily: 'VerahHumanaBold', fontSize: 12},
-      bold14: {fontFamily: 'VerahHumanaBold', fontSize: 14},
-      bold16: {fontFamily: 'VerahHumanaBold', fontSize: 16},
+      bold12: {fontFamily: 'vh-bold', fontSize: 12},
+      bold14: {fontFamily: 'vh-bold', fontSize: 14},
+      bold16: {fontFamily: 'vh-bold', fontSize: 16},
     },
     //Semi-Bold
     semBold: {
-      semBold8: {fontFamily: 'OpenSans-SemiBold', fontSize: 8},
+      semBold8: {fontFamily: 'vh-regular', fontSize: 8},
       semBold10: {
-        fontFamily: 'OpenSans-SemiBold',
+        fontFamily: 'vh-regular',
         fontSize: 10,
       },
-      semBold12: {fontFamily: 'OpenSans-SemiBold', fontSize: 12},
-      semBold14: {fontFamily: 'OpenSans-SemiBold', fontSize: 14},
-      semBold16: {fontFamily: 'OpenSans-SemiBold', fontSize: 16},
+      semBold12: {fontFamily: 'vh-regular', fontSize: 12},
+      semBold14: {fontFamily: 'vh-regular', fontSize: 14},
+      semBold16: {fontFamily: 'vh-regular', fontSize: 16},
     },
     //Medium font
     medium: {
-      medium8: {fontFamily: 'OpenSans-Medium', fontSize: 8},
+      medium8: {fontFamily: 'vh-regular', fontSize: 8},
       medium10: {
-        fontFamily: 'OpenSans-Medium',
+        fontFamily: 'vh-regular',
         fontSize: 10,
       },
-      medium12: {fontFamily: 'OpenSans-Medium', fontSize: 12},
-      medium14: {fontFamily: 'OpenSans-Medium', fontSize: 14},
-      medium16: {fontFamily: 'OpenSans-Medium', fontSize: 16},
+      medium12: {fontFamily: 'vh-regular', fontSize: 12},
+      medium14: {fontFamily: 'vh-regular', fontSize: 14},
+      medium16: {fontFamily: 'vh-regular', fontSize: 16},
     },
   
     //Regular font
     regular: {
-      regular8: {fontFamily: 'VerahHumanaRegular', fontSize: 8},
+      regular8: {fontFamily: 'vh-regular', fontSize: 8},
   
       regular10: {
-        fontFamily: 'VerahHumanaRegular',
+        fontFamily: 'vh-regular',
         fontSize: 10,
       },
-      regular12: {fontFamily: 'VerahHumanaRegular', fontSize: 12},
-      regular14: {fontFamily: 'VerahHumanaRegular', fontSize: 14},
-      regular16: {fontFamily: 'VerahHumanaRegular', fontSize: 16},
+      regular12: {fontFamily: 'vh-regular', fontSize: 12},
+      regular14: {fontFamily: 'vh-regular', fontSize: 14},
+      regular16: {fontFamily: 'vh-regular', fontSize: 16},
     },
   
     light: {
-      light8: {fontFamily: 'VerahHumanaRegular', fontSize: 10},
+      light8: {fontFamily: 'vh-regular', fontSize: 10},
       light10: {
-        fontFamily: 'VerahHumanaRegular',
+        fontFamily: 'vh-regular',
         fontSize: 10,
       },
-      light12: {fontFamily: 'VerahHumanaRegular', fontSize: 12},
-      light14: {fontFamily: 'VerahHumanaRegular', fontSize: 14},
-      light16: {fontFamily: 'VerahHumanaRegular', fontSize: 16},
+      light12: {fontFamily: 'vh-regular', fontSize: 12},
+      light14: {fontFamily: 'vh-regular', fontSize: 14},
+      light16: {fontFamily: 'vh-regular', fontSize: 16},
     },
   };
   

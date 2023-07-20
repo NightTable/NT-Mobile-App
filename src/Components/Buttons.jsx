@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button as NBButton } from "native-base";
 import Feather from "react-native-vector-icons/Feather";
 import { ActivityLoader } from "./Loaders";
-import { screenWidth, screenHeight } from "../Utils/Dimensions";
 import { Box } from "native-base";
 import {
   SafeAreaView,
@@ -16,8 +15,12 @@ import {
   Keyboard,
   Image,
   Dimensions,
-  Alert,Pressable
-} from "react-native"
+  Alert,
+  Pressable,
+} from "react-native";
+import { colors } from "../theme";
+
+const { screenWidth, screenHeight } = Dimensions.get("screen");
 //USEAGE
 // Step 1:::> import {Button} from "_component_Directory_"
 // Step 2:::> Use below code to render component and pass props according to requirement
@@ -42,7 +45,6 @@ export const Button = (props) => {
     <>
       <Pressable
         onPress={() => {
-          console.log("submit ====>");
           props.onSubmit();
         }}
         style={{ width: "100%", height: 40 }}
@@ -82,8 +84,11 @@ export const Button = (props) => {
                   alignItems: "center",
                   justifyContent: "center",
                   height: 40,
-                  backgroundColor: props.backgroundColor,
-                  borderRadius:4
+                  backgroundColor:
+                    props?.disabled === true
+                      ? colors.grey.grey400
+                      : props.backgroundColor,
+                  borderRadius: 4,
                 }}
                 onPress={() => {
                   props.OnClick();
@@ -91,10 +96,10 @@ export const Button = (props) => {
               >
                 <Text
                   style={{
-                    textColor: props.textColor,
+                    color: props.textColor,
                     justifyContent: "center",
                     alignItems: "center",
-                    fontWeight:'bold'
+                    fontWeight: "bold",
                   }}
                 >
                   {props.text}

@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  number: '',
+  otpNumberData: [],
   countryData: [],
   isLoading: false,
   userData: [],
@@ -27,11 +27,9 @@ export const loginReducer = createSlice ({
     },
     updateCountryData: (state, {payload}) => {
       state.countryData = payload;
-
-
-      // console.log('====================================');
-      // console.log('state.countryData',payload);
-      // console.log('====================================');
     },
+    otpGeneratedData :(state , {payload}) =>{
+      state.otpNumberData  = payload;
+    }
   },
 });

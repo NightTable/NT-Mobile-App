@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Box, KeyboardAvoidingView, ScrollView, Select} from 'native-base';
+import React, { useState, useEffect } from "react";
+import { Box, KeyboardAvoidingView, ScrollView, Select } from "native-base";
 import {
   TextInput,
   View,
@@ -9,7 +9,7 @@ import {
   Image,
   Pressable,
   StyleSheet,
-} from 'react-native';
+} from "react-native";
 
 //Components
 import {
@@ -18,28 +18,28 @@ import {
   FeatherIcon,
   IoniconsIcon,
   MaterialCommunityIcon,
-} from './Icons';
+} from "./Icons";
 
-import {colors, typography} from '../theme';
+import { colors, typography } from "../theme";
 //Main function
 
-const SearchDropdown = props => {
+const SearchDropdown = (props) => {
   const [selectedItem, setSelectedItem] = useState(null);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   //PlaceHolder Text
   const [placeHolder, setplaceHolder] = useState(props.value);
   //action sheet
   const [openActionSheet, setopenActionSheet] = useState(false);
 
-  const filteredItems = props?.data?.filter(item =>
-    item?.label?.toLowerCase()?.includes(searchText?.toLowerCase()),
+  const filteredItems = props?.data?.filter((item) =>
+    item?.label?.toLowerCase()?.includes(searchText?.toLowerCase())
   );
 
   // console.log("filteredItems===>",props?.data)
 
-  const LeftIcon = leftIconDirectoryName => {
-    if (leftIconDirectoryName === 'Entypo') {
+  const LeftIcon = (leftIconDirectoryName) => {
+    if (leftIconDirectoryName === "Entypo") {
       return (
         <EntypoIcon
           name={props?.leftIconName}
@@ -47,7 +47,7 @@ const SearchDropdown = props => {
           size={22}
         />
       );
-    } else if (leftIconDirectoryName === 'Ionicons') {
+    } else if (leftIconDirectoryName === "Ionicons") {
       return (
         <IoniconsIcon
           name={props?.leftIconName}
@@ -55,7 +55,7 @@ const SearchDropdown = props => {
           size={22}
         />
       );
-    } else if (leftIconDirectoryName === 'AntDesign') {
+    } else if (leftIconDirectoryName === "AntDesign") {
       return (
         <AntDesignIcon
           name={props?.iconLeft}
@@ -63,7 +63,7 @@ const SearchDropdown = props => {
           size={22}
         />
       );
-    } else if (leftIconDirectoryName == 'Feather') {
+    } else if (leftIconDirectoryName == "Feather") {
       return (
         <FeatherIcon
           name={props?.leftIconName}
@@ -75,6 +75,7 @@ const SearchDropdown = props => {
       return null;
     }
   };
+
   return (
     <>
       <TouchableOpacity
@@ -84,42 +85,47 @@ const SearchDropdown = props => {
           width: props?.width,
           height: props?.height,
           backgroundColor: props.bgColor,
-          justifyContent: 'center',
-          // borderColor: 'green',
-          // borderWidth: 2,
+          justifyContent: "center",
+          borderColor: colors.gold.gold100,
+          borderWidth: 1,
+          borderRadius: 6,
         }}
         onPress={() => {
           setopenActionSheet(true);
-        }}>
+        }}
+      >
         <Box
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Text
             style={[
               typography.regular.regular16,
               {
                 color: props.textColor,
                 paddingHorizontal: 12,
-                width: '80%',
+                width: "76%",
               },
-            ]}>
+            ]}
+          >
             {placeHolder?.length > 11
-              ? placeHolder?.substring(0, 11)?.concat('...')
+              ? placeHolder?.substring(0, 16)?.concat("...")
               : placeHolder}
           </Text>
           <Box
             style={[
               {
-                width: '20%',
-                flexDirection: 'row-reverse',
-                // backgroundColor:'yellow'
+                width: "24%",
+                flexDirection: "row-reverse",
+                marginLeft: 12,
               },
-            ]}>
+            ]}
+          >
             <EntypoIcon
-              name={'chevron-small-down'}
+              name={"chevron-small-down"}
               color={props.iconColor}
               size={30}
             />
@@ -131,61 +137,66 @@ const SearchDropdown = props => {
         transparent={true}
         visible={openActionSheet}
         onRequestClose={() => {
-          //Alert.alert('Modal has been closed.');
           setopenActionSheet(!openActionSheet);
-        }}>
+        }}
+      >
         <KeyboardAvoidingView
           style={{
-            height: '100%',
-            justifyContent: 'flex-end',
+            height: "100%",
+            justifyContent: "flex-end",
             backgroundColor: colors.red.red800,
-          }}>
+          }}
+        >
           <Pressable
             onPress={() => {
               setopenActionSheet(!openActionSheet);
             }}
             style={{
-              height: props?.search === true ? '20%' : '60%',
-              backgroundColor: '#000000BA',
-            }}></Pressable>
+              height: props?.search === true ? "20%" : "60%",
+              backgroundColor: "#000000BA",
+            }}
+          ></Pressable>
 
           <Box
             style={{
-              height: props?.search === true ? '80%' : '40%',
+              height: props?.search === true ? "90%" : "40%",
               backgroundColor: colors.red.red800,
               borderTopLeftRadius: 22,
               borderTopRightRadius: 22,
-            }}>
+            }}
+          >
             <Box>
               <Box
                 style={{
-                  flexDirection: 'row',
-
-                  justifyContent: 'space-between',
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                   paddingHorizontal: 12,
-                }}>
+                }}
+              >
                 <Text
                   style={[
-                    typography.semBold.semBold18,
+                    typography.bold.bold16,
                     {
                       color: colors.white.white1,
-                      width: '80%',
+                      width: "80%",
                       paddingVertical: 14,
                     },
-                  ]}>
+                  ]}
+                >
                   {props?.searchPopupHeading}
                 </Text>
                 <TouchableOpacity
                   style={{
-                    width: '20%',
-                    alignItems: 'flex-end',
+                    width: "20%",
+                    alignItems: "flex-end",
                     paddingVertical: 14,
                   }}
                   onPress={() => {
                     setopenActionSheet(false);
-                  }}>
+                  }}
+                >
                   <MaterialCommunityIcon
-                    name={'close'}
+                    name={"close"}
                     color={colors.white.white0}
                     size={24}
                   />
@@ -201,30 +212,33 @@ const SearchDropdown = props => {
             />
             {props?.search === true ? (
               <>
-                <Box style={{padding: 12}}>
+                <Box style={{ padding: 12 }}>
                   <Box
                     style={{
-                      flexDirection: 'row',
+                      flexDirection: "row",
                       height: 40,
                       borderRadius: 6,
                       borderWidth: 1,
-                      borderColor: colors.grey.grey650,
+                      borderColor: colors.gold.gold100,
                       backgroundColor: colors.grey.grey650,
-                      justifyItems: 'center',
-                      alignItems: 'center',
-                    }}>
+                      justifyItems: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     <Box
                       style={{
-                        width: '10%',
-                        alignItems: 'center',
-                        justifyItems: 'center',
-                      }}>
+                        width: "10%",
+                        alignItems: "center",
+                        justifyItems: "center",
+                      }}
+                    >
                       {LeftIcon(props?.leftIconDirectoryName)}
                     </Box>
                     <Box
                       style={{
-                        width: '90%',
-                      }}>
+                        width: "90%",
+                      }}
+                    >
                       <TextInput
                         selectionColor={colors.white.white0}
                         cursorColor={colors.white.white0}
@@ -233,7 +247,7 @@ const SearchDropdown = props => {
                         keyboardShouldPersistTaps="always"
                         style={[typography.regular.regular16, styles.input]}
                         placeholderTextColor={colors.grey.grey200}
-                        onChangeText={text => {
+                        onChangeText={(text) => {
                           setSearchText(text);
                         }}
                         value={searchText}
@@ -244,26 +258,27 @@ const SearchDropdown = props => {
               </>
             ) : null}
 
-            <ScrollView style={{paddingVertical: 10}}>
+            <ScrollView style={{ paddingVertical: 10 }}>
               {filteredItems?.map((item, index) => {
                 return (
                   <>
                     <Pressable
                       key={() => {
-                        return Number(index);
+                        return String(index);
                       }}
                       style={{
                         padding: 12,
                         paddingBottom:
                           filteredItems.length - 1 === index ? 100 : 12,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        flexDirection: "row",
+                        justifyContent: "space-between",
                       }}
                       onPress={() => {
                         setplaceHolder(item.label);
                         setopenActionSheet(!openActionSheet);
                         props.onValueChange(item);
-                      }}>
+                      }}
+                    >
                       <Text
                         style={[
                           placeHolder === item.label
@@ -273,7 +288,8 @@ const SearchDropdown = props => {
                             color: colors.white.white1,
                             paddingHorizontal: 12,
                           },
-                        ]}>
+                        ]}
+                      >
                         {item.label}
                       </Text>
 
@@ -281,7 +297,7 @@ const SearchDropdown = props => {
                         <>
                           <Box>
                             <FeatherIcon
-                              name={'check'}
+                              name={"check"}
                               color={colors.green.green550}
                               size={22}
                             />
@@ -305,9 +321,9 @@ const SearchDropdown = props => {
 const styles = StyleSheet.create({
   searchSection: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.white.white0,
   },
   searchIcon: {
@@ -319,7 +335,7 @@ const styles = StyleSheet.create({
     // paddingRight: 10,
     // paddingBottom: 10,
     //paddingLeft: 0,
-    backgroundColor: colors.grey.grey650,
+    backgroundColor: "transparent",
     color: colors.white.white0,
     borderRadius: 6,
     //  width: '100%',
