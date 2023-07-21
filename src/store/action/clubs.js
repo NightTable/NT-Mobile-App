@@ -1,6 +1,6 @@
 // import axios from "axios";
-import {useDispatch, useSelector} from 'react-redux';
-import {clubReducer} from '../reducer/clubReducer';
+import { clubReducer } from "../reducer/clubReducer";
+import { getClubs } from "../../services/club";
 
 const {
   getAllClubs,
@@ -11,14 +11,15 @@ const {
   deleteClub,
 } = clubReducer.actions;
 
-export const getAllClubfromdb = data => {
-  return dispatch => {
-
+export const getAllClubfromdb = () => {
+  console.log("inside getallclub from db :::::>>>>>.>>>>>>>>>>>");
+  return async (dispatch) => {
+    const apiCall = await getClubs();
+    console.log("clubDataApiCall=====>", apiCall);
+    dispatch(getAllClubs(apiCall.data));
   };
 };
 
-export const getClubDetailbyId =  (id) => {
-  return dispatch =>{
-
-  }
-}
+export const getClubDetailbyId = (id) => {
+  return (dispatch) => {};
+};

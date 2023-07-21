@@ -8,25 +8,29 @@ import {
   SafeAreaView,
   FlatList,
   Pressable,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+//component
+import { HeaderWithLeftIcon } from "../../components/Header";
+//REDUX
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 // import { getDistanceFromLatLonInMi } from "./algo";
-
 // import DashboardBubbleComp from "../components/EntryDashboardScreen/DashboardBubbleComp";
-// import axios from "axios";
-
-// import curvedWhiteLinePic from "../assets/whitecurvesmall.png";
-// import reignPic from "../assets/reignpic.png";
-
 // import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
 //THEME
 import { colors, typography } from "../../theme";
-
+//DIMENSIONS
 const { width, height } = Dimensions.get("screen");
-import { HeaderWithLeftIcon } from "../../components/Header";
 
 const Dashboard = (props) => {
+  //SELECTORS
+
+  const clubStore = useSelector((state) => state.club);
+
+  console.log("clubStore====>", clubStore);
+
   const [userName, setUserName] = useState("");
   const [city, setCity] = useState("");
   const [clubList, setClubList] = useState([]);
@@ -36,58 +40,55 @@ const Dashboard = (props) => {
   const handleChangeText = (inputText) => {
     setCity(inputText);
   };
-  useEffect(() => {
-    //need to integrate location from connect -- geolocation service
-    let getNearByClubs = async () => {
-      // let clubs = await axios.get(`${LOCAL_URL}api/clubs/coordinates/:lat/:long`);
-      // let clubs = await axios.get(
-      //   `${LOCAL_URL}api/clubs/coordinates/38.494/-74.443`
-      // );
+  // useEffect(() => {
+  //   //need to integrate location from connect -- geolocation service
+  //   let getNearByClubs = async () => {
+  //     // let clubs = await axios.get(`${LOCAL_URL}api/clubs/coordinates/:lat/:long`);
+  //     // let clubs = await axios.get(
+  //     //   `${LOCAL_URL}api/clubs/coordinates/38.494/-74.443`
+  //     // );
 
-      // // if (clubs.length) {
-      // setClubList(clubs.data.data);
-      setIsDataLoaded(true);
-      // console.log("clubs api response", clubs.data.data);
+  //     // // if (clubs.length) {
+  //     // setClubList(clubs.data.data);
+  //     setIsDataLoaded(true);
+  //     // console.log("clubs api response", clubs.data.data);
 
-      // console.log(clubs.data.data);
-      // } else {
-      // Alert.alert("No Club Found within 50Kms.");
-      // }
-    };
+  //     // console.log(clubs.data.data);
+  //     // } else {
+  //     // Alert.alert("No Club Found within 50Kms.");
+  //     // }
+  //   };
 
-    getNearByClubs();
-  }, []);
+  //   getNearByClubs();
+  // }, []);
 
-  const ClubCards = (props) => {
-    // console.log("props+++>>>>>", props.props.name, props.props.distance);
-
+  const ClubCards = ({ props }) => {
     return (
       <Pressable
         style={{
           backgroundColor: colors.gold.gold200,
-          width: "90%",
           flexDirection: "row",
           margin: 6,
           borderRadius: 4,
-          padding: 4,
-          // justifyContent: "space-evenly",
-          paddingHorizontal: 8,
+          padding: 14,
         }}
         onPress={() => {
-          // console.log("++++_____======",props)
-          // alert(`${props.props.name} pressed.`);
           navigation.navigate("Club", {
-            clubData: props.props,
+            clubData: props,
           });
         }}
       >
         <Box style={{ width: "50%" }}>
-          <Text>{props.props.name}</Text>
+          <Text>{props?.name}</Text>
         </Box>
         <Box style={{ width: "50%", alignItems: "flex-end" }}>
-          <Text>
+          <Image
+            style={{ height: 20, width: 50 }}
+            source={{ uri: props?.photos[0] }}
+          />
+          {/* <Text>
             {Math.round(props.props.distance.calculated * 0.00062137119)}.0 mi
-          </Text>
+          </Text> */}
         </Box>
       </Pressable>
     );
@@ -105,8 +106,7 @@ const Dashboard = (props) => {
       />
       <Box
         style={{
-          backgroundColor: "green",
-
+          // backgroundColor: "green",
           paddingHorizontal: 18,
           flex: 1,
         }}
@@ -120,50 +120,46 @@ const Dashboard = (props) => {
             },
           ]}
         >
-          Welcome back, {userName}
+          Welcome back, 
         </Text>
-      </Box>
-      <Box
-        style={{
-          height: "20%",
-          justifyContent: "center",
-          width: "100%",
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
-        <Text
-          style={{
-            color: colors.gold.gold200,
-            fontSize: 14,
-            fontWeight: "500",
-          }}
-        >
-          Enter City :{"  "}
-        </Text>
-        <TextInput
-          value={city}
-          onChangeText={handleChangeText}
-          placeholder="                 "
-          style={{
-            borderBottomWidth: 2,
-            borderBottomColor: colors.gold.gold200,
-            color: colors.gold.gold200,
-          }}
-        ></TextInput>
-      </Box>
 
-      <Box style={{ alignItems: "center", width: "100%" }}>
-        <FlatList
-          data={clubList}
-          renderItem={({ item }) => {
-            return <ClubCards props={item} />;
+        {/*<Box
+          style={{
+            width: "100%",
+            alignItems: "center",
+            flexDirection: "row",
           }}
-          keyExtractor={(item) => item._id.toString()}
-        />
-        {/* ) : (
+        > <Text
+            style={{
+              color: colors.gold.gold200,
+              fontSize: 14,
+              fontWeight: "500",
+            }}
+          >
+            Enter City :{"  "}
+          </Text> 
+           <TextInput
+            value={city}
+            onChangeText={handleChangeText}
+            placeholder="                 "
+            style={{
+              borderBottomWidth: 2,
+              borderBottomColor: colors.gold.gold200,
+              color: colors.gold.gold200,
+            }}
+          /> </Box>*/}
+        <Box style={{ alignItems: "center", paddingTop: 20 }}>
+          <FlatList
+            data={clubStore?.allClubs}
+            renderItem={({ item }) => {
+              return <ClubCards props={item} />;
+            }}
+            keyExtractor={(item) => item._id.toString()}
+          />
+          {/* ) : (
           <Text>No Clubs Found</Text>
         )}  */}
+        </Box>
       </Box>
     </SafeAreaView>
   );

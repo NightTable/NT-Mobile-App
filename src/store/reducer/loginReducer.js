@@ -32,7 +32,7 @@ export const loginReducer = createSlice({
       state.verifyNumberData = payload;
     },
     checkUserLoggedIn: (state, { payload }) => {
-      state.isUserLoggedIn = true;
+      state.isUserLoggedIn = payload;
     },
     isProfileSetup: (state, { payload }) => {
       state.isProfileSetup = payload;

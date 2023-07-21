@@ -18,6 +18,7 @@ import {
   disableLoader,
   enableLoader,
 } from "../../components/popUp/loader/trigger";
+import { getAllClubfromdb } from "../../store/action/clubs";
 const { height, width } = Dimensions.get("screen");
 //Main Function
 
@@ -27,7 +28,7 @@ const Otp = ({ route, navigation }) => {
 
   //login store
   const loginStore = useSelector((state) => state.login);
-
+  const clubStore = useSelector((state) => state.club);
   //ResendOtp-Button State
   const [resendOtp, setresendOtp] = useState(true);
   const [otp, setotp] = useState("");
@@ -45,36 +46,28 @@ const Otp = ({ route, navigation }) => {
   const submit = async () => {
     enableLoader();
     const data = dispatch(verifyOtp(otp));
-    // const data = await otpVerify(route.params.number, otp);
-    // console.log("data==>", data.status);
-    // if (data.status === true) {
-    //   // await saveUserData("userData",data);
-    //   navigation.navigate("DrawerNavigator");
-    // }
-  };
-
-  const saveUserData = async (key, data) => {
-    const saveData = await StoretoLocalData(key, data);
-    console.log("saveData===>", saveData);
   };
 
   useEffect(() => {
+    console.log("loginStore?.verifyNumberData", loginStore?.verifyNumberData);
     if (
       loginStore?.verifyNumberData?.message ==
       "Verification failed! Please try again."
     ) {
       seterror_msg("Verification failed! Please try again.");
-    } else {
-      
-      if (loginStore?.verifyNumberData?.data?.isProfileSetup === false) {
+    } else if (loginStore?.verifyNumberData.status === true) {
+      // if (loginStore?.verifyNumberData?.data?.isProfileSetup === false) {
+      //   dispatch(updateToken(loginStore?.verifyNumberData));
+      //   disableLoader();
+      //   console.log("GO TO PROFILE PAGE ====>");
+      //   navigation.navigate("DrawerNavigator");
+      // } else
+      if (loginStore?.verifyNumberData?.data?.isProfileSetup != true) {
         dispatch(updateToken(loginStore?.verifyNumberData));
-        disableLoader();
-        console.log("GO TO PROFILE PAGE ====>");
-        navigation.navigate("DrawerNavigator");
-      } else if (loginStore?.verifyNumberData?.data?.isProfileSetup === true) {
-        dispatch(updateToken(loginStore?.verifyNumberData));
+        dispatch(getAllClubfromdb());
         disableLoader();
         console.log("GO TO DASHBOARD");
+        navigation.navigate("DrawerNavigator");
       }
     }
 
@@ -99,6 +92,16 @@ const Otp = ({ route, navigation }) => {
             keyboardType="numeric"
           />
         </Box>
+        <Text
+          style={[
+            typography.regular.regular14,
+            {
+              color: colors.red.red350,
+            },
+          ]}
+        >
+          {error_msg}
+        </Text>
         <Box>
           <Box style={{ height: "50%" }}>
             <Box style={{ paddinTop: 30 }}></Box>

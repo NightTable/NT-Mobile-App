@@ -100,7 +100,7 @@ export const PopUpAlertUi = (props) => {
               style={[
                 typography.bold.bold16,
                 {
-                  color: props.headingColor,
+                  color: props.headingColor && props.headingColor,
                   textAlign: "center",
                   paddingVertical:
                     props?.message?.length > 0 ? value.regular : 0,

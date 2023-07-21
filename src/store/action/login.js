@@ -1,6 +1,3 @@
-// import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-
 import { loginReducer } from "../reducer/loginReducer";
 import { getCountries } from "../../services/country";
 import { loginApi, otpVerify } from "../../services/auths";
@@ -74,7 +71,10 @@ export const updateToken = (data) => {
   return async (dispatch) => {
     dispatch(updateUserToken(data?.token));
     dispatch(isProfileSetup(data?.data?.isProfileSetup));
-    dispatch(checkUserLoggedIn());
+    dispatch(checkUserLoggedIn(true));
+    
+    //GET CLUBS 
+
   };
 };
 
