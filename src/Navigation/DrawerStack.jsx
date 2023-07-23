@@ -11,6 +11,7 @@ import TableConfigurations from "../screens/TableConfig/TableConfigurations";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //THEME
 import { typography, colors } from "../theme";
+import Profile from "../screens/Profile/Profile";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,40 +22,34 @@ const DrawerNavigator = () => {
       screenOptions={{
         headerShown: false,
         drawerStyle: {
-          backgroundColor: "black",
           borderWidth: 2,
           borderColor: colors.gold.gold200,
           paddingVertical: 20,
+          borderLeftColor: "transparent",
+          backgroundColor: colors.black.black800,
         },
         drawerActiveBackgroundColor: colors.grey.grey600,
-        // drawerActiveTintColor: colors.black.black400,
-        // drawerInactiveTintColor: colors.gold.gold200,
-        drawerLabelStyle: {
-          marginLeft: 20,
-          // fontFamily: Fonts.mainFontReg,
-          fontSize: 15,
-          color: colors.gold.gold200,
-        },
+        drawerLabelStyle: [
+          typography.bold.bold24,
+          {
+            marginLeft: 20,
+            fontSize: 15,
+            color: colors.gold.gold200,
+          },
+        ],
       }}
+      // drawerContent={props => {
+      //   <>
+      //   </>
+      // }}
     >
-      <Drawer.Screen
-        name="Dashboard"
-        component={Dashboard}
-        // options={{
-        //     drawerIcon: () => (
-        //         <Image
-        //             style={styles.icon}
-        //             source={DashboardPic}>
-        //         </Image>
-        //     ),
-        // }}
-      />
-
+      <Drawer.Screen name="Home" component={Dashboard} />
+      <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen
         name="Club"
         component={Club}
         options={{
-          headerShown: false,
+          drawerItemStyle: { height: 0 },
         }}
       />
 
@@ -62,9 +57,7 @@ const DrawerNavigator = () => {
         name="ClubEvents"
         component={ClubEvents}
         options={{
-          headerShown: false,
-          //uncomment below line to hide this screen from drawer navigator
-          // drawerItemStyle:{display:'none'}
+          drawerItemStyle: { height: 0 },
         }}
       />
 
@@ -72,9 +65,7 @@ const DrawerNavigator = () => {
         name="TableConfigurations"
         component={TableConfigurations}
         options={{
-          headerShown: false,
-          //uncomment below line to hide this screen from drawer navigator
-          // drawerItemStyle:{display:'none'}
+          drawerItemStyle: { height: 0 },
         }}
       />
     </Drawer.Navigator>

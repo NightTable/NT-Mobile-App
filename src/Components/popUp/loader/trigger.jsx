@@ -22,7 +22,7 @@ const ActivityIndicatorLoader = () => {
 
 export const enableLoader = () => {
   let obj = {
-    headingColor: "",
+    headingColor: "transparent",
     Heading: "",
     img: "", //cross img
     renderfn: <ActivityIndicatorLoader />,

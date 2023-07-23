@@ -69,12 +69,12 @@ export const verifyOtp = (otp) => {
 
 export const updateToken = (data) => {
   return async (dispatch) => {
+    console.log("data===>", data);
     dispatch(updateUserToken(data?.token));
     dispatch(isProfileSetup(data?.data?.isProfileSetup));
     dispatch(checkUserLoggedIn(true));
-    
-    //GET CLUBS 
 
+    //GET CLUBS
   };
 };
 

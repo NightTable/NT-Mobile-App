@@ -10,7 +10,6 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //components
 import { Button } from "../../components/Buttons";
 //Utils
-import { StoretoLocalData } from "../../utils/SensitiveData/SensitiveData";
 //Theme
 import { typography, colors } from "../../theme";
 import { updateToken, verifyOtp } from "../../store/action/login";
@@ -19,6 +18,7 @@ import {
   enableLoader,
 } from "../../components/popUp/loader/trigger";
 import { getAllClubfromdb } from "../../store/action/clubs";
+import { HeaderWithLeftIcon } from "../../components/Header";
 const { height, width } = Dimensions.get("screen");
 //Main Function
 
@@ -49,7 +49,6 @@ const Otp = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    console.log("loginStore?.verifyNumberData", loginStore?.verifyNumberData);
     if (
       loginStore?.verifyNumberData?.message ==
       "Verification failed! Please try again."
@@ -66,51 +65,50 @@ const Otp = ({ route, navigation }) => {
         dispatch(updateToken(loginStore?.verifyNumberData));
         dispatch(getAllClubfromdb());
         disableLoader();
-        console.log("GO TO DASHBOARD");
         navigation.navigate("DrawerNavigator");
+        console.log("GO TO DASHBOARD");
       }
     }
-
-    return () => {};
-  }, [loginStore?.verifyNumberData]);
+  }, [loginStore]);
 
   return (
     <>
       <Box safeArea style={styles.container}>
-        <Text style={[typography.bold.bold16, styles.heading]}>
-          Please enter the otp{" "}
-        </Text>
-        <Box style={{ marginTop: 100 }}>
-          <OTPTextView
-            tintColor={colors.black.black800}
-            autoFocus={true}
-            style={styles.roundedTextInput}
-            handleTextChange={(e) => {
-              setotp(e);
-            }}
-            inputCount={6}
-            keyboardType="numeric"
-          />
-        </Box>
-        <Text
-          style={[
-            typography.regular.regular14,
-            {
-              color: colors.red.red350,
-            },
-          ]}
-        >
-          {error_msg}
-        </Text>
-        <Box>
-          <Box style={{ height: "50%" }}>
-            <Box style={{ paddinTop: 30 }}></Box>
+        <HeaderWithLeftIcon
+          title={"Please enter the otp"}
+          icon={"arrowleft"}
+          iconDirectory={"AntDesign"}
+          onSubmit={() => {
+            navigation.navigate("Login");
+          }}
+        />
+        <Box style={[styles.mainBox]}>
+          <Box style={{ marginTop: 100 }}>
+            <OTPTextView
+              tintColor={colors.black.black800}
+              autoFocus={true}
+              style={styles.roundedTextInput}
+              handleTextChange={(e) => {
+                setotp(e);
+              }}
+              inputCount={6}
+              keyboardType="numeric"
+            />
           </Box>
+          <Text
+            style={[
+              typography.regular.regular14,
+              {
+                color: colors.red.red350,
+              },
+            ]}
+          >
+            {error_msg}
+          </Text>
           <Box
             style={{
-              padding: 12,
+              paddingTop: 100,
               backgroundColor: colors.black.black800,
-              flex: 1,
             }}
           >
             <Button
@@ -123,6 +121,8 @@ const Otp = ({ route, navigation }) => {
             />
           </Box>
         </Box>
+
+        <Box></Box>
       </Box>
     </>
   );
@@ -132,9 +132,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.black.black800,
     flex: 1,
-    padding: 18,
   },
-
+  mainBox: {
+    paddingHorizontal: 18,
+    flex: 1,
+  },
   borderStyleBase: {
     width: 40,
     height: 45,

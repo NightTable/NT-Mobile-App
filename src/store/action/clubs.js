@@ -12,10 +12,8 @@ const {
 } = clubReducer.actions;
 
 export const getAllClubfromdb = () => {
-  console.log("inside getallclub from db :::::>>>>>.>>>>>>>>>>>");
   return async (dispatch) => {
     const apiCall = await getClubs();
-    console.log("clubDataApiCall=====>", apiCall);
     dispatch(getAllClubs(apiCall.data));
   };
 };

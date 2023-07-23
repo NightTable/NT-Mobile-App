@@ -9,37 +9,37 @@ import {
   FlatList,
   Pressable,
   Image,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 //component
 import { HeaderWithLeftIcon } from "../../components/Header";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-
-// import { getDistanceFromLatLonInMi } from "./algo";
-// import DashboardBubbleComp from "../components/EntryDashboardScreen/DashboardBubbleComp";
-// import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
 //THEME
 import { colors, typography } from "../../theme";
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
 
-const Dashboard = (props) => {
+// import { getDistanceFromLatLonInMi } from "./algo";
+// import DashboardBubbleComp from "../components/EntryDashboardScreen/DashboardBubbleComp";
+// import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
+
+const Dashboard = ({ navigation }) => {
   //SELECTORS
 
   const clubStore = useSelector((state) => state.club);
 
-  console.log("clubStore====>", clubStore);
+  // console.log("clubStore====>", clubStore);
 
-  const [userName, setUserName] = useState("");
-  const [city, setCity] = useState("");
-  const [clubList, setClubList] = useState([]);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [index, setIndex] = useState(null);
-  const navigation = useNavigation();
-  const handleChangeText = (inputText) => {
-    setCity(inputText);
-  };
+  // const [userName, setUserName] = useState("");
+  // const [city, setCity] = useState("");
+  // const [clubList, setClubList] = useState([]);
+  // const [index, setIndex] = useState(null);
+  // const navigation = useNavigation();
+  // const handleChangeText = (inputText) => {
+  //   setCity(inputText);
+  // };
   // useEffect(() => {
   //   //need to integrate location from connect -- geolocation service
   //   let getNearByClubs = async () => {
@@ -64,33 +64,37 @@ const Dashboard = (props) => {
 
   const ClubCards = ({ props }) => {
     return (
-      <Pressable
-        style={{
-          backgroundColor: colors.gold.gold200,
-          flexDirection: "row",
-          margin: 6,
-          borderRadius: 4,
-          padding: 14,
-        }}
-        onPress={() => {
-          navigation.navigate("Club", {
-            clubData: props,
-          });
-        }}
-      >
-        <Box style={{ width: "50%" }}>
-          <Text>{props?.name}</Text>
-        </Box>
-        <Box style={{ width: "50%", alignItems: "flex-end" }}>
-          <Image
-            style={{ height: 20, width: 50 }}
-            source={{ uri: props?.photos[0] }}
-          />
-          {/* <Text>
+      <>
+      
+
+        <Pressable
+          style={{
+            backgroundColor: colors.gold.gold200,
+            flexDirection: "row",
+            margin: 6,
+            borderRadius: 4,
+            padding: 14,
+          }}
+          onPress={() => {
+            navigation.navigate("Club", {
+              clubData: props,
+            });
+          }}
+        >
+          <Box style={{ width: "50%" }}>
+            <Text>{props?.name}</Text>
+          </Box>
+          <Box style={{ width: "50%", alignItems: "flex-end" }}>
+            <Image
+              style={{ height: 20, width: 50 }}
+              source={{ uri: props?.photos[0] }}
+            />
+            {/* <Text>
             {Math.round(props.props.distance.calculated * 0.00062137119)}.0 mi
           </Text> */}
-        </Box>
-      </Pressable>
+          </Box>
+        </Pressable>
+      </>
     );
   };
 
@@ -104,26 +108,57 @@ const Dashboard = (props) => {
           navigation.openDrawer();
         }}
       />
-      <Box
-        style={{
-          // backgroundColor: "green",
-          paddingHorizontal: 18,
-          flex: 1,
-        }}
-      >
-        <Text
-          style={[
-            typography.bold.bold16,
-            {
-              color: colors.gold.gold200,
-              paddingTop: 20,
-            },
-          ]}
-        >
-          Welcome back, 
+      <Box style={styles.mainBox}>
+        <Text style={[typography.bold.bold16, styles.textHeading]}>
+          Welcome back,
         </Text>
 
-        {/*<Box
+        <Box style={{ alignItems: "center", paddingTop: 20 }}>
+          <FlatList
+            data={clubStore?.allClubs}
+            renderItem={({ item }) => {
+              return <ClubCards props={item} />;
+            }}
+            keyExtractor={(item) => item._id.toString()}
+          />
+        </Box>
+      </Box>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.black.black800,
+  },
+  mainBox: {
+    paddingHorizontal: 18,
+    flex: 1,
+  },
+  clubListContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    height: 400 * height,
+  },
+  input: {
+    height: 40 * height,
+    margin: 12 * height,
+    borderWidth: 1 * width,
+    padding: 10 * height,
+    borderTopWidth: 0,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+  },
+  textHeading: {
+    color: colors.gold.gold200,
+    paddingTop: 20,
+  },
+});
+
+export default Dashboard;
+{
+  /*<Box
           style={{
             width: "100%",
             alignItems: "center",
@@ -147,48 +182,5 @@ const Dashboard = (props) => {
               borderBottomColor: colors.gold.gold200,
               color: colors.gold.gold200,
             }}
-          /> </Box>*/}
-        <Box style={{ alignItems: "center", paddingTop: 20 }}>
-          <FlatList
-            data={clubStore?.allClubs}
-            renderItem={({ item }) => {
-              return <ClubCards props={item} />;
-            }}
-            keyExtractor={(item) => item._id.toString()}
-          />
-          {/* ) : (
-          <Text>No Clubs Found</Text>
-        )}  */}
-        </Box>
-      </Box>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.black.black800,
-  },
-  clubListContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    height: 400 * height,
-  },
-  input: {
-    height: 40 * height,
-    margin: 12 * height,
-    borderWidth: 1 * width,
-    padding: 10 * height,
-    // borderBottomColor: Colors.gold,
-    borderTopWidth: 0,
-    borderRightWidth: 0,
-    borderLeftWidth: 0,
-    // placeholderTextColor: Colors.gold,
-    // selectionColor: Colors.gold,
-    // color: Colors.gold,
-    // fontFamily: Fonts.mainFontReg,
-  },
-});
-
-export default Dashboard;
+          /> </Box>*/
+}
