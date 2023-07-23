@@ -10,6 +10,7 @@ import {
   Pressable,
   Image,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 //component
@@ -98,14 +99,32 @@ const Dashboard = ({ navigation }) => {
     );
   };
 
+  const logoutBtn = () =>
+  Alert.alert('Logout', 'Are you sure want to logout ?', [
+    {
+      text: 'Cancel',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+    {text: 'OK', onPress: () => {
+      navigation.navigate('Login')
+    }},
+  ]);
+
+
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithLeftIcon
         title={"NightTable"}
         icon={"menu"}
         iconDirectory={"Entypo"}
+        iconRightDirectory={'Entypo'}
+        iconRight={'log-out'}
         onSubmit={() => {
           navigation.openDrawer();
+        }}
+        onPressRight={()=>{
+          logoutBtn()
         }}
       />
       <Box style={styles.mainBox}>

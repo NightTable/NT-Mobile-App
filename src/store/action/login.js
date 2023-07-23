@@ -78,6 +78,12 @@ export const updateToken = (data) => {
   };
 };
 
+export const logoutFromApp = () =>{
+  return async (dispatch) =>{
+    dispatch(logout())
+  }
+}
+
 export function loginStore() {
   // const username = useSelector((state) => state.login.username);
   // const password = useSelector((state) => state.login.password);
