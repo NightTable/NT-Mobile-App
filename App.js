@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Dimensions, Modal, View, Text, StyleSheet } from "react-native";
 
 import { NativeBaseProvider, StatusBar } from "native-base";
+import { colors } from "./src/theme";
 //STORE
 import { store } from "./src/store/store";
 //NAVIGATION
@@ -149,3 +150,16 @@ export default function App() {
     </>
   );
 }
+const styles = StyleSheet.create({
+  offline: {
+    height: 30,
+    backgroundColor: colors.red.red175,
+    justifyContent: 'center',
+  },
+  greenText: {
+    height: 30,
+    backgroundColor: colors.green.green200,
+    justifyContent: 'center',
+  },
+  textColor: {color: colors.white.white0, textAlign: 'center'},
+});
