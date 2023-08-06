@@ -5,6 +5,7 @@ const initialState = {
   individualClubDetail: [],
   isLoading: true,
   individualClubEvents: [],
+  individualClubTableConfig: [],
 };
 
 export const clubReducer = createSlice({
@@ -16,6 +17,12 @@ export const clubReducer = createSlice({
     },
     getClubEventsData: (state, { payload }) => {
       state.individualClubEvents = payload;
+    },
+    getIndividualClubTableConfig: (state, { payload }) => {
+      state.individualClubTableConfig = payload;
+    },
+    isLoaderState : (state, { payload }) => {
+      state.isLoading = payload;
     },
     // getClubDetails: (state, { payload }) => {
     //   state[payload.name] = payload.value;

@@ -4,7 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import Dashboard from "../screens/Dashboard/Dashboard";
 //CLUBS SCRREN
 import Club from "../screens/Club/Club";
-import ClubEvents from "../screens/Club/ClubEvents";
+//EVENT
+import UpcomingEvents from "../screens/Event/UpcomingEvents";
+import EventDetail from '../screens/Event/EventDetail'
 //TABLE CONFIGURATIONS
 import TableConfigurations from "../screens/TableConfig/TableConfigurations";
 //STACKS
@@ -54,8 +56,8 @@ const DrawerNavigator = () => {
       />
 
       <Drawer.Screen
-        name="ClubEvents"
-        component={ClubEvents}
+        name="UpcomingEvents"
+        component={UpcomingEvents}
         options={{
           drawerItemStyle: { height: 0 },
         }}

@@ -1,4 +1,3 @@
-import axios, * as others from "axios";
 import { GetRequest } from "../utils/axios/Axios";
 
 //GET ALL THE CLUBS EVENT

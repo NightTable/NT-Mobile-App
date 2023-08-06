@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import { colors } from "../../theme";
-
+import { Box } from "native-base";
 import {
-  View,
   Text,
   StyleSheet,
-  Image,
   ScrollView,
   Platform,
   TextInput,
@@ -16,113 +14,36 @@ import {
   FlatList,
   Pressable,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-// import { DataTable } from "react-native-paper";
-
-// import axios from "axios";
-
-// import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
 const { width, height } = Dimensions.get("screen");
-// import { HeaderWithLeftIcon } from "../../components/Header";
-const TableConfigurations = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+import { HeaderWithLeftIcon } from "../../components/Header";
+const TableConfigurations = ({ route, navigation }) => {
+  //dispatch
+  const dispatch = useDispatch();
+  //Store
+  const clubStore = useSelector((state) => state.club);
 
-  const [items, setItems] = useState([
-    {
-      key: 1,
-      name: "Cupcake",
-      calories: 356,
-      fat: 16,
-    },
-    {
-      key: 2,
-      name: "Eclair",
-      calories: 262,
-      fat: 16,
-    },
-    {
-      key: 3,
-      name: "Frozen yogurt",
-      calories: 159,
-      fat: 6,
-    },
-    {
-      key: 4,
-      name: "Gingerbread",
-      calories: 305,
-      fat: 3.7,
-    },
-    {
-      key: 5,
-      name: "bread",
-      calories: 305,
-      fat: 3.7,
-    },
-    {
-      key: 6,
-      name: "ngerbre",
-      calories: 305,
-      fat: 3.7,
-    },
-    {
-      key: 7,
-      name: "ad",
-      calories: 305,
-      fat: 3.7,
-    },
-    {
-      key: 8,
-      name: "Gin",
-      calories: 305,
-      fat: 3.7,
-    },
-    {
-      key: 9,
-      name: "Gingerbread",
-      calories: 305,
-      fat: 3.7,
-    },
-    {
-        key: 10,
-        name: "Gingerbread",
-        calories: 305,
-        fat: 3.7,
-      },
-      {
-        key: 11,
-        name: "Gingerbread",
-        calories: 305,
-        fat: 3.7,
-      },
-      {
-        key: 12,
-        name: "Gingerbread",
-        calories: 305,
-        fat: 3.7,
-      },
-      {
-        key: 13,
-        name: "Gingerbread",
-        calories: 305,
-        fat: 3.7,
-      },
-  ]);
-
+  //individualClubTableConfig
+console.log('====================================');
+console.log('clubStore====>',clubStore?.individualClubTableConfig);
+console.log('====================================');
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ width: "100%" }}>
-        {/* <HeaderWithLeftIcon
+      <Box style={{ width: "100%" }}>
+        <HeaderWithLeftIcon
           title={"Table Prices"}
           icon={"arrowleft"}
           iconDirectory={"AntDesign"}
           onSubmit={() => {
-            navigation.navigate("", {});
+            navigation.navigate("UpcomingEvents", {
+              clubData: route?.params?.clubData,
+              selectedEventData: route?.params?.selectedEventData,
+            });
           }}
-        /> */}
-      </View>
-      <View style={{  paddingHorizontal: 20, marginBottom:20, marginTop: 14 }}>
+        />
+      </Box>
+      <Box style={{ paddingHorizontal: 20, marginBottom: 20, marginTop: 14 }}>
         <Text
           style={{
             color: colors.gold.gold200,
@@ -139,30 +60,17 @@ const TableConfigurations = () => {
           persons of interest should not let it stop them from joining, as they
           may request for a lower fee or a free spot on the table.
         </Text>
-      </View>
-      <View>
-        {/* <DataTable>
-          <DataTable.Header>
-            <DataTable.Title textStyle={{ color: colors.gold.gold200 }}>
-              Table Map Id
-            </DataTable.Title>
-            <DataTable.Title textStyle={{ color: colors.gold.gold200 }}>
-              Table Type
-            </DataTable.Title>
-            <DataTable.Title textStyle={{ color: colors.gold.gold200 }}>
-              Table Minimum
-            </DataTable.Title>
-          </DataTable.Header>
-        </DataTable> */}
-        <View
+      </Box>
+      <Box>
+        <Box
           style={{
             justifyContent: "center",
             alignItems: "center",
             padding: 10,
           }}
         >
-          <View style={{ flexDirection: "row" }}>
-            <View
+          <Box style={{ flexDirection: "row" }}>
+            <Box
               style={{
                 width: "30%",
                 justifyContent: "center",
@@ -172,8 +80,8 @@ const TableConfigurations = () => {
               <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
                 Table Map ID
               </Text>
-            </View>
-            <View
+            </Box>
+            <Box
               style={{
                 width: "30%",
                 justifyContent: "center",
@@ -183,8 +91,8 @@ const TableConfigurations = () => {
               <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
                 Table Type
               </Text>
-            </View>
-            <View
+            </Box>
+            <Box
               style={{
                 width: "30%",
                 justifyContent: "center",
@@ -194,8 +102,8 @@ const TableConfigurations = () => {
               <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
                 Table Minimum
               </Text>
-            </View>
-          </View>
+            </Box>
+          </Box>
           {/* {items.length?
           (
        
@@ -210,7 +118,7 @@ const TableConfigurations = () => {
               padding: 10,
             }}
           >
-                  <View
+                  <Box
                     style={{
                       flexDirection: "row",
                       backgroundColor: colors.gold.gold200,
@@ -221,7 +129,7 @@ const TableConfigurations = () => {
                       padding: 2,
                     }}
                   >
-                    <View
+                    <Box
                       style={{
                         width: "30%",
                         justifyContent: "center",
@@ -229,8 +137,8 @@ const TableConfigurations = () => {
                       }}
                     >
                       <Text>{ele.key}</Text>
-                    </View>
-                    <View
+                    </Box>
+                    <Box
                       style={{
                         width: "30%",
                         justifyContent: "center",
@@ -238,8 +146,8 @@ const TableConfigurations = () => {
                       }}
                     >
                       <Text>{ele.name}</Text>
-                    </View>
-                    <View
+                    </Box>
+                    <Box
                       style={{
                         width: "30%",
                         justifyContent: "center",
@@ -247,8 +155,8 @@ const TableConfigurations = () => {
                       }}
                     >
                       <Text>{ele.calories}</Text>
-                    </View>
-                  </View>
+                    </Box>
+                  </Box>
                   </ScrollView>
 
                 );
@@ -260,8 +168,8 @@ const TableConfigurations = () => {
               <Text>No Table Configuration Found</Text>
             </ScrollView>
           )} */}
-        </View>
-      </View>
+        </Box>
+      </Box>
     </SafeAreaView>
   );
 };

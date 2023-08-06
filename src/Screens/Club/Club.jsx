@@ -20,7 +20,6 @@ const Club = ({ route, navigation }) => {
         const filteredData = clubStore?.individualClubEvents?.filter((item) => {
           return item?.isTableConfigAdded != false && item;
         });
-
         if (filteredData?.length > 0) {
           return "Check for Upcoming Events";
         } else {
@@ -132,7 +131,7 @@ const Club = ({ route, navigation }) => {
             onSubmit={() => {
               // validation();
               if (clubStore?.individualClubEvents?.length > 0) {
-                navigation.navigate("ClubEvents", {
+                navigation.navigate("UpcomingEvents", {
                   clubData: route?.params?.clubData,
                 });
               }

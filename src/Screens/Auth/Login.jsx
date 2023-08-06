@@ -33,7 +33,7 @@ const Login = ({ navigation, route }) => {
   //STATES
   const [number, onChangeNumber] = useState("");
   //SELECTED COUNTRY DATA
-  const [selectedCountry, setselectedCountry] = useState("");
+  const [selectedCountry, setselectedCountry] = useState("+ XX");
   //ERROR MSG
   const [error_msg, seterror_msg] = useState("");
 
@@ -94,7 +94,7 @@ const Login = ({ navigation, route }) => {
     if (data[0]?.value != undefined) {
       setselectedCountry(data[0]?.value.toString());
     } else {
-      setselectedCountry('+ XX');
+      // setselectedCountry('+ XX');
     }
   };
   return (
