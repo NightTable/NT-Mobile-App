@@ -42,7 +42,8 @@
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
     "react-redux": "^8.1.1",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "@stripe/stripe-react-native": "0.23.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

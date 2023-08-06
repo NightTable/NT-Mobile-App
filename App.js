@@ -20,6 +20,9 @@ import { PopUpAlertUi } from "./src/components/popUp/PopUp";
 import { EventRegister } from "react-native-event-listeners";
 
 const Stack = createNativeStackNavigator();
+// App.ts
+import { StripeProvider } from "@stripe/stripe-react-native";
+import PaymentScreen from "./src/payment/Stripe";
 
 export default function App() {
   //INTERNET CONNECTION CHECK
@@ -123,29 +126,39 @@ export default function App() {
         )
       )}
       <Provider store={store}>
-        <NativeBaseProvider>
-          <NavigationContainer>
-            {popUpShow === false ? null : (
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={popUpShow}
-              >
-                <PopUpAlertUi
-                  onPopUpClose={() => {
-                    onPopUpClose();
-                  }}
-                  message={message}
-                  headingColor={popUpTheme}
-                  renderfn={popUprenderfn}
-                  closeBtnEnable={closeBtnEnable}
-                  img={Image}
-                />
-              </Modal>
-            )}
-            <RootStack />
-          </NavigationContainer>
-        </NativeBaseProvider>
+        <StripeProvider
+          publishableKey={
+            "pk_test_51KJ1A4AZeCut3tbi7eK4ZvTyPcleQRFr7kMWJDNo6Tp54J5Qevci6pcN8M1NSiycPYhlEUrtKdrGyyJOelH96V6L003X1Aw4o4"
+          }
+          merchantIdentifier="merchant.identifier" // required for Apple Pay
+          urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+        >
+          <NativeBaseProvider>
+            <NavigationContainer>
+              {popUpShow === false ? null : (
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={popUpShow}
+                >
+                  <PopUpAlertUi
+                    onPopUpClose={() => {
+                      onPopUpClose();
+                    }}
+                    message={message}
+                    headingColor={popUpTheme}
+                    renderfn={popUprenderfn}
+                    closeBtnEnable={closeBtnEnable}
+                    img={Image}
+                  />
+                </Modal>
+              )}
+              <RootStack />
+              {/* <PaymentScreen /> */}
+            </NavigationContainer>
+          </NativeBaseProvider>
+         
+        </StripeProvider>
       </Provider>
     </>
   );
@@ -154,12 +167,12 @@ const styles = StyleSheet.create({
   offline: {
     height: 30,
     backgroundColor: colors.red.red175,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   greenText: {
     height: 30,
     backgroundColor: colors.green.green200,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
-  textColor: {color: colors.white.white0, textAlign: 'center'},
+  textColor: { color: colors.white.white0, textAlign: "center" },
 });
