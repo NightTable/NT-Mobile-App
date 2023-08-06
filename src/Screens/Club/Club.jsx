@@ -20,7 +20,8 @@ const Club = ({ route, navigation }) => {
         const filteredData = clubStore?.individualClubEvents?.filter((item) => {
           return item?.isTableConfigAdded != false && item;
         });
-        if (filteredData?.length > 1) {
+
+        if (filteredData?.length > 0) {
           return "Check for Upcoming Events";
         } else {
           return "No Upcoming Events found";
