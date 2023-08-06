@@ -19,6 +19,7 @@ import { HeaderWithLeftIcon } from "../../components/Header";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //THEME
 import { colors, typography } from "../../theme";
+import { getEventOfClub } from "../../store/action/clubs";
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
 
@@ -28,6 +29,7 @@ const { width, height } = Dimensions.get("screen");
 
 const Dashboard = ({ navigation }) => {
   //SELECTORS
+  const dispatch = useDispatch();
 
   const clubStore = useSelector((state) => state.club);
 
@@ -66,8 +68,6 @@ const Dashboard = ({ navigation }) => {
   const ClubCards = ({ props }) => {
     return (
       <>
-      
-
         <Pressable
           style={{
             backgroundColor: colors.gold.gold200,
@@ -77,6 +77,8 @@ const Dashboard = ({ navigation }) => {
             padding: 14,
           }}
           onPress={() => {
+            // console.log("props======>", props._id);
+            dispatch(getEventOfClub(props._id));
             navigation.navigate("Club", {
               clubData: props,
             });
@@ -100,17 +102,19 @@ const Dashboard = ({ navigation }) => {
   };
 
   const logoutBtn = () =>
-  Alert.alert('Logout', 'Are you sure want to logout ?', [
-    {
-      text: 'Cancel',
-      onPress: () => console.log('Cancel Pressed'),
-      style: 'cancel',
-    },
-    {text: 'OK', onPress: () => {
-      navigation.navigate('Login')
-    }},
-  ]);
-
+    Alert.alert("Logout", "Are you sure want to logout ?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          navigation.navigate("Login");
+        },
+      },
+    ]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -118,13 +122,13 @@ const Dashboard = ({ navigation }) => {
         title={"NightTable"}
         icon={"menu"}
         iconDirectory={"Entypo"}
-        iconRightDirectory={'Entypo'}
-        iconRight={'log-out'}
+        iconRightDirectory={"Entypo"}
+        iconRight={"log-out"}
         onSubmit={() => {
           navigation.openDrawer();
         }}
-        onPressRight={()=>{
-          logoutBtn()
+        onPressRight={() => {
+          logoutBtn();
         }}
       />
       <Box style={styles.mainBox}>

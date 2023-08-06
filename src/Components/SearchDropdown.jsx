@@ -23,11 +23,12 @@ import { colors, typography } from "../theme";
 //Main function
 
 const SearchDropdown = (props) => {
+ 
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchText, setSearchText] = useState("");
 
   //PlaceHolder Text
-  const [placeHolder, setplaceHolder] = useState(props.value);
+  const [placeHolder, setplaceHolder] = useState(props?.placeholder);
   //action sheet
   const [openActionSheet, setopenActionSheet] = useState(false);
 
@@ -107,9 +108,10 @@ const SearchDropdown = (props) => {
               },
             ]}
           >
-            {placeHolder?.length > 11
-              ? placeHolder?.substring(0, 16)?.concat("...")
-              : placeHolder}
+            {props?.value?.length > 11
+              ? props?.value?.substring(0, 16)?.concat("...")
+              : props?.value}
+
           </Text>
           <Box
             style={[
@@ -268,7 +270,7 @@ const SearchDropdown = (props) => {
                         justifyContent: "space-between",
                       }}
                       onPress={() => {
-                        setplaceHolder(item.label);
+                        //setplaceHolder(item.label);
                         setopenActionSheet(!openActionSheet);
                         props.onValueChange(item);
                       }}
@@ -287,7 +289,7 @@ const SearchDropdown = (props) => {
                         {item.label}
                       </Text>
 
-                      {placeHolder === item.label ? (
+                      {props?.value === item.label ? (
                         <>
                           <Box>
                             <FeatherIcon

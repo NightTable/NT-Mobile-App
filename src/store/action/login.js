@@ -10,6 +10,7 @@ const {
   updateCountryData,
   otpGeneratedData,
   verifyGeneratedData,
+  userAddress
 } = loginReducer.actions;
 
 export const loginUser = (number) => {
@@ -36,6 +37,7 @@ export const getAllCountriesData = () => {
           item.phoneNumberCode.slice(0, 1) == "+"
             ? `${item.phoneNumberCode}`
             : `+${item.phoneNumberCode}`,
+            name:item.name
       });
     });
     dispatch(updateCountryData(tempArr));
@@ -81,6 +83,12 @@ export const updateToken = (data) => {
 export const logoutFromApp = () =>{
   return async (dispatch) =>{
     dispatch(logout())
+  }
+}
+
+export const userProfileAddress  = (data) =>{
+  return async (dispatch) =>{
+    dispatch(userAddress(data))
   }
 }
 

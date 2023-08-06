@@ -10,11 +10,15 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { colors } from "../../theme/colors";
 import { typography } from "../../theme";
 
-import { loginUser } from "../../store/action/login";
+import { loginUser, userProfileAddress } from "../../store/action/login";
 import {
   disableLoader,
   enableLoader,
 } from "../../components/popUp/loader/trigger";
+import { LocationPermission } from "../../permissions/location";
+import { getAddressfromLatlong } from "../../services/address";
+import { StoretoLocalData } from "../../utils/SensitiveData/SensitiveData";
+import { SensitiveKey } from "../../utils/SensitiveData/SInfoKeys";
 //DIMENSIONS
 const { height, width } = Dimensions.get("screen");
 
@@ -42,17 +46,57 @@ const Login = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (loginReducer?.otpNumberData?.status === false) {
-      seterror_msg(loginReducer?.otpNumberData?.message);
-      disableLoader();
-    } else if (loginReducer?.otpNumberData?.status === true) {
-      disableLoader();
-      navigation.navigate("Otp");
+    async function loadData() {
+      if (loginReducer?.otpNumberData?.status === false) {
+        seterror_msg(loginReducer?.otpNumberData?.message);
+        disableLoader();
+      } else if (loginReducer?.otpNumberData?.status === true) {
+        disableLoader();
+        navigation.navigate("Otp");
+      } else {
+        getAddressallReleatedData();
+      }
     }
 
+    loadData();
     return () => {};
   }, [loginReducer]);
 
+  const getAddressallReleatedData = async () => {
+    // GET LOCATION
+    const lotlong = await LocationPermission();
+    let obj = { lat: lotlong.coords.latitude, lng: lotlong.coords.longitude };
+    //API CALL
+    const addressApiCall = await getAddressfromLatlong(obj);
+    const address = addressApiCall.data.address;
+    const addressParts = address.split(",");
+    const country = addressParts.pop().trim();
+    let state = addressParts.pop().trim();
+    state = state.replace(/\d+/g, "").trim();
+    const city = addressParts.pop().trim();
+    const userAddressObj = {
+      country: country,
+      state: state,
+      city: city,
+    };
+    const response = await StoretoLocalData(
+      SensitiveKey.USER.ADDRESS,
+      userAddressObj
+    );
+
+    // console.log("response===>", response);
+    const data = loginReducer.countryData.filter((item) => {
+      if (item.name == country) {
+        return item;
+      }
+    });
+
+    if (data[0]?.value != undefined) {
+      setselectedCountry(data[0]?.value.toString());
+    } else {
+      setselectedCountry('+ XX');
+    }
+  };
   return (
     <>
       <Box safeArea style={styles.mainBox}>
@@ -74,21 +118,21 @@ const Login = ({ navigation, route }) => {
                 leftIconDirectoryName={"Feather"}
                 search={true}
                 searchPopupHeading={"Select Country"}
-                bgColor={colors.grey.grey275}
+                bgColor={colors.black.black900}
                 borderColor={colors.gold.gold100}
                 textColor={colors.white.white0}
                 iconColor={colors.white.white0}
                 actionSheetBgColor={colors.red.red800}
                 selectedItemBgColor={colors.red.red800}
-                data={loginReducer.countryData}
-                defaultValue={""}
-                placeholder={""}
-                onValueChange={(itemValue) => {
-                  setselectedCountry(itemValue.value);
-                }}
+                placeholder={selectedCountry}
                 height={58}
                 width={"100%"}
-                value={"Country"}
+                data={loginReducer.countryData}
+                value={selectedCountry}
+                onValueChange={(itemValue) => {
+                  console.log("itemValue.value===>", itemValue.value);
+                  setselectedCountry(itemValue.value);
+                }}
               />
             </Box>
 

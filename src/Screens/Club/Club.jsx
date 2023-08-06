@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
-
+import { Image } from "expo-image";
 import { colors, typography } from "../../theme";
-import {
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Dimensions,
-  
-} from "react-native";
+import { Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import { Box } from "native-base";
-// import FastImage from "react-native-fast-image";
-
-// import { getDistanceFromLatLonInMi } from "./algo";
-// import { API_URL_IOS, API_URL_ANDROID } from "@env";
-
-const { width, height } = Dimensions.get("screen");
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { HeaderWithLeftIcon } from "../../components/Header";
 import { Button } from "../../components/Buttons";
+const { width, height } = Dimensions.get("screen");
 
+//MAIN FUNCTION
 const Club = ({ route, navigation }) => {
-  const [club_data, setclub_data] = useState(route?.params?.clubData);
+  const dispatch = useDispatch();
 
-  const [clubPhotosArray, setClubPhotosArray] = useState([
-    "https://images.unsplash.com/photo-1581417478175-a9ef18f210c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
-    "https://images.unsplash.com/photo-1581417478175-a9ef18f210c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
-  ]);
+  const clubStore = useSelector((state) => state.club);
 
+  const checkClubEvent = () => {
+    if (clubStore?.individualClubEvents?.length != undefined) {
+      if (clubStore?.individualClubEvents?.length > 0) {
+        return "Check for Upcoming Events";
+      } else {
+        return "No Upcoming Events found";
+      }
+    } else {
+      return "No Upcoming Events found";
+    }
+  };
   const ClubDetails = () => {
     return (
       <>
@@ -41,7 +39,7 @@ const Club = ({ route, navigation }) => {
             Address : {"     "}
           </Text>
           <Text style={[typography.regular.regular14, styles.goldColor]}>
-            {club_data?.Address?.Address}
+            {route?.params?.clubData?.Address?.Address}
           </Text>
         </Box>
         <Box
@@ -57,7 +55,7 @@ const Club = ({ route, navigation }) => {
             Website : {"     "}
           </Text>
           <Text style={[typography.regular.regular14, styles.goldColor]}>
-            {club_data?.website}
+            {route?.params?.clubData?.website}
           </Text>
         </Box>
         <Box
@@ -71,7 +69,7 @@ const Club = ({ route, navigation }) => {
             Instagram : {"     "}
           </Text>
           <Text style={[typography.regular.regular14, styles.goldColor]}>
-            {club_data?.instaHandle}
+            {route?.params?.clubData?.instaHandle}
           </Text>
         </Box>
 
@@ -86,7 +84,7 @@ const Club = ({ route, navigation }) => {
             Phone Number : {"     "}
           </Text>
           <Text style={[typography.regular.regular14, styles.goldColor]}>
-            {club_data?.phoneNumber}
+            {route?.params?.clubData?.phoneNumber}
           </Text>
         </Box>
       </>
@@ -95,7 +93,7 @@ const Club = ({ route, navigation }) => {
   return (
     <Box safeArea style={styles.container}>
       <HeaderWithLeftIcon
-        title={club_data?.name}
+        title={route?.params?.clubData?.name}
         icon={"arrowleft"}
         iconDirectory={"AntDesign"}
         onSubmit={() => {
@@ -103,46 +101,40 @@ const Club = ({ route, navigation }) => {
         }}
       />
 
-      <Box style={[styles.mainBox]}>
-        {club_data?.photos.map((ele) => {
-          console.log("ele======>", ele);
+      <ScrollView horizontal={true}>
+        {route?.params?.clubData?.photos.map((image) => {
           return (
             <>
-              <ScrollView
-                contentContainerStyle={{
-                  flexDirection: "row",
-                  backgroundColor: "red",
-                }}
-              >
-                <Box>
-                  <Image
-                    style={{ width: 200, height: 200 }}
-                    source={{
-                      uri: ele,
-                      // priority: FastImage.priority.high,
-                    }}
-                  />
-                </Box>
-              </ScrollView>
+              <Box>
+                <Image
+                  style={{ width: 300, height: 300 }}
+                  source={{
+                    uri: image,
+                  }}
+                />
+              </Box>
             </>
           );
         })}
-
+      </ScrollView>
+      <Box style={[styles.mainBox]}>
         <ClubDetails />
         <Box style={{ width: "100%", alignSelf: "center", margin: 20 }}>
           <Button
             onSubmit={() => {
               // validation();
-              navigation.navigate("ClubEvents", {
-                clubId: route?.params?.clubData?._id,
-                clubName: route?.params?.clubData?.name,
-                // // clubPhotos: route?.params?.clubData?.photos[0]
-                clubPhotos: clubPhotosArray[0],
-                clubData: route?.params?.clubData,
-              });
+              if (clubStore?.individualClubEvents?.length > 0) {
+                navigation.navigate("ClubEvents", {
+                  clubData: route?.params?.clubData,
+                });
+              }
             }}
-            backgroundColor={colors.gold.gold200}
-            text={"Check for Club Event "}
+            backgroundColor={
+              clubStore?.individualClubEvents?.length > 0
+                ? colors.gold.gold200
+                : colors.grey.grey300
+            }
+            text={checkClubEvent()}
           />
         </Box>
       </Box>
@@ -157,27 +149,8 @@ const styles = StyleSheet.create({
   },
   mainBox: {
     paddingHorizontal: 18,
-    flex: 1,
   },
-  clubListContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    height: 400 * height,
-  },
-  input: {
-    height: 40 * height,
-    margin: 12 * height,
-    borderWidth: 1 * width,
-    padding: 10 * height,
-    // borderBottomColor: Colors.gold,
-    borderTopWidth: 0,
-    borderRightWidth: 0,
-    borderLeftWidth: 0,
-    // placeholderTextColor: Colors.gold,
-    // selectionColor: Colors.gold,
-    // color: Colors.gold,
-    // fontFamily: Fonts.mainFontReg,
-  },
+
   goldColor: {
     color: colors.gold.gold200,
   },

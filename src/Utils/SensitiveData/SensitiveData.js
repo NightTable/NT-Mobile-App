@@ -1,40 +1,42 @@
-import SInfo from 'react-native-sensitive-info';
-
+// import SInfo from "react-native-sensitive-info";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //for Storing Data
 export const StoretoLocalData = async (key, value) => {
   return new Promise(async (resolve, reject) => {
-    const savingData = await SInfo.setItem(key, value, {
-      sharedPreferencesName: 'connectApp',
-      keychainService: 'connectApp',
-    }).then(() => {
-      resolve('Data Saved');
-    });
+    try {
+      const jsonValue = JSON.stringify(value);
+      const data = await AsyncStorage.setItem(key, jsonValue);
+      // console.log("==========Data Saved==========================", data);
+      resolve("Data Saved");
+    } catch (e) {
+      console.log("====================================", e);
+    }
   });
 };
 
 //Retrive Data
-export const GetLocalPhoneData = key => {
-  try {
-    return new Promise(async (resolve, reject) => {
-      const gettingFirstData = await SInfo.getItem(key, {
-        sharedPreferencesName: 'NTMobile',
-        keychainService: 'NTMobile',
-      }).then(value => {
-        resolve(value);
-      });
-    });
-  } catch (error) {
-    return error;
-  }
+export const GetLocalPhoneData = (key) => {
+  // try {
+  //   return new Promise(async (resolve, reject) => {
+  //     const gettingFirstData = await SInfo.getItem(key, {
+  //       sharedPreferencesName: "NTMobile",
+  //       keychainService: "NTMobile",
+  //     }).then((value) => {
+  //       resolve(value);
+  //     });
+  //   });
+  // } catch (error) {
+  //   return error;
+  // }
 };
 
-export const deleteItemFromLocalData = async key => {
+export const deleteItemFromLocalData = async (key) => {
   return new Promise(async (resolve, reject) => {
     const deletingData = await SInfo.deleteItem(key, {
-      sharedPreferencesName: 'NTMobile',
-      keychainService: 'NTMobile',
+      sharedPreferencesName: "NTMobile",
+      keychainService: "NTMobile",
     }).then(() => {
-      resolve('Data Deleted');
+      resolve("Data Deleted");
     });
   });
 };
