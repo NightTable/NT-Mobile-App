@@ -17,7 +17,14 @@ const Club = ({ route, navigation }) => {
   const checkClubEvent = () => {
     if (clubStore?.individualClubEvents?.length != undefined) {
       if (clubStore?.individualClubEvents?.length > 0) {
-        return "Check for Upcoming Events";
+        const filteredData = clubStore?.individualClubEvents?.filter((item) => {
+          return item?.isTableConfigAdded != false && item;
+        });
+        if (filteredData?.length > 1) {
+          return "Check for Upcoming Events";
+        } else {
+          return "No Upcoming Events found";
+        }
       } else {
         return "No Upcoming Events found";
       }
@@ -130,7 +137,7 @@ const Club = ({ route, navigation }) => {
               }
             }}
             backgroundColor={
-              clubStore?.individualClubEvents?.length > 0
+              checkClubEvent() === "Check for Upcoming Events"
                 ? colors.gold.gold200
                 : colors.grey.grey300
             }

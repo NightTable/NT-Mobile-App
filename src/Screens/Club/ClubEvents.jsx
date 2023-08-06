@@ -66,54 +66,61 @@ const ClubEvents = ({ navigation, route }) => {
               console.log("====================================");
               console.log("item===>", item);
               console.log("====================================");
-              return (
-                <Pressable
-                  style={{
-                    flexDirection: "row",
-                    backgroundColor: colors.gold.gold200,
-                    marginVertical: 4,
-                    opacity: 0.9,
-                  }}
-                  key={item._id}
-                  onPress={() => {
-                    alert(`${JSON.stringify(item)}`);
-                  }}
-                >
-                  <Box
+              if (item?.isTableConfigAdded != false) {
+                return (
+                  <Pressable
                     style={{
-                      justifyContent: "center",
-                      marginRight: 10,
-                      borderRadius: 30,
+                      flexDirection: "row",
+                      backgroundColor: colors.gold.gold200,
+                      marginVertical: 4,
+                      opacity: 0.9,
+                      borderRadius: 6,
+                    }}
+                    key={item._id}
+                    onPress={() => {
+                      alert(`${JSON.stringify(item)}`);
                     }}
                   >
-                    <Image
-                      source={{
-                        uri: item?.picture,
-                      }}
+                    <Box
                       style={{
-                        width: 60,
-                        height: 60,
-                        resizeMode: "contain",
+                        justifyContent: "center",
+                        marginRight: 10,
                         borderRadius: 30,
-                        margin: 6,
-                        borderWidth: 1,
-                        borderColor: "black",
                       }}
-                    />
-                  </Box>
-                  <Box style={{ justifyContent: "center" }}>
-                    <Box style={{ marginBottom: 4 }}>
-                      <Text>{item.name}</Text>
+                    >
+                      <Image
+                        source={{
+                          uri: item?.picture,
+                        }}
+                        style={{
+                          width: 60,
+                          height: 60,
+                          resizeMode: "contain",
+                          borderRadius: 30,
+                          margin: 6,
+                          borderWidth: 1,
+                          borderColor: "black",
+                        }}
+                      />
                     </Box>
+                    <Box style={{ justifyContent: "center" }}>
+                      <Box style={{ marginBottom: 4 }}>
+                        <Text>{item.name}</Text>
+                      </Box>
 
-                    <Box>
-                      <Text>
-                        {dayjs(item?.eventDate).format("DD-MM-YYYY HH:MM")}
-                      </Text>
+                      <Box>
+                        <Text>
+                          {dayjs(item?.eventDate).format("DD-MM-YYYY HH:MM")}
+                        </Text>
+                      </Box>
+
+                      <Box>
+                        <Text>show more ...</Text>
+                      </Box>
                     </Box>
-                  </Box>
-                </Pressable>
-              );
+                  </Pressable>
+                );
+              }
             })
           : null}
       </ScrollView>
