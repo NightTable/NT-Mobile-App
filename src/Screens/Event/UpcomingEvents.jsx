@@ -33,9 +33,9 @@ const UpcomingEvents = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
   const [selectedEvent, setselectedEvent] = useState([]);
-  console.log("====================================");
-  console.log("clubStore.isLoading", clubStore.isLoading);
-  console.log("====================================");
+  // console.log("====================================");
+  // console.log("clubStore.isLoading", clubStore.isLoading);
+  // console.log("====================================");
   useEffect(() => {
     if (clubStore.isLoading === false) {
       disableLoader();

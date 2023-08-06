@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Dimensions, Modal, View, Text, StyleSheet } from "react-native";
 
 import { NativeBaseProvider, StatusBar } from "native-base";
-import { colors } from "./src/theme";
+import { colors, typography } from "./src/theme";
 //STORE
 import { store } from "./src/store/store";
 //NAVIGATION

@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
-
-import { colors } from "../../theme";
 import { Box } from "native-base";
 import {
   Text,
   StyleSheet,
   ScrollView,
-  Platform,
-  TextInput,
   Dimensions,
   SafeAreaView,
-  Alert,
-  FlatList,
-  Pressable,
 } from "react-native";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-
-const { width, height } = Dimensions.get("screen");
+//THEME 
+import { colors } from "../../theme";
+//COMPONENTS
 import { HeaderWithLeftIcon } from "../../components/Header";
+
+//DIMENSIONS
+const { width, height } = Dimensions.get("screen");
+//MAIN FUNCTION
 const TableConfigurations = ({ route, navigation }) => {
   //dispatch
   const dispatch = useDispatch();
@@ -25,9 +23,9 @@ const TableConfigurations = ({ route, navigation }) => {
   const clubStore = useSelector((state) => state.club);
 
   //individualClubTableConfig
-console.log('====================================');
-console.log('clubStore====>',clubStore?.individualClubTableConfig);
-console.log('====================================');
+  console.log("====================================");
+  console.log("clubStore====>", clubStore?.individualClubTableConfig);
+  console.log("====================================");
   return (
     <SafeAreaView style={styles.container}>
       <Box style={{ width: "100%" }}>
@@ -104,70 +102,65 @@ console.log('====================================');
               </Text>
             </Box>
           </Box>
-          {/* {items.length?
-          (
-       
-            {
-              items?.map((ele) => {
-                return (
-                    <ScrollView
-            alwaysBounceVertical
-            contentContainerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 10,
-            }}
-          >
-                  <Box
-                    style={{
-                      flexDirection: "row",
-                      backgroundColor: colors.gold.gold200,
-                      marginVertical: 6,
-                      width: "96%",
-                      borderRadius: 6,
-                      justifyContent: "space-between",
-                      padding: 2,
-                    }}
-                  >
-                    <Box
-                      style={{
-                        width: "30%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>{ele.key}</Text>
-                    </Box>
-                    <Box
-                      style={{
-                        width: "30%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>{ele.name}</Text>
-                    </Box>
-                    <Box
-                      style={{
-                        width: "30%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text>{ele.calories}</Text>
-                    </Box>
-                  </Box>
-                  </ScrollView>
 
+          {clubStore?.individualClubTableConfig && (
+            <>
+              {clubStore?.individualClubTableConfig?.map((item) => {
+                return (
+                  <>
+                    <ScrollView
+                      alwaysBounceVertical
+                      contentContainerStyle={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: 10,
+                      }}
+                    >
+                      <Box
+                        style={{
+                          flexDirection: "row",
+                          backgroundColor: colors.gold.gold200,
+                          marginVertical: 6,
+                          width: "96%",
+                          borderRadius: 6,
+                          justifyContent: "space-between",
+                          padding: 10,
+                        }}
+                      >
+                        <Box
+                          style={{
+                            width: "30%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>{item?.tableMapId}</Text>
+                        </Box>
+                        <Box
+                          style={{
+                            width: "30%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>{item?.type}</Text>
+                        </Box>
+                        <Box
+                          style={{
+                            width: "30%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Text>{item?.minPrice}</Text>
+                        </Box>
+                      </Box>
+                    </ScrollView>
+                  </>
                 );
               })}
-            
-          )
-          :(
-            <ScrollView>
-              <Text>No Table Configuration Found</Text>
-            </ScrollView>
-          )} */}
+            </>
+          )}
         </Box>
       </Box>
     </SafeAreaView>
@@ -178,7 +171,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.black.black800,
-    // position: "relative",
   },
 });
 export default TableConfigurations;
