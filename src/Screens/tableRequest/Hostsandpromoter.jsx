@@ -18,9 +18,12 @@ import { HeaderWithLeftIcon } from "../../components/Header";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //THEME
 import { colors, typography } from "../../theme";
-import { getEventOfClub } from "../../store/action/clubs";
-import { Button } from "../../components/Buttons";
 import { getRepresentativebyClub } from "../../services/representative";
+//LOADEAR
+import {
+  disableLoader,
+  enableLoader,
+} from "../../components/popUp/loader/trigger";
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
 
@@ -29,6 +32,7 @@ const Hostsandpromoters = ({ navigation, route }) => {
 
   useEffect(() => {
     async function loadData() {
+      enableLoader();
       const apiCall = await getRepresentativebyClub(route.params.clubData._id);
 
       if (apiCall.message == "representatives found") {
@@ -44,6 +48,7 @@ const Hostsandpromoters = ({ navigation, route }) => {
         });
 
         sethostsData(tempArr);
+        disableLoader();
       }
     }
 

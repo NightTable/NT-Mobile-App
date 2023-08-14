@@ -118,7 +118,7 @@ const CostSplittingSectionComp = (props) => {
                   <Text
                     style={{
                       fontSize: 15 * heightRatioProMax,
-                      color: Colors.purple,
+                    
                     }}
                   >
                     ${props.nonRefundableAmount}

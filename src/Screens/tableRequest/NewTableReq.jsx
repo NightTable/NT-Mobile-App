@@ -19,14 +19,20 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { colors, typography } from "../../theme";
 import { ScrollView } from "react-native";
 import CostSplittingSectionComp from "../../features/costSplitting";
+import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
 const { width, height } = Dimensions.get("screen");
 
 //main function
 const NewTableReq = ({ navigation, route }) => {
+  //Store
+  const clubStore = useSelector((state) => state.club);
+
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
 
+  //SNPL - PNSL
+  const [selectedPaymentType, setselectedPaymentType] = useState(1);
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
     return (
@@ -63,6 +69,25 @@ const NewTableReq = ({ navigation, route }) => {
       </>
     );
   };
+
+  let paymentTypeMethod = [
+    {
+      id: 1,
+      short_form: "snpl",
+      name: "split-now-pay-later",
+      description:
+        " method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.",
+    },
+    {
+      id: 2,
+      short_form: "pnsl",
+
+      name: "pay-now-split-later",
+      description:
+        " method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.",
+    },
+  ];
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -158,8 +183,7 @@ const NewTableReq = ({ navigation, route }) => {
             <Box
               style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
-                paddingVertical: 12,
+                justifyContent:'space-between'
               }}
             >
               <Text
@@ -167,41 +191,72 @@ const NewTableReq = ({ navigation, route }) => {
                   typography.semBold.semBold14,
                   {
                     color: colors.gold.gold100,
+                    justifyContent: "center", //Centered vertically
+                    alignItems: "center", //Centered horizontally
                   },
                 ]}
               >
                 Select Request Type :
               </Text>
-              <Box style={{ flexDirection: "row" }}>
+              <Pressable>
                 <Text
                   style={[
-                    typography.bold.bold16,
+                    typography.semBold.semBold14,
                     {
                       color: colors.gold.gold100,
-                      margin: 12,
-                      borderRadius: 6,
-                      borderWidth: 0.6,
                     },
                   ]}
                 >
-                  SNPL
+                  know more
                 </Text>
-                <Text
-                  style={[
-                    typography.bold.bold16,
-                    {
-                      color: colors.gold.gold100,
-                      margin: 12,
-                      borderRadius: 6,
-                      borderWidth: 0.6,
-                    },
-                  ]}
-                >
-                  PSNL
-                </Text>
-              </Box>
+              </Pressable>
             </Box>
 
+            <Box
+              style={{
+                flexDirection: "row",
+                paddingVertical: 12,
+                justifyContent: "space-between",
+              }}
+            >
+              {paymentTypeMethod?.map((item) => {
+                return (
+                  <>
+                    <Pressable
+                      onPress={() => {
+                        setselectedPaymentType(item.id);
+                      }}
+                      style={{
+                        borderRadius: 6,
+                        borderWidth: 1,
+                        borderColor:
+                          item.id === selectedPaymentType
+                            ? colors.gold.gold100
+                            : colors.black.black900,
+                      }}
+                    >
+                      <Text
+                        style={[
+                          typography.bold.bold16,
+                          {
+                            color:
+                              item.id === selectedPaymentType
+                                ? colors.gold.gold100
+                                : colors.grey.grey400,
+                            padding: 12,
+                          },
+                        ]}
+                      >
+                        {item?.name}
+                      </Text>
+                    </Pressable>
+                  </>
+                );
+              })}
+            </Box>
+            <TableConfigurationsCard
+              data={clubStore?.individualClubTableConfig}
+            />
             <CostSplittingSectionComp />
           </ScrollView>
         </Box>

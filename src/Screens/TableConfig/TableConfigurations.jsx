@@ -13,6 +13,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { colors } from "../../theme";
 //COMPONENTS
 import { HeaderWithLeftIcon } from "../../components/Header";
+import { TableConfigurationsCard, } from "../../features/tableConfig/TableConfig";
 
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
@@ -68,108 +69,7 @@ const TableConfigurations = ({ route, navigation }) => {
         </Text>
       </Box>
       <Box style={{ height: "60%" }}>
-        <Box
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 10,
-          }}
-        >
-          <Box style={{ flexDirection: "row" }}>
-            <Box
-              style={{
-                width: "30%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
-                Table Map ID
-              </Text>
-            </Box>
-            <Box
-              style={{
-                width: "30%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
-                Table Type
-              </Text>
-            </Box>
-            <Box
-              style={{
-                width: "30%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
-                Table Minimum
-              </Text>
-            </Box>
-          </Box>
-
-          {clubStore?.individualClubTableConfig && (
-            <>
-              {clubStore?.individualClubTableConfig?.map((item) => {
-                return (
-                  <>
-                    <ScrollView
-                      alwaysBounceVertical
-                      contentContainerStyle={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: 10,
-                      }}
-                    >
-                      <Box
-                        style={{
-                          flexDirection: "row",
-                          backgroundColor: colors.gold.gold200,
-                          marginVertical: 6,
-                          width: "96%",
-                          borderRadius: 6,
-                          justifyContent: "space-between",
-                          padding: 10,
-                        }}
-                      >
-                        <Box
-                          style={{
-                            width: "30%",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Text>{item?.tableMapId}</Text>
-                        </Box>
-                        <Box
-                          style={{
-                            width: "30%",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Text>{item?.type}</Text>
-                        </Box>
-                        <Box
-                          style={{
-                            width: "30%",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Text>{item?.minPrice}</Text>
-                        </Box>
-                      </Box>
-                    </ScrollView>
-                  </>
-                );
-              })}
-            </>
-          )}
-        </Box>
+        <TableConfigurationsCard data={clubStore?.individualClubTableConfig} />
       </Box>
       <Box style={{ height: "20%", padding: 20 }}>
         <Button
