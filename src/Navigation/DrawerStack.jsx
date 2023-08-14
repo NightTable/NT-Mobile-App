@@ -6,7 +6,7 @@ import Dashboard from "../screens/Dashboard/Dashboard";
 import Club from "../screens/Club/Club";
 //EVENT
 import UpcomingEvents from "../screens/Event/UpcomingEvents";
-import EventDetail from '../screens/Event/EventDetail'
+import EventDetail from "../screens/Event/EventDetail";
 //TABLE CONFIGURATIONS
 import TableConfigurations from "../screens/TableConfig/TableConfigurations";
 //STACKS
@@ -14,6 +14,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //THEME
 import { typography, colors } from "../theme";
 import Profile from "../screens/Profile/Profile";
+import Promoter from "../screens/promoter/PromoterAppl";
+import PromoterAppl from "../screens/promoter/PromoterAppl";
+import InfluencerAppl from "../screens/promoter/InfluencerAppl";
+import Hostsandpromoters from "../screens/tableRequest/Hostsandpromoter";
+import NewTableReq from "../screens/tableRequest/NewTableReq";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -48,6 +53,21 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="Home" component={Dashboard} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen
+        initialParams={{
+          InfluencerPromoter: true,
+        }}
+        name="Apply to be a Promoter"
+        component={PromoterAppl}
+      />
+      <Drawer.Screen
+        initialParams={{
+          InfluencerPromoter: false,
+        }}
+        name="Apply to be an Influencer"
+        component={InfluencerAppl}
+      />
+
+      <Drawer.Screen
         name="Club"
         component={Club}
         options={{
@@ -62,10 +82,23 @@ const DrawerNavigator = () => {
           drawerItemStyle: { height: 0 },
         }}
       />
-
       <Drawer.Screen
         name="TableConfigurations"
         component={TableConfigurations}
+        options={{
+          drawerItemStyle: { height: 0 },
+        }}
+      />
+      <Drawer.Screen
+        name="Hostsandpromoters"
+        component={Hostsandpromoters}
+        options={{
+          drawerItemStyle: { height: 0 },
+        }}
+      />
+       <Drawer.Screen
+        name="NewTableReq"
+        component={NewTableReq}
         options={{
           drawerItemStyle: { height: 0 },
         }}

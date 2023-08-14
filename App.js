@@ -23,6 +23,7 @@ const Stack = createNativeStackNavigator();
 // App.ts
 import { StripeProvider } from "@stripe/stripe-react-native";
 import PaymentScreen from "./src/payment/Stripe";
+import CostSplittingSectionComp from "./src/features/costSplitting";
 
 export default function App() {
   //INTERNET CONNECTION CHECK
@@ -110,21 +111,6 @@ export default function App() {
 
   return (
     <>
-      {showConnectionStatus ? (
-        <View style={styles.greenText}>
-          <Text style={[styles.textColor, typography.semBold.semBold14]}>
-            Device is Online
-          </Text>
-        </View>
-      ) : (
-        netInfo.isConnected == false && (
-          <View style={styles.offline}>
-            <Text style={[styles.textColor, typography.semBold.semBold14]}>
-              Device is Offline
-            </Text>
-          </View>
-        )
-      )}
       <Provider store={store}>
         <StripeProvider
           publishableKey={
@@ -154,10 +140,10 @@ export default function App() {
                 </Modal>
               )}
               <RootStack />
+              {/* <CostSplittingSectionComp /> */}
               {/* <PaymentScreen /> */}
             </NavigationContainer>
           </NativeBaseProvider>
-         
         </StripeProvider>
       </Provider>
     </>

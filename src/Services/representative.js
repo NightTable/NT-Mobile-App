@@ -1,4 +1,5 @@
 import axios, * as others from "axios";
+import { GetRequest } from "../utils/axios/Axios";
 
 export const getProfileData = async (id) => {
   return new Promise((resolve, reject) => {
@@ -63,26 +64,19 @@ export const editRepresentativetoClub = async (obj) => {
   });
 };
 //sample club id 63ec556200046de1daa3eee9
-export const getRepresentativebyClub = async (club_id) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "get",
-      url: `${process.env.REACT_APP_BASE_URL}representatives/club/${club_id}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: "",
-    };
 
-    axios(config)
-      .then(function (response) {
-        resolve(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        reject(error);
-      });
-  });
+export const getRepresentativebyClub = async (club_id) => {
+  try {
+    const response = await GetRequest(
+      `http://localhost:3000/api/representatives/club/${club_id}`,
+      "",
+      ""
+    );
+
+    return response.data;
+  } catch (error) {
+    return error;
+  }
 };
 
 //sample club id 63ec556200046de1daa3eee9

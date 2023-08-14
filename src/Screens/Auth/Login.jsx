@@ -31,7 +31,7 @@ const Login = ({ navigation, route }) => {
   const loginReducer = useSelector((state) => state.login, shallowEqual);
 
   //STATES
-  const [number, onChangeNumber] = useState("");
+  const [number, onChangeNumber] = useState("8770203998");
   //SELECTED COUNTRY DATA
   const [selectedCountry, setselectedCountry] = useState("+ XX");
   //ERROR MSG

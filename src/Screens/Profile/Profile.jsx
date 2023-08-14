@@ -79,8 +79,6 @@ const Profile = ({ route, navigation }) => {
           <Box style={styles.inputBox}>
             <Text style={[styles.heading, typography.bold.bold16]}>Email</Text>
             <TextInput
-              //
-
               style={[typography.regular.regular16, styles.input]}
               onChangeText={(text) => {
                 onChangeNumber(text);

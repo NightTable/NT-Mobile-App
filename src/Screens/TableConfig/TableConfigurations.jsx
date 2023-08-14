@@ -7,8 +7,9 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
+import { Button } from "../../components/Buttons";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-//THEME 
+//THEME
 import { colors } from "../../theme";
 //COMPONENTS
 import { HeaderWithLeftIcon } from "../../components/Header";
@@ -23,9 +24,9 @@ const TableConfigurations = ({ route, navigation }) => {
   const clubStore = useSelector((state) => state.club);
 
   //individualClubTableConfig
-  console.log("====================================");
-  console.log("clubStore====>", clubStore?.individualClubTableConfig);
-  console.log("====================================");
+  // console.log("====================================");
+  // console.log("clubStore====>", clubStore?.individualClubTableConfig);
+  // console.log("====================================");
   return (
     <SafeAreaView style={styles.container}>
       <Box style={{ width: "100%" }}>
@@ -41,7 +42,14 @@ const TableConfigurations = ({ route, navigation }) => {
           }}
         />
       </Box>
-      <Box style={{ paddingHorizontal: 20, marginBottom: 20, marginTop: 14 }}>
+      <Box
+        style={{
+          paddingHorizontal: 20,
+          marginBottom: 20,
+          marginTop: 14,
+          height: "20%",
+        }}
+      >
         <Text
           style={{
             color: colors.gold.gold200,
@@ -59,7 +67,7 @@ const TableConfigurations = ({ route, navigation }) => {
           may request for a lower fee or a free spot on the table.
         </Text>
       </Box>
-      <Box>
+      <Box style={{ height: "60%" }}>
         <Box
           style={{
             justifyContent: "center",
@@ -162,6 +170,19 @@ const TableConfigurations = ({ route, navigation }) => {
             </>
           )}
         </Box>
+      </Box>
+      <Box style={{ height: "20%", padding: 20 }}>
+        <Button
+          disabled={false}
+          onSubmit={() => {
+            navigation.navigate("Hostsandpromoters", {
+              clubData: route?.params?.clubData,
+              selectedEventData: route?.params?.selectedEventData,
+            });
+          }}
+          backgroundColor={colors.gold.gold200}
+          text={"Organize a table"}
+        />
       </Box>
     </SafeAreaView>
   );
