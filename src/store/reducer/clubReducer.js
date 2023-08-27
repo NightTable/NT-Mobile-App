@@ -19,6 +19,7 @@ export const clubReducer = createSlice({
       state.individualClubEvents = payload;
     },
     getIndividualClubTableConfig: (state, { payload }) => {
+     
       state.individualClubTableConfig = payload;
     },
     isLoaderState : (state, { payload }) => {

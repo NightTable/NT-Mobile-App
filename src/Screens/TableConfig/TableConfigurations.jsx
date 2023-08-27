@@ -26,7 +26,7 @@ const TableConfigurations = ({ route, navigation }) => {
 
   //individualClubTableConfig
   // console.log("====================================");
-  // console.log("clubStore====>", clubStore?.individualClubTableConfig);
+  // console.log("TableConfigurations :: screen ====>", clubStore?.individualClubTableConfig);
   // console.log("====================================");
   return (
     <SafeAreaView style={styles.container}>
@@ -59,7 +59,7 @@ const TableConfigurations = ({ route, navigation }) => {
             textAlign: "center",
           }}
         >
-          Click on the dropdown arrows next to the Table Map ID to see who all
+          Click on the  arrows next to the Table Map ID to see who all
           are currently bidding to meet or exceed the Table Minimum.{"\n"}
           {"\n"}Tables are sold to and reserved for those who meet or exceed the
           Table Minimum on a first-come-first-serve basis.{"\n"} {"\n"}While

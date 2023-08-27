@@ -17,6 +17,11 @@ const Splash = ({ navigation }) => {
   useEffect(() => {
     const init = async () => {
       //check navigation
+
+
+      console.log('====================================');
+      console.log('loginStore',loginStore);
+      console.log('====================================');
       if (loginStore.isUserLoggedIn === true) {
         console.log("USER IS LOGGED IN ======>");
         console.log("====================================>");
