@@ -65,24 +65,32 @@ const Login = ({ navigation, route }) => {
   const getAddressallReleatedData = async () => {
     // GET LOCATION
     const lotlong = await LocationPermission();
-    let obj = { lat: lotlong.coords.latitude, lng: lotlong.coords.longitude };
-    //API CALL
-    const addressApiCall = await getAddressfromLatlong(obj);
-    const address = addressApiCall.data.address;
-    const addressParts = address.split(",");
-    const country = addressParts.pop().trim();
-    let state = addressParts.pop().trim();
-    state = state.replace(/\d+/g, "").trim();
-    const city = addressParts.pop().trim();
-    const userAddressObj = {
-      country: country,
-      state: state,
-      city: city,
-    };
-    const response = await StoretoLocalData(
-      SensitiveKey.USER.ADDRESS,
-      userAddressObj
-    );
+    let country = "";
+    console.log("lotlong===>", lotlong);
+    if (lotlong == undefined) {
+    } else {
+      let obj = {
+        lat: lotlong?.coords.latitude,
+        lng: lotlong.coords.longitude,
+      };
+      //API CALL
+      const addressApiCall = await getAddressfromLatlong(obj);
+      const address = addressApiCall.data.address;
+      const addressParts = address.split(",");
+      country = addressParts.pop().trim();
+      let state = addressParts.pop().trim();
+      state = state.replace(/\d+/g, "").trim();
+      const city = addressParts.pop().trim();
+      const userAddressObj = {
+        country: country,
+        state: state,
+        city: city,
+      };
+      const response = await StoretoLocalData(
+        SensitiveKey.USER.ADDRESS,
+        userAddressObj
+      );
+    }
 
     // console.log("response===>", response);
     const data = loginReducer.countryData.filter((item) => {
@@ -111,7 +119,7 @@ const Login = ({ navigation, route }) => {
             <Box style={styles.dropdownContainer1}>
               <SearchDropdown
                 key={() => {
-                  return Number(1);
+                  return String(1);
                 }}
                 leftIconName={"search"}
                 leftIconColor={"white"}

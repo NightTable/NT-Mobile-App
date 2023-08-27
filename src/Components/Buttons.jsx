@@ -90,9 +90,9 @@ export const Button = (props) => {
                       : props.backgroundColor,
                   borderRadius: 4,
                 }}
-                onPress={() => {
-                  props.OnClick();
-                }}
+                // onPress={() => {
+                //   props.OnClick();
+                // }}
               >
                 <Text
                   style={{

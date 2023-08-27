@@ -98,7 +98,9 @@ const Club = ({ route, navigation }) => {
     );
   };
   return (
-    <Box safeArea style={styles.container}>
+    <Box key={()=>{
+      return String('Club_screen')
+    }} safeArea style={styles.container}>
       <HeaderWithLeftIcon
         title={route?.params?.clubData?.name}
         icon={"arrowleft"}

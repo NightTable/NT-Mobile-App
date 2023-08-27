@@ -79,6 +79,9 @@ const SearchDropdown = (props) => {
   return (
     <>
       <TouchableOpacity
+      key={()=>{
+        return String(props?.value)
+      }}
         style={[
           styles.container,
           {
@@ -260,7 +263,7 @@ const SearchDropdown = (props) => {
                   <>
                     <Pressable
                       key={() => {
-                        return String(item);
+                        return String(index);
                       }}
                       style={{
                         padding: 12,

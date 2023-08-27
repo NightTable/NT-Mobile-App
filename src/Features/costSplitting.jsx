@@ -13,12 +13,14 @@ import {
   Image,
   StyleSheet,
   Platform,
+  Dimensions,
 } from "react-native";
 
 import filledInPurpleBoxImg from "../../assets/filledinpurplebox.png";
 import unfilledInPurpleBoxImg from "../../assets/unfilledinbiggerborder.png";
 import { heightRatioProMax, widthRatioProMax } from "../utils/Dimensions";
 import { colors, typography } from "../theme";
+const { height, width } = Dimensions.get("screen");
 
 const CostSplittingSectionComp = (props) => {
   return (
@@ -32,6 +34,27 @@ const CostSplittingSectionComp = (props) => {
         ]}
       >
         Cost-Splitting:
+      </Text>
+
+      <Text
+        style={[
+          typography.bold.bold16,
+          {
+            color: colors.gold.gold100,
+          },
+        ]}
+      >
+        SPLIT NOW PAY LATER INFORMATION
+      </Text>
+      <Text
+        style={[
+          typography.bold.bold16,
+          {
+            color: colors.gold.gold100,
+          },
+        ]}
+      >
+        PAY NOW SPLIT LATER INFORMATION
       </Text>
       <View
         style={{
@@ -105,12 +128,12 @@ const CostSplittingSectionComp = (props) => {
             {
               props.tableTypeSelection === "pnsl" ? (
                 <Text
-           style={[
-                  typography.regular.regular12,
-                  {
-                    color: colors.gold.gold100,
-                  },
-                ]}
+                  style={[
+                    typography.regular.regular12,
+                    {
+                      color: colors.gold.gold100,
+                    },
+                  ]}
                 >
                   By selecting the create request button you are finalizing a
                   reservation, and are agreeing to pay the full non-refundable
@@ -118,7 +141,6 @@ const CostSplittingSectionComp = (props) => {
                   <Text
                     style={{
                       fontSize: 15 * heightRatioProMax,
-                    
                     }}
                   >
                     ${props.nonRefundableAmount}
@@ -127,12 +149,12 @@ const CostSplittingSectionComp = (props) => {
                 </Text>
               ) : (
                 <Text
-                   style={[
-                  typography.regular.regular14,
-                  {
-                    color: colors.gold.gold100,
-                  },
-                ]}
+                  style={[
+                    typography.regular.regular14,
+                    {
+                      color: colors.gold.gold100,
+                    },
+                  ]}
                 >
                   By selecting the create request button, you are aknowledge
                   that you have not made an official reservation, but are asking
@@ -149,7 +171,7 @@ const CostSplittingSectionComp = (props) => {
           >
             {props.tableTypeSelection === "pnsl" ? (
               <Text
-                 style={[
+                style={[
                   typography.regular.regular12,
                   {
                     color: colors.gold.gold100,
@@ -181,62 +203,16 @@ const CostSplittingSectionComp = (props) => {
           </View>
         </View>
       </View>
-      <View
-        style={{
-          marginTop: 30 * heightRatioProMax,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          onPress={props.onTermsAgreementPress}
-          style={{
-            marginRight: 10 * widthRatioProMax,
-            height: 50 * heightRatioProMax,
-            width: 50 * widthRatioProMax,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            style={{
-              width:
-                Platform.OS === "ios"
-                  ? 40 * heightRatioProMax
-                  : 50 * heightRatioProMax,
-              height:
-                Platform.OS === "ios"
-                  ? 30 * heightRatioProMax
-                  : 40 * heightRatioProMax,
-            }}
-            source={
-              props.isCheckboxSelected
-                ? filledInPurpleBoxImg
-                : unfilledInPurpleBoxImg
-            }
-          ></Image>
-        </TouchableOpacity>
-        <View>
-          <Text
-            style={{
-              color: colors.gold.gold100,
-            }}
-          >
-            I agree with the above statement
-          </Text>
-        </View>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   costSplittingContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    marginTop: 40 * heightRatioProMax,
-    width: "85%",
+    // marginTop: 40 * heightRatioProMax,
+    width: width,
+    // height:height,
+    backgroundColor: "black",
   },
   agreementTextContainer: {
     width: "80%",

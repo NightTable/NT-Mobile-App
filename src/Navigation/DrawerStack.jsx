@@ -19,6 +19,7 @@ import PromoterAppl from "../screens/promoter/PromoterAppl";
 import InfluencerAppl from "../screens/promoter/InfluencerAppl";
 import Hostsandpromoters from "../screens/tableRequest/Hostsandpromoter";
 import NewTableReq from "../screens/tableRequest/NewTableReq";
+import TableReqCont from "../screens/tableRequest/TableReqCont";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -99,6 +100,15 @@ const DrawerNavigator = () => {
        <Drawer.Screen
         name="NewTableReq"
         component={NewTableReq}
+        options={{
+          drawerItemStyle: { height: 0 },
+        }}
+      />
+    
+
+      <Drawer.Screen
+        name="TableReqCont"
+        component={TableReqCont}
         options={{
           drawerItemStyle: { height: 0 },
         }}

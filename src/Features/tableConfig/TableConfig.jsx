@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   SafeAreaView,
+  Pressable,
 } from "react-native";
 import { Button } from "../../components/Buttons";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
@@ -15,7 +16,7 @@ import { colors } from "../../theme";
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
 
-export const TableConfigurationsCard = ({ data }) => {
+export const TableConfigurationsCard = ({ data, onClickPressedConfig }) => {
   const [selectedTableData, setselectedTableData] = useState([]);
   return (
     <>
@@ -69,7 +70,10 @@ export const TableConfigurationsCard = ({ data }) => {
                       paddingVertical: 10,
                     }}
                   >
-                    <Box
+                    <Pressable
+                      onClick={() => {
+                        onClickPressedConfig();
+                      }}
                       style={{
                         flexDirection: "row",
                         backgroundColor: colors.gold.gold200,
@@ -107,7 +111,7 @@ export const TableConfigurationsCard = ({ data }) => {
                       >
                         <Text>$ {item?.minPrice}</Text>
                       </Box>
-                    </Box>
+                    </Pressable>
                   </ScrollView>
                 </>
               );

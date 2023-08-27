@@ -10,7 +10,6 @@ import {
   Pressable,
   ImageBackground,
   Alert,
-  Button,
   View,
 } from "react-native";
 import { Image } from "expo-image";
@@ -24,8 +23,8 @@ import CostSplittingSectionComp from "../../features/costSplitting";
 import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import DyModal from "../../components/Modal";
-import { Button as ButtonComp } from "../../components/Buttons";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Button } from "../../components/Buttons";
 const { width, height } = Dimensions.get("screen");
 let paymentTypeMethod = [
   {
@@ -45,15 +44,17 @@ let paymentTypeMethod = [
   },
 ];
 //main function
-const NewTableReq = ({ navigation, route }) => {
+const TableReqCont = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
-  
+  //modal- know-more (Snpl& pnsl)
+  const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
 
-
+  //SNPL - PNSL
+  const [selectedPaymentType, setselectedPaymentType] = useState(1);
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
     return (
@@ -91,6 +92,14 @@ const NewTableReq = ({ navigation, route }) => {
     );
   };
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onDateChange = (event, selected) => {
+    const currentDate = selected || selectedDate;
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
+  };
 
   return (
     <>
@@ -155,56 +164,8 @@ const NewTableReq = ({ navigation, route }) => {
               justifyContent: "space-evenly",
             }}
           >
-            <Box
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingVertical: 12,
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold14,
-                  {
-                    color: colors.gold.gold100,
-
-                    justifyContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  },
-                ]}
-              >
-                Organizer : {route?.params?.promoterData?.name}
-              </Text>
-              <Ionicons name="ios-chatbox" size={18} color={"silver"} />
-            </Box>
-            <Box
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingVertical: 12,
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold14,
-                  {
-                    color: colors.gold.gold100,
-                  },
-                ]}
-              >
-                Select Custom Table Minimum :
-              </Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={setTableMinimum}
-                placeholder={`${defaultTableMinimum}`}
-                placeholderTextColor={colors.gold.gold100}
-                selectionColor={colors.gold.gold100}
-                value={tableMinimum}
-                keyboardType={"numeric"}
-              />
-            </Box>
+            
+           
             <Box
               style={{
                 flexDirection: "row",
@@ -233,8 +194,77 @@ const NewTableReq = ({ navigation, route }) => {
               />
             </Box>
             <Box>
-              
+              <Box
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={[
+                    typography.semBold.semBold14,
+                    {
+                      color: colors.gold.gold100,
+                      justifyContent: "center", //Centered vertically
+                      alignItems: "center", //Centered horizontally
+                    },
+                  ]}
+                >
+                  Select Request Type :
+                </Text>
+                <Pressable
+                  onPress={() => {
+                    setsnpl_psnl_modal(true);
+                  }}
+                >
+                  <AntDesign name="questioncircle" size={20} color="silver" />
+                </Pressable>
+              </Box>
+
+              <Box
+                style={{
+                  flexDirection: "row",
+                  paddingVertical: 8,
+                  justifyContent: "space-between",
+                }}
+              >
+                {paymentTypeMethod?.map((item) => {
+                  return (
+                    <>
+                      <Pressable
+                        onPress={() => {
+                          setselectedPaymentType(item.id);
+                        }}
+                        style={{
+                          borderRadius: 6,
+                          borderWidth: 1,
+                          borderColor:
+                            item.id === selectedPaymentType
+                              ? colors.gold.gold100
+                              : colors.black.black900,
+                        }}
+                      >
+                        <Text
+                          style={[
+                            typography.bold.bold16,
+                            {
+                              color:
+                                item.id === selectedPaymentType
+                                  ? colors.gold.gold100
+                                  : colors.grey.grey400,
+                              padding: 12,
+                            },
+                          ]}
+                        >
+                          {item?.name}
+                        </Text>
+                      </Pressable>
+                    </>
+                  );
+                })}
+              </Box>
             </Box>
+
 
             <Box
               style={{
@@ -253,11 +283,12 @@ const NewTableReq = ({ navigation, route }) => {
                   },
                 ]}
               >
-                Select Table Type :
+               Invite Friends :
               </Text>
+              <Pressable>
+                <AntDesign name="plus" size={20} color="silver" />
+              </Pressable>
             </Box>
-
-           
           </Box>
 
           <Box
@@ -266,22 +297,33 @@ const NewTableReq = ({ navigation, route }) => {
               justifyContent: "flex-end",
             }}
           >
-            <ButtonComp
-              onSubmit={() => {
-                navigation.navigate("TableReqCont", {
-                  clubData: route?.params?.clubData,
-                  selectedEventData: route?.params?.selectedEventData,
-                  promoterData: [],
-                });
-              }}
+            {/* <Button
+            //   onSubmit={() => {
+            //     navigation.navigate("TableReqCont", {
+            //       clubData: route?.params?.clubData,
+            //       selectedEventData: route?.params?.selectedEventData,
+            //       promoterData: data,
+            //     });
+            //   }}
+              loader={false}
               text={"continue"}
               backgroundColor={colors.gold.gold100}
-            />
+            /> */}
           </Box>
         </Box>
       </View>
 
-      
+      <DyModal
+        children={
+          <CostSplittingSectionComp selectedPaymentType={selectedPaymentType} />
+        }
+        onClosepress={() => {
+          setsnpl_psnl_modal(false);
+        }}
+        bgColor={colors.black.black800}
+        openActionSheet={snpl_psnl_modal}
+        setopenActionSheet={setsnpl_psnl_modal}
+      />
       {/* <DyModal
         children={
           <>
@@ -301,7 +343,7 @@ const NewTableReq = ({ navigation, route }) => {
   );
 };
 
-export default NewTableReq;
+export default TableReqCont;
 
 const styles = StyleSheet.create({
   container: {
