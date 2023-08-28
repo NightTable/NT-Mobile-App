@@ -7,13 +7,13 @@ import {
   Dimensions,
   SafeAreaView,
 } from "react-native";
-import { Button } from "../../components/Buttons";
+import { Button } from "../../Components/Buttons";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //THEME
-import { colors } from "../../theme";
+import { colors } from "../../Theme";
 //COMPONENTS
-import { HeaderWithLeftIcon } from "../../components/Header";
-import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
+import { HeaderWithLeftIcon } from "../../Components/Header";
+import { TableConfigurationsCard } from "../../Features/tableConfig/TableConfig";
 
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");

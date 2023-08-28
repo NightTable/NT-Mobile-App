@@ -11,8 +11,8 @@ import {
 } from "react-native";
 //Utils
 const { height, width } = Dimensions.get("screen");
-import { value } from "../../theme/spacing";
-import { colors, typography } from "../../theme";
+import { value } from "../../Theme/spacing";
+import { colors, typography } from "../../Theme";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 //HOW TO USE

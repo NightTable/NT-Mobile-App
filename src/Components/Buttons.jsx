@@ -18,7 +18,7 @@ import {
   Alert,
   Pressable,
 } from "react-native";
-import { colors } from "../theme";
+import { colors } from "../Theme";
 
 const { screenWidth, screenHeight } = Dimensions.get("screen");
 //USEAGE

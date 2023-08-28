@@ -12,9 +12,9 @@ import { Image } from "expo-image";
 import dayjs from "dayjs";
 
 //Components
-import { HeaderWithLeftIcon } from "../../components/Header";
+import { HeaderWithLeftIcon } from "../../Components/Header";
 //THEME
-import { colors } from "../../theme";
+import { colors } from "../../Theme";
 //Redux
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -24,7 +24,7 @@ import {
 import {
   disableLoader,
   enableLoader,
-} from "../../components/popUp/loader/trigger";
+} from "../../Components/popUp/loader/trigger";
 
 //MAIN FUNCTION
 const UpcomingEvents = ({ navigation, route }) => {

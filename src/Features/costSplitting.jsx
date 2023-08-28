@@ -18,8 +18,8 @@ import {
 
 import filledInPurpleBoxImg from "../../assets/filledinpurplebox.png";
 import unfilledInPurpleBoxImg from "../../assets/unfilledinbiggerborder.png";
-import { heightRatioProMax, widthRatioProMax } from "../utils/Dimensions";
-import { colors, typography } from "../theme";
+import { heightRatioProMax, widthRatioProMax } from "../Utils/Dimensions";
+import { colors, typography } from "../Theme";
 const { height, width } = Dimensions.get("screen");
 
 const CostSplittingSectionComp = (props) => {

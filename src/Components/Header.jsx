@@ -5,7 +5,7 @@ import { Box } from "native-base";
 import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 //Theme
-import { typography, colors } from "../theme";
+import { typography, colors } from "../Theme";
 
 export const HeaderWithLeftIcon = (props) => {
   const headerIcon = (iconDirectory) => {

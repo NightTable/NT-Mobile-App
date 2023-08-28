@@ -1,6 +1,6 @@
 import { ActivityIndicator, Dimensions } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
-import { colors } from "../../../theme";
+import { colors } from "../../../Theme";
 import { Box } from "native-base";
 const { height, width } = Dimensions.get("screen");
 const ActivityIndicatorLoader = () => {

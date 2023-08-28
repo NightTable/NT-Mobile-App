@@ -8,15 +8,15 @@ import { Box } from "native-base";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //components
-import { Button } from "../../components/Buttons";
+import { Button } from "../../Components/Buttons";
 //Utils
 //Theme
-import { typography, colors } from "../../theme";
+import { typography, colors } from "../../Theme";
 import {
   disableLoader,
   enableLoader,
-} from "../../components/popUp/loader/trigger";
-import { HeaderWithLeftIcon } from "../../components/Header";
+} from "../../Components/popUp/loader/trigger";
+import { HeaderWithLeftIcon } from "../../Components/Header";
 const { height, width } = Dimensions.get("screen");
 //Main Function
 

@@ -1,4 +1,4 @@
-import { GetRequest } from "../utils/axios/Axios";
+import { GetRequest } from "../Utils/axios/Axios";
 
 //GET ALL THE CLUBS EVENT
 export const getEventofClub = async (clubId, obj) => {

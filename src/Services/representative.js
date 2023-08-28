@@ -1,5 +1,5 @@
 import axios, * as others from "axios";
-import { GetRequest } from "../utils/axios/Axios";
+import { GetRequest } from "../Utils/axios/Axios";
 
 export const getProfileData = async (id) => {
   return new Promise((resolve, reject) => {

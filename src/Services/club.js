@@ -1,5 +1,5 @@
 import axios, * as others from "axios";
-import { GetRequest, PostRequest } from "../utils/axios/Axios";
+import { GetRequest, PostRequest } from "../Utils/axios/Axios";
 
 export const getClubs = async () => {
   try {

@@ -13,17 +13,17 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 //component
-import { HeaderWithLeftIcon } from "../../components/Header";
+import { HeaderWithLeftIcon } from "../../Components/Header";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //THEME
-import { colors, typography } from "../../theme";
-import { getRepresentativebyClub } from "../../services/representative";
+import { colors, typography } from "../../Theme";
+import { getRepresentativebyClub } from "../../Services/representative";
 //LOADEAR
 import {
   disableLoader,
   enableLoader,
-} from "../../components/popUp/loader/trigger";
+} from "../../Components/popUp/loader/trigger";
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
 

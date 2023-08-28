@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
 import { Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 //THEME
-import { colors, typography } from "../../theme";
+import { colors, typography } from "../../Theme";
 
 //DIMENSIONS
 
