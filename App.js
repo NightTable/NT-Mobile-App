@@ -12,7 +12,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //FONTS LOADING
 import { useFonts } from "expo-font";
-import LogoSplash from "./src/screens/logo";
 //net -info
 import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
 import RootStack from "./src/navigation/RootStack";
@@ -24,6 +23,7 @@ const Stack = createNativeStackNavigator();
 import { StripeProvider } from "@stripe/stripe-react-native";
 import PaymentScreen from "./src/payment/Stripe";
 import CostSplittingSectionComp from "./src/features/costSplitting";
+import LogoSplash from "./src/screens/Logo";
 
 export default function App() {
   //INTERNET CONNECTION CHECK

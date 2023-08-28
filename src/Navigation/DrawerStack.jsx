@@ -14,12 +14,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //THEME
 import { typography, colors } from "../theme";
 import Profile from "../screens/Profile/Profile";
-import Promoter from "../screens/promoter/PromoterAppl";
-import PromoterAppl from "../screens/promoter/PromoterAppl";
-import InfluencerAppl from "../screens/promoter/InfluencerAppl";
-import Hostsandpromoters from "../screens/tableRequest/Hostsandpromoter";
-import NewTableReq from "../screens/tableRequest/NewTableReq";
-import TableReqCont from "../screens/tableRequest/TableReqCont";
+import Promoter from "../screens/Promoter/PromoterAppl";
+import PromoterAppl from "../screens/Promoter/PromoterAppl";
+import InfluencerAppl from "../screens/Promoter/InfluencerAppl";
+import Hostsandpromoters from "../screens/TableRequest/Hostsandpromoter";
+import NewTableReq from "../screens/TableRequest/NewTableReq";
+import TableReqCont from "../screens/TableRequest/TableReqCont";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
