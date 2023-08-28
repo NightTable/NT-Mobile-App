@@ -46,14 +46,12 @@ let paymentTypeMethod = [
 const TableReqCont = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
-  //modal- know-more (Snpl& pnsl)
-  const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
+  
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
 
-  //SNPL - PNSL
-  const [selectedPaymentType, setselectedPaymentType] = useState(1);
+ 
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
     return (
@@ -279,17 +277,7 @@ const TableReqCont = ({ navigation, route }) => {
         </Box>
       </View>
 
-      <DyModal
-        children={
-          <CostSplittingSectionComp selectedPaymentType={selectedPaymentType} />
-        }
-        onClosepress={() => {
-          setsnpl_psnl_modal(false);
-        }}
-        bgColor={colors.black.black800}
-        openActionSheet={snpl_psnl_modal}
-        setopenActionSheet={setsnpl_psnl_modal}
-      />
+      
      
     </>
   );

@@ -56,6 +56,18 @@ const NewTableReq = ({ navigation, route }) => {
 
   console.log("tableConfigsData::>>====>", tableConfigsData.length);
 
+  //SNPL - PNSL
+  const [selectedPaymentType, setselectedPaymentType] = useState(1);
+  //DATE
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  //modal- know-more (Snpl& pnsl)
+  const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
+  const onDateChange = (event, selected) => {
+    const currentDate = selected || selectedDate;
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
+  };
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
     return (
@@ -92,16 +104,6 @@ const NewTableReq = ({ navigation, route }) => {
       </>
     );
   };
-
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const onDateChange = (event, selected) => {
-    const currentDate = selected || selectedDate;
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
-  };
-
   return (
     <>
       <View
@@ -308,6 +310,78 @@ const NewTableReq = ({ navigation, route }) => {
                 )}
               </Pressable>
             </Box>
+
+            <Box>
+              <Box
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={[
+                    typography.semBold.semBold14,
+                    {
+                      color: colors.gold.gold100,
+                      justifyContent: "center", //Centered vertically
+                      alignItems: "center", //Centered horizontally
+                    },
+                  ]}
+                >
+                  Select Request Type :
+                </Text>
+                <Pressable
+                  onPress={() => {
+                    setsnpl_psnl_modal(true);
+                  }}
+                >
+                  <AntDesign name="questioncircle" size={20} color="silver" />
+                </Pressable>
+              </Box>
+
+              <Box
+                style={{
+                  flexDirection: "row",
+                  paddingVertical: 8,
+                  justifyContent: "space-between",
+                }}
+              >
+                {paymentTypeMethod?.map((item) => {
+                  return (
+                    <>
+                      <Pressable
+                        onPress={() => {
+                          setselectedPaymentType(item.id);
+                        }}
+                        style={{
+                          borderRadius: 6,
+                          borderWidth: 1,
+                          borderColor:
+                            item.id === selectedPaymentType
+                              ? colors.gold.gold100
+                              : colors.black.black900,
+                        }}
+                      >
+                        <Text
+                          style={[
+                            typography.bold.bold16,
+                            {
+                              color:
+                                item.id === selectedPaymentType
+                                  ? colors.gold.gold100
+                                  : colors.grey.grey400,
+                              padding: 12,
+                            },
+                          ]}
+                        >
+                          {item?.name}
+                        </Text>
+                      </Pressable>
+                    </>
+                  );
+                })}
+              </Box>
+            </Box>
           </Box>
 
           <Box
@@ -375,6 +449,18 @@ const NewTableReq = ({ navigation, route }) => {
         onClosepress={() => {
           setTableConfigModal(false);
         }}
+      />
+
+      <DyModal
+        children={
+          <CostSplittingSectionComp selectedPaymentType={selectedPaymentType} />
+        }
+        onClosepress={() => {
+          setsnpl_psnl_modal(!snpl_psnl_modal);
+        }}
+        bgColor={colors.black.black800}
+        openActionSheet={snpl_psnl_modal}
+        setopenActionSheet={setsnpl_psnl_modal}
       />
     </>
   );
