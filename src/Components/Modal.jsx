@@ -13,16 +13,7 @@ import {
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("screen");
 
-const DyModal = ({
-  children,
-  openActionSheet,
-  setopenActionSheet,
-  bgColor,
-  onClosepress,
-}) => {
-  console.log("====================================");
-  console.log("openActionSheet", openActionSheet);
-  console.log("====================================");
+const DyModal = ({ children, openActionSheet, bgColor, onClosepress }) => {
   return (
     <>
       <Modal

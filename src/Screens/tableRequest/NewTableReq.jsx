@@ -38,7 +38,6 @@ let paymentTypeMethod = [
   {
     id: 2,
     short_form: "pnsl",
-
     name: "pay-now-split-later",
     description:
       " method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.",
@@ -48,11 +47,15 @@ let paymentTypeMethod = [
 const NewTableReq = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
-  
+
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
+  const [TableConfigModal, setTableConfigModal] = useState(false);
+  const [tableConfigsData, settableConfigsData] = useState([]);
 
+
+  console.log('tableConfigsData====>',tableConfigsData)
 
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
@@ -91,14 +94,13 @@ const NewTableReq = ({ navigation, route }) => {
     );
   };
 
-
   return (
     <>
       <View
         style={{
           paddingTop: 40,
           backgroundColor: colors.black.black800,
-          height: "100%",
+          flex: 1,
         }}
       >
         <HeaderWithLeftIcon
@@ -205,36 +207,6 @@ const NewTableReq = ({ navigation, route }) => {
                 keyboardType={"numeric"}
               />
             </Box>
-            <Box
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingVertical: 10,
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold14,
-                  {
-                    color: colors.gold.gold100,
-                    alignSelf: "center",
-                  },
-                ]}
-              >
-                Estimated Time of Arrival :
-              </Text>
-              <DateTimePicker
-                value={selectedDate}
-                mode="time"
-                display="default"
-                onChange={onDateChange}
-                style={{ width: 120 }} //add this
-                themeVariant={"dark"}
-              />
-            </Box>
-            <Box>
-              
-            </Box>
 
             <Box
               style={{
@@ -255,9 +227,51 @@ const NewTableReq = ({ navigation, route }) => {
               >
                 Select Table Type :
               </Text>
-            </Box>
 
-           
+              <Pressable
+                onPress={() => {
+                  setTableConfigModal(true);
+                }}
+              >
+                {tableConfigsData.length > 0 ? (
+                  <>
+                    {tableConfigsData?.map((item) => {
+                      return (
+                        <>
+                          <Text
+                            style={[
+                              typography.semBold.semBold16,
+                              {
+                                color: colors.gold.gold100,
+                                justifyContent: "center", //Centered vertically
+                                alignItems: "center", //Centered horizontally
+                              },
+                            ]}
+                          >
+                            {item?.tableMapId} : $ {item?.minPrice} ,
+                          </Text>
+                        </>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
+                    <Text
+                      style={[
+                        typography.semBold.semBold14,
+                        {
+                          color: colors.gold.gold100,
+                          justifyContent: "center", //Centered vertically
+                          alignItems: "center", //Centered horizontally
+                        },
+                      ]}
+                    >
+                      NO TABLE CONFIG SELECTED
+                    </Text>
+                  </>
+                )}
+              </Pressable>
+            </Box>
           </Box>
 
           <Box
@@ -281,22 +295,46 @@ const NewTableReq = ({ navigation, route }) => {
         </Box>
       </View>
 
-      
-      {/* <DyModal
+      <DyModal
+        bgColor={colors.black.black800}
         children={
           <>
-            <TableConfigurationsCard
-              data={clubStore?.individualClubTableConfig}
-              onClickPressedConfig={(item) => {
-                //
-                console.log("item", item);
-              }}
-            />
+            <Box style={{ height: height, paddingHorizontal: 18 }}>
+              <Text
+                style={[
+                  typography.bold.bold24,
+                  { color: colors.gold.gold100, paddingBottom: 20 },
+                ]}
+              >
+                Select Tables
+              </Text>
+              <TableConfigurationsCard
+                data={clubStore?.individualClubTableConfig}
+                selectedTableConfigsData={() => {
+                  let tempArr = [];
+                  if (tableConfigsData.length > 0) {
+                    tableConfigsData.map((item) => {
+                      tempArr.push(item?._id);
+                    });
+                    return tempArr;
+                  } else {
+                    return [];
+                  }
+                }}
+                onpress_return_selectedTableConfigs={(item) => {
+                  settableConfigsData(item);
+                }}
+                showTables={false}
+              />
+            </Box>
           </>
         }
-        openActionSheet={snpl_psnl_modal}
-        setopenActionSheet={setsnpl_psnl_modal}
-      />  */}
+        openActionSheet={TableConfigModal}
+        setopenActionSheet={setTableConfigModal}
+        onClosepress={() => {
+          setTableConfigModal(false);
+        }}
+      />
     </>
   );
 };

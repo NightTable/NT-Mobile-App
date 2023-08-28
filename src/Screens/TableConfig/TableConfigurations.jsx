@@ -13,7 +13,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { colors } from "../../theme";
 //COMPONENTS
 import { HeaderWithLeftIcon } from "../../components/Header";
-import { TableConfigurationsCard, } from "../../features/tableConfig/TableConfig";
+import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
 
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
@@ -59,8 +59,8 @@ const TableConfigurations = ({ route, navigation }) => {
             textAlign: "center",
           }}
         >
-          Click on the  arrows next to the Table Map ID to see who all
-          are currently bidding to meet or exceed the Table Minimum.{"\n"}
+          Click on the arrows next to the Table Map ID to see who all are
+          currently bidding to meet or exceed the Table Minimum.{"\n"}
           {"\n"}Tables are sold to and reserved for those who meet or exceed the
           Table Minimum on a first-come-first-serve basis.{"\n"} {"\n"}While
           some table groups may require a joining fee, ladies, close friends, or
@@ -69,7 +69,13 @@ const TableConfigurations = ({ route, navigation }) => {
         </Text>
       </Box>
       <Box style={{ height: "60%" }}>
-        <TableConfigurationsCard data={clubStore?.individualClubTableConfig} />
+        <TableConfigurationsCard
+          data={clubStore?.individualClubTableConfig}
+          onpress_return_selectedTableConfigs={(item) => {
+          console.log('item====>',item)
+          }}
+          showTables={true}
+        />
       </Box>
       <Box style={{ height: "20%", padding: 20 }}>
         <Button

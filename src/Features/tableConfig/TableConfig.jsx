@@ -1,55 +1,75 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
-import {
-  Text,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 //THEME
-import { colors } from "../../theme";
+import { colors, typography } from "../../theme";
 
 //DIMENSIONS
-const { width, height } = Dimensions.get("screen");
 
 export const TableConfigurationsCard = ({
   data,
-  onClickPressedConfig,
-  multiplePressedEnabled,
+  onpress_return_selectedTableConfigs,
+  selectedTableConfigsData,
+  showTables,
 }) => {
   const [selectedTableData, setselectedTableData] = useState([]);
-  const [selectedTable_ids, setselectedTable_ids] = useState([]);
+  const [selectedTable_ids, setselectedTable_ids] = useState(
+    selectedTableConfigsData
+  );
 
   const onTableConfigPressed = (item) => {
-    let tempArrIds = [];
-    let tempArrDatas = [];
+    if (showTables === false) {
+      //LOGIC FOR SELECTING MULTIPLE TABLE CONFIG'S
+      let tempArrIds = [];
+      let tempArrDatas = [];
 
-    //if one item is selected and present in array
-    if (selectedTable_ids?.length > 0) {
-      let checkItemIndex = selectedTable_ids?.indexOf(item?._id);
-      if (checkItemIndex === -1) {
-        //if item is not present
-        tempArrIds = [...selectedTable_ids, item?._id];
-        tempArrDatas = [...selectedTableData, item];
-        setselectedTableData(tempArrIds);
-        setselectedTable_ids(tempArrIds);
+      //if one item is selected and present in array
+      if (selectedTable_ids?.length > 0) {
+        let checkItemIndex = selectedTable_ids?.indexOf(item?._id);
+        if (checkItemIndex === -1) {
+          //if item is not present
+          tempArrIds = [...selectedTable_ids, item?._id];
+          tempArrDatas = [...selectedTableData, item];
+          setselectedTableData(tempArrDatas);
+          setselectedTable_ids(tempArrIds);
+          onpress_return_selectedTableConfigs(tempArrDatas);
+        } else {
+          //if item is present pop-out that data
+          tempArrIds = selectedTable_ids?.filter((data) => {
+            return data != item?._id;
+          });
+
+          tempArrDatas = selectedTableData?.filter((data) => {
+            return data?._id != item?._id;
+          });
+
+          setselectedTableData(tempArrDatas);
+          setselectedTable_ids(tempArrIds);
+          onpress_return_selectedTableConfigs(tempArrDatas);
+        }
       } else {
-        //if item is present pop-out that data
-        tempArrIds = selectedTable_ids?.filter((data) => {
-          return data != item?._id;
-        });
-
-        tempArrDatas = selectedTableData?.filter((data) => {
-          return data != item?._id;
-        });
-        setselectedTableData(tempArrDatas);
-        setselectedTable_ids(tempArrIds);
+        // if there is not item selected
+        setselectedTableData([item]);
+        setselectedTable_ids([item?._id]);
+        onpress_return_selectedTableConfigs([item]);
       }
     } else {
-      // if there is not item selected
-      setselectedTableData([item]);
-      setselectedTable_ids([item?._id]);
+      //IF SHOW TABE IS TRUE
+      return onpress_return_selectedTableConfigs(item);
+    }
+  };
+
+  const getSelectedColor = (item) => {
+    if (showTables === true) {
+      return colors.gold.gold200;
+    } else if (showTables === false) {
+
+      console.log('====================================');
+      console.log('selectedTable_ids',selectedTable_ids);
+      console.log('====================================');
+      return selectedTable_ids?.includes(item._id)
+        ? colors.gold.gold200
+        : "silver";
     }
   };
 
@@ -58,17 +78,23 @@ export const TableConfigurationsCard = ({
       <Box>
         <Box style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
           <Box style={styles.splitBox}>
-            <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
+            <Text
+              style={[typography.bold.bold16, { color: colors.gold.gold200 }]}
+            >
               Table Map ID
             </Text>
           </Box>
           <Box style={styles.splitBox}>
-            <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
+            <Text
+              style={[typography.bold.bold16, { color: colors.gold.gold200 }]}
+            >
               Table Type
             </Text>
           </Box>
           <Box style={styles.splitBox}>
-            <Text style={{ color: colors.gold.gold200, fontWeight: "500" }}>
+            <Text
+              style={[typography.bold.bold16, { color: colors.gold.gold200 }]}
+            >
               Table Minimum
             </Text>
           </Box>
@@ -90,14 +116,19 @@ export const TableConfigurationsCard = ({
                       style={[
                         styles.mainBox,
                         {
-                          backgroundColor: selectedTable_ids.includes(item._id)
-                            ? colors.gold.gold200
-                            : "red",
+                          backgroundColor: getSelectedColor(item),
                         },
                       ]}
                     >
                       <Box style={styles.splitBox}>
-                        <Text>{item?.tableMapId}</Text>
+                        <Text
+                        // style={[
+                        //   typography.regular.regular14,
+                        //   { color: colors.gold.gold200 },
+                        // ]}
+                        >
+                          {item?.tableMapId}
+                        </Text>
                       </Box>
                       <Box style={styles.splitBox}>
                         <Text>{item?.type}</Text>

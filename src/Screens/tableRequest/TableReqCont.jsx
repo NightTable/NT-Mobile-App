@@ -324,21 +324,7 @@ const TableReqCont = ({ navigation, route }) => {
         openActionSheet={snpl_psnl_modal}
         setopenActionSheet={setsnpl_psnl_modal}
       />
-      {/* <DyModal
-        children={
-          <>
-            <TableConfigurationsCard
-              data={clubStore?.individualClubTableConfig}
-              onClickPressedConfig={(item) => {
-                //
-                console.log("item", item);
-              }}
-            />
-          </>
-        }
-        openActionSheet={snpl_psnl_modal}
-        setopenActionSheet={setsnpl_psnl_modal}
-      />  */}
+     
     </>
   );
 };
