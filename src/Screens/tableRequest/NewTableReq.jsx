@@ -54,8 +54,7 @@ const NewTableReq = ({ navigation, route }) => {
   const [TableConfigModal, setTableConfigModal] = useState(false);
   const [tableConfigsData, settableConfigsData] = useState([]);
 
-
-  console.log('tableConfigsData====>',tableConfigsData)
+  console.log("tableConfigsData::>>====>", tableConfigsData.length);
 
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
@@ -92,6 +91,15 @@ const NewTableReq = ({ navigation, route }) => {
         </Box>
       </>
     );
+  };
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const onDateChange = (event, selected) => {
+    const currentDate = selected || selectedDate;
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
   };
 
   return (
@@ -207,7 +215,33 @@ const NewTableReq = ({ navigation, route }) => {
                 keyboardType={"numeric"}
               />
             </Box>
-
+            <Box
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingVertical: 10,
+              }}
+            >
+              <Text
+                style={[
+                  typography.semBold.semBold14,
+                  {
+                    color: colors.gold.gold100,
+                    alignSelf: "center",
+                  },
+                ]}
+              >
+                Estimated Time of Arrival :
+              </Text>
+              <DateTimePicker
+                value={selectedDate}
+                mode="time"
+                display="default"
+                onChange={onDateChange}
+                style={{ width: 120 }} //add this
+                themeVariant={"dark"}
+              />
+            </Box>
             <Box
               style={{
                 flexDirection: "row",
@@ -229,6 +263,7 @@ const NewTableReq = ({ navigation, route }) => {
               </Text>
 
               <Pressable
+                style={{ backgroundColor: "silver", padding: 6 }}
                 onPress={() => {
                   setTableConfigModal(true);
                 }}
@@ -242,7 +277,8 @@ const NewTableReq = ({ navigation, route }) => {
                             style={[
                               typography.semBold.semBold16,
                               {
-                                color: colors.gold.gold100,
+                                color: "black",
+                                //   color: colors.gold.gold100,
                                 justifyContent: "center", //Centered vertically
                                 alignItems: "center", //Centered horizontally
                               },
@@ -260,7 +296,7 @@ const NewTableReq = ({ navigation, route }) => {
                       style={[
                         typography.semBold.semBold14,
                         {
-                          color: colors.gold.gold100,
+                          color: "black",
                           justifyContent: "center", //Centered vertically
                           alignItems: "center", //Centered horizontally
                         },
@@ -310,7 +346,8 @@ const NewTableReq = ({ navigation, route }) => {
               </Text>
               <TableConfigurationsCard
                 data={clubStore?.individualClubTableConfig}
-                selectedTableConfigsData={() => {
+                selectedTableConfigsData={tableConfigsData}
+                selectedTableConfigsIds={() => {
                   let tempArr = [];
                   if (tableConfigsData.length > 0) {
                     tableConfigsData.map((item) => {
@@ -322,6 +359,10 @@ const NewTableReq = ({ navigation, route }) => {
                   }
                 }}
                 onpress_return_selectedTableConfigs={(item) => {
+                  console.log(
+                    "onpress_return_selectedTableConfigs::item=====>",
+                    item
+                  );
                   settableConfigsData(item);
                 }}
                 showTables={false}

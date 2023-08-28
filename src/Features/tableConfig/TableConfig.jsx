@@ -10,11 +10,12 @@ export const TableConfigurationsCard = ({
   data,
   onpress_return_selectedTableConfigs,
   selectedTableConfigsData,
+  selectedTableConfigsIds,
   showTables,
 }) => {
-  const [selectedTableData, setselectedTableData] = useState([]);
+  const [selectedTableData, setselectedTableData] = useState(selectedTableConfigsData);
   const [selectedTable_ids, setselectedTable_ids] = useState(
-    selectedTableConfigsData
+    selectedTableConfigsIds
   );
 
   const onTableConfigPressed = (item) => {

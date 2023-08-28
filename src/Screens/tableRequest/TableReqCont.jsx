@@ -23,7 +23,6 @@ import CostSplittingSectionComp from "../../features/costSplitting";
 import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import DyModal from "../../components/Modal";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { Button } from "../../components/Buttons";
 const { width, height } = Dimensions.get("screen");
 let paymentTypeMethod = [
@@ -92,14 +91,7 @@ const TableReqCont = ({ navigation, route }) => {
     );
   };
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const onDateChange = (event, selected) => {
-    const currentDate = selected || selectedDate;
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
-  };
+ 
 
   return (
     <>
@@ -166,33 +158,7 @@ const TableReqCont = ({ navigation, route }) => {
           >
             
            
-            <Box
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingVertical: 10,
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold14,
-                  {
-                    color: colors.gold.gold100,
-                    alignSelf: "center",
-                  },
-                ]}
-              >
-                Estimated Time of Arrival :
-              </Text>
-              <DateTimePicker
-                value={selectedDate}
-                mode="time"
-                display="default"
-                onChange={onDateChange}
-                style={{ width: 120 }} //add this
-                themeVariant={"dark"}
-              />
-            </Box>
+            
             <Box>
               <Box
                 style={{
