@@ -13,7 +13,9 @@ export const TableConfigurationsCard = ({
   selectedTableConfigsIds,
   showTables,
 }) => {
-  const [selectedTableData, setselectedTableData] = useState(selectedTableConfigsData);
+  const [selectedTableData, setselectedTableData] = useState(
+    selectedTableConfigsData
+  );
   const [selectedTable_ids, setselectedTable_ids] = useState(
     selectedTableConfigsIds
   );
@@ -64,10 +66,9 @@ export const TableConfigurationsCard = ({
     if (showTables === true) {
       return colors.gold.gold200;
     } else if (showTables === false) {
-
-      console.log('====================================');
-      console.log('selectedTable_ids',selectedTable_ids);
-      console.log('====================================');
+      console.log("====================================");
+      console.log("selectedTable_ids", selectedTable_ids);
+      console.log("====================================");
       return selectedTable_ids?.includes(item._id)
         ? colors.gold.gold200
         : "silver";
@@ -111,6 +112,9 @@ export const TableConfigurationsCard = ({
                     contentContainerStyle={styles.ScrollViewBox}
                   >
                     <TouchableOpacity
+                      key={() => {
+                        return String(item?.tableMapId);
+                      }}
                       onPress={() => {
                         onTableConfigPressed(item);
                       }}

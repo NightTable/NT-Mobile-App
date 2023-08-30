@@ -230,29 +230,7 @@ const TableReqCont = ({ navigation, route }) => {
             </Box>
 
 
-            <Box
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingVertical: 10,
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold14,
-                  {
-                    color: colors.gold.gold100,
-                    justifyContent: "center", //Centered vertically
-                    alignItems: "center", //Centered horizontally
-                  },
-                ]}
-              >
-               Invite Friends :
-              </Text>
-              <Pressable>
-                <AntDesign name="plus" size={20} color="silver" />
-              </Pressable>
-            </Box>
+          
           </Box>
 
           <Box
