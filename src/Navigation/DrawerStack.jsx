@@ -18,8 +18,8 @@ import Promoter from "../screens/Promoter/PromoterAppl";
 import PromoterAppl from "../screens/Promoter/PromoterAppl";
 import InfluencerAppl from "../screens/Promoter/InfluencerAppl";
 import Hostsandpromoters from "../screens/TableRequest/Hostsandpromoter";
+import TableReqCont from "../screens/TableRequest/TableReqConfiramation";
 import NewTableReq from "../screens/TableRequest/NewTableReq";
-import TableReqCont from "../screens/TableRequest/TableReqCont";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();

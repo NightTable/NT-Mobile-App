@@ -43,13 +43,10 @@ let paymentTypeMethod = [
   },
 ];
 //main function
-const TableReqCont = ({ navigation, route }) => {
+const TableReqConfiramation = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
   
-  //table-minimum
-  const [tableMinimum, setTableMinimum] = useState(0);
-  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
 
  
   // CLUB AND EVENT NAME CARD
@@ -89,7 +86,9 @@ const TableReqCont = ({ navigation, route }) => {
     );
   };
 
- 
+console.log('====================================');
+console.log('route=====>',route?.params);
+console.log('===================================='); 
 
   return (
     <>
@@ -261,7 +260,7 @@ const TableReqCont = ({ navigation, route }) => {
   );
 };
 
-export default TableReqCont;
+export default TableReqConfiramation;
 
 const styles = StyleSheet.create({
   container: {

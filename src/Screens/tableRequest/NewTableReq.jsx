@@ -7,6 +7,7 @@ import {
   Dimensions,
   Pressable,
   View,
+  Alert,
 } from "react-native";
 import { Image } from "expo-image";
 //component
@@ -45,11 +46,10 @@ const NewTableReq = ({ navigation, route }) => {
 
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
-  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
   const [TableConfigModal, setTableConfigModal] = useState(false);
   const [tableConfigsData, settableConfigsData] = useState([]);
 
-  console.log("tableConfigsData::>>====>", tableConfigsData.length);
+  // console.log("tableConfigsData::>>====>", tableConfigsData.length);
   //MODAL
   const [inviteParticipantModal, setinviteParticipantModal] = useState(false);
   const [inviteParticipantData, setinviteParticipantData] = useState("");
@@ -103,6 +103,11 @@ const NewTableReq = ({ navigation, route }) => {
       </>
     );
   };
+
+ 
+console.log('====================================');
+console.log('tableMinimum',tableMinimum);
+console.log('====================================');
   return (
     <>
       <View
@@ -128,7 +133,7 @@ const NewTableReq = ({ navigation, route }) => {
             return null;
           }}
         />
-        <Box style={{ height: "26%" }}>
+        <Box style={{ height: "20%" }}>
           <ScrollView horizontal={true}>
             {route?.params?.clubData?.photos.map((image) => {
               return (
@@ -151,23 +156,8 @@ const NewTableReq = ({ navigation, route }) => {
           <ClubandEventNameCard />
         </Box>
 
-        <Box
-          style={{
-            borderRadius: 30,
-            borderColor: colors.gold.gold100,
-            borderWidth: 1,
-            padding: 18,
-            height: "74%",
-            // backgroundColor: "red",
-          }}
-        >
-          <Box
-            style={{
-              height: "80%",
-              justifyContent: "space-evenly",
-              // backgroundColor: "green",
-            }}
-          >
+        <Box style={styles.box2}>
+          <Box style={styles.box2_first}>
             <Box
               style={{
                 flexDirection: "row",
@@ -206,12 +196,12 @@ const NewTableReq = ({ navigation, route }) => {
                   },
                 ]}
               >
-                Select Custom Table Minimum :
+                Select Custom Table Minimum :{tableMinimum}
               </Text>
               <TextInput
                 style={styles.input}
                 onChangeText={setTableMinimum}
-                placeholder={`${defaultTableMinimum}`}
+                // placeholder={`${defaultTableMinimum}`}
                 placeholderTextColor={colors.gold.gold100}
                 selectionColor={colors.gold.gold100}
                 value={tableMinimum}
@@ -340,7 +330,25 @@ const NewTableReq = ({ navigation, route }) => {
                   <AntDesign name="plus" size={20} color="silver" />
                 </Pressable>
               </Box>
-              <Box></Box>
+              <Box>
+                {InviteFrndsData?.map((item) => {
+                  return (
+                    <>
+                      <Text
+                        style={[
+                          typography.semBold.semBold14,
+                          {
+                            color: colors.gold.gold100,
+                          },
+                        ]}
+                      >
+                        {item}
+                        {" ,"}
+                      </Text>
+                    </>
+                  );
+                })}
+              </Box>
             </Box>
             <Box>
               <Box
@@ -416,20 +424,25 @@ const NewTableReq = ({ navigation, route }) => {
             </Box>
           </Box>
 
-          <Box
-            style={{
-              height: "20%",
-              // justifyContent: "flex-end",
-              // backgroundColor: "yellow",
-            }}
-          >
+          <Box style={styles.box2_second}>
             <ButtonComp
               onSubmit={() => {
-                navigation.navigate("TableReqCont", {
-                  clubData: route?.params?.clubData,
-                  selectedEventData: route?.params?.selectedEventData,
-                  promoterData: [],
-                });
+
+                if (tableMinimum != 0) {
+                  Alert.alert("Please enter the table Minimum");
+                } else if (tableConfigsData.length === 0) {
+                  Alert.alert("Please select the table Configs");
+                } else {
+                  navigation.navigate("TableReqConfirmation", {
+                    clubData: route?.params?.clubData,
+                    selectedEventData: route?.params?.selectedEventData,
+                    promoterData: route?.params?.promoterData,
+                    tableMinimum: tableMinimum,
+                    arrivalDate: selectedDate,
+                    selectedConfigData: tableConfigsData,
+                    InviteFrndsData: InviteFrndsData,
+                  });
+                }
               }}
               text={"continue"}
               backgroundColor={colors.gold.gold100}
@@ -466,11 +479,14 @@ const NewTableReq = ({ navigation, route }) => {
                   }
                 }}
                 onpress_return_selectedTableConfigs={(item) => {
-                  console.log(
-                    "onpress_return_selectedTableConfigs::item=====>",
-                    item
-                  );
+                  let mintableAmount = item
+                    ?.map((item) => item.minPrice)
+                    .reduce((prev, curr) => prev + curr, 0);
+
                   settableConfigsData(item);
+                  console.log('setTableMinimum',setTableMinimum)
+                  setTableMinimum(Number(mintableAmount));
+                  // settableMinimum('')
                 }}
                 showTables={false}
               />
@@ -526,7 +542,10 @@ const NewTableReq = ({ navigation, route }) => {
                   <TextInput
                     style={styles.inputInviteParticipant}
                     onChangeText={(e) => {
+                      console.log("e====>", e);
                       setinviteParticipantData(e);
+                      //  let tempString = e;
+                      //  inviteParticipantData = tempString
                     }}
                     placeholder={``}
                     placeholderTextColor={colors.gold.gold100}
@@ -541,7 +560,7 @@ const NewTableReq = ({ navigation, route }) => {
                     onPress={() => {
                       let tempArr = [...InviteFrndsData, inviteParticipantData];
                       setInviteFrndsData(tempArr);
-                      setinviteParticipantData('')
+                      setinviteParticipantData("");
                     }}
                   >
                     <Text
@@ -584,7 +603,7 @@ const NewTableReq = ({ navigation, route }) => {
                     fee to 0{" "}
                   </Text>
                 </Box>
-                <Box style={{ paddingVertical: 14, }}>
+                <Box style={{ paddingVertical: 14 }}>
                   <ScrollView style={{ paddingBottom: 420 }}>
                     {InviteFrndsData &&
                       InviteFrndsData.map((item) => {
@@ -680,5 +699,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // width: "20%",
     // textAlign: "center",
+  },
+  box2: {
+    borderRadius: 30,
+    borderColor: colors.gold.gold100,
+    borderWidth: 1,
+    paddingHorizontal: 18,
+    height: "80%",
+  },
+  box2_first: {
+    height: "80%",
+    justifyContent: "space-evenly",
+    // backgroundColor: "red",
+  },
+  box2_second: {
+    height: "20%",
   },
 });
