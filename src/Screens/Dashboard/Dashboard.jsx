@@ -150,11 +150,23 @@ const Dashboard = ({ navigation }) => {
       />
       <Box style={styles.mainBox}>
         <Text style={[typography.bold.bold16, styles.textHeading]}>
-          Welcome back,
+          Welcome back, here's a list of clubs near your city
         </Text>
 
-        <Box style={{ alignItems: "center", paddingTop: 20}}>
+        <Box style={{ alignItems: "center", paddingTop: 20, /*borderColor: 'white', borderWidth: 5,*/ }}>
           <FlatList
+            style={{
+              borderColor: colors.gold.gold200,
+              borderWidth: 5,
+              width: 420,
+              borderRadius: 10
+            }}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={true}
+            contentContainerStyle={{
+              indicatorStyle: colors.gold.gold100, // change this to the color you desire; works only on iOS
+              width: 5
+            }}
             data={clubStore?.allClubs}
             renderItem={({ item }) => {
               return <ClubCards props={item} />;
@@ -175,8 +187,7 @@ const styles = StyleSheet.create({
   mainBox: {
     paddingHorizontal: 18,
     flex: 1,
-    borderColor: 'white',
-    borderWidth: 5
+
   },
   clubListContainer: {
     flexDirection: "column",
