@@ -75,7 +75,7 @@ const Otp = ({ route, navigation }) => {
     <>
       <Box safeArea style={styles.container}>
         <HeaderWithLeftIcon
-          title={"Please enter the otp"}
+          title={"Please enter the OTP"}
           icon={"arrowleft"}
           iconDirectory={"AntDesign"}
           onSubmit={() => {
@@ -85,7 +85,7 @@ const Otp = ({ route, navigation }) => {
         <Box style={[styles.mainBox]}>
           <Box style={{ marginTop: 100 }}>
             <OTPTextView
-              tintColor={colors.black.black800}
+              tintColor={colors.gold.gold100}
               autoFocus={true}
               style={styles.roundedTextInput}
               handleTextChange={(e) => {
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 40,
     paddingLeft: 10,
-    color: "white",
+    color: colors.gold.gold100,
   },
   heading: { fontSize: 22, paddingTop: 18, color: colors.gold.gold100 },
 });

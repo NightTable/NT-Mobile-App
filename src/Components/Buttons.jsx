@@ -3,6 +3,7 @@ import { Button as NBButton } from "native-base";
 import Feather from "react-native-vector-icons/Feather";
 import { ActivityLoader } from "./Loaders";
 import { Box } from "native-base";
+import { typography } from "../Theme";
 import {
   SafeAreaView,
   View,
@@ -95,12 +96,13 @@ export const Button = (props) => {
                 // }}
               >
                 <Text
-                  style={{
+                  style={[{
                     color: props.textColor,
                     justifyContent: "center",
                     alignItems: "center",
-                    fontWeight: "bold",
-                  }}
+                  },
+                    typography.bold.bold16,
+                  ]}
                 >
                   {props.text}
                 </Text>

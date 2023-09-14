@@ -62,6 +62,9 @@ const Hostsandpromoters = ({ navigation, route }) => {
     return (
       <>
         <Pressable
+        key={()=>{
+          return  data?.name
+        }}
           style={{
             backgroundColor: colors.gold.gold200,
             flexDirection: "row",
