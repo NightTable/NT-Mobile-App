@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { colors, typography } from "../../Theme";
-import { Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import { Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from "react-native";
 import { Box } from "native-base";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { HeaderWithLeftIcon } from "../../Components/Header";
@@ -45,7 +45,7 @@ const Club = ({ route, navigation }) => {
           <Text style={[typography.bold.bold16, styles.goldColor]}>
             Address : {"     "}
           </Text>
-          <Text style={[typography.regular.regular14, styles.goldColor]}>
+          <Text style={[typography.regular.regular16, styles.goldColor]}>
             {route?.params?.clubData?.Address?.Address}
           </Text>
         </Box>
@@ -61,7 +61,7 @@ const Club = ({ route, navigation }) => {
           <Text style={[typography.bold.bold16, styles.goldColor]}>
             Website : {"     "}
           </Text>
-          <Text style={[typography.regular.regular14, styles.goldColor]}>
+          <Text style={[typography.regular.regular16, styles.goldColor]}>
             {route?.params?.clubData?.website}
           </Text>
         </Box>
@@ -75,7 +75,7 @@ const Club = ({ route, navigation }) => {
           <Text style={[typography.bold.bold16, styles.goldColor]}>
             Instagram : {"     "}
           </Text>
-          <Text style={[typography.regular.regular14, styles.goldColor]}>
+          <Text style={[typography.regular.regular16, styles.goldColor]}>
             {route?.params?.clubData?.instaHandle}
           </Text>
         </Box>
@@ -90,7 +90,7 @@ const Club = ({ route, navigation }) => {
           <Text style={[typography.bold.bold16, styles.goldColor]}>
             Phone Number : {"     "}
           </Text>
-          <Text style={[typography.regular.regular14, styles.goldColor]}>
+          <Text style={[typography.regular.regular16, styles.goldColor]}>
             {route?.params?.clubData?.phoneNumber}
           </Text>
         </Box>
@@ -110,27 +110,53 @@ const Club = ({ route, navigation }) => {
         }}
       />
 
-      <ScrollView horizontal={true}>
-        {route?.params?.clubData?.photos.map((image) => {
+      <ScrollView 
+        horizontal={true} 
+        pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ 
+          borderWidth: 1,  // Set the border width
+          borderColor: colors.gold.gold100,  // Set the border color
+          borderRadius: 5  // Optional, set the border radius if you want rounded corners
+        }}
+      >
+        {route?.params?.clubData?.photos.map((image, index) => {
           return (
-            <>
-              <Box>
-                <Image
-                  style={{ width: 300, height: 300 }}
-                  source={{
-                    uri: image,
-                  }}
-                />
-              </Box>
-            </>
+            <Box style={{ 
+                width: Dimensions.get('window').width,  // Set width to screen width
+                justifyContent: 'center', // Center vertically
+                alignItems: 'center'  // Center horizontally
+              }}>
+              <Image
+                style={{ 
+                  width: Dimensions.get('window').width, 
+                  height: Dimensions.get('window').width,
+                }}
+                source={{
+                  uri: image,
+                }}
+              />
+            </Box>
           );
         })}
       </ScrollView>
       <Box style={[styles.mainBox]}>
         <ClubDetails />
         <Box style={{ width: "100%", alignSelf: "center", margin: 20 }}>
-          <Button
-            onSubmit={() => {
+          <TouchableOpacity
+            style={[
+              styles.buttonStyle,
+              {
+                backgroundColor: checkClubEvent() === "Check for Upcoming Events"
+                  ? colors.gold.gold200
+                  : colors.grey.grey300,
+                borderColor: checkClubEvent() === "Check for Upcoming Events"
+                  ? colors.gold.gold100
+                  : colors.grey.grey400,
+                borderWidth: 2
+              }
+            ]}
+            onPress={() => {
               // validation();
               if (clubStore?.individualClubEvents?.length > 0) {
                 navigation.navigate("UpcomingEvents", {
@@ -138,13 +164,9 @@ const Club = ({ route, navigation }) => {
                 });
               }
             }}
-            backgroundColor={
-              checkClubEvent() === "Check for Upcoming Events"
-                ? colors.gold.gold200
-                : colors.grey.grey300
-            }
-            text={checkClubEvent()}
-          />
+          >
+            <Text style={[typography.bold.bold16]}>{checkClubEvent()}</Text>
+          </TouchableOpacity>
         </Box>
       </Box>
     </Box>
@@ -161,7 +183,12 @@ const styles = StyleSheet.create({
   },
 
   goldColor: {
-    color: colors.gold.gold200,
+    color: colors.gold.gold100,
+  },
+  buttonStyle: {
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 5,
   },
 });
 

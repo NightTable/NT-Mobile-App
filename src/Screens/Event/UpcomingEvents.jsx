@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 //Components
 import { HeaderWithLeftIcon } from "../../Components/Header";
 //THEME
-import { colors } from "../../Theme";
+import { colors, typography } from "../../Theme";
 //Redux
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
@@ -85,7 +85,7 @@ const UpcomingEvents = ({ navigation, route }) => {
         }}
       >
         <Box style={{ marginVertical: 6 }}>
-          <Text style={{ color: colors.gold.gold200 }}>Upcoming Events</Text>
+          <Text style={{ color: colors.gold.gold200, ...typography.regular.regular16 }}>Upcoming Events</Text>
         </Box>
         {clubStore?.individualClubEvents?.length
           ? clubStore?.individualClubEvents?.map((item) => {
@@ -94,7 +94,7 @@ const UpcomingEvents = ({ navigation, route }) => {
                   <>
                     <Box
                       style={{
-                        backgroundColor: colors.gold.gold200,
+                        backgroundColor: colors.gold.gold100,
                         borderRadius: 6,
                       }}
                     >
@@ -133,14 +133,14 @@ const UpcomingEvents = ({ navigation, route }) => {
                               resizeMode: "contain",
                               borderRadius: 30,
                               margin: 6,
-                              borderWidth: 1,
-                              borderColor: "black",
+                              borderWidth: 5,
+                              borderColor: colors.gold.gold200,
                             }}
                           />
                         </Box>
                         <Box style={{ justifyContent: "center" }}>
-                          <Text>{item.name}</Text>
-                          <Text>
+                          <Text style={[typography.regular.regular16]}>{item.name}</Text>
+                          <Text style={[typography.regular.regular16]}>
                             {dayjs(item?.eventDate).format("DD-MM-YYYY HH:MM")}
                           </Text>
                         </Box>

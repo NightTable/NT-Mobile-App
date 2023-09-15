@@ -117,7 +117,7 @@ const Otp = ({ route, navigation }) => {
               }}
               disabled={otp.length === 6 ? false : true}
               backgroundColor={colors.gold.gold100}
-              text={"Verify Otp"}
+              text={"Verify OTP"}
             />
           </Box>
         </Box>
