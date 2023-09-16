@@ -21,7 +21,7 @@ import { EventRegister } from "react-native-event-listeners";
 const Stack = createNativeStackNavigator();
 // App.ts
 import { StripeProvider } from "@stripe/stripe-react-native";
-import PaymentScreen from "./src/payment/Stripe";
+import PaymentScreen from "./PaymentScreen";
 import CostSplittingSectionComp from "./src/features/costSplitting";
 import LogoSplash from "./src/screens/Logo";
 

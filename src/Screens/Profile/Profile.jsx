@@ -17,12 +17,17 @@ import {
   enableLoader,
 } from "../../components/popUp/loader/trigger";
 import { HeaderWithLeftIcon } from "../../components/Header";
+import { getProfileData } from "../../services/user";
+import { GetRequest } from "../../utils/axios/Axios";
 const { height, width } = Dimensions.get("screen");
 //Main Function
 
 const Profile = ({ route, navigation }) => {
   //REDUX
   const dispatch = useDispatch();
+
+  const loginStore = useSelector((state) => state.login.otpNumberData);
+  // console.log("loginStore====>", loginStore.data.phoneNumber);
 
   const [profileData, setprofileData] = useState({
     name: "",
@@ -31,6 +36,54 @@ const Profile = ({ route, navigation }) => {
     instagram_id: "",
     linkedin_id: "",
   });
+
+  useEffect(() => {
+    async function loadData() {
+      // if (loginStore?.data?.phoneNumber != undefined) {
+      //   getUserProfileData(loginStore.data.phoneNumber);
+      // }
+      try {
+
+        console.log('loading ');
+        let obj = JSON.stringify({
+          phoneNumber: "8770203998",
+        });
+
+        console.log('obj',obj);
+        const response = await GetRequest(
+          `http://localhost:3000/api/users/user`,
+          obj,
+          ""
+        );
+        console.log('response',response);
+        console.log("response.data;", response);
+      } catch (error) {
+        return error;
+      }
+    }
+    loadData();
+
+    return () => {
+      //  second
+    };
+  }, [loginStore?.data?.phoneNumber]);
+
+  const getUserProfileData = async (phoneNumber) => {
+   
+    try {
+      let obj = {
+        phoneNumber: "8770203998",
+      };
+      const response = await GetRequest(
+        `http://localhost:3000/api/user/user`,
+        obj,
+        ""
+      );
+      console.log("response.data;", response.data);
+    } catch (error) {
+      return error;
+    }
+  };
 
   return (
     <>
@@ -52,7 +105,7 @@ const Profile = ({ route, navigation }) => {
               autoFocus={true}
               style={[typography.regular.regular16, styles.input]}
               onChangeText={(text) => {
-                onChangeNumber(text);
+                setprofileData((previousState) => {});
               }}
               value={profileData.phoneNumber}
               placeholder="Phone Number"
@@ -89,7 +142,7 @@ const Profile = ({ route, navigation }) => {
               keyboardType="numeric"
             />
           </Box>
-          <Box style={styles.inputBox}>
+          {/* <Box style={styles.inputBox}>
             <Text style={[styles.heading, typography.bold.bold16]}>
               Phone Number
             </Text>
@@ -104,7 +157,7 @@ const Profile = ({ route, navigation }) => {
               placeholderTextColor={colors.grey.grey800}
               keyboardType="numeric"
             />
-          </Box>
+          </Box> */}
           <Box
             style={{
               paddingTop: 60,

@@ -2,14 +2,16 @@ import axios, * as others from "axios";
 
 export const GetRequest = async (session_url, body, params, header = null) => {
   var startTime = performance.now();
-
+console.log('====================================');
+console.log('session_url, body, params,',session_url, body, params,);
+console.log('====================================');
   try {
     var config = "";
     if (body) {
       config = {
         method: "get",
         url: session_url,
-        body: body,
+        data: body,
       };
     } else if (params) {
       config = {
@@ -29,6 +31,10 @@ export const GetRequest = async (session_url, body, params, header = null) => {
         url: session_url,
       };
     }
+
+    // console.log('====================================');
+    console.log('config',config);
+    console.log('====================================');
     var resultAxios = await axios(config);
     var endTime = performance.now();
     console.log(`Call ${session_url} ${endTime - startTime} milliseconds.`);
