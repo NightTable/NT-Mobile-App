@@ -53,6 +53,7 @@ export const typography = {
       regular12: {fontFamily: 'vh-regular', fontSize: 12},
       regular14: {fontFamily: 'vh-regular', fontSize: 14},
       regular16: {fontFamily: 'vh-regular', fontSize: 16},
+      regular18: {fontFamily: 'vh-regular', fontSize: 18},
     },
   
     light: {

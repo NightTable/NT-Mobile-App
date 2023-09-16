@@ -80,7 +80,7 @@ const NewTableReq = ({ navigation, route }) => {
         >
           <Text
             style={[
-              typography.semBold.semBold14,
+              typography.bold.bold16,
               {
                 color: colors.gold.gold100,
               },
@@ -136,7 +136,7 @@ const NewTableReq = ({ navigation, route }) => {
                   <Box>
                     <Image
                       style={{
-                        width: width - 40,
+                        width: width,
                         height: 160,
                       }}
                       source={{
@@ -177,7 +177,7 @@ const NewTableReq = ({ navigation, route }) => {
             >
               <Text
                 style={[
-                  typography.semBold.semBold14,
+                  typography.semBold.semBold16,
                   {
                     color: colors.gold.gold100,
 
@@ -200,7 +200,7 @@ const NewTableReq = ({ navigation, route }) => {
             >
               <Text
                 style={[
-                  typography.semBold.semBold14,
+                  typography.semBold.semBold16,
                   {
                     color: colors.gold.gold100,
                   },
@@ -227,7 +227,7 @@ const NewTableReq = ({ navigation, route }) => {
             >
               <Text
                 style={[
-                  typography.semBold.semBold14,
+                  typography.semBold.semBold16,
                   {
                     color: colors.gold.gold100,
                     alignSelf: "center",
@@ -255,7 +255,7 @@ const NewTableReq = ({ navigation, route }) => {
             >
               <Text
                 style={[
-                  typography.semBold.semBold14,
+                  typography.semBold.semBold16,
                   {
                     color: colors.gold.gold100,
                     justifyContent: "center", //Centered vertically
