@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "native-base";
+import React, { useEffect, useState } from 'react';
+import { Box } from 'native-base';
 import {
   Text,
   StyleSheet,
@@ -11,17 +11,17 @@ import {
   Image,
   ImageBackground,
   Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 //component
-import { HeaderWithLeftIcon } from "../../components/Header";
+import { HeaderWithLeftIcon } from '../../components/Header';
 //REDUX
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 //THEME
-import { colors, typography } from "../../theme";
-import { getEventOfClub } from "../../store/action/clubs";
+import { colors, typography } from '../../theme';
+import { getEventOfClub } from '../../store/action/clubs';
 //DIMENSIONS
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get('screen');
 
 // import { getDistanceFromLatLonInMi } from "./algo";
 // import DashboardBubbleComp from "../components/EntryDashboardScreen/DashboardBubbleComp";
@@ -65,13 +65,15 @@ const Dashboard = ({ navigation }) => {
   //   getNearByClubs();
   // }, []);
 
+ 
+
   const ClubCards = ({ props }) => {
     return (
       <>
         <Pressable
           style={{
             backgroundColor: colors.gold.gold200,
-            flexDirection: "row",
+            flexDirection: 'row',
             margin: 6,
             borderRadius: 4,
             padding: 14,
@@ -79,15 +81,15 @@ const Dashboard = ({ navigation }) => {
           onPress={() => {
             // console.log("props======>", props._id);
             dispatch(getEventOfClub(props._id));
-            navigation.navigate("Club", {
+            navigation.navigate('Club', {
               clubData: props,
             });
           }}
         >
-          <Box style={{ width: "50%" }}>
+          <Box style={{ width: '50%' }}>
             <Text>{props?.name}</Text>
           </Box>
-          <Box style={{ width: "50%", alignItems: "flex-end" }}>
+          <Box style={{ width: '50%', alignItems: 'flex-end' }}>
             <Image
               style={{ height: 20, width: 50 }}
               source={{ uri: props?.photos[0] }}
@@ -102,16 +104,16 @@ const Dashboard = ({ navigation }) => {
   };
 
   const logoutBtn = () =>
-    Alert.alert("Logout", "Are you sure want to logout ?", [
+    Alert.alert('Logout', 'Are you sure want to logout ?', [
       {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
       },
       {
-        text: "OK",
+        text: 'OK',
         onPress: () => {
-          navigation.navigate("Login");
+          navigation.navigate('Login');
         },
       },
     ]);
@@ -119,11 +121,11 @@ const Dashboard = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithLeftIcon
-        title={"NightTable"}
-        icon={"menu"}
-        iconDirectory={"Entypo"}
-        iconRightDirectory={"Entypo"}
-        iconRight={"log-out"}
+        title={'NightTable'}
+        icon={'menu'}
+        iconDirectory={'Entypo'}
+        iconRightDirectory={'Entypo'}
+        iconRight={'log-out'}
         onSubmit={() => {
           navigation.openDrawer();
         }}
@@ -136,7 +138,7 @@ const Dashboard = ({ navigation }) => {
           Welcome back,
         </Text>
 
-        <Box style={{ alignItems: "center", paddingTop: 20 }}>
+        <Box style={{ alignItems: 'center', paddingTop: 20 }}>
           <FlatList
             data={clubStore?.allClubs}
             renderItem={({ item }) => {
@@ -160,8 +162,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   clubListContainer: {
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
     height: 400 * height,
   },
   input: {
