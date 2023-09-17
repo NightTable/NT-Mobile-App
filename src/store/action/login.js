@@ -1,6 +1,6 @@
-import { loginReducer } from "../reducer/loginReducer";
-import { getCountries } from "../../services/country";
-import { loginApi, otpVerify } from "../../services/auths";
+import { loginReducer } from '../reducer/loginReducer';
+import { getCountries } from '../../services/country';
+import { loginApi, otpVerify } from '../../services/auths';
 
 const {
   logout,
@@ -10,7 +10,7 @@ const {
   updateCountryData,
   otpGeneratedData,
   verifyGeneratedData,
-  userAddress
+  userAddress,
 } = loginReducer.actions;
 
 export const loginUser = (number) => {
@@ -30,14 +30,14 @@ export const getAllCountriesData = () => {
     apiData.map((item) => {
       tempArr.push({
         label:
-          item.phoneNumberCode.slice(0, 1) == "+"
+          item.phoneNumberCode.slice(0, 1) == '+'
             ? `${item.phoneNumberCode}`
             : `+${item.phoneNumberCode}`,
         value:
-          item.phoneNumberCode.slice(0, 1) == "+"
+          item.phoneNumberCode.slice(0, 1) == '+'
             ? `${item.phoneNumberCode}`
             : `+${item.phoneNumberCode}`,
-            name:item.name
+        name: item.name,
       });
     });
     dispatch(updateCountryData(tempArr));
@@ -52,6 +52,7 @@ export const verifyOtp = (otp) => {
       reqPhoneNumber: loginData.data.phoneNumber,
       reqOtp: otp,
     };
+
     const otpVerifyData = await otpVerify(obj);
     if (
       otpVerifyData?.toString() ==
@@ -59,7 +60,7 @@ export const verifyOtp = (otp) => {
     ) {
       dispatch(
         verifyGeneratedData({
-          messasge: "Verification failed! Please try again.",
+          messasge: 'Verification failed! Please enter correct otp again.',
         })
       );
     } else {
@@ -71,7 +72,7 @@ export const verifyOtp = (otp) => {
 
 export const updateToken = (data) => {
   return async (dispatch) => {
-    console.log("data===>", data);
+    console.log('data===>', data);
     dispatch(updateUserToken(data?.token));
     dispatch(isProfileSetup(data?.data?.isProfileSetup));
     dispatch(checkUserLoggedIn(true));
@@ -80,17 +81,17 @@ export const updateToken = (data) => {
   };
 };
 
-export const logoutFromApp = () =>{
-  return async (dispatch) =>{
-    dispatch(logout())
-  }
-}
+export const logoutFromApp = () => {
+  return async (dispatch) => {
+    dispatch(logout());
+  };
+};
 
-export const userProfileAddress  = (data) =>{
-  return async (dispatch) =>{
-    dispatch(userAddress(data))
-  }
-}
+export const userProfileAddress = (data) => {
+  return async (dispatch) => {
+    dispatch(userAddress(data));
+  };
+};
 
 export function loginStore() {
   // const username = useSelector((state) => state.login.username);

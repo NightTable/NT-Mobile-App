@@ -46,7 +46,7 @@ console.log('====================================');
 };
 
 export const PostRequest = async (session_url, body, token = null) => {
-  // console.log("session_url, body, params, header = null", session_url);
+  console.log("session_url, body, params, header = null", session_url);
   var config;
   if (token) {
     config = {

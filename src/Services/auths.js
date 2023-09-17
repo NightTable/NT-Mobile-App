@@ -1,18 +1,10 @@
-import { PostRequest } from "../utils/axios/Axios";
+import { PostRequest } from '../utils/axios/Axios';
+const BASE_URL = 'http://localhost:3000/';
 
 export const loginApi = async (obj) => {
-  
-  const data = await PostRequest(
-    `http://localhost:3000/api/auth/generateOTP`,
-    obj
-  );
-  return data;
+  return await PostRequest(`${BASE_URL}api/auth/generateOTP`, obj);
 };
 
 export const otpVerify = async (obj) => {
-  const data = await PostRequest(
-    `http://localhost:3000/api/auth/verifyOTP`,
-    obj
-  );
-  return data;
+  return await PostRequest(`${BASE_URL}api/auth/verifyOTP`, obj);
 };
