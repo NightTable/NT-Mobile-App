@@ -3,7 +3,7 @@ import { Box } from "native-base";
 import { Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 //THEME
 import { colors, typography } from "../../theme";
-
+import { Button } from '../../components/Buttons';
 //DIMENSIONS
 
 export const TableConfigurationsCard = ({
@@ -78,7 +78,7 @@ export const TableConfigurationsCard = ({
   return (
     <>
       <Box>
-        <Box style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
           <Box style={styles.splitBox}>
             <Text
               style={[typography.bold.bold16, { color: colors.gold.gold200 }]}
@@ -148,6 +148,8 @@ export const TableConfigurationsCard = ({
             })}
           </>
         )}
+
+       
       </Box>
     </>
   );
