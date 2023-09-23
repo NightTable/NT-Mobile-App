@@ -72,7 +72,7 @@ export const HeaderWithLeftIcon = (props) => {
             justifyContent: "center",
           }}
         >
-          <Text style={[typography.bold.bold24, styles.color,]}>
+          <Text style={[typography.bold.bold24, styles.color]}>
             {props.title}
           </Text>
         </Box>
@@ -178,7 +178,7 @@ export const HeaderWithIcons = (props) => {
             flexDir={"row"}
             style={{ justifyContent: "center", alignItems: "center" }}
           >
-            <Text style={[typography.regular.regular16, styles.color]}>
+            <Text style={[typography.regular.regular18, styles.color]}>
               {props.welcome === true ? "Welcome" : ""}
             </Text>
             <Text style={[typography.bold.bold16, styles.color]}>

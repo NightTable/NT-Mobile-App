@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "native-base";
+import React, { useEffect, useState } from 'react';
+import { Box } from 'native-base';
 import {
   Text,
   StyleSheet,
@@ -7,8 +7,10 @@ import {
   Dimensions,
   Pressable,
   View,
-} from "react-native";
-import { Image } from "expo-image";
+  Alert,
+  TouchableOpacity
+} from 'react-native';
+import { Image } from 'expo-image';
 //component
 import { HeaderWithLeftIcon } from "../../Components/Header";
 //REDUX
@@ -16,43 +18,57 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { colors, typography } from "../../Theme";
 import { ScrollView } from "react-native";
 import CostSplittingSectionComp from "../../Features/costSplitting";
+import TableConfigComp from "../../Features/NewTableReq/TableConfigComp"
 import { TableConfigurationsCard } from "../../Features/tableConfig/TableConfig";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import DyModal from "../../Components/Modal";
 import { Button as ButtonComp } from "../../Components/Buttons";
 import DateTimePicker from "@react-native-community/datetimepicker";
+//import * as SMS from 'expo-sms';
 const { width, height } = Dimensions.get("screen");
 let paymentTypeMethod = [
   {
     id: 1,
-    short_form: "snpl",
-    name: "split-now-pay-later",
+    short_form: 'snpl',
+    name: 'split-now-pay-later',
     description:
-      " method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.",
+      ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.',
   },
   {
     id: 2,
-    short_form: "pnsl",
-    name: "pay-now-split-later",
+    short_form: 'pnsl',
+    name: 'pay-now-split-later',
     description:
-      " method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.",
+      ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.',
   },
 ];
 //main function
 const NewTableReq = ({ navigation, route }) => {
+  useEffect(() => {
+    console.log(clubStore?.individualClubTableConfig);
+  }, []);
   //Store
   const clubStore = useSelector((state) => state.club);
 
+  const [selectedTableIds, setSelectedTableIds] = useState([]);
+
+  const toggleTableSelection = (id) => {
+    if (selectedTableIds.includes(id)) {
+        setSelectedTableIds(prevIds => prevIds.filter(itemId => itemId !== id));
+    } else {
+        setSelectedTableIds(prevIds => [...prevIds, id]);
+    }
+  };
+
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
-  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
   const [TableConfigModal, setTableConfigModal] = useState(false);
   const [tableConfigsData, settableConfigsData] = useState([]);
 
-  console.log("tableConfigsData::>>====>", tableConfigsData.length);
+  // console.log("tableConfigsData::>>====>", tableConfigsData.length);
   //MODAL
   const [inviteParticipantModal, setinviteParticipantModal] = useState(false);
-  const [inviteParticipantData, setinviteParticipantData] = useState("");
+  const [inviteParticipantData, setinviteParticipantData] = useState('');
   const [InviteFrndsData, setInviteFrndsData] = useState([]);
   //SNPL - PNSL
   const [selectedPaymentType, setselectedPaymentType] = useState(1);
@@ -67,14 +83,98 @@ const NewTableReq = ({ navigation, route }) => {
     setShowDatePicker(false);
     setSelectedDate(currentDate);
   };
+
+  const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [isSending, setIsSending] = useState(false);
+
+  const club = "Caveau";
+  const event = "Afrojack Tour";
+  const fee = 500;
+  const appStoreLink = "https://apps.apple.com/us/app/amex/id362348516";
+  const playStoreLink = "https://play.google.com/store/apps/details?id=com.americanexpress.android.acctsvcs.us&pcampaignid=web_share";
+
+  const inviteMessage = `Hey!\n
+I'm inviting you to a table at ${club} for the ${event}, requesting a minimum contribution of $${fee}.\n
+Download NightTable on the App Store: ${appStoreLink}\n
+or Play Store: ${playStoreLink},\n
+make sure to sign up using the phone number on which you've recieved this message,\n
+and join the table for a fun night!`;
+
+  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${club} for the ${event} via NightTable. Thank you!`;
+  const promoterNumber = "+16178933910";
+  const sendSMS = async () => {
+    setIsSending(true);
+    const isAvailable = await SMS.isAvailableAsync();
+    if (isAvailable) {
+        try {
+            const { result } = await SMS.sendSMSAsync([inputValue], inviteMessage);
+            console.log(result);
+            console.log(inputValue, typeof inputValue)
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        Alert.alert('Your device does not support SMS');
+    }
+    setIsSending(false);
+  };
+
+  const handleModifyTableMin = (min) => {
+    setTableMinimum(tableMinimum + min);
+    //setDefaultTableMinimum(defaultTableMinimum + min);
+  }
+
+  /*const sendSMSPromoter = async (message, number) => {
+    setIsSending(true);
+    const isAvailable = await SMS.isAvailableAsync();
+    if (isAvailable) {
+        try {
+            const { result } = await SMS.sendSMSAsync([number], message);
+            console.log(result);
+            console.log(inputValue, typeof inputValue)
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        Alert.alert('Your device does not support SMS');
+    }
+    setIsSending(false);
+  };
+
+  const textPromoter = () => {
+    if (isSending) {
+        Alert.alert('Already sending a message, please wait...');
+        return;
+    }
+    sendSMSPromoter(promoterMessage, promoterNumber);
+  };
+
+  const sendInvite = () => {
+    if (isSending) {
+        Alert.alert('Already sending an invite, please wait...');
+        return;
+    }
+
+    if (inputValue.includes('@')) {
+        // Logic for sending an email
+    } else {
+        sendSMS();
+    }
+    setModalVisible(false);
+  };*/
+
+
+
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
     return (
       <>
         <Box
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             paddingVertical: 12,
           }}
         >
@@ -86,14 +186,14 @@ const NewTableReq = ({ navigation, route }) => {
               },
             ]}
           >
-            {route?.params?.clubData?.name} :{" "}
+            {route?.params?.clubData?.name} :{' '}
           </Text>
           <Text
             style={[
               typography.bold.bold16,
               {
                 color: colors.gold.gold100,
-                textAlign: "right",
+                textAlign: 'right',
               },
             ]}
           >
@@ -103,6 +203,10 @@ const NewTableReq = ({ navigation, route }) => {
       </>
     );
   };
+
+  console.log('====================================');
+  console.log('tableMinimum', tableMinimum);
+  console.log('====================================');
   return (
     <>
       <View
@@ -113,13 +217,13 @@ const NewTableReq = ({ navigation, route }) => {
         }}
       >
         <HeaderWithLeftIcon
-          title={"New Table Request"}
-          icon={"back"}
-          iconDirectory={"Entypo"}
-          iconRightDirectory={"Entypo"}
-          iconRight={""}
+          title={'New Table Request'}
+          icon={'back'}
+          iconDirectory={'Entypo'}
+          iconRightDirectory={'Entypo'}
+          iconRight={''}
           onSubmit={() => {
-            navigation.navigate("Hostsandpromoters", {
+            navigation.navigate('Hostsandpromoters', {
               clubData: route?.params?.clubData,
               selectedEventData: route?.params?.selectedEventData,
             });
@@ -128,7 +232,7 @@ const NewTableReq = ({ navigation, route }) => {
             return null;
           }}
         />
-        <Box style={{ height: "26%" }}>
+        <Box style={{ height: '20%' }}>
           <ScrollView horizontal={true}>
             {route?.params?.clubData?.photos.map((image) => {
               return (
@@ -151,27 +255,12 @@ const NewTableReq = ({ navigation, route }) => {
           <ClubandEventNameCard />
         </Box>
 
-        <Box
-          style={{
-            borderRadius: 30,
-            borderColor: colors.gold.gold100,
-            borderWidth: 1,
-            padding: 18,
-            height: "74%",
-            // backgroundColor: "red",
-          }}
-        >
-          <Box
-            style={{
-              height: "80%",
-              justifyContent: "space-evenly",
-              // backgroundColor: "green",
-            }}
-          >
+        <Box style={styles.box2}>
+          <Box style={styles.box2_first}>
             <Box
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 paddingVertical: 12,
               }}
             >
@@ -181,20 +270,24 @@ const NewTableReq = ({ navigation, route }) => {
                   {
                     color: colors.gold.gold100,
 
-                    justifyContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
                   },
                 ]}
               >
                 Organizer : {route?.params?.promoterData?.name}
               </Text>
-              <Ionicons name="ios-chatbox" size={18} color={"silver"} />
+              <TouchableOpacity onPress={textPromoter}>
+                <Text style={{ color: 'silver', fontSize: 18 }}>
+                  Text Promoter
+                </Text>
+              </TouchableOpacity>
             </Box>
             <Box
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 paddingVertical: 12,
               }}
             >
@@ -206,22 +299,22 @@ const NewTableReq = ({ navigation, route }) => {
                   },
                 ]}
               >
-                Select Custom Table Minimum :
+                Current Table Minimum :{tableMinimum}
               </Text>
-              <TextInput
+              {/*<TextInput
                 style={styles.input}
                 onChangeText={setTableMinimum}
-                placeholder={`${defaultTableMinimum}`}
+                // placeholder={`${defaultTableMinimum}`}
                 placeholderTextColor={colors.gold.gold100}
                 selectionColor={colors.gold.gold100}
                 value={tableMinimum}
-                keyboardType={"numeric"}
-              />
+                keyboardType={'numeric'}
+              />*/}
             </Box>
             <Box
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 paddingVertical: 10,
               }}
             >
@@ -230,7 +323,7 @@ const NewTableReq = ({ navigation, route }) => {
                   typography.semBold.semBold16,
                   {
                     color: colors.gold.gold100,
-                    alignSelf: "center",
+                    alignSelf: 'center',
                   },
                 ]}
               >
@@ -238,19 +331,111 @@ const NewTableReq = ({ navigation, route }) => {
               </Text>
               <DateTimePicker
                 value={selectedDate}
-                mode="time"
-                display="default"
+                mode='time'
+                display='default'
                 onChange={onDateChange}
                 style={{ width: 120 }} //add this
-                themeVariant={"dark"}
+                themeVariant={'dark'}
               />
             </Box>
+
             <Box
+                style={{
+                    flexDirection: 'column', // Changed to 'column' to stack content vertically
+                    paddingVertical: 10,
+                }}
+            >
+                <Text
+                    style={[
+                        typography.semBold.semBold16,
+                        {
+                            color: colors.gold.gold100,
+                            justifyContent: 'center', 
+                            alignItems: 'center',
+                        },
+                    ]}
+                >
+                    Select Table Type :
+                </Text>
+                <View
+                  style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      paddingVertical: 5,
+                      borderBottomColor: colors.gold.gold100,
+                      //borderBottomWidth: 1,
+                  }}
+                  >
+                  <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>ID</Text>
+                  <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>TYPE</Text>
+                  <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>MINIMUM</Text>
+                </View>
+                <ScrollView style={{ borderColor: colors.gold.gold100, borderWidth: 2, borderRadius: 5 }}>
+                  {clubStore?.individualClubTableConfig.length > 0 ? (
+                    clubStore?.individualClubTableConfig.map((item, index) => (
+                      <TableConfigComp
+                        key={index}
+                        id={item?.tableMapId}
+                        type={item?.type}
+                        price={`$${item?.minPrice}`}
+                      />
+                      // Below is the original TouchableOpacity for reference
+                      /*
+                      <TouchableOpacity
+                        key={index}
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          padding: 10,
+                          marginVertical: 5,
+                          borderColor: colors.gold.gold100,
+                          borderWidth: 1,
+                          borderRadius: 5
+                        }}
+                        onPress={() => {
+                          // Handle table config selection here
+                        }}
+                      >
+                        <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>{item?.tableMapId}</Text>
+                        <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>{item?.type}</Text>
+                        <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>${item?.minPrice}</Text>
+                      </TouchableOpacity>
+                      */
+                    ))
+                  ) : (
+                    <Text
+                      style={[
+                        typography.semBold.semBold14,
+                        {
+                          color: 'white',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          textAlign: 'center',
+                        },
+                      ]}
+                    >
+                      NO TABLE'S AVAILABLE
+                    </Text>
+                  )}
+                </ScrollView>
+
+
+                {/*<Pressable
+                    style={{ backgroundColor: 'silver', padding: 6, marginTop: 10 }} // Added marginTop for spacing
+                    onPress={() => {
+                        setTableConfigModal(true);
+                    }}
+                >
+                    {/* Your existing Pressable content */}
+                {/*</Pressable>*/}
+            </Box>
+
+            {/*<Box
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 paddingVertical: 10,
-                alignItems: "center",
+                alignItems: 'center',
               }}
             >
               <Text
@@ -258,8 +443,8 @@ const NewTableReq = ({ navigation, route }) => {
                   typography.semBold.semBold16,
                   {
                     color: colors.gold.gold100,
-                    justifyContent: "center", //Centered vertically
-                    alignItems: "center", //Centered horizontally
+                    justifyContent: 'center', //Centered vertically
+                    alignItems: 'center', //Centered horizontally
                   },
                 ]}
               >
@@ -267,7 +452,7 @@ const NewTableReq = ({ navigation, route }) => {
               </Text>
 
               <Pressable
-                style={{ backgroundColor: "silver", padding: 6 }}
+                style={{ backgroundColor: 'silver', padding: 6 }}
                 onPress={() => {
                   setTableConfigModal(true);
                 }}
@@ -281,10 +466,10 @@ const NewTableReq = ({ navigation, route }) => {
                             style={[
                               typography.semBold.semBold16,
                               {
-                                color: "black",
+                                color: 'black',
                                 //   color: colors.gold.gold100,
-                                justifyContent: "center", //Centered vertically
-                                alignItems: "center", //Centered horizontally
+                                justifyContent: 'center', //Centered vertically
+                                alignItems: 'center', //Centered horizontally
                               },
                             ]}
                           >
@@ -300,9 +485,9 @@ const NewTableReq = ({ navigation, route }) => {
                       style={[
                         typography.semBold.semBold14,
                         {
-                          color: "black",
-                          justifyContent: "center", //Centered vertically
-                          alignItems: "center", //Centered horizontally
+                          color: 'black',
+                          justifyContent: 'center', //Centered vertically
+                          alignItems: 'center', //Centered horizontally
                         },
                       ]}
                     >
@@ -311,12 +496,12 @@ const NewTableReq = ({ navigation, route }) => {
                   </>
                 )}
               </Pressable>
-            </Box>
+            </Box>*/}
             <Box>
               <Box
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   paddingVertical: 10,
                 }}
               >
@@ -325,8 +510,8 @@ const NewTableReq = ({ navigation, route }) => {
                     typography.semBold.semBold14,
                     {
                       color: colors.gold.gold100,
-                      justifyContent: "center", //Centered vertically
-                      alignItems: "center", //Centered horizontally
+                      justifyContent: 'center', //Centered vertically
+                      alignItems: 'center', //Centered horizontally
                     },
                   ]}
                 >
@@ -337,16 +522,34 @@ const NewTableReq = ({ navigation, route }) => {
                     setinviteParticipantModal(!inviteParticipantModal);
                   }}
                 >
-                  <AntDesign name="plus" size={20} color="silver" />
+                  <AntDesign name='plus' size={20} color='silver' />
                 </Pressable>
               </Box>
-              <Box></Box>
+              <Box>
+                {InviteFrndsData?.map((item) => {
+                  return (
+                    <>
+                      <Text
+                        style={[
+                          typography.semBold.semBold14,
+                          {
+                            color: colors.gold.gold100,
+                          },
+                        ]}
+                      >
+                        {item}
+                        {' ,'}
+                      </Text>
+                    </>
+                  );
+                })}
+              </Box>
             </Box>
             <Box>
               <Box
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   paddingBottom: 6,
                 }}
               >
@@ -355,8 +558,8 @@ const NewTableReq = ({ navigation, route }) => {
                     typography.semBold.semBold14,
                     {
                       color: colors.gold.gold100,
-                      justifyContent: "center", //Centered vertically
-                      alignItems: "center", //Centered horizontally
+                      justifyContent: 'center', //Centered vertically
+                      alignItems: 'center', //Centered horizontally
                     },
                   ]}
                 >
@@ -367,15 +570,15 @@ const NewTableReq = ({ navigation, route }) => {
                     setsnpl_psnl_modal(true);
                   }}
                 >
-                  <AntDesign name="questioncircle" size={20} color="silver" />
+                  <AntDesign name='questioncircle' size={20} color='silver' />
                 </Pressable>
               </Box>
 
               <Box
                 style={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   paddingVertical: 8,
-                  justifyContent: "space-between",
+                  justifyContent: 'space-between',
                 }}
               >
                 {paymentTypeMethod?.map((item) => {
@@ -416,22 +619,26 @@ const NewTableReq = ({ navigation, route }) => {
             </Box>
           </Box>
 
-          <Box
-            style={{
-              height: "20%",
-              // justifyContent: "flex-end",
-              // backgroundColor: "yellow",
-            }}
-          >
+          <Box style={styles.box2_second}>
             <ButtonComp
               onSubmit={() => {
-                navigation.navigate("TableReqCont", {
-                  clubData: route?.params?.clubData,
-                  selectedEventData: route?.params?.selectedEventData,
-                  promoterData: [],
-                });
+                if (tableMinimum != 0) {
+                  Alert.alert('Please enter the table Minimum');
+                } else if (tableConfigsData.length === 0) {
+                  Alert.alert('Please select the table Configs');
+                } else {
+                  navigation.navigate('TableReqConfirmation', {
+                    clubData: route?.params?.clubData,
+                    selectedEventData: route?.params?.selectedEventData,
+                    promoterData: route?.params?.promoterData,
+                    tableMinimum: tableMinimum,
+                    arrivalDate: selectedDate,
+                    selectedConfigData: tableConfigsData,
+                    InviteFrndsData: InviteFrndsData,
+                  });
+                }
               }}
-              text={"continue"}
+              text={'continue'}
               backgroundColor={colors.gold.gold100}
             />
           </Box>
@@ -466,13 +673,24 @@ const NewTableReq = ({ navigation, route }) => {
                   }
                 }}
                 onpress_return_selectedTableConfigs={(item) => {
-                  console.log(
-                    "onpress_return_selectedTableConfigs::item=====>",
-                    item
-                  );
+                  let mintableAmount = item
+                    ?.map((item) => item.minPrice)
+                    .reduce((prev, curr) => prev + curr, 0);
+
                   settableConfigsData(item);
+                  // console.log('setTableMinimum', setTableMinimum);
+                  setTableMinimum(Number(mintableAmount));
+                  // settableMinimum('')
                 }}
                 showTables={false}
+              />
+              <ButtonComp
+                disabled={false}
+                onSubmit={() => {
+                  setTableConfigModal(false);
+                }}
+                backgroundColor={colors.gold.gold100}
+                text={'Continue '}
               />
             </Box>
           </>
@@ -516,32 +734,35 @@ const NewTableReq = ({ navigation, route }) => {
               </Text>
               <Box
                 style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
-                <Box style={{ paddingVertical: 12, width: "60%" }}>
+                <Box style={{ paddingVertical: 12, width: '60%' }}>
                   <TextInput
                     style={styles.inputInviteParticipant}
                     onChangeText={(e) => {
+                      console.log('e====>', e);
                       setinviteParticipantData(e);
+                      //  let tempString = e;
+                      //  inviteParticipantData = tempString
                     }}
                     placeholder={``}
                     placeholderTextColor={colors.gold.gold100}
                     selectionColor={colors.gold.gold100}
                     value={inviteParticipantData}
-                    keyboardType={"numeric"}
+                    keyboardType={'numeric'}
                   />
                 </Box>
-                <Box style={{ width: "40%", alignItems: "flex-end" }}>
+                <Box style={{ width: '40%', alignItems: 'flex-end' }}>
                   <Pressable
                     style={{ borderRadius: 20 / 2, padding: 4 }}
                     onPress={() => {
                       let tempArr = [...InviteFrndsData, inviteParticipantData];
                       setInviteFrndsData(tempArr);
-                      setinviteParticipantData('')
+                      setinviteParticipantData('');
                     }}
                   >
                     <Text
@@ -581,10 +802,10 @@ const NewTableReq = ({ navigation, route }) => {
                   >
                     Note: that only organizers of a table that are promoters or
                     part of the club stuff can change their own minimum joining
-                    fee to 0{" "}
+                    fee to 0{' '}
                   </Text>
                 </Box>
-                <Box style={{ paddingVertical: 14, }}>
+                <Box style={{ paddingVertical: 14 }}>
                   <ScrollView style={{ paddingBottom: 420 }}>
                     {InviteFrndsData &&
                       InviteFrndsData.map((item) => {
@@ -592,8 +813,8 @@ const NewTableReq = ({ navigation, route }) => {
                           <>
                             <Box
                               style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
                                 backgroundColor: colors.gold.gold100,
                                 padding: 8,
                                 borderRadius: 12,
@@ -641,7 +862,7 @@ export default NewTableReq;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.black.black800,
-    height: "100%",
+    height: '100%',
   },
   mainBox: {
     paddingHorizontal: 18,
@@ -663,8 +884,8 @@ const styles = StyleSheet.create({
     selectionColor: colors.gold.gold100,
     color: colors.gold.gold100,
     fontSize: 14,
-    width: "20%",
-    textAlign: "center",
+    width: '20%',
+    textAlign: 'center',
   },
   inputInviteParticipant: {
     height: 20,
@@ -680,5 +901,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     // width: "20%",
     // textAlign: "center",
+  },
+  box2: {
+    borderRadius: 30,
+    borderColor: colors.gold.gold100,
+    borderWidth: 1,
+    paddingHorizontal: 18,
+    height: '80%',
+  },
+  box2_first: {
+    height: '80%',
+    justifyContent: 'space-evenly',
+    // backgroundColor: "red",
+  },
+  box2_second: {
+    height: '20%',
   },
 });

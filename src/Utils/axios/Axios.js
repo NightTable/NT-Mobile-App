@@ -1,34 +1,40 @@
-import axios, * as others from "axios";
+import axios, * as others from 'axios';
 
 export const GetRequest = async (session_url, body, params, header = null) => {
   var startTime = performance.now();
-
+  console.log('====================================');
+  console.log('session_url, body, params,', session_url, body, params);
+  console.log('====================================');
   try {
-    var config = "";
+    var config = '';
     if (body) {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
-        body: body,
+        data: body,
       };
     } else if (params) {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
         params: params,
       };
     } else if (header) {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
         headers: header,
       };
     } else {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
       };
     }
+
+    // console.log('====================================');
+    console.log('config', config);
+    console.log('====================================');
     var resultAxios = await axios(config);
     var endTime = performance.now();
     console.log(`Call ${session_url} ${endTime - startTime} milliseconds.`);
@@ -40,7 +46,7 @@ export const GetRequest = async (session_url, body, params, header = null) => {
 };
 
 export const PostRequest = async (session_url, body, token = null) => {
-  // console.log("session_url, body, params, header = null", session_url);
+  console.log('session_url, body, params, header = null', session_url, body);
   var config;
   if (token) {
     config = {
@@ -49,7 +55,7 @@ export const PostRequest = async (session_url, body, token = null) => {
       },
     };
   } else {
-    config = "";
+    config = '';
   }
   try {
     const data = await axios.post(session_url, body, config);
@@ -90,6 +96,9 @@ export const DeleteRequest = async (session_url, body, token = null) => {
 };
 
 export const PutRequest = async (session_url, body, token = null) => {
+  console.log('====================================');
+  console.log('session_url, body', session_url, body);
+  console.log('====================================');
   if (token) {
     var config = {
       headers: {
@@ -98,8 +107,12 @@ export const PutRequest = async (session_url, body, token = null) => {
     };
   }
   try {
+    console.log('session_url, body', session_url, body, config);
     return await axios.put(session_url, body, config);
   } catch (error) {
+    console.log('====================================');
+    console.log('error', error);
+    console.log('====================================');
     return error;
   }
 };

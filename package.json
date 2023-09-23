@@ -47,7 +47,8 @@
     "react-native-web": "~0.18.10",
     "react-redux": "^8.1.1",
     "redux-thunk": "^2.4.2",
-    "@react-native-community/datetimepicker": "6.7.3"
+    "@react-native-community/datetimepicker": "6.7.3",
+    "expo-sms": "~11.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

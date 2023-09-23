@@ -87,7 +87,7 @@ export const TableConfigurationsCard = ({
   return (
     <>
       <Box>
-        <Box style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+        <Box style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
           <Box style={styles.splitBox}>
             <Text
               style={[typography.bold.bold16, { color: colors.gold.gold200 }]}
@@ -160,6 +160,8 @@ export const TableConfigurationsCard = ({
             })}
           </>
         )}
+
+       
       </Box>
     </>
   );

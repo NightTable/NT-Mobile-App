@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "native-base";
+import React, { useEffect, useState } from 'react';
+import { Box } from 'native-base';
 import {
   Text,
   StyleSheet,
@@ -11,17 +11,17 @@ import {
   Image,
   ImageBackground,
   Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 //component
 import { HeaderWithLeftIcon } from "../../Components/Header";
 //REDUX
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 //THEME
 import { colors, typography } from "../../Theme";
 import { getEventOfClub } from "../../store/action/clubs";
 //DIMENSIONS
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get('screen');
 
 // import { getDistanceFromLatLonInMi } from "./algo";
 // import DashboardBubbleComp from "../components/EntryDashboardScreen/DashboardBubbleComp";
@@ -64,6 +64,8 @@ const Dashboard = ({ navigation }) => {
 
   //   getNearByClubs();
   // }, []);
+
+ 
 
   const ClubCards = ({ props }) => {
     return (
@@ -121,14 +123,14 @@ const Dashboard = ({ navigation }) => {
   const logoutBtn = () =>
     Alert.alert("Logout", "Are you sure want to logout?", [
       {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
       },
       {
-        text: "OK",
+        text: 'OK',
         onPress: () => {
-          navigation.navigate("Login");
+          navigation.navigate('Login');
         },
       },
     ]);
@@ -136,11 +138,11 @@ const Dashboard = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithLeftIcon
-        title={"NightTable"}
-        icon={"menu"}
-        iconDirectory={"Entypo"}
-        iconRightDirectory={"Entypo"}
-        iconRight={"log-out"}
+        title={'NightTable'}
+        icon={'menu'}
+        iconDirectory={'Entypo'}
+        iconRightDirectory={'Entypo'}
+        iconRight={'log-out'}
         onSubmit={() => {
           navigation.openDrawer();
         }}
@@ -190,8 +192,8 @@ const styles = StyleSheet.create({
 
   },
   clubListContainer: {
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
     height: 400 * height,
   },
   input: {

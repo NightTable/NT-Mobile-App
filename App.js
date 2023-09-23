@@ -1,14 +1,14 @@
-import { Provider } from "react-redux";
-import React, { useEffect, useState, useRef } from "react";
-import { Dimensions, Modal, View, Text, StyleSheet } from "react-native";
+import { Provider } from 'react-redux';
+import React, { useEffect, useState, useRef } from 'react';
+import { Dimensions, Modal, View, Text, StyleSheet } from 'react-native';
 
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { colors, typography } from "./src/Theme";
 //STORE
-import { store } from "./src/store/store";
+import { store } from './src/store/store';
 //NAVIGATION
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //FONTS LOADING
 import { useFonts } from "expo-font";
@@ -34,14 +34,14 @@ export default function App() {
   const [showConnectionStatus, setShowConnectionStatus] = useState(false);
   const [popUpShow, setpopUpShow] = useState(false);
   const [popUpTheme, setpopUpTheme] = useState(false);
-  const [message, setmessage] = useState("");
+  const [message, setmessage] = useState('');
   const [popUprenderfn, setpopUprenderfn] = useState();
   const [closeBtnEnable, setcloseBtnEnable] = useState(false);
-  const [Image, setImage] = useState("");
+  const [Image, setImage] = useState('');
 
   useEffect(() => {
     const globalSucessPopUp = EventRegister.addEventListener(
-      "popupTriggerd",
+      'popupTriggerd',
       (data) => {
         UpdatePopData(data);
       }
@@ -90,15 +90,15 @@ export default function App() {
   };
 
   const onPopUpClose = () => {
-    EventRegister.emit("popupTriggerd", "");
+    EventRegister.emit('popupTriggerd', '');
     setpopUpShow(false);
     clearTimeout(timeout);
   };
 
   //LOADING FONTS
   const [isLoaded] = useFonts({
-    "vh-bold": require("./assets/fonts/VerahHumana-Bold.ttf"),
-    "vh-regular": require("./assets/fonts/VerahHumana-Regular.ttf"),
+    'vh-bold': require('./assets/fonts/VerahHumana-Bold.ttf'),
+    'vh-regular': require('./assets/fonts/VerahHumana-Regular.ttf'),
   });
 
   if (!isLoaded) {
@@ -114,16 +114,15 @@ export default function App() {
       <Provider store={store}>
         <StripeProvider
           publishableKey={
-            "pk_test_51KJ1A4AZeCut3tbi7eK4ZvTyPcleQRFr7kMWJDNo6Tp54J5Qevci6pcN8M1NSiycPYhlEUrtKdrGyyJOelH96V6L003X1Aw4o4"
+            'pk_test_51KJ1A4AZeCut3tbi7eK4ZvTyPcleQRFr7kMWJDNo6Tp54J5Qevci6pcN8M1NSiycPYhlEUrtKdrGyyJOelH96V6L003X1Aw4o4'
           }
-          merchantIdentifier="merchant.identifier" // required for Apple Pay
-          urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+          merchantIdentifier='merchant.identifier' // required for Apple Pay
         >
           <NativeBaseProvider>
             <NavigationContainer>
               {popUpShow === false ? null : (
                 <Modal
-                  animationType="slide"
+                  animationType='slide'
                   transparent={true}
                   visible={popUpShow}
                 >
@@ -140,8 +139,6 @@ export default function App() {
                 </Modal>
               )}
               <RootStack />
-              {/* <CostSplittingSectionComp /> */}
-              {/* <PaymentScreen /> */}
             </NavigationContainer>
           </NativeBaseProvider>
         </StripeProvider>
@@ -153,12 +150,12 @@ const styles = StyleSheet.create({
   offline: {
     height: 30,
     backgroundColor: colors.red.red175,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   greenText: {
     height: 30,
     backgroundColor: colors.green.green200,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
-  textColor: { color: colors.white.white0, textAlign: "center" },
+  textColor: { color: colors.white.white0, textAlign: 'center' },
 });
