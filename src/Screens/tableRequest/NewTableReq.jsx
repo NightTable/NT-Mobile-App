@@ -24,7 +24,7 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import DyModal from "../../Components/Modal";
 import { Button as ButtonComp } from "../../Components/Buttons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-//import * as SMS from 'expo-sms';
+import * as SMS from 'expo-sms';
 const { width, height } = Dimensions.get("screen");
 let paymentTypeMethod = [
   {
@@ -51,6 +51,7 @@ const NewTableReq = ({ navigation, route }) => {
   const clubStore = useSelector((state) => state.club);
 
   const [selectedTableIds, setSelectedTableIds] = useState([]);
+  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
 
   const toggleTableSelection = (id) => {
     if (selectedTableIds.includes(id)) {
@@ -84,6 +85,7 @@ const NewTableReq = ({ navigation, route }) => {
     setSelectedDate(currentDate);
   };
 
+  const [selectedTables, setSelectedTables] = useState([]);
   const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -123,10 +125,10 @@ and join the table for a fun night!`;
 
   const handleModifyTableMin = (min) => {
     setTableMinimum(tableMinimum + min);
-    //setDefaultTableMinimum(defaultTableMinimum + min);
+    setDefaultTableMinimum(defaultTableMinimum + min);
   }
 
-  /*const sendSMSPromoter = async (message, number) => {
+  const sendSMSPromoter = async (message, number) => {
     setIsSending(true);
     const isAvailable = await SMS.isAvailableAsync();
     if (isAvailable) {
@@ -163,9 +165,52 @@ and join the table for a fun night!`;
         sendSMS();
     }
     setModalVisible(false);
-  };*/
+  };
 
-
+  const handleTableConfigPress = (idParam) => {
+    let selectedTableList = selectedTables;
+    setSelectedTableConfigId(idParam);
+    if (selectedTableList.length === 0){
+        for (let i = 0; i < tcs.length; i++){
+            if (tcs[i].id === idParam){
+                selectedTableList.push(tcs[i]);
+            }
+        }
+    }
+    else{
+        let found = false;
+        for (let i = 0; i < selectedTableList.length; i++) {
+            if (selectedTableList[i].id === idParam){
+                found = true;
+                selectedTableList.splice(i);
+                break
+            }
+        }
+        if (!found) {
+            for (let i = 0; i < tcs.length; i++){
+                if (tcs[i].id === idParam){
+                    selectedTableList.push(tcs[i]);
+                }
+            }
+        } 
+    }
+    /*for (let i = 0; i < tcs.length; i++){
+        console.log(i, "i from for loop")
+        console.log(tcs[i].id, idParam, "tcs[i].id, idParam");
+        if (tcs[i].id === idParam){ //these if statements have a bug
+            //console.log(selectedTableList, "selectedTableList logging")
+            console.log(selectedTableList.includes(tcs[i]), selectedTableList[i]["id"], tcs[i], "selectedTableList.includes(tcs[i]), selectedTableList, tcs[i]")
+            if (!(selectedTableList.includes(tcs[i]))){
+                selectedTableList.push(tcs[i]);
+            }
+            else{
+                console.log(selectedTableList.includes(tcs[i]), "table list includes table\n");
+                selectedTableList.pop();
+            }
+        }
+    }*/
+    setSelectedTables(selectedTableList);
+  }
 
   // CLUB AND EVENT NAME CARD
   const ClubandEventNameCard = () => {
@@ -278,9 +323,17 @@ and join the table for a fun night!`;
               >
                 Organizer : {route?.params?.promoterData?.name}
               </Text>
-              <TouchableOpacity onPress={textPromoter}>
-                <Text style={{ color: 'silver', fontSize: 18 }}>
-                  Text Promoter
+              <TouchableOpacity 
+                onPress={textPromoter} 
+                style={{
+                  backgroundColor: colors.gold.gold200, 
+                  paddingHorizontal: 10, 
+                  paddingVertical: 5, 
+                  borderRadius: 5  // optional, for rounded corners
+                }}
+              >
+                <Text style={[typography.regular.regular16, { color: 'black', fontSize: 18 }]}>
+                  Text VIP Host
                 </Text>
               </TouchableOpacity>
             </Box>
@@ -299,7 +352,7 @@ and join the table for a fun night!`;
                   },
                 ]}
               >
-                Current Table Minimum :{tableMinimum}
+                Current Table Minimum: ${tableMinimum}
               </Text>
               {/*<TextInput
                 style={styles.input}
@@ -375,9 +428,11 @@ and join the table for a fun night!`;
                     clubStore?.individualClubTableConfig.map((item, index) => (
                       <TableConfigComp
                         key={index}
+                        onOuterTableConfigPress={handleTableConfigPress}
+                        handleTableMinimum={handleModifyTableMin}
                         id={item?.tableMapId}
                         type={item?.type}
-                        price={`$${item?.minPrice}`}
+                        price={item?.minPrice}
                       />
                       // Below is the original TouchableOpacity for reference
                       /*

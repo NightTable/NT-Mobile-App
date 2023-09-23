@@ -16,8 +16,8 @@ const TableConfigComp = (props) => {
         if (boxColor === colors.black.black800 && textColor === colors.gold.gold100){
             setBoxColor(colors.gold.gold100);
             setTextColor(colors.black.black800);
-            let parts = props.price.split('$')
-            //props.handletableMin(1*parseInt(parts[1]));
+            let parts = props.price;
+            props.handleTableMinimum(1*parseInt(parts));
 
 
         }
@@ -25,8 +25,8 @@ const TableConfigComp = (props) => {
         if (boxColor === colors.gold.gold100 && textColor === colors.black.black800){
             setBoxColor(colors.black.black800);
             setTextColor(colors.gold.gold100);
-            let parts = props.price.split('$')
-            //props.handletableMin(-1*parseInt(parts[1]));
+            let parts = props.price;
+            props.handleTableMinimum(-1*parseInt(parts));
 
         }
 
@@ -76,7 +76,7 @@ const TableConfigComp = (props) => {
                     textAlign: 'center',
 
                     color: textColor
-                }]}>{props.price}</Text>
+                }]}>${props.price}</Text>
             </View>
             {/*<View style={{
                 flex: 2,
