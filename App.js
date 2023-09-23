@@ -44,7 +44,7 @@ export default function App() {
       'popupTriggerd',
       (data) => {
         UpdatePopData(data);
-      }
+      },
     );
     return () => {
       EventRegister.removeEventListener(globalSucessPopUp);
@@ -81,7 +81,7 @@ export default function App() {
         () => {
           onPopUpClose();
         },
-        data?.closingTime === undefined ? 2000 : data?.closingTime
+        data?.closingTime === undefined ? 2000 : data?.closingTime,
       );
     } else {
       setpopUpShow(false);
@@ -116,16 +116,15 @@ export default function App() {
           publishableKey={
             'pk_test_51KJ1A4AZeCut3tbi7eK4ZvTyPcleQRFr7kMWJDNo6Tp54J5Qevci6pcN8M1NSiycPYhlEUrtKdrGyyJOelH96V6L003X1Aw4o4'
           }
-          merchantIdentifier='merchant.identifier' // required for Apple Pay
+          merchantIdentifier="merchant.identifier" // required for Apple Pay
         >
           <NativeBaseProvider>
             <NavigationContainer>
               {popUpShow === false ? null : (
                 <Modal
-                  animationType='slide'
+                  animationType="slide"
                   transparent={true}
-                  visible={popUpShow}
-                >
+                  visible={popUpShow}>
                   <PopUpAlertUi
                     onPopUpClose={() => {
                       onPopUpClose();

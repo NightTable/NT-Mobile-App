@@ -25,4 +25,8 @@
     'import/no-unresolved': 'off', // Disable the eslintimport/no-unresolved rule,
     'import/order': 'on',
   },
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> fc0cd67 (updated code with eslint rules)

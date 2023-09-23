@@ -1,26 +1,10 @@
-import React, { useState } from "react";
-import { Button as NBButton } from "native-base";
-import Feather from "react-native-vector-icons/Feather";
-import { ActivityLoader } from "./Loaders";
-import { Box } from "native-base";
-import {
-  SafeAreaView,
-  View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Text,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  Dimensions,
-  Alert,
-  Pressable,
-} from "react-native";
-import { colors } from "../theme";
+import React, { useState } from 'react';
+import { ActivityLoader } from './Loaders';
+import { Box } from 'native-base';
+import { Text, Dimensions, Pressable } from 'react-native';
+import { colors } from '../theme';
 
-const { screenWidth, screenHeight } = Dimensions.get("screen");
+const { screenWidth, screenHeight } = Dimensions.get('screen');
 //USEAGE
 // Step 1:::> import {Button} from "_component_Directory_"
 // Step 2:::> Use below code to render component and pass props according to requirement
@@ -47,11 +31,10 @@ export const Button = (props) => {
         onPress={() => {
           props.onSubmit();
         }}
-        style={{ width: "100%", height: 40 }}
-      >
+        style={{ width: '100%', height: 40 }}>
         <Box
-          justifyContent={"center"}
-          alignItem={"center"}
+          justifyContent={'center'}
+          alignItem={'center'}
           // leftIcon={
           //   props.iconName == undefined || props.iconName.length < 0 ? null : (
           //     <Feather name={props.iconName} size={22} />
@@ -74,15 +57,15 @@ export const Button = (props) => {
           // borderColor={props.borderColor}
         >
           {loader === false ? (
-            <Box style={{ alignItem: "center", justifyContent: "center" }}>
+            <Box style={{ alignItem: 'center', justifyContent: 'center' }}>
               <ActivityLoader />
             </Box>
           ) : (
             <>
               <Box
                 style={{
-                  alignItems: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   height: 40,
                   backgroundColor:
                     props?.disabled === true
@@ -97,11 +80,10 @@ export const Button = (props) => {
                 <Text
                   style={{
                     color: props.textColor,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    fontWeight: "bold",
-                  }}
-                >
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontWeight: 'bold',
+                  }}>
                   {props.text}
                 </Text>
               </Box>
