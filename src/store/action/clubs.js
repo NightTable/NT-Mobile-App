@@ -1,7 +1,7 @@
 import { clubReducer } from "../reducer/clubReducer";
-import { getClubs } from "../../Services/club";
-import { getEventofClub } from "../../Services/Event";
-import { getEventTableConfigData } from "../../Services/tableConfig";
+import { getClubs } from "../../services/club";
+import { getEventofClub } from "../../services/Event";
+import { getEventTableConfigData } from "../../services/tableConfig";
 
 const {
   getAllClubs,

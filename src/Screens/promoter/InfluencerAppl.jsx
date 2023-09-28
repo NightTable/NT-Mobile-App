@@ -14,13 +14,13 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 //component
-import { HeaderWithLeftIcon } from "../../Components/Header";
+import { HeaderWithLeftIcon } from "../../components/Header";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //THEME
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import { getEventOfClub } from "../../store/action/clubs";
-import { Button } from "../../Components/Buttons";
+import { Button } from "../../components/Buttons";
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");
 

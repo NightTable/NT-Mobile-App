@@ -8,18 +8,18 @@ import { Box } from 'native-base';
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 //components
-import { Button } from "../../Components/Buttons";
+import { Button } from "../../components/Buttons";
 //Utils
 //Theme
-import { typography, colors } from "../../Theme";
+import { typography, colors } from "../../theme";
 import {
   disableLoader,
   enableLoader,
-} from "../../Components/popUp/loader/trigger";
-import { HeaderWithLeftIcon } from "../../Components/Header";
+} from "../../components/popUp/loader/trigger";
+import { HeaderWithLeftIcon } from "../../components/Header";
 const { height, width } = Dimensions.get("screen");
-import { getProfileData, updateProfileData } from '../../Services/user';
-import { GetRequest, PostRequest } from '../../Utils/axios/Axios';
+import { getProfileData, updateProfileData } from '../../services/user';
+import { GetRequest, PostRequest } from '../../utils/axios/Axios';
 //Main Function
 
 const Profile = ({ route, navigation }) => {

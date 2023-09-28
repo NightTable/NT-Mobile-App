@@ -1,4 +1,4 @@
-import { GetRequest } from "../Utils/axios/Axios";
+import { GetRequest } from "../utils/axios/Axios";
 //GET INDIVDUAL EVENT TABLE CONFIG
 export const getEventTableConfigData = async (clubId, eventId) => {
   try {

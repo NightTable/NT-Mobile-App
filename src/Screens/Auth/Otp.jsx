@@ -8,17 +8,17 @@ import { Box } from 'native-base';
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //components
-import { Button } from "../../Components/Buttons";
+import { Button } from "../../components/Buttons";
 //Utils
-//Theme
-import { typography, colors } from "../../Theme";
+//theme
+import { typography, colors } from "../../theme";
 import { updateToken, verifyOtp } from "../../store/action/login";
 import {
   disableLoader,
   enableLoader,
-} from "../../Components/popUp/loader/trigger";
+} from "../../components/popUp/loader/trigger";
 import { getAllClubfromdb } from "../../store/action/clubs";
-import { HeaderWithLeftIcon } from "../../Components/Header";
+import { HeaderWithLeftIcon } from "../../components/Header";
 const { height, width } = Dimensions.get("screen");
 //Main Function
 

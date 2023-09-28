@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, Modal, View, Text, StyleSheet } from 'react-native';
 
 import { NativeBaseProvider, StatusBar } from "native-base";
-import { colors, typography } from "./src/Theme";
+import { colors, typography } from "./src/theme";
 //STORE
 import { store } from './src/store/store';
 //NAVIGATION
@@ -12,18 +12,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //FONTS LOADING
 import { useFonts } from "expo-font";
-import LogoSplash from "./src/Screens/logo";
+import LogoSplash from "./src/screens/logo";
 //net -info
 import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
-import RootStack from "./src/Navigation/RootStack";
-import { PopUpAlertUi } from "./src/Components/popUp/PopUp";
+import RootStack from "./src/navigation/RootStack";
+import { PopUpAlertUi } from "./src/components/popUp/PopUp";
 import { EventRegister } from "react-native-event-listeners";
 
 const Stack = createNativeStackNavigator();
 // App.ts
 import { StripeProvider } from "@stripe/stripe-react-native";
 import PaymentScreen from "./src/payment/Stripe";
-import CostSplittingSectionComp from "./src/Features/costSplitting";
+import CostSplittingSectionComp from "./src/features/costSplitting";
 
 export default function App() {
   //INTERNET CONNECTION CHECK

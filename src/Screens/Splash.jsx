@@ -5,7 +5,7 @@ import { Image } from "react-native";
 //REDUX
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { getAllCountriesData } from "../store/action/login";
-import { colors } from "../Theme";
+import { colors } from "../theme";
 
 //Splash main function
 const Splash = ({ navigation }) => {

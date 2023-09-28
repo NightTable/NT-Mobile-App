@@ -3,7 +3,7 @@ import { Button as NBButton } from "native-base";
 import Feather from "react-native-vector-icons/Feather";
 import { ActivityLoader } from "./Loaders";
 import { Box } from "native-base";
-import { typography } from "../Theme";
+import { typography } from "../theme";
 import {
   SafeAreaView,
   View,
@@ -19,7 +19,7 @@ import {
   Alert,
   Pressable,
 } from "react-native";
-import { colors } from "../Theme";
+import { colors } from "../theme";
 
 const { screenWidth, screenHeight } = Dimensions.get("screen");
 //USEAGE

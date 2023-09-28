@@ -19,7 +19,7 @@ import {
   MaterialCommunityIcon,
 } from "./Icons";
 
-import { colors, typography } from "../Theme";
+import { colors, typography } from "../theme";
 //Main function
 
 const SearchDropdown = (props) => {

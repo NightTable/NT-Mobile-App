@@ -4,8 +4,8 @@ import { Box } from "native-base";
 //Component
 import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
-//Theme
-import { typography, colors } from "../Theme";
+//theme
+import { typography, colors } from "../theme";
 
 export const HeaderWithLeftIcon = (props) => {
   const headerIcon = (iconDirectory) => {

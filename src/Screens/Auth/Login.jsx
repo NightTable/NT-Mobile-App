@@ -4,23 +4,23 @@ import { TextInput, StyleSheet, Text, Dimensions, Alert } from "react-native";
 import axios from 'axios';
 import Constants from 'expo-constants';
 //components
-import SearchDropdown from "../../Components/SearchDropdown";
-import { Button } from "../../Components/Buttons";
+import SearchDropdown from "../../components/SearchDropdown";
+import { Button } from "../../components/Buttons";
 //Redux
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-//Theme
-import { colors } from "../../Theme/colors";
-import { typography } from "../../Theme";
+//theme
+import { colors } from "../../theme/colors";
+import { typography } from "../../theme";
 
 import { loginUser, userProfileAddress } from "../../store/action/login";
 import {
   disableLoader,
   enableLoader,
-} from "../../Components/popUp/loader/trigger";
+} from "../../components/popUp/loader/trigger";
 import { LocationPermission } from "../../permissions/location";
-import { getAddressfromLatlong } from "../../Services/address";
-import { StoretoLocalData } from "../../Utils/SensitiveData/SensitiveData";
-import { SensitiveKey } from "../../Utils/SensitiveData/SInfoKeys";
+import { getAddressfromLatlong } from "../../services/address";
+import { StoretoLocalData } from "../../utils/SensitiveData/SensitiveData";
+import { SensitiveKey } from "../../utils/SensitiveData/SInfoKeys";
 //DIMENSIONS
 const { height, width } = Dimensions.get("screen");
 

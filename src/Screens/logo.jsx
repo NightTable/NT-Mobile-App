@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Image } from "react-native";
-import { colors } from "../Theme";
+import { colors } from "../theme";
 
 //Splash main function
 const LogoSplash = () => {

@@ -4,7 +4,7 @@ import {
     TouchableOpacity, 
     StyleSheet } from 'react-native';
 
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import React, { useEffect, useState } from 'react';
 
 const TableConfigComp = (props) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
 import { Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import ChevronArrowNormal from "../../../assets/chevron-back-outline.png";
 import ChevronCollapsed from "../../../assets/chevron-back-outline-collapsed.png";
 
@@ -86,7 +86,7 @@ const TableConfigTableComp = (props) => {
               disabled={true}
               style={{ padding: 15, alignItems: 'center', backgroundColor: colors.gold.gold100, width: '90%', alignSelf: 'center', borderRadius: 10, marginBottom: 30 }}
             >
-              <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center' }}>Feature Coming Soon</Text>
+              <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center' }}>No active table or bids yet</Text>
             </TouchableOpacity>
           </ScrollView> 
           : null

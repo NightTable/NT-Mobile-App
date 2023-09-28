@@ -1,4 +1,4 @@
-import { GetRequest, PostRequest } from "../Utils/axios/Axios";
+import { GetRequest, PostRequest } from "../utils/axios/Axios";
 
 export const getAddressfromLatlong = async (obj) => {
 //   console.log("obj=====>", obj);

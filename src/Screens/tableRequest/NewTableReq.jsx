@@ -12,19 +12,21 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 //component
-import { HeaderWithLeftIcon } from "../../Components/Header";
+import { HeaderWithLeftIcon } from "../../components/Header";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import { ScrollView } from "react-native";
-import CostSplittingSectionComp from "../../Features/costSplitting";
-import TableConfigComp from "../../Features/NewTableReq/TableConfigComp"
-import { TableConfigurationsCard } from "../../Features/tableConfig/TableConfig";
+import CostSplittingSectionComp from "../../features/costSplitting";
+import TableConfigComp from "../../features/NewTableReq/TableConfigComp"
+import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import DyModal from "../../Components/Modal";
-import { Button as ButtonComp } from "../../Components/Buttons";
+import DyModal from "../../components/Modal";
+import { Button as ButtonComp } from "../../components/Buttons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as SMS from 'expo-sms';
+import { CardField, useConfirmPayment, useStripe } from '@stripe/stripe-react-native';
+
 const { width, height } = Dimensions.get("screen");
 let paymentTypeMethod = [
   {
@@ -72,7 +74,7 @@ const NewTableReq = ({ navigation, route }) => {
   const [inviteParticipantData, setinviteParticipantData] = useState('');
   const [InviteFrndsData, setInviteFrndsData] = useState([]);
   //SNPL - PNSL
-  const [selectedPaymentType, setselectedPaymentType] = useState(1);
+  const [selectedPaymentType, setselectedPaymentType] = useState(2);
   //DATE
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -90,6 +92,8 @@ const NewTableReq = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [isCardValid, setIsCardValid] = useState(false);
+  const [joiningFee, setJoiningFee] = useState('');
 
   const club = "Caveau";
   const event = "Afrojack Tour";
@@ -552,55 +556,9 @@ and join the table for a fun night!`;
                 )}
               </Pressable>
             </Box>*/}
+
             <Box>
-              <Box
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingVertical: 10,
-                }}
-              >
-                <Text
-                  style={[
-                    typography.semBold.semBold14,
-                    {
-                      color: colors.gold.gold100,
-                      justifyContent: 'center', //Centered vertically
-                      alignItems: 'center', //Centered horizontally
-                    },
-                  ]}
-                >
-                  Invite Friends :
-                </Text>
-                <Pressable
-                  onPress={() => {
-                    setinviteParticipantModal(!inviteParticipantModal);
-                  }}
-                >
-                  <AntDesign name='plus' size={20} color='silver' />
-                </Pressable>
-              </Box>
-              <Box>
-                {InviteFrndsData?.map((item) => {
-                  return (
-                    <>
-                      <Text
-                        style={[
-                          typography.semBold.semBold14,
-                          {
-                            color: colors.gold.gold100,
-                          },
-                        ]}
-                      >
-                        {item}
-                        {' ,'}
-                      </Text>
-                    </>
-                  );
-                })}
-              </Box>
-            </Box>
-            <Box>
+              {/* Start of "Select Request Type" Box */}
               <Box
                 style={{
                   flexDirection: 'row',
@@ -628,7 +586,6 @@ and join the table for a fun night!`;
                   <AntDesign name='questioncircle' size={20} color='silver' />
                 </Pressable>
               </Box>
-
               <Box
                 style={{
                   flexDirection: 'row',
@@ -671,7 +628,59 @@ and join the table for a fun night!`;
                   );
                 })}
               </Box>
+              {/* End of "Select Request Type" Box */}
+
+              {/* Start of "Invite Friends" Box */}
+              <Box>
+                <Box
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingVertical: 10,
+                  }}
+                >
+                  <Text
+                    style={[
+                      typography.semBold.semBold14,
+                      {
+                        color: colors.gold.gold100,
+                        justifyContent: 'center', //Centered vertically
+                        alignItems: 'center', //Centered horizontally
+                      },
+                    ]}
+                  >
+                    Invite Friends :
+                  </Text>
+                  <Pressable
+                    onPress={() => {
+                      setinviteParticipantModal(!inviteParticipantModal);
+                    }}
+                  >
+                    <AntDesign name='plus' size={20} color='silver' />
+                  </Pressable>
+                </Box>
+                <Box>
+                  {InviteFrndsData?.map((item, index) => {
+                    return (
+                      <Text
+                        key={index}
+                        style={[
+                          typography.semBold.semBold14,
+                          {
+                            color: colors.gold.gold100,
+                          },
+                        ]}
+                      >
+                        {item.emailOrPhone} - Fee: {item.fee}{' ,'}
+                      </Text>
+                    );
+                  })}
+                </Box>
+
+              </Box>
+              {/* End of "Invite Friends" Box */}
             </Box>
+
           </Box>
 
           <Box style={styles.box2_second}>
@@ -782,117 +791,167 @@ and join the table for a fun night!`;
                 Invite Friends
               </Text>
 
+              <CardField
+                postalCodeEnabled={true}
+                placeholders={{ number: '4242 4242 4242 4242' }}
+                cardStyle={{
+                  placeholderColor: '#e4d0b5',
+                  textColor: '#e4d0b5',
+                  backgroundColor: 'black',
+                  fontSize: 15,
+                  borderColor: '#e4d0b5',
+                  borderWidth: 2,
+                  borderRadius: 10
+                }}
+                style={{ width: '100%', height: 50, marginVertical: 20 }}
+                onCardChange={(cardDetails) => {
+                  console.log('cardDetails', cardDetails);
+                              if (cardDetails.complete && cardDetails.validNumber) {
+                          setIsCardValid(true);
+                      } else {
+                          setIsCardValid(false);
+                    }
+                }}
+                onFocus={(focusedField) => {
+                  console.log('focusField', focusedField);
+                }}
+              />
+
               <Text
                 style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
               >
-                Enter Email / Phone
+                Enter Phone Number (include country code)
               </Text>
+
               <Box
                 style={{
-                  width: '100%',
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  marginVertical: 10,
                 }}
               >
-                <Box style={{ paddingVertical: 12, width: '60%' }}>
-                  <TextInput
-                    style={styles.inputInviteParticipant}
-                    onChangeText={(e) => {
-                      console.log('e====>', e);
-                      setinviteParticipantData(e);
-                      //  let tempString = e;
-                      //  inviteParticipantData = tempString
-                    }}
-                    placeholder={``}
-                    placeholderTextColor={colors.gold.gold100}
-                    selectionColor={colors.gold.gold100}
-                    value={inviteParticipantData}
-                    keyboardType={'numeric'}
-                  />
-                </Box>
-                <Box style={{ width: '40%', alignItems: 'flex-end' }}>
-                  <Pressable
-                    style={{ borderRadius: 20 / 2, padding: 4 }}
-                    onPress={() => {
-                      let tempArr = [...InviteFrndsData, inviteParticipantData];
+                <TextInput
+                  style={styles.inputInviteParticipant}
+                  onChangeText={(e) => setinviteParticipantData(e)}
+                  placeholder={``}
+                  placeholderTextColor={colors.gold.gold100}
+                  selectionColor={colors.gold.gold100}
+                  value={inviteParticipantData}
+                  keyboardType={'numeric'}
+                />
+              </Box>
+
+              <Text
+                style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
+              >
+                Joining Fee
+              </Text>
+
+              <Box
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginVertical: 10,
+                }}
+              >
+
+                <TextInput
+                  style={styles.inputInviteParticipant}
+                  onChangeText={(fee) => setJoiningFee(fee)}
+                  placeholder={"Enter fee"}
+                  placeholderTextColor={colors.gold.gold100}
+                  selectionColor={colors.gold.gold100}
+                  keyboardType={'numeric'}
+                />
+              </Box>
+
+              <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <Pressable
+                  style={{ borderRadius: 20 / 2, padding: 4 }}
+                  onPress={() => {
+                    if (isCardValid) {
+                      let tempArr = [...InviteFrndsData, { emailOrPhone: inviteParticipantData, fee: joiningFee }];
+                      console.log(tempArr, "the tempArr\n")
                       setInviteFrndsData(tempArr);
                       setinviteParticipantData('');
-                    }}
-                  >
-                    <Text
-                      style={[
-                        typography.semBold.semBold16,
-                        {
-                          backgroundColor: colors.gold.gold100,
-                          padding: 6,
-                          borderRadius: 12,
-                        },
-                      ]}
-                    >
-                      Send Invitation
-                    </Text>
-                  </Pressable>
-                </Box>
-              </Box>
-              <Box>
-                <Box>
+                      setJoiningFee('');
+                    } else {
+                        alert('Please enter a valid credit card to invite friends.');
+                    }
+                  }}
+                  disabled={!isCardValid}
+                >
                   <Text
                     style={[
-                      typography.bold.bold16,
-                      { color: colors.gold.gold100, paddingVertical: 10 },
-                    ]}
-                  >
-                    Participants:
-                  </Text>
-                  <Text
-                    style={[
-                      typography.regular.regular14,
+                      typography.semBold.semBold16,
                       {
-                        color: colors.gold.gold100,
-                        paddingVertical: 6,
-                        lineHeight: 20,
+                        backgroundColor: colors.gold.gold100,
+                        padding: 6,
+                        borderRadius: 12,
                       },
                     ]}
                   >
-                    Note: that only organizers of a table that are promoters or
-                    part of the club stuff can change their own minimum joining
-                    fee to 0{' '}
+                    Send Invitation
                   </Text>
-                </Box>
+                </Pressable>
+              </Box>
+
+              <Box>
+                <Text
+                  style={[
+                    typography.bold.bold16,
+                    { color: colors.gold.gold100, paddingVertical: 10 },
+                  ]}
+                >
+                  Participants:
+                </Text>
+
+                {/*<Text
+                  style={[
+                    typography.regular.regular14,
+                    {
+                      color: colors.gold.gold100,
+                      paddingVertical: 6,
+                      lineHeight: 20,
+                    },
+                  ]}
+                >
+                  Note: that only organizers of a table that are promoters or
+                  part of the club stuff can change their own minimum joining
+                  fee to 0
+                </Text>*/}
+
                 <Box style={{ paddingVertical: 14 }}>
                   <ScrollView style={{ paddingBottom: 420 }}>
                     {InviteFrndsData &&
-                      InviteFrndsData.map((item) => {
+                      InviteFrndsData.map((item, index) => {
                         return (
-                          <>
-                            <Box
-                              style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                backgroundColor: colors.gold.gold100,
-                                padding: 8,
-                                borderRadius: 12,
-                                marginVertical: 2,
-                              }}
+                          <Box
+                            key={index}
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              backgroundColor: colors.gold.gold100,
+                              padding: 8,
+                              borderRadius: 12,
+                              marginVertical: 2,
+                            }}
+                          >
+                            <Text
+                              style={[
+                                typography.regular.regular14,
+                                {
+                                  paddingVertical: 6,
+                                  lineHeight: 10,
+                                  paddingHorizontal: 4,
+                                },
+                              ]}
                             >
-                              <Box>
-                                <Text
-                                  style={[
-                                    typography.regular.regular14,
-                                    {
-                                      paddingVertical: 6,
-                                      lineHeight: 10,
-                                      paddingHorizontal: 4,
-                                    },
-                                  ]}
-                                >
-                                  {item}
-                                </Text>
-                              </Box>
-                              <Box></Box>
-                            </Box>
-                          </>
+                              {item.emailOrPhone} - Fee: {item.fee}
+                            </Text>
+                          </Box>
                         );
                       })}
                   </ScrollView>
@@ -901,13 +960,13 @@ and join the table for a fun night!`;
             </Box>
           </>
         }
-        onClosepress={() => {
-          setinviteParticipantModal(!inviteParticipantModal);
-        }}
+        onClosepress={() => setinviteParticipantModal(!inviteParticipantModal)}
         bgColor={colors.black.black800}
         openActionSheet={inviteParticipantModal}
         setopenActionSheet={setinviteParticipantModal}
       />
+
+
     </>
   );
 };
@@ -954,7 +1013,7 @@ const styles = StyleSheet.create({
     selectionColor: colors.gold.gold100,
     color: colors.gold.gold100,
     fontSize: 14,
-    // width: "20%",
+    width: "50%",
     // textAlign: "center",
   },
   box2: {

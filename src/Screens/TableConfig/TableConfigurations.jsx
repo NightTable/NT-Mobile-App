@@ -8,14 +8,14 @@ import {
   SafeAreaView,
   TouchableOpacity
 } from "react-native";
-import { Button } from "../../Components/Buttons";
+import { Button } from "../../components/Buttons";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 //THEME
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 //COMPONENTS
-import { HeaderWithLeftIcon } from "../../Components/Header";
-import { TableConfigurationsCard } from "../../Features/tableConfig/TableConfig";
-import TableConfigTableComp from "../../Features/tableConfig/TableConfigTableComp"
+import { HeaderWithLeftIcon } from "../../components/Header";
+import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
+import TableConfigTableComp from "../../features/tableConfig/TableConfigTableComp"
 
 //DIMENSIONS
 const { width, height } = Dimensions.get("screen");

@@ -8,10 +8,10 @@ import {
   Pressable,
 } from "react-native";
 import { Image } from "expo-image";
-import { HeaderWithLeftIcon } from "../../Components/Header";
-import { colors, typography } from "../../Theme";
-import { getRepresentativebyClub } from "../../Services/representative";
-import { disableLoader, enableLoader } from "../../Components/popUp/loader/trigger";
+import { HeaderWithLeftIcon } from "../../components/Header";
+import { colors, typography } from "../../theme";
+import { getRepresentativebyClub } from "../../services/representative";
+import { disableLoader, enableLoader } from "../../components/popUp/loader/trigger";
 
 const { width, height } = Dimensions.get("screen");
 

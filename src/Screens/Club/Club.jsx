@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "expo-image";
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import { Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from "react-native";
 import { Box } from "native-base";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { HeaderWithLeftIcon } from "../../Components/Header";
-import { Button } from "../../Components/Buttons";
+import { HeaderWithLeftIcon } from "../../components/Header";
+import { Button } from "../../components/Buttons";
 const { width, height } = Dimensions.get("screen");
 
 //MAIN FUNCTION

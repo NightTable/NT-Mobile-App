@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GetRequest, PostRequest, PutRequest } from '../Utils/axios/Axios';
+import { GetRequest, PostRequest, PutRequest } from '../utils/axios/Axios';
 
 export const getProfileData = async (obj) => {
   return await PostRequest(`http://localhost:3000/api/users/user`, obj, '');

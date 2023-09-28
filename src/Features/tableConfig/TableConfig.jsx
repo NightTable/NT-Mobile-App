@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
 import { Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 //THEME
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import ClosedDropDown from "../../../assets/chevron-back-outline.png"
 import OpenDropDown from "../../../assets/chevron-back-outline-collapsed.png"
 

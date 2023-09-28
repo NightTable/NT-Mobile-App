@@ -2,9 +2,9 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //Screens
-import Login from '../Screens/Auth/Login';
-import Splash from '../Screens/Splash';
-import Otp from '../Screens/Auth/Otp';
+import Login from '../screens/Auth/Login';
+import Splash from '../screens/Splash';
+import Otp from '../screens/Auth/Otp';
 
 //Stack Hooks
 const Stack = createNativeStackNavigator();
