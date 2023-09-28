@@ -171,6 +171,11 @@ and join the table for a fun night!`;
     setModalVisible(false);
   };
 
+  const handleRemoveParticipant = (indexToRemove) => {
+    const updatedList = InviteFrndsData.filter((_, index) => index !== indexToRemove);
+    setInviteFrndsData(updatedList);
+  };
+
   const handleTableConfigPress = (idParam) => {
     let selectedTableList = selectedTables;
     setSelectedTableConfigId(idParam);
@@ -925,35 +930,40 @@ and join the table for a fun night!`;
 
                 <Box style={{ paddingVertical: 14 }}>
                   <ScrollView style={{ paddingBottom: 420 }}>
-                    {InviteFrndsData &&
-                      InviteFrndsData.map((item, index) => {
-                        return (
-                          <Box
-                            key={index}
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              backgroundColor: colors.gold.gold100,
-                              padding: 8,
-                              borderRadius: 12,
-                              marginVertical: 2,
-                            }}
+                  {InviteFrndsData &&
+                    InviteFrndsData.map((item, index) => {
+                      return (
+                        <Box
+                          key={index}
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            backgroundColor: colors.gold.gold100,
+                            padding: 8,
+                            borderRadius: 12,
+                            marginVertical: 2,
+                          }}
+                        >
+                          <Text
+                            style={[
+                              typography.regular.regular14,
+                              {
+                                paddingVertical: 6,
+                                lineHeight: 10,
+                                paddingHorizontal: 4,
+                              },
+                            ]}
                           >
-                            <Text
-                              style={[
-                                typography.regular.regular14,
-                                {
-                                  paddingVertical: 6,
-                                  lineHeight: 10,
-                                  paddingHorizontal: 4,
-                                },
-                              ]}
-                            >
-                              {item.emailOrPhone} - Fee: {item.fee}
-                            </Text>
-                          </Box>
-                        );
-                      })}
+                            {item.emailOrPhone} - Fee: {item.fee}
+                          </Text>
+
+                          <TouchableOpacity onPress={() => handleRemoveParticipant(index)}>
+                            <Text style={[typography.regular.regular16, { color: colors.black.black800}]}>X</Text>
+                          </TouchableOpacity>
+                        </Box>
+                      );
+                    })}
+
                   </ScrollView>
                 </Box>
               </Box>
