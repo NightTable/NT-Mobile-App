@@ -102,14 +102,15 @@ const NewTableReq = ({ navigation, route }) => {
   const playStoreLink = "https://play.google.com/store/apps/details?id=com.americanexpress.android.acctsvcs.us&pcampaignid=web_share";
 
   const inviteMessage = `Hey!\n
-I'm inviting you to a table at ${club} for the ${event}, requesting a minimum contribution of $${fee}.\n
+I'm inviting you to a table at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event, requesting a minimum contribution of $${joiningFee}.\n
 Download NightTable on the App Store: ${appStoreLink}\n
 or Play Store: ${playStoreLink},\n
 make sure to sign up using the phone number on which you've recieved this message,\n
 and join the table for a fun night!`;
 
-  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${club} for the ${event} via NightTable. Thank you!`;
+  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event via NightTable. Thank you!`;
   const promoterNumber = "+16178933910";
+
   const sendSMS = async () => {
     setIsSending(true);
     const isAvailable = await SMS.isAvailableAsync();
@@ -676,7 +677,7 @@ and join the table for a fun night!`;
                           },
                         ]}
                       >
-                        {item.emailOrPhone} - Fee: {item.fee}{' ,'}
+                        {item.emailOrPhone} - Fee: ${item.fee}{' ,'}
                       </Text>
                     );
                   })}
@@ -838,7 +839,7 @@ and join the table for a fun night!`;
               >
                 <TextInput
                   style={styles.inputInviteParticipant}
-                  onChangeText={(e) => setinviteParticipantData(e)}
+                  onChangeText={(e) => [setinviteParticipantData(e), setInputValue(e)]}
                   placeholder={``}
                   placeholderTextColor={colors.gold.gold100}
                   selectionColor={colors.gold.gold100}
@@ -850,7 +851,7 @@ and join the table for a fun night!`;
               <Text
                 style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
               >
-                Joining Fee
+                Joining Fee $
               </Text>
 
               <Box
@@ -876,17 +877,31 @@ and join the table for a fun night!`;
                 <Pressable
                   style={{ borderRadius: 20 / 2, padding: 4 }}
                   onPress={() => {
-                    if (isCardValid) {
-                      let tempArr = [...InviteFrndsData, { emailOrPhone: inviteParticipantData, fee: joiningFee }];
-                      console.log(tempArr, "the tempArr\n")
-                      setInviteFrndsData(tempArr);
-                      setinviteParticipantData('');
-                      setJoiningFee('');
-                    } else {
-                        alert('Please enter a valid credit card to invite friends.');
+                    if (!isCardValid) {
+                      alert('Please enter a valid credit card to invite friends.');
+                      return;
                     }
+                    if (!inviteParticipantData) {
+                      alert('Please enter a phone number to invite friends.');
+                      return;
+                    }
+                    if (!joiningFee) {
+                      alert('Please specify a joining fee to invite friends.');
+                      return;
+                    }
+
+                    sendInvite();
+                    console.log("========\n");
+                    console.log(inviteMessage);
+                    console.log("========\n");
+
+                    let tempArr = [...InviteFrndsData, { emailOrPhone: inviteParticipantData, fee: joiningFee }];
+                    console.log(tempArr, "the tempArr\n")
+                    setInviteFrndsData(tempArr);
+                    setinviteParticipantData('');
+                    setJoiningFee('');
                   }}
-                  disabled={!isCardValid}
+                  disabled={!isCardValid || !inviteParticipantData || !joiningFee}
                 >
                   <Text
                     style={[
@@ -951,15 +966,12 @@ and join the table for a fun night!`;
                                 paddingVertical: 6,
                                 lineHeight: 10,
                                 paddingHorizontal: 4,
+                                color: colors.black.black800
                               },
                             ]}
                           >
-                            {item.emailOrPhone} - Fee: {item.fee}
+                            {item.emailOrPhone} - Fee: ${item.fee}
                           </Text>
-
-                          <TouchableOpacity onPress={() => handleRemoveParticipant(index)}>
-                            <Text style={[typography.regular.regular16, { color: colors.black.black800}]}>X</Text>
-                          </TouchableOpacity>
                         </Box>
                       );
                     })}
