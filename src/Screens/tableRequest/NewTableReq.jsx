@@ -131,6 +131,12 @@ and join the table for a fun night!`;
   const handleModifyTableMin = (min) => {
     setTableMinimum(tableMinimum + min);
     setDefaultTableMinimum(defaultTableMinimum + min);
+    console.log(defaultTableMinimum, " default min\n");
+  }
+
+  // for promoters
+  const toggleTableMin = (min) => {
+    setTableMinimum(min);
   }
 
   const sendSMSPromoter = async (message, number) => {
