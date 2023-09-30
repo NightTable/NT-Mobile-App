@@ -13,23 +13,20 @@ const TableConfigComp = (props) => {
     const [textColor, setTextColor] = useState(colors.gold.gold100);
 
     const handleOnPress = () => {
-        if (boxColor === colors.black.black800 && textColor === colors.gold.gold100){
+        if (boxColor === colors.black.black800 && textColor === colors.gold.gold100) {
             setBoxColor(colors.gold.gold100);
             setTextColor(colors.black.black800);
             let parts = props.price;
-            props.handleTableMinimum(1*parseInt(parts));
-
-
-        }
-
-        if (boxColor === colors.gold.gold100 && textColor === colors.black.black800){
+            props.handleTableMinimum(parseInt(1 * parseInt(parts)));
+        } else if (boxColor === colors.gold.gold100 && textColor === colors.black.black800) {
             setBoxColor(colors.black.black800);
             setTextColor(colors.gold.gold100);
             let parts = props.price;
-            props.handleTableMinimum(-1*parseInt(parts));
-
+            props.handleTableMinimum(parseInt(-1 * parseInt(parts)));
         }
-
+        
+        // Inform the parent component to toggle the table selection.
+        props.onTableSelected && props.onTableSelected(props.id);
     }
 
 

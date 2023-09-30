@@ -46,9 +46,9 @@ let paymentTypeMethod = [
 ];
 //main function
 const NewTableReq = ({ navigation, route }) => {
-  useEffect(() => {
+  /*useEffect(() => {
     console.log(clubStore?.individualClubTableConfig);
-  }, []);
+  }, []);*/
   //Store
   const clubStore = useSelector((state) => state.club);
 
@@ -61,6 +61,7 @@ const NewTableReq = ({ navigation, route }) => {
     } else {
         setSelectedTableIds(prevIds => [...prevIds, id]);
     }
+    console.log(selectedTableIds);
   };
 
   //table-minimum
@@ -129,15 +130,16 @@ and join the table for a fun night!`;
   };
 
   const handleModifyTableMin = (min) => {
-    setTableMinimum(tableMinimum + min);
-    setDefaultTableMinimum(defaultTableMinimum + min);
-    console.log(defaultTableMinimum, " default min\n");
+    let parsedMin = parseInt(min, 10);
+    if (isNaN(parsedMin)) {parsedMin = 0}; // exit early if min is not a number
+    setTableMinimum(tableMinimum + parsedMin);
+    setDefaultTableMinimum(defaultTableMinimum + parsedMin);
   }
 
   // for promoters
   const toggleTableMin = (min) => {
-    setTableMinimum(min);
-  }
+    const parsedMin = parseFloat(min);
+    setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);  }
 
   const sendSMSPromoter = async (message, number) => {
     setIsSending(true);
@@ -264,7 +266,9 @@ and join the table for a fun night!`;
       </>
     );
   };
-
+  console.log('====================================');
+  console.log('default table mininum', defaultTableMinimum);
+  console.log('====================================');
   console.log('====================================');
   console.log('tableMinimum', tableMinimum);
   console.log('====================================');
@@ -368,8 +372,17 @@ and join the table for a fun night!`;
                   },
                 ]}
               >
-                Current Table Minimum: ${tableMinimum}
+                Current Table Minimum:
               </Text>
+              <TextInput
+                style={styles.input}
+                placeholder={`$${defaultTableMinimum}`}
+                onChangeText={(value) => toggleTableMin(value)}
+                placeholderTextColor={colors.gold.gold100}
+                selectionColor={colors.gold.gold100}
+                value={!isNaN(tableMinimum) ? tableMinimum : (!isNaN(defaultTableMinimum) ? defaultTableMinimum : '0')}
+                keyboardType={'numeric'}
+              />
               {/*<TextInput
                 style={styles.input}
                 onChangeText={setTableMinimum}
@@ -443,12 +456,13 @@ and join the table for a fun night!`;
                   {clubStore?.individualClubTableConfig.length > 0 ? (
                     clubStore?.individualClubTableConfig.map((item, index) => (
                       <TableConfigComp
-                        key={index}
-                        onOuterTableConfigPress={handleTableConfigPress}
-                        handleTableMinimum={handleModifyTableMin}
-                        id={item?.tableMapId}
-                        type={item?.type}
-                        price={item?.minPrice}
+                          key={index}
+                          onOuterTableConfigPress={handleTableConfigPress}
+                          handleTableMinimum={handleModifyTableMin}
+                          onTableSelected={toggleTableSelection} // Handles both selection and deselection
+                          id={item?.tableMapId}
+                          type={item?.type}
+                          price={item?.minPrice}
                       />
                       // Below is the original TouchableOpacity for reference
                       /*
