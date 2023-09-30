@@ -1,25 +1,24 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import Dashboard from "../screens/Dashboard/Dashboard";
+import Dashboard from "../screens/dashboard/Dashboard";
 //CLUBS SCRREN
-import Club from "../screens/Club/Club";
+import Club from "../screens/club/Club";
 //EVENT
-import UpcomingEvents from "../screens/Event/UpcomingEvents";
-import EventDetail from "../screens/Event/EventDetail";
+import UpcomingEvents from "../screens/event/UpcomingEvents";
+import EventDetail from "../screens/event/EventDetail";
 //TABLE CONFIGURATIONS
-import TableConfigurations from "../screens/TableConfig/TableConfigurations";
+import TableConfigurations from "../screens/tableConfig/TableConfigurations";
 //STACKS
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 //THEME
 import { typography, colors } from "../theme";
-import Profile from "../screens/Profile/Profile";
-import Promoter from "../screens/Promoter/PromoterAppl";
-import PromoterAppl from "../screens/Promoter/PromoterAppl";
-import InfluencerAppl from "../screens/Promoter/InfluencerAppl";
-import Hostsandpromoters from "../screens/TableRequest/Hostsandpromoter";
-import TableReqCont from "../screens/TableRequest/TableReqConfiramation";
-import NewTableReq from "../screens/TableRequest/NewTableReq";
+import Profile from "../screens/profile/Profile";
+import PromoterAppl from "../screens/promoter/PromoterAppl";
+import InfluencerAppl from "../screens/promoter/InfluencerAppl";
+import Hostsandpromoters from "../screens/tableRequest/Hostsandpromoter";
+import TableReqCont from "../screens/tableRequest/TableReqConfiramation";
+import NewTableReq from "../screens/tableRequest/NewTableReq";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
