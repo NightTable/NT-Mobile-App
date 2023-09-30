@@ -49,6 +49,11 @@ const NewTableReq = ({ navigation, route }) => {
   /*useEffect(() => {
     console.log(clubStore?.individualClubTableConfig);
   }, []);*/
+
+  useEffect(() => {
+    console.log(selectedTableIds, "table ids");
+}, [selectedTableIds]);
+
   //Store
   const clubStore = useSelector((state) => state.club);
 
@@ -61,7 +66,7 @@ const NewTableReq = ({ navigation, route }) => {
     } else {
         setSelectedTableIds(prevIds => [...prevIds, id]);
     }
-    console.log(selectedTableIds);
+    //console.log(selectedTableIds);
   };
 
   //table-minimum
@@ -266,6 +271,9 @@ and join the table for a fun night!`;
       </>
     );
   };
+  console.log('====================================');
+  console.log('====================================');
+  console.log(selectedTableIds, "table ids");
   console.log('====================================');
   console.log('default table mininum', defaultTableMinimum);
   console.log('====================================');
