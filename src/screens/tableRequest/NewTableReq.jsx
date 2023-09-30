@@ -426,12 +426,12 @@ const NewTableReq = ({ navigation, route }) => {
           <Box style={styles.box2_second}>
             <ButtonComp
               onSubmit={() => {
-                if (tableMinimum != 0) {
+                if (tableMinimum === 0) {
                   Alert.alert('Please enter the table Minimum');
                 } else if (tableConfigsData.length === 0) {
                   Alert.alert('Please select the table Configs');
                 } else {
-                  navigation.navigate('TableReqConfirmation', {
+                  navigation.navigate('TableReqCont', {
                     clubData: route?.params?.clubData,
                     selectedEventData: route?.params?.selectedEventData,
                     promoterData: route?.params?.promoterData,
