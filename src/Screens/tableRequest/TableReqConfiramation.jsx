@@ -14,17 +14,17 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 //component
-import { HeaderWithLeftIcon } from "../../Components/Header";
+import { HeaderWithLeftIcon } from "../../components/Header";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { colors, typography } from "../../Theme";
+import { colors, typography } from "../../theme";
 import { ScrollView } from "react-native";
-import CostSplittingSectionComp from "../../Features/costSplitting";
-import { TableConfigurationsCard } from "../../Features/tableConfig/TableConfig";
+import CostSplittingSectionComp from "../../features/costSplitting";
+import { TableConfigurationsCard } from "../../features/tableConfig/TableConfig";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import DyModal from "../../Components/Modal";
+import DyModal from "../../components/Modal";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Button } from "../../Components/Buttons";
+import { Button } from "../../components/Buttons";
 const { width, height } = Dimensions.get("screen");
 let paymentTypeMethod = [
   {

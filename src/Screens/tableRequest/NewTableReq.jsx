@@ -57,8 +57,13 @@ const NewTableReq = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
 
+  //ids of the selected tables
   const [selectedTableIds, setSelectedTableIds] = useState([]);
+  //default table min = sum of the table minds of selected tables
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
+
+  const { createPaymentMethod, handleNextAction } = useStripe();
+
 
   const toggleTableSelection = (id) => {
     if (selectedTableIds.includes(id)) {
@@ -68,6 +73,82 @@ const NewTableReq = ({ navigation, route }) => {
     }
     //console.log(selectedTableIds);
   };
+
+  /*
+    Making payment and navigating to the next screen
+    - creating internal customer
+    - making sure the tables we've selected haven't been bought out
+    - creating a snpl payment on the card, or pnsl, depending on the payment type 
+    - navigate over to the next screen
+  */
+
+  const makePayment = async (chargeAmount) => {
+    const billingDetails = { 
+      name: "Amiya Sekhar", //use store to get user's (the organizer) phone number
+      phone: '+48888000888', //use store to get user's (the organizer) phone number
+    }
+
+    /*
+      Create payment method essentially creates
+      a payment once and only if the customer enters their card information
+     */
+    const {paymentMethod, error} = await createPaymentMethod({
+      paymentMethodType: 'Card',
+      paymentMethodData: {
+          billingDetails,
+      }
+    });  
+
+    /*
+      we create our own internal customer to keep of track of 
+      customer trasactions
+    */
+
+    const responseInternalCustomer = await axios.post(`${process.env.LOCAL_URL}/create-customer`, {
+      userId: new ObjectId(),
+      paymentMethodId: paymentMethod.id,
+    });
+
+    /*
+      creating a payment intent with snpl / pnsl
+      recall line items from the webadmin where a 
+      club has tax, tip, and other percentages
+    */
+    let response = "";
+    if (selectedPaymentType == 1){
+
+      const responsePaymentIntentSNPL = await axios.post(`${process.env.LOCAL_URL}/create-payment-intent`, {
+        amount: chargeAmount,
+        lineItems: [20, 9], //use store to get clubs line items
+        paymentType: 'snpl',
+        paymentMethodId: paymentMethod.id,
+        customerId: responseStripeCustomer.data.id
+      });
+    }
+
+    else{
+      const responsePaymentIntentPNSL = await axios.post(`${API_URL}/create-payment-intent`, {
+        amount: chargeAmount,
+        lineItems: [20, 9], //use store to get clubs line items
+        paymentType: 'pnsl',
+        paymentMethodId: paymentMethod.id,
+        customerId: responseInternalCustomer.data.stripeCustomerId
+      });
+    }
+    /*
+    if good response
+                      // navigation.navigate('TableReqConfirmation', {
+                  //   clubData: route?.params?.clubData,
+                  //   selectedEventData: route?.params?.selectedEventData,
+                  //   promoterData: route?.params?.promoterData,
+                  //   tableMinimum: tableMinimum,
+                  //   arrivalDate: selectedDate,
+                  //   selectedConfigData: tableConfigsData,
+                  //   InviteFrndsData: InviteFrndsData,
+                  //   Users card data has to be passed to next screen too
+                  // });
+    */
+  }
 
   //table-minimum
   const [tableMinimum, setTableMinimum] = useState(0);
@@ -134,6 +215,7 @@ and join the table for a fun night!`;
     setIsSending(false);
   };
 
+  //change table minimum based on how many configs selected
   const handleModifyTableMin = (min) => {
     let parsedMin = parseInt(min, 10);
     if (isNaN(parsedMin)) {parsedMin = 0}; // exit early if min is not a number
@@ -141,7 +223,7 @@ and join the table for a fun night!`;
     setDefaultTableMinimum(defaultTableMinimum + parsedMin);
   }
 
-  // for promoters
+  // for promoters when they want to modify the table minimum manually
   const toggleTableMin = (min) => {
     const parsedMin = parseFloat(min);
     setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);  }
@@ -185,11 +267,13 @@ and join the table for a fun night!`;
     setModalVisible(false);
   };
 
+  // remove a participant
   const handleRemoveParticipant = (indexToRemove) => {
     const updatedList = InviteFrndsData.filter((_, index) => index !== indexToRemove);
     setInviteFrndsData(updatedList);
   };
 
+  // add / remove tables from your list of selected tables
   const handleTableConfigPress = (idParam) => {
     let selectedTableList = selectedTables;
     setSelectedTableConfigId(idParam);
@@ -289,6 +373,7 @@ and join the table for a fun night!`;
           flex: 1,
         }}
       >
+
         <HeaderWithLeftIcon
           title={'New Table Request'}
           icon={'back'}
@@ -305,6 +390,7 @@ and join the table for a fun night!`;
             return null;
           }}
         />
+
         <Box style={{ height: '20%' }}>
           <ScrollView horizontal={true}>
             {route?.params?.clubData?.photos.map((image) => {
@@ -330,6 +416,7 @@ and join the table for a fun night!`;
 
         <Box style={styles.box2}>
           <Box style={styles.box2_first}>
+
             <Box
               style={{
                 flexDirection: 'row',
@@ -365,6 +452,7 @@ and join the table for a fun night!`;
                 </Text>
               </TouchableOpacity>
             </Box>
+
             <Box
               style={{
                 flexDirection: 'row',
@@ -401,6 +489,7 @@ and join the table for a fun night!`;
                 keyboardType={'numeric'}
               />*/}
             </Box>
+
             <Box
               style={{
                 flexDirection: 'row',
@@ -430,48 +519,48 @@ and join the table for a fun night!`;
             </Box>
 
             <Box
-                style={{
-                    flexDirection: 'column', // Changed to 'column' to stack content vertically
-                    paddingVertical: 10,
-                }}
+              style={{
+                flexDirection: 'column', // Changed to 'column' to stack content vertically
+                paddingVertical: 10,
+              }}
             >
-                <Text
-                    style={[
-                        typography.semBold.semBold16,
-                        {
-                            color: colors.gold.gold100,
-                            justifyContent: 'center', 
-                            alignItems: 'center',
-                        },
-                    ]}
-                >
-                    Select Table Type :
-                </Text>
-                <View
-                  style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      paddingVertical: 5,
-                      borderBottomColor: colors.gold.gold100,
-                      //borderBottomWidth: 1,
-                  }}
-                  >
-                  <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>ID</Text>
-                  <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>TYPE</Text>
-                  <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>MINIMUM</Text>
-                </View>
-                <ScrollView style={{ borderColor: colors.gold.gold100, borderWidth: 2, borderRadius: 5 }}>
-                  {clubStore?.individualClubTableConfig.length > 0 ? (
-                    clubStore?.individualClubTableConfig.map((item, index) => (
-                      <TableConfigComp
-                          key={index}
-                          onOuterTableConfigPress={handleTableConfigPress}
-                          handleTableMinimum={handleModifyTableMin}
-                          onTableSelected={toggleTableSelection} // Handles both selection and deselection
-                          id={item?.tableMapId}
-                          type={item?.type}
-                          price={item?.minPrice}
-                      />
+              <Text
+                style={[
+                  typography.semBold.semBold16,
+                  {
+                    color: colors.gold.gold100,
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                  },
+                ]}
+              >
+                Select Table Type :
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 5,
+                  borderBottomColor: colors.gold.gold100,
+                  //borderBottomWidth: 1,
+                }}
+              >
+                <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>ID</Text>
+                <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>TYPE</Text>
+                <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>MINIMUM</Text>
+              </View>
+              <ScrollView style={{ borderColor: colors.gold.gold100, borderWidth: 2, borderRadius: 5 }}>
+                {clubStore?.individualClubTableConfig.length > 0 ? (
+                  clubStore?.individualClubTableConfig.map((item, index) => (
+                  <TableConfigComp
+                    key={index}
+                    onOuterTableConfigPress={handleTableConfigPress}
+                    handleTableMinimum={handleModifyTableMin}
+                    onTableSelected={toggleTableSelection} // Handles both selection and deselection
+                    id={item?.tableMapId}
+                    type={item?.type}
+                    price={item?.minPrice}
+                  />
                       // Below is the original TouchableOpacity for reference
                       /*
                       <TouchableOpacity
@@ -496,21 +585,21 @@ and join the table for a fun night!`;
                       */
                     ))
                   ) : (
-                    <Text
-                      style={[
-                        typography.semBold.semBold14,
-                        {
-                          color: 'white',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          textAlign: 'center',
-                        },
-                      ]}
-                    >
-                      NO TABLE'S AVAILABLE
-                    </Text>
-                  )}
-                </ScrollView>
+                  <Text
+                    style={[
+                      typography.semBold.semBold14,
+                      {
+                        color: 'white',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                      },
+                    ]}
+                  >
+                    NO TABLE'S AVAILABLE
+                  </Text>
+                )}
+              </ScrollView>
 
 
                 {/*<Pressable
@@ -665,7 +754,7 @@ and join the table for a fun night!`;
               {/* End of "Select Request Type" Box */}
 
               {/* Start of "Invite Friends" Box */}
-              <Box>
+              {<Box>
                 <Box
                   style={{
                     flexDirection: 'row',
@@ -683,7 +772,7 @@ and join the table for a fun night!`;
                       },
                     ]}
                   >
-                    Invite Friends :
+                    Invite Friends:
                   </Text>
                   <Pressable
                     onPress={() => {
@@ -693,7 +782,7 @@ and join the table for a fun night!`;
                     <AntDesign name='plus' size={20} color='silver' />
                   </Pressable>
                 </Box>
-                <Box>
+                {/*<Box>
                   {InviteFrndsData?.map((item, index) => {
                     return (
                       <Text
@@ -709,9 +798,9 @@ and join the table for a fun night!`;
                       </Text>
                     );
                   })}
-                </Box>
+                </Box>*/}
 
-              </Box>
+              </Box>}
               {/* End of "Invite Friends" Box */}
             </Box>
 
@@ -720,10 +809,39 @@ and join the table for a fun night!`;
           <Box style={styles.box2_second}>
             <ButtonComp
               onSubmit={() => {
-                if (tableMinimum != 0) {
+                if (selectedTableIds.length === 0) {
+                  console.log(tableConfigsData, "table config data when button pressed");
+                  Alert.alert('Please select the table Configs');
+                } else {
+                  // Uncomment the below code if you want to use the modal toggle or any other functionality.
+                  setinviteParticipantModal(!inviteParticipantModal);
+                  
+                  // If you want to use the navigation action, uncomment the below lines:
+                  // navigation.navigate('TableReqConfirmation', {
+                  //   clubData: route?.params?.clubData,
+                  //   selectedEventData: route?.params?.selectedEventData,
+                  //   promoterData: route?.params?.promoterData,
+                  //   tableMinimum: tableMinimum,
+                  //   arrivalDate: selectedDate,
+                  //   selectedConfigData: tableConfigsData,
+                  //   InviteFrndsData: InviteFrndsData,
+                  // });
+                }
+              }}
+              text={'Send Invites and Make payment'}
+              backgroundColor={colors.gold.gold100}
+            />
+
+          </Box>
+
+          {/*<Box style={styles.box2_second}>
+            <ButtonComp
+              onSubmit={() => {
+                if (tableMinimum == 0) {
                   Alert.alert('Please enter the table Minimum');
                 } else if (tableConfigsData.length === 0) {
-                  Alert.alert('Please select the table Configs');
+                  console.log(tableConfigsData, "table config data when button pressed");
+                  Alert.alert('Please choose a table');
                 } else {
                   navigation.navigate('TableReqConfirmation', {
                     clubData: route?.params?.clubData,
@@ -739,7 +857,7 @@ and join the table for a fun night!`;
               text={'continue'}
               backgroundColor={colors.gold.gold100}
             />
-          </Box>
+          </Box>*/}
         </Box>
       </View>
 
@@ -850,11 +968,54 @@ and join the table for a fun night!`;
                   console.log('focusField', focusedField);
                 }}
               />
-
+              {
+                selectedPaymentType === 2 ? (  // if it's "pay-now-split-later"
+                  <>
+                    <Text
+                      style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
+                    >
+                      My Joining Fee (Unmodifiable) $
+                    </Text>
+                    <TextInput
+        style={[styles.inputInviteParticipant, { marginVertical: 10 }]} // Added margin
+        value={`${tableMinimum}`}  // set to tableMinimum
+                      editable={false}  // making it non-editable
+                      placeholderTextColor={colors.gold.gold100}
+                      selectionColor={colors.gold.gold100}
+                      keyboardType={'numeric'}
+                    />
+                  </>
+                ) : (  // if it's "split-now-pay-later"
+                  <>
+                    <Text
+                      style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
+                    >
+                      My Joining Fee $
+                    </Text>
+                    <Box
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginVertical: 10,
+                      }}
+                    >
+                      <TextInput
+                        style={styles.inputInviteParticipant}
+                        onChangeText={(fee) => setJoiningFee(fee)}
+                        placeholder={``}
+                        placeholderTextColor={colors.gold.gold100}
+                        selectionColor={colors.gold.gold100}
+                        keyboardType={'numeric'}
+                      />
+                    </Box>
+                  </>
+                )
+              }
               <Text
                 style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
               >
-                Enter Phone Number (include country code)
+                Enter Invitee's Phone Number (include country code)
               </Text>
 
               <Box
@@ -879,7 +1040,7 @@ and join the table for a fun night!`;
               <Text
                 style={[typography.bold.bold16, { color: colors.gold.gold100 }]}
               >
-                Joining Fee $
+                Invitee Joining Fee $
               </Text>
 
               <Box
@@ -894,7 +1055,7 @@ and join the table for a fun night!`;
                 <TextInput
                   style={styles.inputInviteParticipant}
                   onChangeText={(fee) => setJoiningFee(fee)}
-                  placeholder={"Enter fee"}
+                  placeholder={``}
                   placeholderTextColor={colors.gold.gold100}
                   selectionColor={colors.gold.gold100}
                   keyboardType={'numeric'}
@@ -920,6 +1081,7 @@ and join the table for a fun night!`;
 
                     sendInvite();
                     console.log("========\n");
+                    console.log(isCardValid, "valid card?")
                     console.log(inviteMessage);
                     console.log("========\n");
 
@@ -927,7 +1089,7 @@ and join the table for a fun night!`;
                     console.log(tempArr, "the tempArr\n")
                     setInviteFrndsData(tempArr);
                     setinviteParticipantData('');
-                    setJoiningFee('');
+                    //setJoiningFee('');
                   }}
                   disabled={!isCardValid || !inviteParticipantData || !joiningFee}
                 >
@@ -953,7 +1115,7 @@ and join the table for a fun night!`;
                     { color: colors.gold.gold100, paddingVertical: 10 },
                   ]}
                 >
-                  Participants:
+                  Invitees:
                 </Text>
 
                 {/*<Text
@@ -972,39 +1134,75 @@ and join the table for a fun night!`;
                 </Text>*/}
 
                 <Box style={{ paddingVertical: 14 }}>
-                  <ScrollView style={{ paddingBottom: 420 }}>
+                <ScrollView 
+                  style={{ 
+                      paddingBottom: 50, 
+                      borderWidth: 2,
+                      borderRadius: 5,
+                      borderColor: colors.gold.gold100,  // This line adds the gold border
+                      height: '50%'
+                  }}
+                >
                   {InviteFrndsData &&
-                    InviteFrndsData.map((item, index) => {
-                      return (
-                        <Box
-                          key={index}
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            backgroundColor: colors.gold.gold100,
-                            padding: 8,
-                            borderRadius: 12,
-                            marginVertical: 2,
-                          }}
-                        >
-                          <Text
-                            style={[
-                              typography.regular.regular14,
-                              {
-                                paddingVertical: 6,
-                                lineHeight: 10,
-                                paddingHorizontal: 4,
-                                color: colors.black.black800
-                              },
-                            ]}
-                          >
-                            {item.emailOrPhone} - Fee: ${item.fee}
-                          </Text>
-                        </Box>
-                      );
-                    })}
+                      InviteFrndsData.map((item, index) => {
+                          return (
+                              <Box
+                                  key={index}
+                                  style={{
+                                      flexDirection: 'row',
+                                      justifyContent: 'space-between',
+                                      backgroundColor: colors.gold.gold100,
+                                      padding: 8,
+                                      borderRadius: 12,
+                                      marginHorizontal: 5,
+                                      marginVertical: 5,
 
-                  </ScrollView>
+                                      
+                                  }}
+                              >
+                                  <Text
+                                      style={[
+                                          typography.regular.regular14,
+                                          {
+                                              paddingVertical: 6,
+                                              lineHeight: 10,
+                                              paddingHorizontal: 4,
+                                              color: colors.black.black800
+                                          },
+                                      ]}
+                                  >
+                                      +{item.emailOrPhone} - Fee: ${item.fee}
+                                  </Text>
+                              </Box>
+                          );
+                      })
+                  }
+              </ScrollView>
+
+                  <TouchableOpacity
+                    style={{
+                        backgroundColor: colors.gold.gold100,
+                        padding: 10,
+                        borderRadius: 12,
+                        alignItems: 'center',
+                        marginVertical: 10 // To add some spacing above and below the button
+                    }}
+                    onPress={() => {
+                        // Handle the button press here. For instance, confirming the payment.
+                        console.log('Confirm payment button pressed');
+                    }}
+                  >
+                      <Text
+                          style={[
+                              typography.semBold.semBold16,
+                              {
+                                  color: colors.black.black800 // Assuming you want black text
+                              },
+                          ]}
+                      >
+                          Confirm Payment
+                      </Text>
+                  </TouchableOpacity>
                 </Box>
               </Box>
             </Box>

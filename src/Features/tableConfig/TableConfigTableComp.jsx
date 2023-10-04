@@ -86,7 +86,7 @@ const TableConfigTableComp = (props) => {
               disabled={true}
               style={{ padding: 15, alignItems: 'center', backgroundColor: colors.gold.gold100, width: '90%', alignSelf: 'center', borderRadius: 10, marginBottom: 30 }}
             >
-              <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center' }}>No active table or bids yet</Text>
+              <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center' }}>Feature coming soon!</Text>
             </TouchableOpacity>
           </ScrollView> 
           : null
