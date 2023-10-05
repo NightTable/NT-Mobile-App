@@ -35,8 +35,10 @@ const Profile = ({ route, navigation }) => {
     phoneNumber: '',
     instaHandle: '',
     facebookEmail: '',
-    data: {},
+    // data: {},
   });
+
+  const [profileAllData, setprofileAllData] = useState({});
 
   useEffect(() => {
     async function loadData() {
@@ -66,9 +68,8 @@ const Profile = ({ route, navigation }) => {
         instaHandle: `${response.data?.data?.instaHandle} `,
         facebookEmail: `${response.data?.data?.firstName} `,
         lastName: `${response.data?.data?.lastName} `,
-        data: response.data?.data,
       });
-      console.log('response.data;', response.data);
+      setprofileAllData(response.data?.data);
     } catch (error) {
       return error;
     }
@@ -76,21 +77,23 @@ const Profile = ({ route, navigation }) => {
 
   const updateUserProfileData = async (text) => {
     // enableLoader();
-    delete profileData.data?.firstName;
-    delete profileData.data?.lastName;
-    delete profileData.data?.email;
-
-    console.log('profileData', profileData?.data);
+    delete profileAllData?.firstName;
+    delete profileAllData?.lastName;
+    delete profileAllData?.email;
+    delete profileAllData?.instaHandle;
+    delete profileAllData?._id;
+    delete profileAllData?.__v;
+    delete profileAllData?.isDeleted;
+    delete profileAllData?.createdAt;
+    delete profileAllData?.updatedAt;
     try {
       let obj = {
-        ...profileData.data,
+        ...profileAllData,
+        ...profileData,
       };
 
-      console.log('====================================');
-      console.log('updateUserProfileData:obj', obj);
-      console.log('====================================');
       const response = await updateProfileData(obj);
-      console.log('response.data;', response);
+      alert('profile updated successfully!');
     } catch (error) {
       return error;
     }
@@ -122,9 +125,9 @@ const Profile = ({ route, navigation }) => {
                 }));
               }}
               value={profileData.firstName}
-              placeholder='Phone Number'
+              placeholder="First Name"
               placeholderTextColor={colors.grey.grey800}
-              keyboardType='numeric'
+              keyboardType="numeric"
             />
           </Box>
           <Box style={styles.inputBox}>
@@ -141,9 +144,9 @@ const Profile = ({ route, navigation }) => {
                 }));
               }}
               value={profileData.lastName}
-              placeholder='Phone Number'
+              placeholder="Last Name "
               placeholderTextColor={colors.grey.grey800}
-              keyboardType='numeric'
+              keyboardType="numeric"
             />
           </Box>
           <Box style={styles.inputBox}>
@@ -157,9 +160,9 @@ const Profile = ({ route, navigation }) => {
                 }));
               }}
               value={profileData.email}
-              placeholder='Email Id'
+              placeholder="Email Id"
               placeholderTextColor={colors.grey.grey800}
-              keyboardType='numeric'
+              keyboardType="numeric"
             />
           </Box>
           <Box style={styles.inputBox}>
@@ -176,9 +179,9 @@ const Profile = ({ route, navigation }) => {
                 }));
               }}
               value={profileData.instaHandle}
-              placeholder='Instagram Id'
+              placeholder="Instagram Id"
               placeholderTextColor={colors.grey.grey800}
-              keyboardType='numeric'
+              keyboardType="numeric"
             />
           </Box>
           {/* <Box style={styles.inputBox}>
@@ -200,8 +203,7 @@ const Profile = ({ route, navigation }) => {
           <Box
             style={{
               paddingTop: 60,
-            }}
-          >
+            }}>
             <Button
               onSubmit={() => {
                 //  submit();

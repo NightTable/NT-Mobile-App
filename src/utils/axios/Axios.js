@@ -96,19 +96,28 @@ export const DeleteRequest = async (session_url, body, token = null) => {
 };
 
 export const PutRequest = async (session_url, body, token = null) => {
+
+
   console.log('====================================');
-  console.log('session_url, body', session_url, body);
+  console.log('body', body);
   console.log('====================================');
-  if (token) {
-    var config = {
-      headers: {
-        token: token,
-      },
-    };
-  }
+  let data = JSON.stringify(body);
+
+  let config = {
+    method: 'put',
+    maxBodyLength: Infinity,
+    url: session_url,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: data,
+  };
+
   try {
-    console.log('session_url, body', session_url, body, config);
-    return await axios.put(session_url, body, config);
+    console.log('====================================');
+    console.log('config---->', config);
+    console.log('====================================');
+    return await axios.request(config);
   } catch (error) {
     console.log('====================================');
     console.log('error', error);
