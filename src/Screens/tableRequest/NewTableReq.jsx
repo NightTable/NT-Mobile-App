@@ -754,53 +754,8 @@ and join the table for a fun night!`;
               {/* End of "Select Request Type" Box */}
 
               {/* Start of "Invite Friends" Box */}
-              {<Box>
-                <Box
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingVertical: 10,
-                  }}
-                >
-                  <Text
-                    style={[
-                      typography.semBold.semBold14,
-                      {
-                        color: colors.gold.gold100,
-                        justifyContent: 'center', //Centered vertically
-                        alignItems: 'center', //Centered horizontally
-                      },
-                    ]}
-                  >
-                    Invite Friends:
-                  </Text>
-                  <Pressable
-                    onPress={() => {
-                      setinviteParticipantModal(!inviteParticipantModal);
-                    }}
-                  >
-                    <AntDesign name='plus' size={20} color='silver' />
-                  </Pressable>
-                </Box>
-                {/*<Box>
-                  {InviteFrndsData?.map((item, index) => {
-                    return (
-                      <Text
-                        key={index}
-                        style={[
-                          typography.semBold.semBold14,
-                          {
-                            color: colors.gold.gold100,
-                          },
-                        ]}
-                      >
-                        {item.emailOrPhone} - Fee: ${item.fee}{' ,'}
-                      </Text>
-                    );
-                  })}
-                </Box>*/}
 
-              </Box>}
+              {/* place for invite friends modal */}
               {/* End of "Invite Friends" Box */}
             </Box>
 
@@ -1218,6 +1173,11 @@ and join the table for a fun night!`;
     </>
   );
 };
+
+/*
+
+
+*/
 
 export default NewTableReq;
 
