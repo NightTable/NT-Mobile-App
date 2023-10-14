@@ -798,7 +798,7 @@ and join the table for a fun night!`;
                   console.log(tableConfigsData, "table config data when button pressed");
                   Alert.alert('Please choose a table');
                 } else {
-                  navigation.navigate('TableReqConfirmation', {
+                  navigation.navigate('TableReqCont', {
                     clubData: route?.params?.clubData,
                     selectedEventData: route?.params?.selectedEventData,
                     promoterData: route?.params?.promoterData,
