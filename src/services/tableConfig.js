@@ -15,8 +15,9 @@ export const getEventTableConfigData = async (clubId, eventId) => {
       '',
     );
 
-    console.log('response===>', response);
-    return response.data;
+    //console.log('response===>', response);
+    console.log("response data", response.data.data);
+    return response.data.data;
   } catch (error) {
     return error;
   }

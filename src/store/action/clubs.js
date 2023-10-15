@@ -30,7 +30,8 @@ export const getEventOfClub = (id) => {
 export const getEventTableConfigOfClub = (club_id, event_id) => {
   return async (dispatch) => {
     const apiCall = await getEventTableConfigData(club_id, event_id);
-    dispatch(getIndividualClubTableConfig(apiCall.tableConfigForEvent));
+    console.log(apiCall, "api call");
+    dispatch(getIndividualClubTableConfig(apiCall));
     dispatch(isLoaderState(false));
   };
 };

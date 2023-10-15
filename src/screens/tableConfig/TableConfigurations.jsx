@@ -52,6 +52,7 @@ const TableConfigurations = ({ route, navigation }) => {
 
   useEffect(() => {
     console.log("state tc", tableConfigs);
+    console.log("store", clubStore?.individualClubTableConfig)
   }, []);
 
   //individualClubTableConfig
