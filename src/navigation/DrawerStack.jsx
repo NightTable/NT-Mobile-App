@@ -120,15 +120,17 @@ const DrawerNavigator = () => {
         }}
       />
 
-      <Drawer.Screen
-        name="TableReqCont"
-        component={TableReqCont}
-        options={{
-          drawerItemStyle: { height: 0 },
-        }}
-      />
+
     </Drawer.Navigator>
   );
 };
+
+      //<Drawer.Screen
+        //name="TableReqCont"
+        //component={TableReqCont}
+        //options={{
+          //drawerItemStyle: { height: 0 },
+        //}}
+      ///>*/
 
 export default DrawerNavigator;

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
-import { Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 //THEME
 import { colors, typography } from "../../theme";
-import { Button } from '../../components/Buttons';
+import ClosedDropDown from "../../../assets/chevron-back-outline.png"
+import OpenDropDown from "../../../assets/chevron-back-outline-collapsed.png"
+
 //DIMENSIONS
 
 export const TableConfigurationsCard = ({
@@ -19,6 +21,13 @@ export const TableConfigurationsCard = ({
   const [selectedTable_ids, setselectedTable_ids] = useState(
     selectedTableConfigsIds
   );
+
+  const [openDropdown, setOpenDropdown] = useState(false);
+
+  const toggleDropDown = () => {
+    setOpenDropdown((openDropdown) => !openDropdown);
+    console.log(openDropdown);
+  }
 
   const onTableConfigPressed = (item) => {
     if (showTables === false) {
@@ -107,16 +116,14 @@ export const TableConfigurationsCard = ({
             {data?.map((item) => {
               return (
                 <>
-                  <ScrollView
-                    alwaysBounceVertical
-                    contentContainerStyle={styles.ScrollViewBox}
-                  >
+
                     <TouchableOpacity
                       key={() => {
                         return String(item?.tableMapId);
                       }}
                       onPress={() => {
                         onTableConfigPressed(item);
+                        toggleDropDown();
                       }}
                       style={[
                         styles.mainBox,
@@ -124,7 +131,13 @@ export const TableConfigurationsCard = ({
                           backgroundColor: getSelectedColor(item),
                         },
                       ]}
-                    >
+                    > 
+                      <Box style={styles.splitBox}>
+                        <Image
+                          source={openDropdown ? OpenDropDown : Close}
+                          style={{ width: 20, height: 20, marginRight: 5 }}
+                        />
+                      </Box>
                       <Box style={styles.splitBox}>
                         <Text
                         // style={[
@@ -142,7 +155,6 @@ export const TableConfigurationsCard = ({
                         <Text>$ {item?.minPrice}</Text>
                       </Box>
                     </TouchableOpacity>
-                  </ScrollView>
                 </>
               );
             })}

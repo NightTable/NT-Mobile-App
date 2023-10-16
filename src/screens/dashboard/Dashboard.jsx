@@ -14,12 +14,12 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 //component
-import { HeaderWithLeftIcon } from '../../components/Header';
+import { HeaderWithLeftIcon } from "../../components/Header";
 //REDUX
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 //THEME
-import { colors, typography } from '../../theme';
-import { getEventOfClub } from '../../store/action/clubs';
+import { colors, typography } from "../../theme";
+import { getEventOfClub } from "../../store/action/clubs";
 //DIMENSIONS
 const { width, height } = Dimensions.get('screen');
 
@@ -69,42 +69,59 @@ const Dashboard = ({ navigation }) => {
 
   const ClubCards = ({ props }) => {
     return (
-      <>
-        <Pressable
-          style={{
-            backgroundColor: colors.gold.gold200,
-            flexDirection: 'row',
-            margin: 6,
-            borderRadius: 4,
-            padding: 14,
-          }}
-          onPress={() => {
-            // console.log("props======>", props._id);
-            dispatch(getEventOfClub(props._id));
-            navigation.navigate('Club', {
-              clubData: props,
-            });
-          }}
-        >
-          <Box style={{ width: '50%' }}>
-            <Text>{props?.name}</Text>
-          </Box>
-          <Box style={{ width: '50%', alignItems: 'flex-end' }}>
+      <Pressable
+        style={{
+          backgroundColor: colors.gold.gold100,
+          flexDirection: 'row',
+          margin: 6,
+          borderRadius: 4,
+          padding: 14,
+          height: 70,
+          width: 400,
+          alignItems: 'center'  // Vertically center align the content
+        }}
+        onPress={() => {
+          dispatch(getEventOfClub(props._id));
+          navigation.navigate("Club", {
+            clubData: props,
+          });
+        }}
+      >
+        {/* Left Side: Club Name */}
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+          <Text style={typography.bold.bold14}>{props?.name}</Text>
+        </Box>
+  
+        {/* Right Side: Image */}
+        <Box style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+          <Box
+            style={{
+              height: 54, // 50 (image height) + 2 (border width) * 2
+              width: 54, // 50 (image width) + 2 (border width) * 2
+              borderRadius: 27, // 54 / 2
+              borderWidth: 4,
+              borderColor: colors.gold.gold200,
+              overflow: 'hidden'
+            }}
+          >
             <Image
-              style={{ height: 20, width: 50 }}
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25, // Circle shape
+              }}
               source={{ uri: props?.photos[0] }}
             />
-            {/* <Text>
-            {Math.round(props.props.distance.calculated * 0.00062137119)}.0 mi
-          </Text> */}
           </Box>
-        </Pressable>
-      </>
+        </Box>
+      </Pressable>
     );
   };
+  
+  
 
   const logoutBtn = () =>
-    Alert.alert('Logout', 'Are you sure want to logout ?', [
+    Alert.alert("Logout", "Are you sure want to logout?", [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
@@ -135,11 +152,23 @@ const Dashboard = ({ navigation }) => {
       />
       <Box style={styles.mainBox}>
         <Text style={[typography.bold.bold16, styles.textHeading]}>
-          Welcome back,
+          Welcome back, here's a list of clubs near your city
         </Text>
 
-        <Box style={{ alignItems: 'center', paddingTop: 20 }}>
+        <Box style={{ alignItems: "center", paddingTop: 20, /*borderColor: 'white', borderWidth: 5,*/ }}>
           <FlatList
+            style={{
+              borderColor: colors.gold.gold200,
+              borderWidth: 5,
+              width: 420,
+              borderRadius: 10
+            }}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={true}
+            contentContainerStyle={{
+              indicatorStyle: colors.gold.gold100, // change this to the color you desire; works only on iOS
+              width: 5
+            }}
             data={clubStore?.allClubs}
             renderItem={({ item }) => {
               return <ClubCards props={item} />;
@@ -160,6 +189,7 @@ const styles = StyleSheet.create({
   mainBox: {
     paddingHorizontal: 18,
     flex: 1,
+
   },
   clubListContainer: {
     flexDirection: 'column',

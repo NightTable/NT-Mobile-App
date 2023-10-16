@@ -6,18 +6,20 @@ import OTPTextView from 'react-native-otp-textinput';
 //libraries
 import { Box } from 'native-base';
 //REDUX
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+//components
+import { Button } from "../../components/Buttons";
 //Utils
-//Theme
-import { typography, colors } from '../../theme';
-import { updateToken, verifyOtp } from '../../store/action/login';
+//theme
+import { typography, colors } from "../../theme";
+import { updateToken, verifyOtp } from "../../store/action/login";
 import {
   disableLoader,
   enableLoader,
-} from '../../components/popUp/loader/trigger';
-import { getAllClubfromdb } from '../../store/action/clubs';
-import { HeaderWithLeftIcon } from '../../components/Header';
-const { height, width } = Dimensions.get('screen');
+} from "../../components/popUp/loader/trigger";
+import { getAllClubfromdb } from "../../store/action/clubs";
+import { HeaderWithLeftIcon } from "../../components/Header";
+const { height, width } = Dimensions.get("screen");
 //Main Function
 
 const Otp = ({ route, navigation }) => {
@@ -72,9 +74,9 @@ const Otp = ({ route, navigation }) => {
     <>
       <Box safeArea style={styles.container}>
         <HeaderWithLeftIcon
-          title={''}
-          icon={'arrowleft'}
-          iconDirectory={'AntDesign'}
+          title={"Please enter the OTP"}
+          icon={"arrowleft"}
+          iconDirectory={"AntDesign"}
           onSubmit={() => {
             navigation.navigate('Login');
           }}
@@ -115,7 +117,7 @@ const Otp = ({ route, navigation }) => {
               {loginStore?.otpNumberData?.data?.phoneNumber}
             </Text>
             <OTPTextView
-              tintColor={colors.black.black800}
+              tintColor={colors.gold.gold100}
               autoFocus={true}
               style={styles.roundedTextInput}
               handleTextChange={(e) => {
@@ -144,6 +146,21 @@ const Otp = ({ route, navigation }) => {
           >
             {error_msg}
           </Text>
+          <Box
+            style={{
+              paddingTop: 100,
+              backgroundColor: colors.black.black800,
+            }}
+          >
+            <Button
+              onSubmit={() => {
+                submit();
+              }}
+              disabled={otp.length === 6 ? false : true}
+              backgroundColor={colors.gold.gold100}
+              text={"Verify OTP"}
+            />
+          </Box>
         </Box>
       </Box>
     </>
@@ -171,7 +188,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 40,
     paddingLeft: 10,
-    color: 'white',
+    color: colors.gold.gold100,
   },
   heading: { fontSize: 22, paddingTop: 18, color: colors.gold.gold100 },
 });

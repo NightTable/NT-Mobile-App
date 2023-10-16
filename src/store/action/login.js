@@ -1,6 +1,6 @@
-import { loginReducer } from '../reducer/loginReducer';
-import { getCountries } from '../../services/country';
-import { loginApi, otpVerify } from '../../services/auths';
+import { loginReducer } from "../reducer/loginReducer";
+import { getCountries } from "../../services/country";
+import { loginApi, otpVerify } from "../../services/auths";
 
 const {
   logout,

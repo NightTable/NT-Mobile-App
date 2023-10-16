@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "native-base";
 import { TextInput, StyleSheet, Text, Dimensions, Alert } from "react-native";
+import axios from 'axios';
+import Constants from 'expo-constants';
 //components
 import SearchDropdown from "../../components/SearchDropdown";
 import { Button } from "../../components/Buttons";
 //Redux
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-//Theme
+//theme
 import { colors } from "../../theme/colors";
 import { typography } from "../../theme";
 
@@ -31,18 +33,37 @@ const Login = ({ navigation, route }) => {
   const loginReducer = useSelector((state) => state.login, shallowEqual);
 
   //STATES
-  const [number, onChangeNumber] = useState("8770203998");
+  const [number, onChangeNumber] = useState("");
   //SELECTED COUNTRY DATA
-  const [selectedCountry, setselectedCountry] = useState("+ XX");
+  const [selectedCountry, setselectedCountry] = useState("+");
   //ERROR MSG
   const [error_msg, seterror_msg] = useState("");
 
+
+  const abstractApiPartialUrl = Constants.manifest.extra.abstractApiPartialUrl;
+
   // //API CALL
   const triggerOtp = async () => {
-    // console.log("number::", `${selectedCountry}${number}`);
     enableLoader();
-    dispatch(loginUser(`${selectedCountry}${number}`));
-    seterror_msg("");
+    try {
+      const phoneNumber = `${selectedCountry}${number}`;
+      const response = await axios.get(`${abstractApiPartialUrl}&phone=${phoneNumber}`);
+      
+      const isValid = response.data.valid;
+      
+      if (isValid) {
+        dispatch(loginUser(phoneNumber));
+        seterror_msg("");
+      } else {
+        seterror_msg("Invalid phone number.");
+      }
+  
+    } catch (error) {
+      console.log(error);
+      seterror_msg("An error occurred. Please try again.");
+    } finally {
+      disableLoader();
+    }
   };
 
   useEffect(() => {
@@ -113,7 +134,7 @@ const Login = ({ navigation, route }) => {
             NightTable{" "}
           </Text>
           <Text style={[typography.regular.regular16, styles.subtitle]}>
-            tell us your mobile number
+            Enter Phone Number
           </Text>
           <Box style={styles.mobileNumberContainer}>
             <Box style={styles.dropdownContainer1}>
@@ -175,7 +196,7 @@ const Login = ({ navigation, route }) => {
 
           <Box style={{ paddingTop: 160 }}>
             <Button
-              disabled={number.length >= 10 ? false : true}
+              disabled={number.length >= 1 ? false : true} // Singaporean phone numbers are 8 digits
               onSubmit={() => {
                 if (selectedCountry.length >= 1) {
                   triggerOtp();
@@ -184,7 +205,7 @@ const Login = ({ navigation, route }) => {
                 }
               }}
               backgroundColor={colors.gold.gold100}
-              text={"Agree & Continue "}
+              text={"Agree & Continue"}
             />
 
             <Text
@@ -194,6 +215,7 @@ const Login = ({ navigation, route }) => {
                   color: colors.gold.gold100,
                   textAlign: "center",
                 },
+                typography.regular.regular12
               ]}
             >
               By logging in,you agree to the Terms of Use and Privacy Policy{" "}
@@ -219,7 +241,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 18,
   },
-  mainBox: { flex: 1, backgroundColor: colors.black.black900 },
+  mainBox: { flex: 1, backgroundColor: colors.black.black800 },
   heading: {
     fontSize: 34,
     color: colors.gold.gold100,

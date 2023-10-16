@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ActivityLoader } from './Loaders';
 import { Box } from 'native-base';
 import { Text, Dimensions, Pressable } from 'react-native';
-import { colors } from '../theme';
+import { colors, typography } from '../theme';
 
 const { screenWidth, screenHeight } = Dimensions.get('screen');
 //USEAGE
@@ -78,12 +78,14 @@ export const Button = (props) => {
                 // }}
               >
                 <Text
-                  style={{
+                  style={[{
                     color: props.textColor,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    fontWeight: 'bold',
-                  }}>
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                    typography.bold.bold16,
+                  ]}
+                >
                   {props.text}
                 </Text>
               </Box>
