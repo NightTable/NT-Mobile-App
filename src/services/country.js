@@ -4,7 +4,7 @@ export const getCountries = async () => {
   return new Promise((resolve, reject) => {
     var config = {
       method: "get",
-      url: `http://localhost:3000/api/auth/getCountryCodes`,
+      url: `http://10.0.0.146:3000/api/auth/getCountryCodes`,
       headers: {},
     };
 

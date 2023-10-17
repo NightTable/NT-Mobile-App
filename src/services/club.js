@@ -4,7 +4,7 @@ import { GetRequest, PostRequest } from "../utils/axios/Axios";
 export const getClubs = async () => {
   try {
     const response = await GetRequest(
-      `http://localhost:3000/api/clubs/clubs`,
+      `http://10.0.0.146:3000/api/clubs/clubs`,
       "",
       ""
     );

@@ -4,7 +4,7 @@ import { GetRequest } from "../utils/axios/Axios";
 export const getEventofClub = async (clubId, obj) => {
   try {
     const response = await GetRequest(
-      `http://localhost:3000/api/events/club/${clubId}`,
+      `http://10.0.0.146:3000/api/events/club/${clubId}`,
       "",
       ""
     );

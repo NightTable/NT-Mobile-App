@@ -68,7 +68,7 @@ export const editRepresentativetoClub = async (obj) => {
 export const getRepresentativebyClub = async (club_id) => {
   try {
     const response = await GetRequest(
-      `http://localhost:3000/api/representatives/club/${club_id}`,
+      `http://10.0.0.146:3000/api/representatives/club/${club_id}`,
       "",
       ""
     );
