@@ -32,22 +32,7 @@ import { CardField, useConfirmPayment, useStripe } from '@stripe/stripe-react-na
 import { ObjectId } from 'bson';
 
 const { width, height } = Dimensions.get("screen");
-let paymentTypeMethod = [
-  {
-    id: 1,
-    short_form: 'snpl',
-    name: 'split-now-pay-later',
-    description:
-      ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.',
-  },
-  {
-    id: 2,
-    short_form: 'pnsl',
-    name: 'pay-now-split-later',
-    description:
-      ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.',
-  },
-];
+
 //main function
 const NewTableReq = ({ navigation, route }) => {
   /*useEffect(() => {
@@ -65,6 +50,64 @@ const NewTableReq = ({ navigation, route }) => {
   const [selectedTableIds, setSelectedTableIds] = useState([]);
   //default table min = sum of the table minds of selected tables
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
+    const [selectedTables, setSelectedTables] = useState([]);
+  const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [isCardValid, setIsCardValid] = useState(false);
+  const [joiningFee, setJoiningFee] = useState('');
+    //table-minimum
+    const [tableMinimum, setTableMinimum] = useState(0);
+    const [TableConfigModal, setTableConfigModal] = useState(false);
+    const [tableConfigsData, settableConfigsData] = useState([]);
+  
+    // console.log("tableConfigsData::>>====>", tableConfigsData.length);
+    //MODAL
+    const [inviteParticipantModal, setinviteParticipantModal] = useState(false);
+    const [inviteParticipantData, setinviteParticipantData] = useState('');
+    const [InviteFrndsData, setInviteFrndsData] = useState([]);
+    //SNPL - PNSL
+    const [selectedPaymentType, setselectedPaymentType] = useState(2);
+    //DATE
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    //modal- know-more (Snpl& pnsl)
+    const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
+    // ON DATE CHANGE
+
+    let paymentTypeMethod = [
+      {
+        id: 1,
+        short_form: 'snpl',
+        name: 'split-now-pay-later',
+        description:
+          ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.',
+      },
+      {
+        id: 2,
+        short_form: 'pnsl',
+        name: 'pay-now-split-later',
+        description:
+          ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.',
+      },
+    ];
+
+  const club = "Caveau";
+  const event = "Afrojack Tour";
+  const fee = 500;
+  const appStoreLink = "https://apps.apple.com/us/app/amex/id362348516";
+  const playStoreLink = "https://play.google.com/store/apps/details?id=com.americanexpress.android.acctsvcs.us&pcampaignid=web_share";
+
+  const inviteMessage = `Hey!\n
+I'm inviting you to a table at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event, requesting a minimum contribution of $${joiningFee}.\n
+Download NightTable on the App Store: ${appStoreLink}\n
+or Play Store: ${playStoreLink},\n
+make sure to sign up using the phone number on which you've recieved this message,\n
+and join the table for a fun night!`;
+
+  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event via NightTable. Thank you!`;
+  const promoterNumber = "+16178933910";
 
   const { createPaymentMethod, handleNextAction } = useStripe();
 
@@ -90,6 +133,23 @@ const NewTableReq = ({ navigation, route }) => {
     - navigate over to the next screen
   */
 
+    const createTableRequest = () => {
+      // create the table request
+    }
+
+    const navToPollingRoomScreen = () => {
+      // clubData: route?.params?.clubData,
+      // electedEventData: route?.params?.selectedEventData,
+      // promoterData: route?.params?.promoterData,
+      // tableMinimum: tableMinimum,
+      // arrivalDate: selectedData
+      // selectedConfigData: tableConfigsData,
+      // InviteFrndsData: InviteFrndsData,
+      // paymentMethod: paymentMethod or null
+      // internalCustomer: internalCustomer
+      // tableMinimum: tableMinimum
+      // tableRequest: tableRequest
+    }
     const makePayment = async (chargeAmount) => {
       const clubData = route?.params?.clubData
       const handleError = (error, message) => {
@@ -152,12 +212,8 @@ const NewTableReq = ({ navigation, route }) => {
               console.log(responseInternalCustomer.data, "responseInternalCustomer\n");
   
               let customerId;
-              if (selectedPaymentType == 1) {
-                  const responseStripeCustomer = await axios.get(`http://10.0.0.146:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
-                  customerId = responseStripeCustomer.data.id;
-              } else {
-                  customerId = responseInternalCustomer.data.stripeCustomerId;
-              }
+              const responseStripeCustomer = await axios.get(`http://10.0.0.146:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
+              customerId = responseStripeCustomer.data.id;
   
               const paymentType = selectedPaymentType == 1 ? 'snpl' : 'pnsl';
               const clubInfo = route?.params?.clubData;
@@ -184,53 +240,14 @@ const NewTableReq = ({ navigation, route }) => {
   }
   
 
-  //table-minimum
-  const [tableMinimum, setTableMinimum] = useState(0);
-  const [TableConfigModal, setTableConfigModal] = useState(false);
-  const [tableConfigsData, settableConfigsData] = useState([]);
 
-  // console.log("tableConfigsData::>>====>", tableConfigsData.length);
-  //MODAL
-  const [inviteParticipantModal, setinviteParticipantModal] = useState(false);
-  const [inviteParticipantData, setinviteParticipantData] = useState('');
-  const [InviteFrndsData, setInviteFrndsData] = useState([]);
-  //SNPL - PNSL
-  const [selectedPaymentType, setselectedPaymentType] = useState(2);
-  //DATE
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  //modal- know-more (Snpl& pnsl)
-  const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
-  // ON DATE CHANGE
   const onDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;
     setShowDatePicker(false);
     setSelectedDate(currentDate);
   };
 
-  const [selectedTables, setSelectedTables] = useState([]);
-  const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  const [isCardValid, setIsCardValid] = useState(false);
-  const [joiningFee, setJoiningFee] = useState('');
 
-  const club = "Caveau";
-  const event = "Afrojack Tour";
-  const fee = 500;
-  const appStoreLink = "https://apps.apple.com/us/app/amex/id362348516";
-  const playStoreLink = "https://play.google.com/store/apps/details?id=com.americanexpress.android.acctsvcs.us&pcampaignid=web_share";
-
-  const inviteMessage = `Hey!\n
-I'm inviting you to a table at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event, requesting a minimum contribution of $${joiningFee}.\n
-Download NightTable on the App Store: ${appStoreLink}\n
-or Play Store: ${playStoreLink},\n
-make sure to sign up using the phone number on which you've recieved this message,\n
-and join the table for a fun night!`;
-
-  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event via NightTable. Thank you!`;
-  const promoterNumber = "+16178933910";
 
   const sendSMS = async () => {
     setIsSending(true);
@@ -684,16 +701,6 @@ and join the table for a fun night!`;
                   // Uncomment the below code if you want to use the modal toggle or any other functionality.
                   setinviteParticipantModal(!inviteParticipantModal);
                   
-                  // If you want to use the navigation action, uncomment the below lines:
-                  // navigation.navigate('TableReqConfirmation', {
-                  //   clubData: route?.params?.clubData,
-                  //   selectedEventData: route?.params?.selectedEventData,
-                  //   promoterData: route?.params?.promoterData,
-                  //   tableMinimum: tableMinimum,
-                  //   arrivalDate: selectedDate,
-                  //   selectedConfigData: tableConfigsData,
-                  //   InviteFrndsData: InviteFrndsData,
-                  // });
                 }
               }}
               text={'Send Invites and Make payment'}
