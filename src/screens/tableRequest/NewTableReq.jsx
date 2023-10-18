@@ -785,31 +785,34 @@ and join the table for a fun night!`;
                 Invite Friends
               </Text>
 
-              <CardField
-                postalCodeEnabled={true}
-                placeholders={{ number: '4242 4242 4242 4242' }}
-                cardStyle={{
-                  placeholderColor: '#e4d0b5',
-                  textColor: '#e4d0b5',
-                  backgroundColor: 'black',
-                  fontSize: 15,
-                  borderColor: '#e4d0b5',
-                  borderWidth: 2,
-                  borderRadius: 10
-                }}
-                style={{ width: '100%', height: 50, marginVertical: 20 }}
-                onCardChange={(cardDetails) => {
-                  console.log('cardDetails', cardDetails);
-                              if (cardDetails.complete && cardDetails.validNumber) {
-                          setIsCardValid(true);
+              {tableMinimum !== 0 && (
+                  <CardField
+                    postalCodeEnabled={true}
+                    placeholders={{ number: '4242 4242 4242 4242' }}
+                    cardStyle={{
+                      placeholderColor: '#e4d0b5',
+                      textColor: '#e4d0b5',
+                      backgroundColor: 'black',
+                      fontSize: 15,
+                      borderColor: '#e4d0b5',
+                      borderWidth: 2,
+                      borderRadius: 10,
+                    }}
+                    style={{ width: '100%', height: 50, marginVertical: 20 }}
+                    onCardChange={(cardDetails) => {
+                      console.log('cardDetails', cardDetails);
+                      if (cardDetails.complete && cardDetails.validNumber) {
+                        setIsCardValid(true);
                       } else {
-                          setIsCardValid(false);
-                    }
-                }}
-                onFocus={(focusedField) => {
-                  console.log('focusField', focusedField);
-                }}
-              />
+                        setIsCardValid(false);
+                      }
+                    }}
+                    onFocus={(focusedField) => {
+                      console.log('focusField', focusedField);
+                    }}
+                  />
+                )}
+
               {
                 selectedPaymentType === 2 ? (  // if it's "pay-now-split-later"
                   <>
@@ -908,7 +911,7 @@ and join the table for a fun night!`;
                 <Pressable
                   style={{ borderRadius: 20 / 2, padding: 4 }}
                   onPress={ async() => {
-                    if (!isCardValid) {
+                    if (!isCardValid && tableMinimum !== 0) {
                       alert('Please enter a valid credit card to invite friends.');
                       return;
                     }
@@ -939,7 +942,7 @@ and join the table for a fun night!`;
                         break;
                     }
                   }}
-                  disabled={!isCardValid || !inviteParticipantData || !joiningFee}
+                  disabled={(!isCardValid && tableMinimum !== 0) || !inviteParticipantData || !joiningFee}
                 >
                   <Text
                     style={[
