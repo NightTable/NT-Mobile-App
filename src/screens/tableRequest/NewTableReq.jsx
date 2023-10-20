@@ -43,6 +43,9 @@ const NewTableReq = ({ navigation, route }) => {
     console.log(selectedTableIds, "table ids");
 }, [selectedTableIds]);
 
+
+  const myIP = 'http://192.168.1.77'
+  //const myIP = 'http://10.0.0.146'
   //Store
   const clubStore = useSelector((state) => state.club);
 
@@ -172,7 +175,7 @@ and join the table for a fun night!`;
           const tableRequestsResponses = await Promise.all(
               extractedTableConfigIds.map(async tableConfigId => {
                   try {
-                      return await axios.get(`http://10.0.0.146:3000/api/tablerequests/tableConfiguration/${tableConfigId}`);
+                      return await axios.get(`${myIP}:3000/api/tablerequests/tableConfiguration/${tableConfigId}`);
                   } catch (error) {
                       handleError(error, `Error fetching table request for ID ${tableConfigId}`);
                       return null; // Handle individual request errors
@@ -208,11 +211,11 @@ and join the table for a fun night!`;
                   paymentMethodId: paymentMethod.id,
               };
   
-              const responseInternalCustomer = await axios.post(`http://10.0.0.146:3000/api/payments/create-customer`, createCustomerBody);
+              const responseInternalCustomer = await axios.post(`${myIP}:3000/api/payments/create-customer`, createCustomerBody);
               console.log(responseInternalCustomer.data, "responseInternalCustomer\n");
   
               let customerId;
-              const responseStripeCustomer = await axios.get(`http://10.0.0.146:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
+              const responseStripeCustomer = await axios.get(`${myIP}:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
               customerId = responseStripeCustomer.data.id;
   
               const paymentType = selectedPaymentType == 1 ? 'snpl' : 'pnsl';
@@ -227,7 +230,7 @@ and join the table for a fun night!`;
                   paymentMethodId: paymentMethod.id,
                   customerId: customerId,
               };
-              const responsePaymentIntent = await axios.post(`http://10.0.0.146:3000/api/payments/create-payment-intent`, createPaymentIntentBody);
+              const responsePaymentIntent = await axios.post(`${myIP}:3000/api/payments/create-payment-intent`, createPaymentIntentBody);
               console.log(responsePaymentIntent.data, `responsePaymentIntent${paymentType.toUpperCase()}\n`);
   
           } else {
@@ -237,9 +240,10 @@ and join the table for a fun night!`;
       } catch (error) {
           console.error("General error in makePayment function:", error);
       }
-  }
+    }
   
 
+  
 
   const onDateChange = (event, selected) => {
     const currentDate = selected || selectedDate;

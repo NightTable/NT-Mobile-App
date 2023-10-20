@@ -1,6 +1,9 @@
 import axios, * as others from "axios";
 import { GetRequest } from "../utils/axios/Axios";
 
+const myIP = '192.168.1.77'
+//const myIP = '10.0.0.146'
+
 export const getProfileData = async (id) => {
   return new Promise((resolve, reject) => {
     var config = {
@@ -68,7 +71,7 @@ export const editRepresentativetoClub = async (obj) => {
 export const getRepresentativebyClub = async (club_id) => {
   try {
     const response = await GetRequest(
-      `http://10.0.0.146:3000/api/representatives/club/${club_id}`,
+      `http://${myIP}:3000/api/representatives/club/${club_id}`,
       "",
       ""
     );

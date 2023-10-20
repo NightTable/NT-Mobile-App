@@ -1,10 +1,13 @@
 import { GetRequest } from "../utils/axios/Axios";
 
 //GET ALL THE CLUBS EVENT
+const myIP = '192.168.1.77'
+//const myIP = '10.0.0.146'
+
 export const getEventofClub = async (clubId, obj) => {
   try {
     const response = await GetRequest(
-      `http://10.0.0.146:3000/api/events/club/${clubId}`,
+      `http://${myIP}:3000/api/events/club/${clubId}`,
       "",
       ""
     );
