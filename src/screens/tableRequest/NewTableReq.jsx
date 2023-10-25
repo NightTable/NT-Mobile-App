@@ -193,7 +193,7 @@ and join the table for a fun night!`;
               .map(table => table._id);
           console.log(extractedTableConfigIds, "selectedTables mp\n");
         
-          // Fetching table requests for each extracted table config ID
+          // Fetching table requests for each extracted table config ID.
           const tableRequestsResponses = await Promise.all(
               extractedTableConfigIds.map(async tableConfigId => {
                   try {
@@ -238,6 +238,7 @@ and join the table for a fun night!`;
   
               let customerId;
               const responseStripeCustomer = await axios.get(`${myIP}:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
+              console.log(responseStripeCustomer.data, "responseStripeCustomer\n");
               customerId = responseStripeCustomer.data.id;
   
               const paymentType = selectedPaymentType == 1 ? 'snpl' : 'pnsl';
@@ -245,6 +246,7 @@ and join the table for a fun night!`;
               const tipPercentage = clubData?.lineItems.find(item => item.name === "Tip")?.percentage;
               const taxPercentage = clubData?.lineItems.find(item => item.name === "Tax")?.percentage;
               const modifiedPercentages = [tipPercentage, taxPercentage - taxPercentage];
+
               const createPaymentIntentBody = {
                   amount: chargeAmount,
                   lineItems: modifiedPercentages,
@@ -252,8 +254,15 @@ and join the table for a fun night!`;
                   paymentMethodId: paymentMethod.id,
                   customerId: customerId,
               };
+              console.log(myIP);
               const responsePaymentIntent = await axios.post(`${myIP}:3000/api/payments/create-payment-intent`, createPaymentIntentBody);
+              console.log("\n");
+              console.log("responsePaymentIntent", responsePaymentIntent);
+              console.log("\n");
               console.log(responsePaymentIntent.data, `responsePaymentIntent${paymentType.toUpperCase()}\n`);
+
+
+              //if (paymentType)
 
               //create table request and nav to next screen
               const trData = {
@@ -269,7 +278,7 @@ and join the table for a fun night!`;
                 internalCustomer: responseInternalCustomer
               };
 
-              navToPollingRoomScreen(trData);
+              //navToPollingRoomScreen(trData);
 
                 // clubData: route?.params?.clubData,
                 // electedEventData: route?.params?.selectedEventData,
@@ -334,6 +343,7 @@ and join the table for a fun night!`;
   //change the name of table group
   const toggleTableGroupName = (name) => {
     setTableName(name);
+    console.log(name);
   }
 
   // for promoters when they want to modify the table minimum manually
@@ -574,7 +584,7 @@ and join the table for a fun night!`;
                   Table Group Name: 
                 </Text>
                 <TextInput
-                  style={{...styles.input, width: 200}}
+                  style={{...styles.input, width: 250}}
                   placeholder={"Name your table group"}
                   onChangeText={(value) => toggleTableGroupName(value)}
                   placeholderTextColor={colors.gold.gold100}
