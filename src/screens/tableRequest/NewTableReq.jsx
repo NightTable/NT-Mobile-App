@@ -35,9 +35,11 @@ const { width, height } = Dimensions.get("screen");
 
 //main function
 const NewTableReq = ({ navigation, route }) => {
-  /*useEffect(() => {
-    console.log(clubStore?.individualClubTableConfig);
-  }, []);*/
+  useEffect(() => {
+    console.log("params\n");
+    console.log(route?.params);
+    console.log("params\n");
+  }, []);
 
   useEffect(() => {
     console.log(selectedTableIds, "table ids");
@@ -47,36 +49,34 @@ const NewTableReq = ({ navigation, route }) => {
   const myIP = 'http://192.168.1.77'
   //const myIP = 'http://10.0.0.146'
   //Store
-  const clubStore = useSelector((state) => state.club);
+  const clubStore = useSelector((state) => state.club); // club store
+  const [selectedTableIds, setSelectedTableIds] = useState([]); // ids of the selected tables
+  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0); // default table min = sum of the table minds of selected tables
+  const [selectedTables, setSelectedTables] = useState([]); // tables of ids selected by user
+  const [selectedTableConfigId, setSelectedTableConfigId ] = useState(""); // table config id of a selected table
+  const [modalVisible, setModalVisible] = useState(false); //modal visibility 
+  const [inputValue, setInputValue] = useState(''); // phone number of invitee
+  const [isSending, setIsSending] = useState(false); // sms sending or not
+  const [isCardValid, setIsCardValid] = useState(false); // card valid or not
+  const [joiningFee, setJoiningFee] = useState(''); // joining fee of user
+  const [tableName, setTableName] = useState(""); // name of your table 
 
-  //ids of the selected tables
-  const [selectedTableIds, setSelectedTableIds] = useState([]);
-  //default table min = sum of the table minds of selected tables
-  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
-    const [selectedTables, setSelectedTables] = useState([]);
-  const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  const [isCardValid, setIsCardValid] = useState(false);
-  const [joiningFee, setJoiningFee] = useState('');
-    //table-minimum
-    const [tableMinimum, setTableMinimum] = useState(0);
-    const [TableConfigModal, setTableConfigModal] = useState(false);
-    const [tableConfigsData, settableConfigsData] = useState([]);
+  const [tableMinimum, setTableMinimum] = useState(0); // table minimum
+  //const [TableConfigModal, setTableConfigModal] = useState(false); // modal for opening table configs
+  //const [tableConfigsData, settableConfigsData] = useState([]); // data containing table configs
   
     // console.log("tableConfigsData::>>====>", tableConfigsData.length);
     //MODAL
-    const [inviteParticipantModal, setinviteParticipantModal] = useState(false);
-    const [inviteParticipantData, setinviteParticipantData] = useState('');
-    const [InviteFrndsData, setInviteFrndsData] = useState([]);
+    const [inviteParticipantModal, setinviteParticipantModal] = useState(false); // brings up payment and participant modal
+    const [inviteParticipantData, setinviteParticipantData] = useState(''); // participant invite phone data
+    const [InviteFrndsData, setInviteFrndsData] = useState([]); // list of friends invitied
     //SNPL - PNSL
-    const [selectedPaymentType, setselectedPaymentType] = useState(2);
+    const [selectedPaymentType, setselectedPaymentType] = useState(2); // payment type
     //DATE
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date()); // time of table
+    const [showDatePicker, setShowDatePicker] = useState(false); // date time picker
     //modal- know-more (Snpl& pnsl)
-    const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
+    const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false); // pnsl snpl selection
     // ON DATE CHANGE
 
     let paymentTypeMethod = [
@@ -136,11 +136,33 @@ and join the table for a fun night!`;
     - navigate over to the next screen
   */
 
-    const createTableRequest = () => {
-      // create the table request
-    }
 
-    const navToPollingRoomScreen = () => {
+    const navToPollingRoomScreen = async (data) => {
+      const createTRBody = {
+        name: data.name,
+        tableConfigId: data.tableConfigId,
+        selectedTables: data.selectedTables,
+        minimum: data.minimum,
+        eventId: route?.params?.selectedEventData._id,
+        joiningFee: data.joiningFee,
+        organizerUserId: new ObjectId(),
+        promoterId: route?.params?.promoterData._id,
+        costSplitType: data.costSplitType,
+        eta: data.eta,
+        isPolling: data.costSplitType === "pnsl" ? false : true,
+        isActive: data.costSplitType === "pnsl" ? true : false,
+        isClosed: false,
+        requestPlacementTime: new Date(), 
+        clubId: route?.params?.clubData._id
+      };
+
+      const responseCreateNewTableRequest = await axios.get(`${myIP}:3000/api/tablerequests/tableReq`, createTRBody)
+
+      /*
+        if PNSL, move to active table group screen
+        if SNPL, move to polling room screen
+      */
+
       // clubData: route?.params?.clubData,
       // electedEventData: route?.params?.selectedEventData,
       // promoterData: route?.params?.promoterData,
@@ -151,7 +173,7 @@ and join the table for a fun night!`;
       // paymentMethod: paymentMethod or null
       // internalCustomer: internalCustomer
       // tableMinimum: tableMinimum
-      // tableRequest: tableRequest
+      // tableRequest: responseCreateNewTableRequest.data
     }
     const makePayment = async (chargeAmount) => {
       const clubData = route?.params?.clubData
@@ -232,6 +254,34 @@ and join the table for a fun night!`;
               };
               const responsePaymentIntent = await axios.post(`${myIP}:3000/api/payments/create-payment-intent`, createPaymentIntentBody);
               console.log(responsePaymentIntent.data, `responsePaymentIntent${paymentType.toUpperCase()}\n`);
+
+              //create table request and nav to next screen
+              const trData = {
+                name: tableName,
+                tableConfigId: selectedTables,
+                minimum: tableMinimum,
+                joiningFee: 300,
+                costSplitType: paymentType,
+                eta: selectedDate,
+                invitedFriends: InviteFrndsData,
+                paymentMethod: paymentMethod,
+                stripeCustomer: responseStripeCustomer,
+                internalCustomer: responseInternalCustomer
+              };
+
+              navToPollingRoomScreen(trData);
+
+                // clubData: route?.params?.clubData,
+                // electedEventData: route?.params?.selectedEventData,
+                // promoterData: route?.params?.promoterData,
+                // tableMinimum: tableMinimum,
+                // arrivalDate: selectedData
+                // selectedConfigData: tableConfigsData,
+                // InviteFrndsData: InviteFrndsData,
+                // paymentMethod: paymentMethod or null
+                // internalCustomer: internalCustomer
+                // tableMinimum: tableMinimum
+                // tableRequest: tableRequest
   
           } else {
               Alert.alert("Some of your tables have been bought out");
@@ -281,10 +331,16 @@ and join the table for a fun night!`;
     setDefaultTableMinimum(defaultTableMinimum + parsedMin);
   }
 
+  //change the name of table group
+  const toggleTableGroupName = (name) => {
+    setTableName(name);
+  }
+
   // for promoters when they want to modify the table minimum manually
   const toggleTableMin = (min) => {
     const parsedMin = parseFloat(min);
-    setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);  }
+    setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);
+  }
 
   const sendSMSPromoter = async (message, number) => {
     setIsSending(true);
@@ -515,17 +571,46 @@ and join the table for a fun night!`;
                     },
                   ]}
                 >
-                  Current Table Minimum:
+                  Table Group Name: 
                 </Text>
                 <TextInput
+                  style={{...styles.input, width: 200}}
+                  placeholder={"Name your table group"}
+                  onChangeText={(value) => toggleTableGroupName(value)}
+                  placeholderTextColor={colors.gold.gold100}
+                  selectionColor={colors.gold.gold100}
+                />
+              </Box>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={handleTouchOutside}>
+              <Box
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 12,
+                }}
+              >
+                <Text
+                  style={[
+                    typography.semBold.semBold16,
+                    {
+                      color: colors.gold.gold100,
+                    },
+                  ]}
+                >
+                  Current Table Minimum:
+                </Text>
+                {selectedTableIds.length > 0 ? <TextInput
                   style={styles.input}
+                  editable={true}
                   placeholder={`$${defaultTableMinimum}`}
                   onChangeText={(value) => toggleTableMin(value)}
                   placeholderTextColor={colors.gold.gold100}
                   selectionColor={colors.gold.gold100}
                   value={!isNaN(tableMinimum) ? tableMinimum : (!isNaN(defaultTableMinimum) ? defaultTableMinimum : '0')}
                   keyboardType={'numeric'}
-                />
+                /> : null}
               </Box>
             </TouchableWithoutFeedback>
 
@@ -716,7 +801,7 @@ and join the table for a fun night!`;
         </Box>
       </View>
 
-      <DyModal
+      {/*<DyModal
         bgColor={colors.black.black800}
         children={
           <>
@@ -769,7 +854,7 @@ and join the table for a fun night!`;
         onClosepress={() => {
           setTableConfigModal(false);
         }}
-      />
+      />*/}
 
       <DyModal
         children={
