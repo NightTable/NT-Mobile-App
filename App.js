@@ -114,7 +114,7 @@ export default function App() {
       <Provider store={store}>
         <StripeProvider
           publishableKey={
-            'pk_test_51KJ1A4AZeCut3tbi7eK4ZvTyPcleQRFr7kMWJDNo6Tp54J5Qevci6pcN8M1NSiycPYhlEUrtKdrGyyJOelH96V6L003X1Aw4o4'
+            'pk_live_51MIxt5KhH8zNT0eBV69mSH0djmZ50vIKUR71fICATT4g1qC6K6psICHaEePSIfQQqRUvHCRajt5HrQSCLoQzq8Bj00hiQS4fwh'
           }
           merchantIdentifier="merchant.identifier" // required for Apple Pay
         >

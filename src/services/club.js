@@ -1,10 +1,13 @@
 import axios, * as others from "axios";
 import { GetRequest, PostRequest } from "../utils/axios/Axios";
 
+const myIP = '192.168.1.77'
+//const myIP = '10.0.0.146'
+
 export const getClubs = async () => {
   try {
     const response = await GetRequest(
-      `http://localhost:3000/api/clubs/clubs`,
+      `http://${myIP}:3000/api/clubs/clubs`,
       "",
       ""
     );

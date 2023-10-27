@@ -1,10 +1,13 @@
 import axios, * as others from "axios";
 
+const myIP = '192.168.1.77'
+//const myIP = '10.0.0.146'
+
 export const getCountries = async () => {
   return new Promise((resolve, reject) => {
     var config = {
       method: "get",
-      url: `http://localhost:3000/api/auth/getCountryCodes`,
+      url: `http://${myIP}:3000/api/auth/getCountryCodes`,
       headers: {},
     };
 

@@ -8,9 +8,12 @@ import {
   Pressable,
   View,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import { Image } from 'expo-image';
+import axios from "axios";
 //component
 import { HeaderWithLeftIcon } from "../../components/Header";
 //REDUX
@@ -26,161 +29,72 @@ import { Button as ButtonComp } from "../../components/Buttons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as SMS from 'expo-sms';
 import { CardField, useConfirmPayment, useStripe } from '@stripe/stripe-react-native';
+import { ObjectId } from 'bson';
 
 const { width, height } = Dimensions.get("screen");
-let paymentTypeMethod = [
-  {
-    id: 1,
-    short_form: 'snpl',
-    name: 'split-now-pay-later',
-    description:
-      ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.',
-  },
-  {
-    id: 2,
-    short_form: 'pnsl',
-    name: 'pay-now-split-later',
-    description:
-      ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.',
-  },
-];
+
 //main function
 const NewTableReq = ({ navigation, route }) => {
-  /*useEffect(() => {
-    console.log(clubStore?.individualClubTableConfig);
-  }, []);*/
+  useEffect(() => {
+    console.log("params\n");
+    console.log(route?.params);
+    console.log("params\n");
+  }, []);
 
   useEffect(() => {
     console.log(selectedTableIds, "table ids");
 }, [selectedTableIds]);
 
+
+  const myIP = 'http://192.168.1.77'
+  //const myIP = 'http://10.0.0.146'
   //Store
-  const clubStore = useSelector((state) => state.club);
+  const clubStore = useSelector((state) => state.club); // club store
+  const [selectedTableIds, setSelectedTableIds] = useState([]); // ids of the selected tables
+  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0); // default table min = sum of the table minds of selected tables
+  const [selectedTables, setSelectedTables] = useState([]); // tables of ids selected by user
+  const [selectedTableConfigId, setSelectedTableConfigId ] = useState(""); // table config id of a selected table
+  const [modalVisible, setModalVisible] = useState(false); //modal visibility 
+  const [inputValue, setInputValue] = useState(''); // phone number of invitee
+  const [isSending, setIsSending] = useState(false); // sms sending or not
+  const [isCardValid, setIsCardValid] = useState(false); // card valid or not
+  const [joiningFee, setJoiningFee] = useState(''); // joining fee of user
+  const [tableName, setTableName] = useState(""); // name of your table 
 
-  //ids of the selected tables
-  const [selectedTableIds, setSelectedTableIds] = useState([]);
-  //default table min = sum of the table minds of selected tables
-  const [defaultTableMinimum, setDefaultTableMinimum] = useState(0);
+  const [tableMinimum, setTableMinimum] = useState(0); // table minimum
+  //const [TableConfigModal, setTableConfigModal] = useState(false); // modal for opening table configs
+  //const [tableConfigsData, settableConfigsData] = useState([]); // data containing table configs
+  
+    // console.log("tableConfigsData::>>====>", tableConfigsData.length);
+    //MODAL
+    const [inviteParticipantModal, setinviteParticipantModal] = useState(false); // brings up payment and participant modal
+    const [inviteParticipantData, setinviteParticipantData] = useState(''); // participant invite phone data
+    const [InviteFrndsData, setInviteFrndsData] = useState([]); // list of friends invitied
+    //SNPL - PNSL
+    const [selectedPaymentType, setselectedPaymentType] = useState(2); // payment type
+    //DATE
+    const [selectedDate, setSelectedDate] = useState(new Date()); // time of table
+    const [showDatePicker, setShowDatePicker] = useState(false); // date time picker
+    //modal- know-more (Snpl& pnsl)
+    const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false); // pnsl snpl selection
+    // ON DATE CHANGE
 
-  const { createPaymentMethod, handleNextAction } = useStripe();
-
-
-  const toggleTableSelection = (id) => {
-    if (selectedTableIds.includes(id)) {
-        setSelectedTableIds(prevIds => prevIds.filter(itemId => itemId !== id));
-    } else {
-        setSelectedTableIds(prevIds => [...prevIds, id]);
-    }
-    //console.log(selectedTableIds);
-  };
-
-  /*
-    Making payment and navigating to the next screen
-    - creating internal customer
-    - making sure the tables we've selected haven't been bought out
-    - creating a snpl payment on the card, or pnsl, depending on the payment type 
-    - navigate over to the next screen
-  */
-
-  const makePayment = async (chargeAmount) => {
-    const billingDetails = { 
-      name: "Amiya Sekhar", //use store to get user's (the organizer) phone number
-      phone: '+48888000888', //use store to get user's (the organizer) phone number
-    }
-
-    /*
-      Create payment method essentially creates
-      a payment once and only if the customer enters their card information
-     */
-    const {paymentMethod, error} = await createPaymentMethod({
-      paymentMethodType: 'Card',
-      paymentMethodData: {
-          billingDetails,
-      }
-    });  
-
-    /*
-      we create our own internal customer to keep of track of 
-      customer trasactions
-    */
-
-    const responseInternalCustomer = await axios.post(`${process.env.LOCAL_URL}/create-customer`, {
-      userId: new ObjectId(),
-      paymentMethodId: paymentMethod.id,
-    });
-
-    /*
-      creating a payment intent with snpl / pnsl
-      recall line items from the webadmin where a 
-      club has tax, tip, and other percentages
-    */
-    let response = "";
-    if (selectedPaymentType == 1){
-
-      const responsePaymentIntentSNPL = await axios.post(`${process.env.LOCAL_URL}/create-payment-intent`, {
-        amount: chargeAmount,
-        lineItems: [20, 9], //use store to get clubs line items
-        paymentType: 'snpl',
-        paymentMethodId: paymentMethod.id,
-        customerId: responseStripeCustomer.data.id
-      });
-    }
-
-    else{
-      const responsePaymentIntentPNSL = await axios.post(`${API_URL}/create-payment-intent`, {
-        amount: chargeAmount,
-        lineItems: [20, 9], //use store to get clubs line items
-        paymentType: 'pnsl',
-        paymentMethodId: paymentMethod.id,
-        customerId: responseInternalCustomer.data.stripeCustomerId
-      });
-    }
-    /*
-    if good response
-                      // navigation.navigate('TableReqConfirmation', {
-                  //   clubData: route?.params?.clubData,
-                  //   selectedEventData: route?.params?.selectedEventData,
-                  //   promoterData: route?.params?.promoterData,
-                  //   tableMinimum: tableMinimum,
-                  //   arrivalDate: selectedDate,
-                  //   selectedConfigData: tableConfigsData,
-                  //   InviteFrndsData: InviteFrndsData,
-                  //   Users card data has to be passed to next screen too
-                  // });
-    */
-  }
-
-  //table-minimum
-  const [tableMinimum, setTableMinimum] = useState(0);
-  const [TableConfigModal, setTableConfigModal] = useState(false);
-  const [tableConfigsData, settableConfigsData] = useState([]);
-
-  // console.log("tableConfigsData::>>====>", tableConfigsData.length);
-  //MODAL
-  const [inviteParticipantModal, setinviteParticipantModal] = useState(false);
-  const [inviteParticipantData, setinviteParticipantData] = useState('');
-  const [InviteFrndsData, setInviteFrndsData] = useState([]);
-  //SNPL - PNSL
-  const [selectedPaymentType, setselectedPaymentType] = useState(2);
-  //DATE
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  //modal- know-more (Snpl& pnsl)
-  const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false);
-  // ON DATE CHANGE
-  const onDateChange = (event, selected) => {
-    const currentDate = selected || selectedDate;
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
-  };
-
-  const [selectedTables, setSelectedTables] = useState([]);
-  const [ selectedTableConfigId, setSelectedTableConfigId ] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  const [isCardValid, setIsCardValid] = useState(false);
-  const [joiningFee, setJoiningFee] = useState('');
+    let paymentTypeMethod = [
+      {
+        id: 1,
+        short_form: 'snpl',
+        name: 'split-now-pay-later',
+        description:
+          ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.',
+      },
+      {
+        id: 2,
+        short_form: 'pnsl',
+        name: 'pay-now-split-later',
+        description:
+          ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.',
+      },
+    ];
 
   const club = "Caveau";
   const event = "Afrojack Tour";
@@ -198,21 +112,224 @@ and join the table for a fun night!`;
   const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event via NightTable. Thank you!`;
   const promoterNumber = "+16178933910";
 
+  const { createPaymentMethod, handleNextAction } = useStripe();
+
+
+  const toggleTableSelection = (id) => {
+    if (selectedTableIds.includes(id)) {
+        setSelectedTableIds(prevIds => prevIds.filter(itemId => itemId !== id));
+    } else {
+        setSelectedTableIds(prevIds => [...prevIds, id]);
+    }
+    //console.log(selectedTableIds);
+  };
+
+  function handleTouchOutside() {
+    Keyboard.dismiss();
+}
+
+  /*
+    Making payment and navigating to the next screen
+    - creating internal customer
+    - making sure the tables we've selected haven't been bought out
+    - creating a snpl payment on the card, or pnsl, depending on the payment type 
+    - navigate over to the next screen
+  */
+
+
+    const navToPollingRoomScreen = async (data) => {
+      const createTRBody = {
+        name: data.name,
+        tableConfigId: data.tableConfigId,
+        selectedTables: data.selectedTables,
+        minimum: data.minimum,
+        eventId: route?.params?.selectedEventData._id,
+        joiningFee: data.joiningFee,
+        organizerUserId: new ObjectId(),
+        promoterId: route?.params?.promoterData._id,
+        costSplitType: data.costSplitType,
+        eta: data.eta,
+        isPolling: data.costSplitType === "pnsl" ? false : true,
+        isActive: data.costSplitType === "pnsl" ? true : false,
+        isClosed: false,
+        requestPlacementTime: new Date(), 
+        clubId: route?.params?.clubData._id
+      };
+
+      const responseCreateNewTableRequest = await axios.get(`${myIP}:3000/api/tablerequests/tableReq`, createTRBody)
+
+      /*
+        if PNSL, move to active table group screen
+        if SNPL, move to polling room screen
+      */
+
+      // clubData: route?.params?.clubData,
+      // electedEventData: route?.params?.selectedEventData,
+      // promoterData: route?.params?.promoterData,
+      // tableMinimum: tableMinimum,
+      // arrivalDate: selectedData
+      // selectedConfigData: tableConfigsData,
+      // InviteFrndsData: InviteFrndsData,
+      // paymentMethod: paymentMethod or null
+      // internalCustomer: internalCustomer
+      // tableMinimum: tableMinimum
+      // tableRequest: responseCreateNewTableRequest.data
+    }
+    const makePayment = async (chargeAmount) => {
+      const clubData = route?.params?.clubData
+      const handleError = (error, message) => {
+          if (error.config && error.config.url) {
+              console.error(`Error with endpoint: ${error.config.url}`, error.message);
+          } else {
+              console.error(message, error.message);
+          }
+          // Optionally, you can throw the error again if you want the calling function to handle it
+          throw error; 
+      };
+  
+      try {
+          const extractedTableConfigIds = clubStore?.individualClubTableConfig
+              .filter(table => selectedTableIds.includes(table.tableMapId))
+              .map(table => table._id);
+          console.log(extractedTableConfigIds, "selectedTables mp\n");
+        
+          // Fetching table requests for each extracted table config ID.
+          const tableRequestsResponses = await Promise.all(
+              extractedTableConfigIds.map(async tableConfigId => {
+                  try {
+                      return await axios.get(`${myIP}:3000/api/tablerequests/tableConfiguration/${tableConfigId}`);
+                  } catch (error) {
+                      handleError(error, `Error fetching table request for ID ${tableConfigId}`);
+                      return null; // Handle individual request errors
+                  }
+              })
+          );
+        
+          // Extract data from the axios responses, filtering out any null values from failed requests
+          const tableRequestsArrays = tableRequestsResponses
+              .filter(response => response) 
+              .map(response => response.data.data);
+        
+          const tableRequests = tableRequestsArrays.flat();
+          console.log('Fetched table requests:', tableRequests);
+  
+          if (!tableRequests || tableRequests.length === 0 || tableRequests.every(request => !request.isActive)) {
+              const billingDetails = {
+                  name: "Amiya Sekhar",
+                  phone: '+48888000888',
+              };
+            
+              const { paymentMethod, error } = await createPaymentMethod({
+                  paymentMethodType: 'Card',
+                  paymentMethodData: { billingDetails },
+              });
+  
+              if (error) handleError(error, "Failed to create payment method.");
+  
+              console.log(paymentMethod, "payment method after pressing button\n");
+  
+              const createCustomerBody = {
+                  userId: new ObjectId(),
+                  paymentMethodId: paymentMethod.id,
+              };
+  
+              const responseInternalCustomer = await axios.post(`${myIP}:3000/api/payments/create-customer`, createCustomerBody);
+              console.log(responseInternalCustomer.data, "responseInternalCustomer\n");
+  
+              let customerId;
+              const responseStripeCustomer = await axios.get(`${myIP}:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
+              console.log(responseStripeCustomer.data, "responseStripeCustomer\n");
+              customerId = responseStripeCustomer.data.id;
+  
+              const paymentType = selectedPaymentType == 1 ? 'snpl' : 'pnsl';
+              const clubInfo = route?.params?.clubData;
+              const tipPercentage = clubData?.lineItems.find(item => item.name === "Tip")?.percentage;
+              const taxPercentage = clubData?.lineItems.find(item => item.name === "Tax")?.percentage;
+              const modifiedPercentages = [tipPercentage, taxPercentage - taxPercentage];
+
+              const createPaymentIntentBody = {
+                  amount: chargeAmount,
+                  lineItems: modifiedPercentages,
+                  paymentType: paymentType,
+                  paymentMethodId: paymentMethod.id,
+                  customerId: customerId,
+              };
+              console.log(myIP);
+              const responsePaymentIntent = await axios.post(`${myIP}:3000/api/payments/create-payment-intent`, createPaymentIntentBody);
+              console.log("\n");
+              console.log("responsePaymentIntent", responsePaymentIntent);
+              console.log("\n");
+              console.log(responsePaymentIntent.data, `responsePaymentIntent${paymentType.toUpperCase()}\n`);
+
+
+              //if (paymentType)
+
+              //create table request and nav to next screen
+              const trData = {
+                name: tableName,
+                tableConfigId: selectedTables,
+                minimum: tableMinimum,
+                joiningFee: 300,
+                costSplitType: paymentType,
+                eta: selectedDate,
+                invitedFriends: InviteFrndsData,
+                paymentMethod: paymentMethod,
+                stripeCustomer: responseStripeCustomer,
+                internalCustomer: responseInternalCustomer
+              };
+
+              //navToPollingRoomScreen(trData);
+
+                // clubData: route?.params?.clubData,
+                // electedEventData: route?.params?.selectedEventData,
+                // promoterData: route?.params?.promoterData,
+                // tableMinimum: tableMinimum,
+                // arrivalDate: selectedData
+                // selectedConfigData: tableConfigsData,
+                // InviteFrndsData: InviteFrndsData,
+                // paymentMethod: paymentMethod or null
+                // internalCustomer: internalCustomer
+                // tableMinimum: tableMinimum
+                // tableRequest: tableRequest
+  
+          } else {
+              Alert.alert("Some of your tables have been bought out");
+          }
+  
+      } catch (error) {
+          console.error("General error in makePayment function:", error);
+      }
+    }
+  
+
+  
+
+  const onDateChange = (event, selected) => {
+    const currentDate = selected || selectedDate;
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
+  };
+
+
+
   const sendSMS = async () => {
     setIsSending(true);
     const isAvailable = await SMS.isAvailableAsync();
     if (isAvailable) {
         try {
             const { result } = await SMS.sendSMSAsync([inputValue], inviteMessage);
-            console.log(result);
-            console.log(inputValue, typeof inputValue)
+            setIsSending(false);
+            return result === 'sent' ? 'sent' : 'error'; // Ensure a consistent return value
         } catch (error) {
             console.log(error);
+            setIsSending(false); // Resetting the isSending flag in the catch block
+            return 'error'; // Ensure a return value
         }
     } else {
         Alert.alert('Your device does not support SMS');
+        setIsSending(false);
+        return 'error'; // Ensure a return value
     }
-    setIsSending(false);
   };
 
   //change table minimum based on how many configs selected
@@ -223,10 +340,17 @@ and join the table for a fun night!`;
     setDefaultTableMinimum(defaultTableMinimum + parsedMin);
   }
 
+  //change the name of table group
+  const toggleTableGroupName = (name) => {
+    setTableName(name);
+    console.log(name);
+  }
+
   // for promoters when they want to modify the table minimum manually
   const toggleTableMin = (min) => {
     const parsedMin = parseFloat(min);
-    setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);  }
+    setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);
+  }
 
   const sendSMSPromoter = async (message, number) => {
     setIsSending(true);
@@ -253,18 +377,21 @@ and join the table for a fun night!`;
     sendSMSPromoter(promoterMessage, promoterNumber);
   };
 
-  const sendInvite = () => {
+  const sendInvite = async () => { // Making the function async
     if (isSending) {
         Alert.alert('Already sending an invite, please wait...');
-        return;
+        return 'error'; // Ensure a return value
     }
 
+    let result;
     if (inputValue.includes('@')) {
         // Logic for sending an email
+        // If there's a return value for email, update here
     } else {
-        sendSMS();
+        result = await sendSMS(); // Awaiting the result from sendSMS
     }
     setModalVisible(false);
+    return result; // Return the result consistently
   };
 
   // remove a participant
@@ -301,21 +428,6 @@ and join the table for a fun night!`;
             }
         } 
     }
-    /*for (let i = 0; i < tcs.length; i++){
-        console.log(i, "i from for loop")
-        console.log(tcs[i].id, idParam, "tcs[i].id, idParam");
-        if (tcs[i].id === idParam){ //these if statements have a bug
-            //console.log(selectedTableList, "selectedTableList logging")
-            console.log(selectedTableList.includes(tcs[i]), selectedTableList[i]["id"], tcs[i], "selectedTableList.includes(tcs[i]), selectedTableList, tcs[i]")
-            if (!(selectedTableList.includes(tcs[i]))){
-                selectedTableList.push(tcs[i]);
-            }
-            else{
-                console.log(selectedTableList.includes(tcs[i]), "table list includes table\n");
-                selectedTableList.pop();
-            }
-        }
-    }*/
     setSelectedTables(selectedTableList);
   }
 
@@ -436,7 +548,7 @@ and join the table for a fun night!`;
                   },
                 ]}
               >
-                Organizer : {route?.params?.promoterData?.name}
+                Organizer: {route?.params?.promoterData?.name}
               </Text>
               <TouchableOpacity 
                 onPress={textPromoter} 
@@ -453,42 +565,64 @@ and join the table for a fun night!`;
               </TouchableOpacity>
             </Box>
 
-            <Box
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingVertical: 12,
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold16,
-                  {
-                    color: colors.gold.gold100,
-                  },
-                ]}
+            <TouchableWithoutFeedback onPress={handleTouchOutside}>
+              <Box
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 12,
+                }}
               >
-                Current Table Minimum:
-              </Text>
-              <TextInput
-                style={styles.input}
-                placeholder={`$${defaultTableMinimum}`}
-                onChangeText={(value) => toggleTableMin(value)}
-                placeholderTextColor={colors.gold.gold100}
-                selectionColor={colors.gold.gold100}
-                value={!isNaN(tableMinimum) ? tableMinimum : (!isNaN(defaultTableMinimum) ? defaultTableMinimum : '0')}
-                keyboardType={'numeric'}
-              />
-              {/*<TextInput
-                style={styles.input}
-                onChangeText={setTableMinimum}
-                // placeholder={`${defaultTableMinimum}`}
-                placeholderTextColor={colors.gold.gold100}
-                selectionColor={colors.gold.gold100}
-                value={tableMinimum}
-                keyboardType={'numeric'}
-              />*/}
-            </Box>
+                <Text
+                  style={[
+                    typography.semBold.semBold16,
+                    {
+                      color: colors.gold.gold100,
+                    },
+                  ]}
+                >
+                  Table Group Name: 
+                </Text>
+                <TextInput
+                  style={{...styles.input, width: 250}}
+                  placeholder={"Name your table group"}
+                  onChangeText={(value) => toggleTableGroupName(value)}
+                  placeholderTextColor={colors.gold.gold100}
+                  selectionColor={colors.gold.gold100}
+                />
+              </Box>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={handleTouchOutside}>
+              <Box
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 12,
+                }}
+              >
+                <Text
+                  style={[
+                    typography.semBold.semBold16,
+                    {
+                      color: colors.gold.gold100,
+                    },
+                  ]}
+                >
+                  Current Table Minimum:
+                </Text>
+                {selectedTableIds.length > 0 ? <TextInput
+                  style={styles.input}
+                  editable={true}
+                  placeholder={`$${defaultTableMinimum}`}
+                  onChangeText={(value) => toggleTableMin(value)}
+                  placeholderTextColor={colors.gold.gold100}
+                  selectionColor={colors.gold.gold100}
+                  value={!isNaN(tableMinimum) ? tableMinimum : (!isNaN(defaultTableMinimum) ? defaultTableMinimum : '0')}
+                  keyboardType={'numeric'}
+                /> : null}
+              </Box>
+            </TouchableWithoutFeedback>
 
             <Box
               style={{
@@ -506,7 +640,7 @@ and join the table for a fun night!`;
                   },
                 ]}
               >
-                Estimated Time of Arrival :
+                Estimated Time of Arrival:
               </Text>
               <DateTimePicker
                 value={selectedDate}
@@ -561,28 +695,6 @@ and join the table for a fun night!`;
                     type={item?.type}
                     price={item?.minPrice}
                   />
-                      // Below is the original TouchableOpacity for reference
-                      /*
-                      <TouchableOpacity
-                        key={index}
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          padding: 10,
-                          marginVertical: 5,
-                          borderColor: colors.gold.gold100,
-                          borderWidth: 1,
-                          borderRadius: 5
-                        }}
-                        onPress={() => {
-                          // Handle table config selection here
-                        }}
-                      >
-                        <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>{item?.tableMapId}</Text>
-                        <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>{item?.type}</Text>
-                        <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>${item?.minPrice}</Text>
-                      </TouchableOpacity>
-                      */
                     ))
                   ) : (
                   <Text
@@ -600,85 +712,7 @@ and join the table for a fun night!`;
                   </Text>
                 )}
               </ScrollView>
-
-
-                {/*<Pressable
-                    style={{ backgroundColor: 'silver', padding: 6, marginTop: 10 }} // Added marginTop for spacing
-                    onPress={() => {
-                        setTableConfigModal(true);
-                    }}
-                >
-                    {/* Your existing Pressable content */}
-                {/*</Pressable>*/}
             </Box>
-
-            {/*<Box
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingVertical: 10,
-                alignItems: 'center',
-              }}
-            >
-              <Text
-                style={[
-                  typography.semBold.semBold16,
-                  {
-                    color: colors.gold.gold100,
-                    justifyContent: 'center', //Centered vertically
-                    alignItems: 'center', //Centered horizontally
-                  },
-                ]}
-              >
-                Select Table Type :
-              </Text>
-
-              <Pressable
-                style={{ backgroundColor: 'silver', padding: 6 }}
-                onPress={() => {
-                  setTableConfigModal(true);
-                }}
-              >
-                {tableConfigsData.length > 0 ? (
-                  <>
-                    {tableConfigsData?.map((item) => {
-                      return (
-                        <>
-                          <Text
-                            style={[
-                              typography.semBold.semBold16,
-                              {
-                                color: 'black',
-                                //   color: colors.gold.gold100,
-                                justifyContent: 'center', //Centered vertically
-                                alignItems: 'center', //Centered horizontally
-                              },
-                            ]}
-                          >
-                            {item?.tableMapId} : $ {item?.minPrice} ,
-                          </Text>
-                        </>
-                      );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    <Text
-                      style={[
-                        typography.semBold.semBold14,
-                        {
-                          color: 'black',
-                          justifyContent: 'center', //Centered vertically
-                          alignItems: 'center', //Centered horizontally
-                        },
-                      ]}
-                    >
-                      NO TABLE CONFIG SELECTED
-                    </Text>
-                  </>
-                )}
-              </Pressable>
-            </Box>*/}
 
             <Box>
               {/* Start of "Select Request Type" Box */}
@@ -751,12 +785,7 @@ and join the table for a fun night!`;
                   );
                 })}
               </Box>
-              {/* End of "Select Request Type" Box */}
 
-              {/* Start of "Invite Friends" Box */}
-
-              {/* place for invite friends modal */}
-              {/* End of "Invite Friends" Box */}
             </Box>
 
           </Box>
@@ -771,16 +800,6 @@ and join the table for a fun night!`;
                   // Uncomment the below code if you want to use the modal toggle or any other functionality.
                   setinviteParticipantModal(!inviteParticipantModal);
                   
-                  // If you want to use the navigation action, uncomment the below lines:
-                  // navigation.navigate('TableReqConfirmation', {
-                  //   clubData: route?.params?.clubData,
-                  //   selectedEventData: route?.params?.selectedEventData,
-                  //   promoterData: route?.params?.promoterData,
-                  //   tableMinimum: tableMinimum,
-                  //   arrivalDate: selectedDate,
-                  //   selectedConfigData: tableConfigsData,
-                  //   InviteFrndsData: InviteFrndsData,
-                  // });
                 }
               }}
               text={'Send Invites and Make payment'}
@@ -789,34 +808,10 @@ and join the table for a fun night!`;
 
           </Box>
 
-          {/*<Box style={styles.box2_second}>
-            <ButtonComp
-              onSubmit={() => {
-                if (tableMinimum == 0) {
-                  Alert.alert('Please enter the table Minimum');
-                } else if (tableConfigsData.length === 0) {
-                  console.log(tableConfigsData, "table config data when button pressed");
-                  Alert.alert('Please choose a table');
-                } else {
-                  navigation.navigate('TableReqCont', {
-                    clubData: route?.params?.clubData,
-                    selectedEventData: route?.params?.selectedEventData,
-                    promoterData: route?.params?.promoterData,
-                    tableMinimum: tableMinimum,
-                    arrivalDate: selectedDate,
-                    selectedConfigData: tableConfigsData,
-                    InviteFrndsData: InviteFrndsData,
-                  });
-                }
-              }}
-              text={'continue'}
-              backgroundColor={colors.gold.gold100}
-            />
-          </Box>*/}
         </Box>
       </View>
 
-      <DyModal
+      {/*<DyModal
         bgColor={colors.black.black800}
         children={
           <>
@@ -849,9 +844,7 @@ and join the table for a fun night!`;
                     .reduce((prev, curr) => prev + curr, 0);
 
                   settableConfigsData(item);
-                  // console.log('setTableMinimum', setTableMinimum);
                   setTableMinimum(Number(mintableAmount));
-                  // settableMinimum('')
                 }}
                 showTables={false}
               />
@@ -871,7 +864,7 @@ and join the table for a fun night!`;
         onClosepress={() => {
           setTableConfigModal(false);
         }}
-      />
+      />*/}
 
       <DyModal
         children={
@@ -898,31 +891,34 @@ and join the table for a fun night!`;
                 Invite Friends
               </Text>
 
-              <CardField
-                postalCodeEnabled={true}
-                placeholders={{ number: '4242 4242 4242 4242' }}
-                cardStyle={{
-                  placeholderColor: '#e4d0b5',
-                  textColor: '#e4d0b5',
-                  backgroundColor: 'black',
-                  fontSize: 15,
-                  borderColor: '#e4d0b5',
-                  borderWidth: 2,
-                  borderRadius: 10
-                }}
-                style={{ width: '100%', height: 50, marginVertical: 20 }}
-                onCardChange={(cardDetails) => {
-                  console.log('cardDetails', cardDetails);
-                              if (cardDetails.complete && cardDetails.validNumber) {
-                          setIsCardValid(true);
+              {tableMinimum !== 0 && (
+                  <CardField
+                    postalCodeEnabled={true}
+                    placeholders={{ number: '4242 4242 4242 4242' }}
+                    cardStyle={{
+                      placeholderColor: '#e4d0b5',
+                      textColor: '#e4d0b5',
+                      backgroundColor: 'black',
+                      fontSize: 15,
+                      borderColor: '#e4d0b5',
+                      borderWidth: 2,
+                      borderRadius: 10,
+                    }}
+                    style={{ width: '100%', height: 50, marginVertical: 20 }}
+                    onCardChange={(cardDetails) => {
+                      console.log('cardDetails', cardDetails);
+                      if (cardDetails.complete && cardDetails.validNumber) {
+                        setIsCardValid(true);
                       } else {
-                          setIsCardValid(false);
-                    }
-                }}
-                onFocus={(focusedField) => {
-                  console.log('focusField', focusedField);
-                }}
-              />
+                        setIsCardValid(false);
+                      }
+                    }}
+                    onFocus={(focusedField) => {
+                      console.log('focusField', focusedField);
+                    }}
+                  />
+                )}
+
               {
                 selectedPaymentType === 2 ? (  // if it's "pay-now-split-later"
                   <>
@@ -1020,8 +1016,8 @@ and join the table for a fun night!`;
               <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <Pressable
                   style={{ borderRadius: 20 / 2, padding: 4 }}
-                  onPress={() => {
-                    if (!isCardValid) {
+                  onPress={ async() => {
+                    if (!isCardValid && tableMinimum !== 0) {
                       alert('Please enter a valid credit card to invite friends.');
                       return;
                     }
@@ -1034,19 +1030,25 @@ and join the table for a fun night!`;
                       return;
                     }
 
-                    sendInvite();
-                    console.log("========\n");
-                    console.log(isCardValid, "valid card?")
-                    console.log(inviteMessage);
-                    console.log("========\n");
-
-                    let tempArr = [...InviteFrndsData, { emailOrPhone: inviteParticipantData, fee: joiningFee }];
-                    console.log(tempArr, "the tempArr\n")
-                    setInviteFrndsData(tempArr);
-                    setinviteParticipantData('');
-                    //setJoiningFee('');
+                    const status = await sendInvite();
+                    let tempArr = [...InviteFrndsData];
+              
+                    switch (status) {
+                      case 'sent':
+                        tempArr.push({ emailOrPhone: inviteParticipantData, fee: joiningFee });
+                        setInviteFrndsData(tempArr);
+                        setinviteParticipantData('');
+                        // Assuming you want to reset this:
+                        break;
+                      case 'error':
+                        Alert.alert('Error', 'There was an error sending the invitation. Please try again.');
+                        break;
+                      default:
+                        Alert.alert('Unexpected Error', 'Something unexpected happened. Please try again.');
+                        break;
+                    }
                   }}
-                  disabled={!isCardValid || !inviteParticipantData || !joiningFee}
+                  disabled={(!isCardValid && tableMinimum !== 0) || !inviteParticipantData || !joiningFee}
                 >
                   <Text
                     style={[
@@ -1072,21 +1074,6 @@ and join the table for a fun night!`;
                 >
                   Invitees:
                 </Text>
-
-                {/*<Text
-                  style={[
-                    typography.regular.regular14,
-                    {
-                      color: colors.gold.gold100,
-                      paddingVertical: 6,
-                      lineHeight: 20,
-                    },
-                  ]}
-                >
-                  Note: that only organizers of a table that are promoters or
-                  part of the club stuff can change their own minimum joining
-                  fee to 0
-                </Text>*/}
 
                 <Box style={{ paddingVertical: 14 }}>
                 <ScrollView 
@@ -1133,7 +1120,17 @@ and join the table for a fun night!`;
                       })
                   }
               </ScrollView>
-
+              <Text
+                          style={[
+                              typography.semBold.semBold12,
+                              {
+                                  color: colors.gold.gold200 // Assuming you want black text
+                              },
+                          ]}
+                      >
+                      You'll also be levied an additional fee of no more than 60% and no less than 30% to account for 
+                      miscellaneous club fees, such as tip, tax, and service fees, and payment processing fees.
+                  </Text>
                   <TouchableOpacity
                     style={{
                         backgroundColor: colors.gold.gold100,
@@ -1142,8 +1139,8 @@ and join the table for a fun night!`;
                         alignItems: 'center',
                         marginVertical: 10 // To add some spacing above and below the button
                     }}
-                    onPress={() => {
-                        // Handle the button press here. For instance, confirming the payment.
+                    onPress={async () => {
+                        await makePayment(tableMinimum);
                         console.log('Confirm payment button pressed');
                     }}
                   >
@@ -1158,6 +1155,7 @@ and join the table for a fun night!`;
                           Confirm Payment
                       </Text>
                   </TouchableOpacity>
+
                 </Box>
               </Box>
             </Box>
@@ -1240,3 +1238,6 @@ const styles = StyleSheet.create({
     height: '20%',
   },
 });
+
+
+// testing commit 

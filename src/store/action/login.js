@@ -19,6 +19,7 @@ export const loginUser = (number) => {
       phoneNumberParam: number,
     };
     const apiCall = await loginApi(obj);
+    console.log(apiCall.data, "login user\n");
     dispatch(otpGeneratedData(apiCall.data));
   };
 };

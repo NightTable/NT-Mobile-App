@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@stripe/stripe-react-native": "^0.23.3",
     "axios": "^1.4.0",
+    "bson": "^6.1.0",
     "crypto": "^1.0.1",
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
