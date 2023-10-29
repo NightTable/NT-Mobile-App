@@ -1,7 +1,6 @@
 import React from 'react';
 import { Image } from 'expo-image';
-import { Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
-import { View } from 'native-base';
+import { Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, SafeAreaView ,View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { colors, typography } from '../../theme';
 import { HeaderWithLeftIcon } from '../../components/Header';

@@ -2,13 +2,7 @@ import React from 'react';
 // components
 
 // libraries
-import { View, Text } from 'native-base';
-import {
-  Dimensions,
-  TouchableOpacity,
-  Image,
-  SafeAreaView
-} from 'react-native';
+import { Dimensions, TouchableOpacity, Image, SafeAreaView, View, Text } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { value } from '../../theme/spacing';
 import { colors, typography } from '../../theme';

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, KeyboardAvoidingView, ScrollView } from 'native-base';
-import { TextInput, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native';
+import { View, KeyboardAvoidingView, ScrollView , TextInput, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native';
 
 // components
 import { AntDesignIcon, EntypoIcon, FeatherIcon, IoniconsIcon, MaterialCommunityIcon } from './Icons';

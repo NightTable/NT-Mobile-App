@@ -1,32 +1,29 @@
 import { Provider } from 'react-redux';
-import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, Modal, View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Modal, StyleSheet } from 'react-native';
 
-import { NativeBaseProvider, StatusBar } from "native-base";
-import { colors, typography } from "./src/theme";
-//STORE
-import { store } from './src/store/store';
-//NAVIGATION
+// STORE
+// NAVIGATION
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//FONTS LOADING
-import { useFonts } from "expo-font";
-import LogoSplash from "./src/screens/logo";
-//net -info
-import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
-import RootStack from "./src/navigation/RootStack";
-import { PopUpAlertUi } from "./src/components/popUp/PopUp";
-import { EventRegister } from "react-native-event-listeners";
+// FONTS LOADING
+import { useFonts } from 'expo-font';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
+import { EventRegister } from 'react-native-event-listeners';
+import { StripeProvider } from '@stripe/stripe-react-native';
+import LogoSplash from './src/screens/logo';
+// net -info
+import RootStack from './src/navigation/RootStack';
+import { PopUpAlertUi } from './src/components/popUp/PopUp';
+// App.ts
+import { store } from './src/store/store';
+import { colors } from './src/theme';
 
 const Stack = createNativeStackNavigator();
-// App.ts
-import { StripeProvider } from "@stripe/stripe-react-native";
-import PaymentScreen from "./src/payment/Stripe";
-import CostSplittingSectionComp from "./src/features/costSplitting";
 
 export default function App() {
-  //INTERNET CONNECTION CHECK
+  // INTERNET CONNECTION CHECK
 
   const netInfo = useNetInfo();
 
@@ -40,12 +37,9 @@ export default function App() {
   const [Image, setImage] = useState('');
 
   useEffect(() => {
-    const globalSucessPopUp = EventRegister.addEventListener(
-      'popupTriggerd',
-      (data) => {
-        UpdatePopData(data);
-      },
-    );
+    const globalSucessPopUp = EventRegister.addEventListener('popupTriggerd', (data) => {
+      UpdatePopData(data);
+    });
     return () => {
       EventRegister.removeEventListener(globalSucessPopUp);
     };
@@ -81,7 +75,7 @@ export default function App() {
         () => {
           onPopUpClose();
         },
-        data?.closingTime === undefined ? 2000 : data?.closingTime,
+        data?.closingTime === undefined ? 2000 : data?.closingTime
       );
     } else {
       setpopUpShow(false);
@@ -95,66 +89,40 @@ export default function App() {
     clearTimeout(timeout);
   };
 
-  //LOADING FONTS
+  // LOADING FONTS
   const [isLoaded] = useFonts({
     'vh-bold': require('./assets/fonts/VerahHumana-Bold.ttf'),
-    'vh-regular': require('./assets/fonts/VerahHumana-Regular.ttf'),
+    'vh-regular': require('./assets/fonts/VerahHumana-Regular.ttf')
   });
 
   if (!isLoaded) {
-    return (
-      <>
-        <LogoSplash />
-      </>
-    );
+    return <LogoSplash />;
   }
 
   return (
-    <>
-      <Provider store={store}>
-        <StripeProvider
-          publishableKey={
-            'pk_live_51MIxt5KhH8zNT0eBV69mSH0djmZ50vIKUR71fICATT4g1qC6K6psICHaEePSIfQQqRUvHCRajt5HrQSCLoQzq8Bj00hiQS4fwh'
-          }
-          merchantIdentifier="merchant.identifier" // required for Apple Pay
-        >
-          <NativeBaseProvider>
-            <NavigationContainer>
-              {popUpShow === false ? null : (
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={popUpShow}>
-                  <PopUpAlertUi
-                    onPopUpClose={() => {
-                      onPopUpClose();
-                    }}
-                    message={message}
-                    headingColor={popUpTheme}
-                    renderfn={popUprenderfn}
-                    closeBtnEnable={closeBtnEnable}
-                    img={Image}
-                  />
-                </Modal>
-              )}
-              <RootStack />
-            </NavigationContainer>
-          </NativeBaseProvider>
-        </StripeProvider>
-      </Provider>
-    </>
+    <Provider store={store}>
+      <StripeProvider
+        publishableKey='pk_live_51MIxt5KhH8zNT0eBV69mSH0djmZ50vIKUR71fICATT4g1qC6K6psICHaEePSIfQQqRUvHCRajt5HrQSCLoQzq8Bj00hiQS4fwh'
+        merchantIdentifier='merchant.identifier' // required for Apple Pay
+      >
+          <NavigationContainer>
+            {popUpShow === false ? null : (
+              <Modal animationType='slide' transparent visible={popUpShow}>
+                <PopUpAlertUi
+                  onPopUpClose={() => {
+                    onPopUpClose();
+                  }}
+                  message={message}
+                  headingColor={popUpTheme}
+                  renderfn={popUprenderfn}
+                  closeBtnEnable={closeBtnEnable}
+                  img={Image}
+                />
+              </Modal>
+            )}
+            <RootStack />
+          </NavigationContainer>
+      </StripeProvider>
+    </Provider>
   );
 }
-const styles = StyleSheet.create({
-  offline: {
-    height: 30,
-    backgroundColor: colors.red.red175,
-    justifyContent: 'center',
-  },
-  greenText: {
-    height: 30,
-    backgroundColor: colors.green.green200,
-    justifyContent: 'center',
-  },
-  textColor: { color: colors.white.white0, textAlign: 'center' },
-});

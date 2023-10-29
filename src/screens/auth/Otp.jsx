@@ -1,10 +1,9 @@
 // Imported Libraries
 
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, Dimensions, SafeAreaView, View } from 'react-native';
 import OTPTextView from 'react-native-otp-textinput';
 // libraries
-import { View } from 'native-base';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
 // components

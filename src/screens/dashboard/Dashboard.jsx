@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'native-base';
-import {
-  Text,
-  StyleSheet,
-  Dimensions,
-  SafeAreaView,
-  FlatList,
-  Pressable,
-  Image,
-  Alert
-} from 'react-native';
+import { Text, StyleSheet, Dimensions, SafeAreaView, FlatList, Pressable, Image, Alert, View } from 'react-native';
 // component
-import {  useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { HeaderWithLeftIcon } from '../../components/Header';
 // REDUX
 // THEME
@@ -62,58 +52,52 @@ const Dashboard = ({ navigation }) => {
   //   getNearByClubs();
   // }, []);
 
- 
-
   const ClubCards = ({ props }) => (
-      <Pressable
-        style={{
-          backgroundColor: colors.gold.gold100,
-          flexDirection: 'row',
-          margin: 6,
-          borderRadius: 4,
-          padding: 14,
-          height: 70,
-          width: 400,
-          alignItems: 'center'  // Vertically center align the content
-        }}
-        onPress={() => {
-          dispatch(getEventOfClub(props._id));
-          navigation.navigate('Club', {
-            clubData: props
-          });
-        }}
-      >
-        {/* Left Side: Club Name */}
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text style={typography.bold.bold14}>{props?.name}</Text>
-        </View>
-  
-        {/* Right Side: Image */}
-        <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
-          <View
+    <Pressable
+      style={{
+        backgroundColor: colors.gold.gold100,
+        flexDirection: 'row',
+        margin: 6,
+        borderRadius: 4,
+        padding: 14,
+        height: 70,
+        width: 400,
+        alignItems: 'center' // Vertically center align the content
+      }}
+      onPress={() => {
+        dispatch(getEventOfClub(props._id));
+        navigation.navigate('Club', {
+          clubData: props
+        });
+      }}>
+      {/* Left Side: Club Name */}
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text style={typography.bold.bold14}>{props?.name}</Text>
+      </View>
+
+      {/* Right Side: Image */}
+      <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+        <View
+          style={{
+            height: 54, // 50 (image height) + 2 (border width) * 2
+            width: 54, // 50 (image width) + 2 (border width) * 2
+            borderRadius: 27, // 54 / 2
+            borderWidth: 4,
+            borderColor: colors.gold.gold200,
+            overflow: 'hidden'
+          }}>
+          <Image
             style={{
-              height: 54, // 50 (image height) + 2 (border width) * 2
-              width: 54, // 50 (image width) + 2 (border width) * 2
-              borderRadius: 27, // 54 / 2
-              borderWidth: 4,
-              borderColor: colors.gold.gold200,
-              overflow: 'hidden'
+              height: 50,
+              width: 50,
+              borderRadius: 25 // Circle shape
             }}
-          >
-            <Image
-              style={{
-                height: 50,
-                width: 50,
-                borderRadius: 25 // Circle shape
-              }}
-              source={{ uri: props?.photos[0] }}
-            />
-          </View>
+            source={{ uri: props?.photos[0] }}
+          />
         </View>
-      </Pressable>
-    );
-  
-  
+      </View>
+    </Pressable>
+  );
 
   const logoutBtn = () =>
     Alert.alert('Logout', 'Are you sure want to logout?', [
@@ -182,7 +166,6 @@ const styles = StyleSheet.create({
   mainBox: {
     paddingHorizontal: 18,
     flex: 1
-
   },
   clubListContainer: {
     flexDirection: 'column',
