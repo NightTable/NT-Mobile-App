@@ -1,20 +1,18 @@
 // import SInfo from "react-native-sensitive-info";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-//for Storing Data
-export const StoretoLocalData = async (key, value) => {
-  return new Promise(async (resolve, reject) => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// for Storing Data
+export const StoretoLocalData = async (key, value) => new Promise(async (resolve, reject) => {
     try {
       const jsonValue = JSON.stringify(value);
       const data = await AsyncStorage.setItem(key, jsonValue);
       // console.log("==========Data Saved==========================", data);
-      resolve("Data Saved");
+      resolve('Data Saved');
     } catch (e) {
-      console.log("====================================", e);
+      console.log('', e);
     }
   });
-};
 
-//Retrive Data
+// Retrive Data
 export const GetLocalPhoneData = (key) => {
   // try {
   //   return new Promise(async (resolve, reject) => {
@@ -30,13 +28,3 @@ export const GetLocalPhoneData = (key) => {
   // }
 };
 
-export const deleteItemFromLocalData = async (key) => {
-  return new Promise(async (resolve, reject) => {
-    const deletingData = await SInfo.deleteItem(key, {
-      sharedPreferencesName: "NTMobile",
-      keychainService: "NTMobile",
-    }).then(() => {
-      resolve("Data Deleted");
-    });
-  });
-};

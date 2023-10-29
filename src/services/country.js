@@ -1,66 +1,63 @@
-import axios, * as others from "axios";
-
-const myIP = '192.168.1.77'
-//const myIP = '10.0.0.146'
-
-export const getCountries = async () => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "get",
-      url: `http://${myIP}:3000/api/auth/getCountryCodes`,
-      headers: {},
+import axios, * as others from 'axios';
+// import { GetRequest } from '../utils/axios/Axios';
+export const getCountries = async () =>
+  new Promise((resolve, reject) => {
+    console.log('====================================');
+    console.log('process.env.REACT_APP_BASE_URL', process.env.REACT_APP_BASE_URL);
+    console.log('====================================', `${process.env.REACT_APP_BASE_URL}auth/getCountryCodes`);
+    const config = {
+      method: 'get',
+      url: `${process.env.REACT_APP_BASE_URL}auth/getCountryCodes`,
+      headers: {}
     };
 
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};
 
-export const getStatesOfCountry = async (data) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "post",
+export const getStatesOfCountry = async (data) =>
+  new Promise((resolve, reject) => {
+    const config = {
+      method: 'post',
       url: `${process.env.REACT_APP_BASE_URL}auth/getStatesOfCountry`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data: data,
+      data
     };
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};
 
-export const citiesOfStates = async (data) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "post",
+export const citiesOfStates = async (data) =>
+  new Promise((resolve, reject) => {
+    const config = {
+      method: 'post',
       url: `${process.env.REACT_APP_BASE_URL}auth/citiesOfStates`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data: data,
-        };
+      data
+    };
 
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};

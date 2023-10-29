@@ -1,79 +1,120 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "native-base";
-import { TextInput, StyleSheet, Text, Dimensions, Alert } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { Box } from 'native-base';
+import { TextInput, StyleSheet, Text, Dimensions } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants';
-//components
-import SearchDropdown from "../../components/SearchDropdown";
-import { Button } from "../../components/Buttons";
-//Redux
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-//theme
-import { colors } from "../../theme/colors";
-import { typography } from "../../theme";
+// components
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import SearchDropdown from '../../components/SearchDropdown';
+import { Button } from '../../components/Buttons';
+// Redux
+// theme
+import { colors } from '../../theme/colors';
+import { typography } from '../../theme';
 
-import { loginUser, userProfileAddress } from "../../store/action/login";
-import {
-  disableLoader,
-  enableLoader,
-} from "../../components/popUp/loader/trigger";
-import { LocationPermission } from "../../permissions/location";
-import { getAddressfromLatlong } from "../../services/address";
-import { StoretoLocalData } from "../../utils/SensitiveData/SensitiveData";
-import { SensitiveKey } from "../../utils/SensitiveData/SInfoKeys";
-//DIMENSIONS
-const { height, width } = Dimensions.get("screen");
+import { loginUser, userProfileAddress } from '../../store/action/login';
+import { disableLoader, enableLoader } from '../../components/popUp/loader/trigger';
+import { LocationPermission } from '../../permissions/location';
+import { getAddressfromLatlong } from '../../services/address';
+import { StoretoLocalData } from '../../utils/SensitiveData/SensitiveData';
+import { SensitiveKey } from '../../utils/SensitiveData/SInfoKeys';
+// DIMENSIONS
+const { height, width } = Dimensions.get('screen');
 
-//MAIN FUNCTION
+// MAIN FUNCTION
 const Login = ({ navigation, route }) => {
-  //REDUX
+  // REDUX
   const dispatch = useDispatch();
 
-  //SELECTORS
+  // SELECTORS
   const loginReducer = useSelector((state) => state.login, shallowEqual);
 
-  //STATES
-  const [number, onChangeNumber] = useState("");
-  //SELECTED COUNTRY DATA
-  const [selectedCountry, setselectedCountry] = useState("+");
-  //ERROR MSG
-  const [error_msg, seterror_msg] = useState("");
+  // STATES
+  const [number, onChangeNumber] = useState('');
+  // SELECTED COUNTRY DATA
+  const [selectedCountry, setselectedCountry] = useState('+');
+  // ERROR MSG
+  const [errorMsg, seterrorMsg] = useState('');
 
-
-  const abstractApiPartialUrl = Constants.manifest.extra.abstractApiPartialUrl;
+  const { abstractApiPartialUrl } = Constants.manifest.extra;
 
   // //API CALL
   const triggerOtp = async () => {
     enableLoader();
     try {
+      console.log('====================================');
+      console.log('triggerOtp');
+      console.log('====================================');
       const phoneNumber = `${selectedCountry}${number}`;
+      console.log('====================================');
+      console.log(`${abstractApiPartialUrl}&phone=${phoneNumber}`, 'dfgfdgfg');
+      console.log('====================================');
       const response = await axios.get(`${abstractApiPartialUrl}&phone=${phoneNumber}`);
-      
+      console.log('====================================');
+      console.log('abstractApiPartialUrl-response', response);
+      console.log('====================================');
       const isValid = response.data.valid;
-      
+
       if (isValid) {
         dispatch(loginUser(phoneNumber));
-        seterror_msg("");
+        seterrorMsg('');
       } else {
-        seterror_msg("Invalid phone number.");
+        seterrorMsg('Invalid phone number.');
       }
-  
     } catch (error) {
       console.log(error);
-      seterror_msg("An error occurred. Please try again.");
+      seterrorMsg('An error occurred. Please try again.');
     } finally {
       disableLoader();
+    }
+  };
+
+  const getAddressallReleatedData = async () => {
+    // GET LOCATION OF THE USER
+    const lotlong = await LocationPermission();
+    let country = '';
+    if (lotlong === undefined) {
+      return false;
+    }
+    const obj = {
+      lat: lotlong?.coords.latitude,
+      lng: lotlong.coords.longitude
+    };
+    // API CALL
+    const addressApiCall = await getAddressfromLatlong(obj);
+
+    if (addressApiCall.message !== 'Request failed with status code 400') {
+      const { address } = addressApiCall.data;
+      const addressParts = address?.split(',');
+      country = addressParts.pop().trim();
+      let state = addressParts.pop().trim();
+      state = state.replace(/\d+/g, '').trim();
+      const city = addressParts.pop().trim();
+      const userAddressObj = {
+        country,
+        state,
+        city
+      };
+      await StoretoLocalData(SensitiveKey.USER.ADDRESS, userAddressObj);
+      const data = loginReducer.countryData.filter((item) => (item.name === country ? item : ''));
+      console.log('====================================');
+      console.log('data::>> LOGIN REDUCER ::>> ', data);
+      console.log('====================================');
+
+      if (data[0]?.value !== undefined) {
+        setselectedCountry(data[0]?.value.toString());
+      }
     }
   };
 
   useEffect(() => {
     async function loadData() {
       if (loginReducer?.otpNumberData?.status === false) {
-        seterror_msg(loginReducer?.otpNumberData?.message);
+        seterrorMsg(loginReducer?.otpNumberData?.message);
         disableLoader();
       } else if (loginReducer?.otpNumberData?.status === true) {
         disableLoader();
-        navigation.navigate("Otp");
+        navigation.navigate('Otp');
       } else {
         getAddressallReleatedData();
       }
@@ -83,147 +124,94 @@ const Login = ({ navigation, route }) => {
     return () => {};
   }, [loginReducer]);
 
-  const getAddressallReleatedData = async () => {
-    // GET LOCATION
-    const lotlong = await LocationPermission();
-    let country = "";
-    console.log("lotlong===>", lotlong);
-    if (lotlong == undefined) {
-    } else {
-      let obj = {
-        lat: lotlong?.coords.latitude,
-        lng: lotlong.coords.longitude,
-      };
-      //API CALL
-      const addressApiCall = await getAddressfromLatlong(obj);
-      const address = addressApiCall.data.address;
-      const addressParts = address.split(",");
-      country = addressParts.pop().trim();
-      let state = addressParts.pop().trim();
-      state = state.replace(/\d+/g, "").trim();
-      const city = addressParts.pop().trim();
-      const userAddressObj = {
-        country: country,
-        state: state,
-        city: city,
-      };
-      const response = await StoretoLocalData(
-        SensitiveKey.USER.ADDRESS,
-        userAddressObj
-      );
-    }
-
-    // console.log("response===>", response);
-    const data = loginReducer.countryData.filter((item) => {
-      if (item.name == country) {
-        return item;
-      }
-    });
-
-    if (data[0]?.value != undefined) {
-      setselectedCountry(data[0]?.value.toString());
-    } else {
-      // setselectedCountry('+ XX');
-    }
-  };
   return (
-    <>
-      <Box safeArea style={styles.mainBox}>
-        <Box style={[styles.container]}>
-          <Text style={[typography.bold.bold16, styles.heading]}>
-            NightTable{" "}
-          </Text>
-          <Text style={[typography.regular.regular16, styles.subtitle]}>
-            Enter Phone Number
-          </Text>
-          <Box style={styles.mobileNumberContainer}>
-            <Box style={styles.dropdownContainer1}>
-              <SearchDropdown
-                key={() => {
-                  return String(1);
-                }}
-                leftIconName={"search"}
-                leftIconColor={"white"}
-                leftIconDirectoryName={"Feather"}
-                search={true}
-                searchPopupHeading={"Select Country"}
-                bgColor={colors.black.black900}
-                borderColor={colors.gold.gold100}
-                textColor={colors.white.white0}
-                iconColor={colors.white.white0}
-                actionSheetBgColor={colors.red.red800}
-                selectedItemBgColor={colors.red.red800}
-                placeholder={selectedCountry}
-                height={58}
-                width={"100%"}
-                data={loginReducer.countryData}
-                value={selectedCountry}
-                onValueChange={(itemValue) => {
-                  console.log("itemValue.value===>", itemValue.value);
-                  setselectedCountry(itemValue.value);
-                }}
-              />
-            </Box>
-
-            <Box style={styles.dropdownContainer2}>
-              <TextInput
-                autoFocus={true}
-                style={[typography.regular.regular16, styles.input]}
-                onChangeText={(text) => {
-                  const numberRegex = /^[0-9]*\.?[0-9]*$/;
-                  if (numberRegex.test(text)) {
-                    onChangeNumber(text);
-                  }
-                }}
-                value={number}
-                placeholder="Phone Number"
-                placeholderTextColor={colors.grey.grey800}
-                keyboardType="numeric"
-              />
-            </Box>
+    <Box safeArea style={styles.mainBox}>
+      <Box style={[styles.container]}>
+        <Text style={[typography.bold.bold16, styles.heading]}>NightTable </Text>
+        <Text style={[typography.regular.regular16, styles.subtitle]}>Enter Phone Number</Text>
+        <Box style={styles.mobileNumberContainer}>
+          <Box style={styles.dropdownContainer1}>
+            <SearchDropdown
+              key={() => String(1)}
+              leftIconName='search'
+              leftIconColor='white'
+              leftIconDirectoryName='Feather'
+              search
+              searchPopupHeading='Select Country'
+              bgColor={colors.black.black900}
+              borderColor={colors.gold.gold100}
+              textColor={colors.white.white0}
+              iconColor={colors.white.white0}
+              actionSheetBgColor={colors.red.red800}
+              selectedItemBgColor={colors.red.red800}
+              placeholder={selectedCountry}
+              height={58}
+              width='100%'
+              data={loginReducer.countryData}
+              value={selectedCountry}
+              onValueChange={(itemValue) => {
+                console.log('itemValue.value===>', itemValue.value);
+                setselectedCountry(itemValue.value);
+              }}
+            />
           </Box>
+
+          <Box style={styles.dropdownContainer2}>
+            <TextInput
+              autoFocus
+              style={[typography.regular.regular16, styles.input]}
+              onChangeText={(text) => {
+                const numberRegex = /^[0-9]*\.?[0-9]*$/;
+                if (numberRegex.test(text)) {
+                  onChangeNumber(text);
+                }
+              }}
+              value={number}
+              placeholder='Phone Number'
+              placeholderTextColor={colors.grey.grey800}
+              keyboardType='numeric'
+            />
+          </Box>
+        </Box>
+
+        <Text
+          style={[
+            styles.termandconditionText,
+            {
+              color: colors.red.red300
+            }
+          ]}>
+          {errorMsg}{' '}
+        </Text>
+
+        <Box style={{ paddingTop: 160 }}>
+          <Button
+            disabled={!(number.length >= 1)} // Singaporean phone numbers are 8 digits
+            onSubmit={() => {
+              if (selectedCountry.length >= 1) {
+                triggerOtp();
+              } else {
+                seterrorMsg('please select the country');
+              }
+            }}
+            backgroundColor={colors.gold.gold100}
+            text='Agree & Continue'
+          />
 
           <Text
             style={[
               styles.termandconditionText,
               {
-                color: colors.red.red300,
+                color: colors.gold.gold100,
+                textAlign: 'center'
               },
-            ]}
-          >
-            {error_msg}{" "}
+              typography.regular.regular12
+            ]}>
+            By logging in,you agree to the Terms of Use and Privacy Policy{' '}
           </Text>
-
-          <Box style={{ paddingTop: 160 }}>
-            <Button
-              disabled={number.length >= 1 ? false : true} // Singaporean phone numbers are 8 digits
-              onSubmit={() => {
-                if (selectedCountry.length >= 1) {
-                  triggerOtp();
-                } else {
-                  seterror_msg("please select the country");
-                }
-              }}
-              backgroundColor={colors.gold.gold100}
-              text={"Agree & Continue"}
-            />
-
-            <Text
-              style={[
-                styles.termandconditionText,
-                {
-                  color: colors.gold.gold100,
-                  textAlign: "center",
-                },
-                typography.regular.regular12
-              ]}
-            >
-              By logging in,you agree to the Terms of Use and Privacy Policy{" "}
-            </Text>
-          </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -236,38 +224,38 @@ const styles = StyleSheet.create({
     borderColor: colors.gold.gold100,
     borderRadius: 6,
     color: colors.gold.gold100,
-    fontSize: 22,
+    fontSize: 22
   },
   container: {
-    padding: 18,
+    padding: 18
   },
   mainBox: { flex: 1, backgroundColor: colors.black.black800 },
   heading: {
     fontSize: 34,
-    color: colors.gold.gold100,
+    color: colors.gold.gold100
   },
   subtitle: {
     fontSize: 24,
     paddingTop: 18,
-    color: colors.gold.gold100,
+    color: colors.gold.gold100
   },
   mobileNumberContainer: {
     marginTop: 60,
-    width: "100%",
-    flexDirection: "row",
+    width: '100%',
+    flexDirection: 'row'
   },
   dropdownContainer1: {
-    width: "30%",
+    width: '30%'
   },
   dropdownContainer2: {
-    width: "70%",
-    paddingLeft: 10,
+    width: '70%',
+    paddingLeft: 10
   },
   termandconditionText: {
     fontSize: 12,
     paddingTop: 12,
-    color: colors.gold.gold100,
-  },
+    color: colors.gold.gold100
+  }
 });
 
 export default Login;

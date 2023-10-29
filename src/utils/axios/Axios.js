@@ -1,43 +1,43 @@
 import axios, * as others from 'axios';
 
-export const GetRequest = async (session_url, body, params, header = null) => {
-  var startTime = performance.now();
-  console.log('====================================');
-  console.log('session_url, body, params,', session_url, body, params);
-  console.log('====================================');
+export const GetRequest = async (sessionUrl, body, params, header = null) => {
+  const startTime = performance.now();
+  console.log('============GetRequest========================');
+  console.log('sessionUrl, body, params,', sessionUrl, body, params);
+  console.log('');
   try {
-    var config = '';
+    let config = '';
     if (body) {
       config = {
         method: 'get',
-        url: session_url,
-        data: body,
+        url: sessionUrl,
+        data: body
       };
     } else if (params) {
       config = {
         method: 'get',
-        url: session_url,
-        params: params,
+        url: sessionUrl,
+        params
       };
     } else if (header) {
       config = {
         method: 'get',
-        url: session_url,
-        headers: header,
+        url: sessionUrl,
+        headers: header
       };
     } else {
       config = {
         method: 'get',
-        url: session_url,
+        url: sessionUrl
       };
     }
 
-    // console.log('====================================');
+    // console.log('');
     console.log('config', config);
-    console.log('====================================');
-    var resultAxios = await axios(config);
-    var endTime = performance.now();
-    console.log(`Call ${session_url} ${endTime - startTime} milliseconds.`);
+    console.log('');
+    const resultAxios = await axios(config);
+    const endTime = performance.now();
+    console.log(`Call ${sessionUrl} ${endTime - startTime} milliseconds.`);
 
     return resultAxios;
   } catch (error) {
@@ -45,83 +45,90 @@ export const GetRequest = async (session_url, body, params, header = null) => {
   }
 };
 
-export const PostRequest = async (session_url, body, token = null) => {
-  console.log('session_url, body, params, header = null', session_url, body);
-  var config;
+export const PostRequest = async (sessionUrl, body, token = null) => {
+  console.log('================PostRequest====================');
+  console.log('sessionUrl, body, params, header = null', sessionUrl, body);
+
+  let config;
   if (token) {
     config = {
       headers: {
-        token: token,
-      },
+        token
+      }
     };
   } else {
     config = '';
   }
-  try {
-    const data = await axios.post(session_url, body, config);
 
+  try {
+    const data = await axios.post(sessionUrl, body, config);
     return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const PatchRequest = async (session_url, body, token = null) => {
-  if (token) {
-    var config = {
-      headers: {
-        token: token,
-      },
-    };
-  }
-  try {
-    return await axios.patch(session_url, body, config);
-  } catch (error) {
-    return error;
-  }
-};
-export const DeleteRequest = async (session_url, body, token = null) => {
-  if (token) {
-    var config = {
-      headers: {
-        token: token,
-      },
-    };
-  }
-  try {
-    return await axios.delete(session_url, body, config);
-  } catch (error) {
-    return error;
-  }
-};
-
-export const PutRequest = async (session_url, body, token = null) => {
-
-
-  console.log('====================================');
-  console.log('body', body);
-  console.log('====================================');
-  let data = JSON.stringify(body);
-
-  let config = {
-    method: 'put',
-    maxBodyLength: Infinity,
-    url: session_url,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: data,
-  };
-
-  try {
-    console.log('====================================');
-    console.log('config---->', config);
-    console.log('====================================');
-    return await axios.request(config);
   } catch (error) {
     console.log('====================================');
     console.log('error', error);
     console.log('====================================');
+    return error;
+  }
+};
+
+export const PatchRequest = async (sessionUrl, body, token = null) => {
+  let config;
+
+  if (token) {
+    config = {
+      headers: {
+        token
+      }
+    };
+  }
+  try {
+    return await axios.patch(sessionUrl, body, config);
+  } catch (error) {
+    return error;
+  }
+};
+export const DeleteRequest = async (sessionUrl, body, token = null) => {
+  let config;
+
+  if (token) {
+    config = {
+      headers: {
+        token
+      }
+    };
+  }
+  try {
+    return await axios.delete(sessionUrl, body, config);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const PutRequest = async (sessionUrl, body, token = null) => {
+  console.log('');
+  console.log('body', body);
+  console.log('');
+  const data = JSON.stringify(body);
+
+  const config = {
+    method: 'put',
+    maxBodyLength: Infinity,
+    url: sessionUrl,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data
+  };
+
+  try {
+    console.log('');
+    console.log('config---->', config);
+    console.log('');
+    return await axios.request(config);
+  } catch (error) {
+    console.log('');
+    console.log('error', error);
+    console.log('');
     return error;
   }
 };

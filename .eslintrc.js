@@ -1,32 +1,88 @@
-
- module.exports = {
+module.exports = {
   env: {
-    browser: true,
     es2021: true,
+    browser: true
   },
-  extends: 'airbnb',
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: ['.eslintrc.{js,cjs}'],
-      parserOptions: {
-        sourceType: 'script',
-      },
-    },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'airbnb',
+    'prettier'
   ],
   parserOptions: {
+    ecmaFeatures: {
+      jsx: true
+    },
     ecmaVersion: 'latest',
-    sourceType: 'module',
+    sourceType: 'module'
   },
+  plugins: ['react'],
   rules: {
+    'no-console': 'off',
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector:
+          "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        message: 'Unexpected property on console object was called'
+      }
+    ],
+    'linebreak-style': ['error', 'unix'],
+    semi: ['error', 'always'],
+    quotes: [
+      'error',
+      'single',
+      { avoidEscape: true, allowTemplateLiterals: false }
+    ],
+    'react/function-component-definition': [
+      'error',
+      { namedComponents: 'arrow-function' }
+    ],
+    'react/jsx-filename-extension': [0, { allow: 'as-needed' }],
+    'jsx-quotes': [2, 'prefer-single'],
+    'object-curly-newline': 'off',
+    'comma-dangle': ['error', 'never'],
+    'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': ['off', { target: 'any' }],
-    'import/no-unresolved': 'off', // Disable the eslintimport/no-unresolved rule,
-    'import/order': 'on',
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    // 'import/no-unresolved': [2, { ignore: ['/decide/**'] }], // Disable the eslintimport/no-unresolved rule,
+    // 'import/no-unresolved': 2, // Disable the eslintimport/no-unresolved rule,
+    'import/no-unresolved': [
+      2,
+      {
+        ignore: ['^decide/', '^checkout/', '^host/'] // Ignore paths starting with 'decide/'
+      }
+    ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true, // Allow devDependencies
+        optionalDependencies: false, // Disallow optionalDependencies
+        peerDependencies: false // Disallow peerDependencies
+      }
+    ],
+    'node/no-dynamic-require': 'off',
+    'import/order': 2
   },
-<<<<<<< HEAD
+  overrides: [
+    {
+      files: [
+        '**/*.spec.js',
+        '**/*.spec.jsx',
+        '**/*.test.js',
+        '.eslintrc.{js,cjs}'
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ],
+  ignorePatterns: [
+    'node_modules/',
+    '**/node_modules/',
+    '/**/node_modules/*'
+  ],
+  settings: {}
 };
-=======
-};
->>>>>>> fc0cd67 (updated code with eslint rules)

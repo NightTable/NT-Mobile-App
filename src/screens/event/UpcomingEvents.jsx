@@ -1,30 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  Pressable,
-  ScrollView,
-} from "react-native";
-import { Box } from "native-base";
-import { Image } from "expo-image";
-import dayjs from "dayjs";
+import { SafeAreaView, StyleSheet, Text, Pressable, ScrollView } from 'react-native';
+import { Box } from 'native-base';
+import { Image } from 'expo-image';
+import dayjs from 'dayjs';
 
 //Components
-import { HeaderWithLeftIcon } from "../../components/Header";
+import { HeaderWithLeftIcon } from '../../components/Header';
 //THEME
-import { colors, typography } from "../../theme";
+import { colors, typography } from '../../theme';
 //Redux
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import {
-  getEventTableConfigOfClub,
-  updateClubReletatedLoaderData,
-} from "../../store/action/clubs";
-import {
-  disableLoader,
-  enableLoader,
-} from "../../components/popUp/loader/trigger";
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getEventTableConfigOfClub, updateClubReletatedLoaderData } from '../../store/action/clubs';
+import { disableLoader, enableLoader } from '../../components/popUp/loader/trigger';
 
 //MAIN FUNCTION
 const UpcomingEvents = ({ navigation, route }) => {
@@ -33,15 +21,15 @@ const UpcomingEvents = ({ navigation, route }) => {
   //Store
   const clubStore = useSelector((state) => state.club);
   const [selectedEvent, setselectedEvent] = useState([]);
-  // console.log("====================================");
+  // console.log("");
   // console.log("clubStore.isLoading", clubStore.isLoading);
-  // console.log("====================================");
+  // console.log("");
   useEffect(() => {
     if (clubStore.isLoading === false) {
       disableLoader();
-      navigation.navigate("TableConfigurations", {
+      navigation.navigate('TableConfigurations', {
         clubData: route?.params?.clubData,
-        selectedEventData: selectedEvent,
+        selectedEventData: selectedEvent
       });
       dispatch(updateClubReletatedLoaderData(true));
     }
@@ -53,24 +41,23 @@ const UpcomingEvents = ({ navigation, route }) => {
     <SafeAreaView
       style={{
         backgroundColor: colors.black.black800,
-        flex: 1,
-      }}
-    >
+        flex: 1
+      }}>
       <HeaderWithLeftIcon
         title={route?.params?.clubData?.name}
-        icon={"arrowleft"}
-        iconDirectory={"AntDesign"}
+        icon={'arrowleft'}
+        iconDirectory={'AntDesign'}
         onSubmit={() => {
-          navigation.navigate("Club", {
-            clubData: route?.params?.clubData,
+          navigation.navigate('Club', {
+            clubData: route?.params?.clubData
           });
         }}
       />
-      <Box style={{ width: "100%", height: "40%", alignItems: "center" }}>
+      <Box style={{ width: '100%', height: '40%', alignItems: 'center' }}>
         <Image
-          style={{ width: "100%", height: 300 }}
+          style={{ width: '100%', height: 300 }}
           source={{
-            uri: route?.params?.clubData?.photos[0],
+            uri: route?.params?.clubData?.photos[0]
           }}
         />
       </Box>
@@ -81,9 +68,8 @@ const UpcomingEvents = ({ navigation, route }) => {
           marginHorizontal: 4,
           borderRadius: 10,
           padding: 8,
-          marginVertical: 10,
-        }}
-      >
+          marginVertical: 10
+        }}>
         <Box style={{ marginVertical: 6 }}>
           <Text style={{ color: colors.gold.gold200, ...typography.regular.regular16 }}>Upcoming Events</Text>
         </Box>
@@ -95,53 +81,45 @@ const UpcomingEvents = ({ navigation, route }) => {
                     <Box
                       style={{
                         backgroundColor: colors.gold.gold100,
-                        borderRadius: 6,
-                      }}
-                    >
+                        borderRadius: 6
+                      }}>
                       <Pressable
                         style={{
-                          flexDirection: "row",
-                          marginTop: 4,
+                          flexDirection: 'row',
+                          marginTop: 4
                         }}
                         key={item._id}
                         onPress={() => {
                           //  alert(`${JSON.stringify(item)}`);
                           setselectedEvent(item);
                           enableLoader();
-                          dispatch(
-                            getEventTableConfigOfClub(
-                              route?.params?.clubData?._id,
-                              item?._id
-                            )
-                          );
-                        }}
-                      >
+                          dispatch(getEventTableConfigOfClub(route?.params?.clubData?._id, item?._id));
+                        }}>
                         <Box
                           style={{
-                            justifyContent: "center",
+                            justifyContent: 'center',
                             marginRight: 10,
-                            borderRadius: 30,
-                          }}
-                        >
+                            borderRadius: 30
+                          }}>
                           <Image
                             source={{
-                              uri: item?.picture,
+                              uri: item?.picture
                             }}
                             style={{
                               width: 60,
                               height: 60,
-                              resizeMode: "contain",
+                              resizeMode: 'contain',
                               borderRadius: 30,
                               margin: 6,
                               borderWidth: 5,
-                              borderColor: colors.gold.gold200,
+                              borderColor: colors.gold.gold200
                             }}
                           />
                         </Box>
-                        <Box style={{ justifyContent: "center" }}>
+                        <Box style={{ justifyContent: 'center' }}>
                           <Text style={[typography.regular.regular16]}>{item.name}</Text>
                           <Text style={[typography.regular.regular16]}>
-                            {dayjs(item?.eventDate).format("DD-MM-YYYY HH:MM")}
+                            {dayjs(item?.eventDate).format('DD-MM-YYYY HH:MM')}
                           </Text>
                         </Box>
                       </Pressable>

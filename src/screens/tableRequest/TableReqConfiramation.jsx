@@ -10,7 +10,7 @@ import {
   Pressable,
   ImageBackground,
   Alert,
-  View,
+  View
 } from 'react-native';
 import { Image } from 'expo-image';
 //component
@@ -31,7 +31,7 @@ let paymentTypeMethod = [
     short_form: 'snpl',
     name: 'split-now-pay-later',
     description:
-      ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.',
+      ' method. This means that you are choosing to assign each participant a joining fee. Note that this method does not create an official reservation upon creation of the request; it only gives you the option to negotiate fees with participants before finalizing anything. You may lose your table selections to someone else who either chooses the pay-now-split-later method, or finalizes their reservation before yours.'
   },
   {
     id: 2,
@@ -39,8 +39,8 @@ let paymentTypeMethod = [
 
     name: 'pay-now-split-later',
     description:
-      ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.',
-  },
+      ' method. This means that you are reserving a table and are responsible for paying the full cost of the table initially upon creation of the request.'
+  }
 ];
 //main function
 const TableReqConfiramation = ({ navigation, route }) => {
@@ -53,15 +53,15 @@ const TableReqConfiramation = ({ navigation, route }) => {
       <>
         <Box
           style={{
-            padding: 12,
+            padding: 12
           }}>
           <Text
             style={[
               typography.semBold.semBold14,
               {
                 color: colors.gold.gold100,
-                paddingVertical: 6,
-              },
+                paddingVertical: 6
+              }
             ]}>
             Club Name : {route?.params?.clubData?.name}
           </Text>
@@ -70,8 +70,8 @@ const TableReqConfiramation = ({ navigation, route }) => {
               typography.semBold.semBold14,
               {
                 color: colors.gold.gold100,
-                paddingVertical: 6,
-              },
+                paddingVertical: 6
+              }
             ]}>
             Event Name : {route?.params?.selectedEventData?.name}
           </Text>
@@ -80,9 +80,9 @@ const TableReqConfiramation = ({ navigation, route }) => {
     );
   };
 
-  console.log('====================================');
+  console.log('');
   console.log('route=====>', route?.params);
-  console.log('====================================');
+  console.log('');
 
   return (
     <>
@@ -90,7 +90,7 @@ const TableReqConfiramation = ({ navigation, route }) => {
         style={{
           paddingTop: 40,
           backgroundColor: colors.black.black800,
-          height: '100%',
+          height: '100%'
         }}>
         <HeaderWithLeftIcon
           title={'Table Request Confirmation'}
@@ -101,7 +101,7 @@ const TableReqConfiramation = ({ navigation, route }) => {
           onSubmit={() => {
             navigation.navigate('TableConfigurations', {
               clubData: route?.params?.clubData,
-              selectedEventData: route?.params?.selectedEventData,
+              selectedEventData: route?.params?.selectedEventData
             });
           }}
           onPressRight={() => {
@@ -115,7 +115,7 @@ const TableReqConfiramation = ({ navigation, route }) => {
             borderColor: colors.gold.gold100,
             borderWidth: 1,
             padding: 18,
-            height: '100%',
+            height: '100%'
           }}>
           <ClubandEventNameCard />
 
@@ -130,8 +130,8 @@ const TableReqConfiramation = ({ navigation, route }) => {
                         color: 'white',
                         //   color: colors.gold.gold100,
                         justifyContent: 'center', //Centered vertically
-                        alignItems: 'center', //Centered horizontally
-                      },
+                        alignItems: 'center' //Centered horizontally
+                      }
                     ]}>
                     {item?.tableMapId} : $ {item?.minPrice} ,
                   </Text>
@@ -149,7 +149,7 @@ const TableReqConfiramation = ({ navigation, route }) => {
             }>
             <ButtonComp
               onSubmit={() => {
-               // here you can integrate the stripe payment ::>>>
+                // here you can integrate the stripe payment ::>>>
               }}
               text={'Pay Now'}
               backgroundColor={colors.gold.gold100}
@@ -166,15 +166,15 @@ export default TableReqConfiramation;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.black.black800,
-    height: '100%',
+    height: '100%'
   },
   mainBox: {
     paddingHorizontal: 18,
-    flex: 1,
+    flex: 1
   },
   textHeading: {
     color: colors.gold.gold100,
-    paddingTop: 20,
+    paddingTop: 20
   },
   input: {
     height: 20,
@@ -189,6 +189,6 @@ const styles = StyleSheet.create({
     color: colors.gold.gold100,
     fontSize: 14,
     width: '20%',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });

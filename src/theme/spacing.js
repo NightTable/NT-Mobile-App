@@ -4,7 +4,7 @@ export const paddingValue = {
     value3: '6%',
     value4: '8%',
     value5: '10%',
-    value6: '12%',
+    value6: '12%'
   };
   
   export const marginValue = {
@@ -13,7 +13,7 @@ export const paddingValue = {
     value3: '6%',
     value4: '8%',
     value5: '10%',
-    value6: '12%',
+    value6: '12%'
   };
   
   export const value = {
@@ -25,6 +25,6 @@ export const paddingValue = {
     broadest: '12%',
     thick: '14%',
     thicker: '16%',
-    thickest: '18%',
+    thickest: '18%'
   };
   
