@@ -1,31 +1,29 @@
+/* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { Box } from 'native-base';
 import { Text, StyleSheet, ScrollView, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native';
-import { Button } from '../../components/Buttons';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-//THEME
+import {  useDispatch, useSelector } from 'react-redux';
+// THEME
 import { colors, typography } from '../../theme';
-//COMPONENTS
+// COMPONENTS
 import { HeaderWithLeftIcon } from '../../components/Header';
-import { TableConfigurationsCard } from '../../features/tableConfig/TableConfig';
 import TableConfigTableComp from '../../features/tableConfig/TableConfigTableComp';
 
-//DIMENSIONS
+// DIMENSIONS
 const { width, height } = Dimensions.get('screen');
 
-//MAIN FUNCTION
+// MAIN FUNCTION
 const TableConfigurations = ({ route, navigation }) => {
-  //dispatch
+  // dispatch
 
   const dispatch = useDispatch();
-  //Store
+  // Store
   const clubStore = useSelector((state) => state.club);
 
-  //table configs
+  // table configs
   const [tableConfigs, setTableConfigs] = useState(clubStore?.individualClubTableConfig || []);
 
-  const renderTableConfigs = () => {
-    return tableConfigs.map((config, index) => {
+  const renderTableConfigs = () => tableConfigs.map((config, index) => {
       console.log(config);
       return config ? (
         <TableConfigTableComp
@@ -36,24 +34,20 @@ const TableConfigurations = ({ route, navigation }) => {
         />
       ) : null;
     });
-  };
 
   useEffect(() => {
     console.log('state tc', tableConfigs);
     console.log('store', clubStore?.individualClubTableConfig);
   }, []);
 
-  //individualClubTableConfig
-  // console.log("");
-  // console.log("TableConfigurations :: screen ====>", clubStore?.individualClubTableConfig);
-  // console.log("");
+
   return (
     <SafeAreaView style={styles.container}>
       <Box style={{ width: '100%' }}>
         <HeaderWithLeftIcon
-          title={'Table Prices'}
-          icon={'arrowleft'}
-          iconDirectory={'AntDesign'}
+          title='Table Prices'
+          icon='arrowleft'
+          iconDirectory='AntDesign'
           onSubmit={() => {
             navigation.navigate('UpcomingEvents', {
               clubData: route?.params?.clubData,
@@ -67,10 +61,10 @@ const TableConfigurations = ({ route, navigation }) => {
           paddingHorizontal: 20,
           marginBottom: 20,
           marginTop: 14,
-          /*height: "20%"*/
+          /* height: "20%" */
           flex: 1
-          //borderWidth: 2,
-          //borderColor: 'red'
+          // borderWidth: 2,
+          // borderColor: 'red'
         }}>
         <Text
           style={{
@@ -88,13 +82,13 @@ const TableConfigurations = ({ route, navigation }) => {
           no-fee to join a table.
         </Text>
       </Box>
-      <Box style={{ flex: 1 /*borderWidth: 2, borderColor: 'green'*/ }}>
+      <Box style={{ flex: 1 /* borderWidth: 2, borderColor: 'green' */ }}>
         {/* This Box contains your headers "Table Map ID", "Table Type", "Table Minimum" */}
-        <Box style={{ flex: 1 /*borderWidth: 2, borderColor: 'green'*/ }}>
+        <Box style={{ flex: 1 /* borderWidth: 2, borderColor: 'green' */ }}>
           <Box
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-evenly' /*borderWidth: 2, borderColor: 'blue', marginBottom: 50*/
+              justifyContent: 'space-evenly' /* borderWidth: 2, borderColor: 'blue', marginBottom: 50 */
             }}>
             <Box style={styles.splitBox}>
               <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Map ID</Text>
@@ -107,14 +101,14 @@ const TableConfigurations = ({ route, navigation }) => {
             </Box>
           </Box>
           <ScrollView
-            style={{ borderWidth: 2, borderColor: colors.gold.gold200, borderRadius: 15, flex: 1 /*marginTop: -10*/ }}
-            showsVerticalScrollIndicator={true}>
+            style={{ borderWidth: 2, borderColor: colors.gold.gold200, borderRadius: 15, flex: 1 /* marginTop: -10 */ }}
+            showsVerticalScrollIndicator>
             {renderTableConfigs()}
           </ScrollView>
         </Box>
       </Box>
 
-      <Box style={{ height: '20%', flex: 1, padding: 20 /*borderWidth: 2, borderColor: 'red'*/ }}>
+      <Box style={{ height: '20%', flex: 1, padding: 20 /* borderWidth: 2, borderColor: 'red' */ }}>
         <TouchableOpacity
           disabled={false}
           onPress={() => {
@@ -147,10 +141,10 @@ const styles = StyleSheet.create({
   },
   splitBox: {
     width: '33%',
-    //justifyContent: "center",
+    // justifyContent: "center",
     alignItems: 'center',
-    //borderWidth: 2,
-    //borderColor: 'green',
+    // borderWidth: 2,
+    // borderColor: 'green',
     marginBottom: '2%'
   }
 });

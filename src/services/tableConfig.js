@@ -4,7 +4,7 @@ import { GetRequest } from '../utils/axios/Axios';
 export const getEventTableConfigData = async (clubId, eventId) => {
   try {
     const response = await GetRequest(
-      `${process.env.REACT_APP_BASE_URL}/tableconfigurations/tableConfigurations/${eventId}`,
+      `${process.env.REACT_APP_BASE_URL}tableconfigurations/tableConfigurations/${eventId}`,
       '',
       ''
     );

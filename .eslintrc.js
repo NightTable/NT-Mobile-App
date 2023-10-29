@@ -47,6 +47,7 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-static-element-interactions': 0,
+    'react/prop-types':2,
     // 'import/no-unresolved': [2, { ignore: ['/decide/**'] }], // Disable the eslintimport/no-unresolved rule,
     // 'import/no-unresolved': 2, // Disable the eslintimport/no-unresolved rule,
     'import/no-unresolved': [

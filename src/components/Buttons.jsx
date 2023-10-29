@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { ActivityLoader } from './Loaders';
 import { Box } from 'native-base';
-import { Text, Dimensions, Pressable } from 'react-native';
+import { Text, Pressable } from 'react-native';
+import { ActivityLoader } from './Loaders';
 import { colors, typography } from '../theme';
 
-const { screenWidth, screenHeight } = Dimensions.get('screen');
-//USEAGE
+// USEAGE
 // Step 1:::> import {Button} from "_component_Directory_"
 // Step 2:::> Use below code to render component and pass props according to requirement
-{
+
   /* <Button
             text={'CLICdK ME'}
             onSubmit={() => {
@@ -21,78 +20,50 @@ const { screenWidth, screenHeight } = Dimensions.get('screen');
             fontweight={'bold'}
             iconName={'eye'}
           /> */
-}
+
 
 export const Button = (props) => {
   const [loader, setloader] = useState(props.loader);
   return (
-    <>
-      <Pressable
+    <Pressable
         onPress={() => {
           props.onSubmit();
         }}
         style={{ width: '100%', height: 40 }}>
         <Box
-          justifyContent={'center'}
-          alignItem={'center'}
-          // leftIcon={
-          //   props.iconName == undefined || props.iconName.length < 0 ? null : (
-          //     <Feather name={props.iconName} size={22} />
-          //   )
-          // }
-          // fontSize="sm"
-          // colorScheme={props.textColor}
-          // variant={props?.variant}
-          // bgColor={props.bgColor}
-          // onPress={() => {
-          //   props.onSubmit();
-          // }}
-          // _icon={{
-          //   color: props.textColor,
-          // }}
-          // _text={{
-          //   color: props.textColor,
-          //   fontWeight: props.fontweight,
-          // }}
-          // borderColor={props.borderColor}
+          justifyContent='center'
+          alignItem='center'
+         
         >
           {loader === false ? (
             <Box style={{ alignItem: 'center', justifyContent: 'center' }}>
               <ActivityLoader />
             </Box>
           ) : (
-            <>
-              <Box
+            <Box
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 40,
-                  backgroundColor:
-                    props?.disabled === true
-                      ? colors.grey.grey400
-                      : props.backgroundColor,
-                  borderRadius: 4,
+                  backgroundColor: props?.disabled === true ? colors.grey.grey400 : props.backgroundColor,
+                  borderRadius: 4
                 }}
-                // onPress={() => {
-                //   props.OnClick();
-                // }}
+                
               >
                 <Text
-                  style={[{
-                    color: props.textColor,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  },
-                    typography.bold.bold16,
-                  ]}
-                >
+                  style={[
+                    {
+                      color: props.textColor,
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    },
+                    typography.bold.bold16
+                  ]}>
                   {props.text}
                 </Text>
               </Box>
-            </>
           )}
         </Box>
       </Pressable>
-    </>
   );
 };
