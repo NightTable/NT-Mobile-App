@@ -1,31 +1,31 @@
-import React from "react";
-import { StyleSheet, Pressable, Text } from "react-native";
-import { Box } from "native-base";
-//Component
-import Entypo from "react-native-vector-icons/Entypo";
-import AntDesign from "react-native-vector-icons/AntDesign";
-//theme
-import { typography, colors } from "../theme";
+/* eslint-disable import/no-unresolved */
+import React from 'react';
+import { StyleSheet, Pressable, Text, View } from 'react-native';
+// Component
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+// theme
+import { typography, colors } from '../theme';
 
 export const HeaderWithLeftIcon = (props) => {
   const headerIcon = (iconDirectory) => {
-    if (iconDirectory === "Entypo") {
+    if (iconDirectory === 'Entypo') {
       return <Entypo name={props.icon} color={colors.gold.gold200} size={30} />;
-    } else if (iconDirectory === "AntDesign") {
+    } if (iconDirectory === 'AntDesign') {
       return (
         <AntDesign name={props.icon} color={colors.gold.gold200} size={30} />
       );
-    } else {
+    } 
       return null;
-    }
+    
   };
 
   const headerRightIcon = (iconRightDirectory) => {
-    if (iconRightDirectory === "Entypo") {
+    if (iconRightDirectory === 'Entypo') {
       return (
         <Entypo name={props.iconRight} color={colors.gold.gold200} size={24} />
       );
-    } else if (iconRightDirectory === "MaterialIcons") {
+    } if (iconRightDirectory === 'MaterialIcons') {
       return (
         <MaterialIcons
           name={props.iconRight}
@@ -33,7 +33,7 @@ export const HeaderWithLeftIcon = (props) => {
           size={30}
         />
       );
-    } else if (iconRightDirectory === "Foundation") {
+    } if (iconRightDirectory === 'Foundation') {
       return (
         <Ionicons
           name={props.iconRight}
@@ -41,7 +41,7 @@ export const HeaderWithLeftIcon = (props) => {
           size={30}
         />
       );
-    } else if (iconRightDirectory === "MaterialCommunityIcons") {
+    } if (iconRightDirectory === 'MaterialCommunityIcons') {
       return (
         <MaterialCommunityIcons
           name={props.iconRight}
@@ -49,15 +49,14 @@ export const HeaderWithLeftIcon = (props) => {
           size={30}
         />
       );
-    } else {
+    } 
       return null;
-    }
+    
   };
 
   return (
-    <>
-      <Box style={[styles.justification, styles.container, {}]}>
-        <Box>
+    <View style={[styles.justification, styles.container, {}]}>
+        <View>
           <Pressable
             onPress={() => {
               props.onSubmit();
@@ -65,18 +64,18 @@ export const HeaderWithLeftIcon = (props) => {
           >
             {headerIcon(props.iconDirectory)}
           </Pressable>
-        </Box>
-        <Box
+        </View>
+        <View
           style={{
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-          <Text style={[typography.bold.bold24, styles.color,]}>
+          <Text style={[typography.bold.bold24, styles.color]}>
             {props.title}
           </Text>
-        </Box>
-        <Box >
+        </View>
+        <View >
           <Pressable
             onPress={() => {
               props.onPressRight();
@@ -84,19 +83,18 @@ export const HeaderWithLeftIcon = (props) => {
           >
             {headerRightIcon(props.iconRightDirectory)}
           </Pressable>
-        </Box>
-      </Box>
-    </>
+        </View>
+      </View>
   );
 };
 
 export const HeaderWithIcons = (props) => {
   const headerRightIcon = (iconRightDirectory) => {
-    if (iconRightDirectory === "Entypo") {
+    if (iconRightDirectory === 'Entypo') {
       return (
         <Entypo name={props.iconRight} color={colors.white.white0} size={26} />
       );
-    } else if (iconRightDirectory === "MaterialIcons") {
+    } if (iconRightDirectory === 'MaterialIcons') {
       return (
         <MaterialIcons
           name={props.iconRight}
@@ -104,7 +102,7 @@ export const HeaderWithIcons = (props) => {
           size={26}
         />
       );
-    } else if (iconRightDirectory === "Foundation") {
+    } if (iconRightDirectory === 'Foundation') {
       return (
         <Ionicons
           name={props.iconRight}
@@ -112,7 +110,7 @@ export const HeaderWithIcons = (props) => {
           size={26}
         />
       );
-    } else if (iconRightDirectory === "MaterialCommunityIcons") {
+    } if (iconRightDirectory === 'MaterialCommunityIcons') {
       return (
         <MaterialCommunityIcons
           name={props.iconRight}
@@ -120,21 +118,21 @@ export const HeaderWithIcons = (props) => {
           size={26}
         />
       );
-    } else {
+    } 
       return null;
-    }
+    
   };
 
   const headerLeftIcon = (iconLeftDirectory) => {
-    if (iconLeftDirectory === "Entypo") {
+    if (iconLeftDirectory === 'Entypo') {
       return (
         <Entypo name={props.iconLeft} color={colors.white.white0} size={22} />
       );
-    } else if (iconLeftDirectory === "Ionicons") {
+    } if (iconLeftDirectory === 'Ionicons') {
       return (
         <Ionicons name={props.iconLeft} color={colors.white.white0} size={22} />
       );
-    } else if (iconLeftDirectory === "AntDesign") {
+    } if (iconLeftDirectory === 'AntDesign') {
       return (
         <AntDesign
           name={props.iconLeft}
@@ -142,29 +140,28 @@ export const HeaderWithIcons = (props) => {
           size={22}
         />
       );
-    } else {
+    } 
       return null;
-    }
+    
   };
 
   return (
-    <>
-      <Box
+    <View
         style={[
           props.headerStyles,
           styles.justification,
           {
-            width: "100%",
+            width: '100%',
             height: 50,
-            alignItems: "center",
-            shadowColor: colors.black.black800,
-          },
+            alignItems: 'center',
+            shadowColor: colors.black.black800
+          }
         ]}
       >
-        <Box
+        <View
           style={[
             styles.row,
-            { alignItems: "center", justifyContent: "center" },
+            { alignItems: 'center', justifyContent: 'center' }
           ]}
         >
           <Pressable
@@ -174,19 +171,19 @@ export const HeaderWithIcons = (props) => {
           >
             {headerLeftIcon(props.iconLeftDirectory)}
           </Pressable>
-          <Box
-            flexDir={"row"}
-            style={{ justifyContent: "center", alignItems: "center" }}
+          <View
+            flexDir='row'
+            style={{ justifyContent: 'center', alignItems: 'center' }}
           >
             <Text style={[typography.regular.regular16, styles.color]}>
-              {props.welcome === true ? "Welcome" : ""}
+              {props.welcome === true ? 'Welcome' : ''}
             </Text>
             <Text style={[typography.bold.bold16, styles.color]}>
               {props.titleLeft}
             </Text>
-          </Box>
-        </Box>
-        <Box style={[styles.row, { alignItems: "center" }]}>
+          </View>
+        </View>
+        <View style={[styles.row, { alignItems: 'center' }]}>
           <Text style={[typography.bold.bold16, styles.color]}>
             {props.titleRight}
           </Text>
@@ -197,24 +194,23 @@ export const HeaderWithIcons = (props) => {
           >
             {headerRightIcon(props.iconRightDirectory)}
           </Pressable>
-        </Box>
-      </Box>
-    </>
+        </View>
+      </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
     paddingVertical: 10,
     backgroundColor: colors.black.black800,
-    flexDirection: "row",
-    alignContent: "center",
+    flexDirection: 'row',
+    alignContent: 'center',
     paddingHorizontal: 20,
-    justifyContent: "space-between",
+    justifyContent: 'space-between'
   },
 
   color: {
-    color: colors.gold.gold200,
-  },
+    color: colors.gold.gold200
+  }
 });

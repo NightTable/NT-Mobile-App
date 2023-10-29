@@ -1,169 +1,144 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "native-base";
-import {
-  Text,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-  SafeAreaView,
-  FlatList,
-  Pressable,
-  Image,
-  ImageBackground,
-  Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-//component
-import { HeaderWithLeftIcon } from "../../components/Header";
-//REDUX
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-//THEME
-import { colors, typography } from "../../theme";
-import { getEventOfClub } from "../../store/action/clubs";
-import { Button } from "../../components/Buttons";
-//DIMENSIONS
-const { width, height } = Dimensions.get("screen");
+import React, {  useState } from 'react';
+import { Text, StyleSheet, TextInput, Dimensions, SafeAreaView, View, Alert } from 'react-native';
+// component
+import { HeaderWithLeftIcon } from '../../components/Header';
+// REDUX
+// THEME
+import { colors, typography } from '../../theme';
+import { Button } from '../../components/Buttons';
+// DIMENSIONS
+const { width, height } = Dimensions.get('screen');
 
 const InfluencerAppl = ({ navigation }) => {
   const [profileData, setprofileData] = useState({
-    Fname: "",
-    Lname: "",
-    email: "",
-    phoneNumber: "",
+    Fname: '',
+    Lname: '',
+    email: '',
+    phoneNumber: ''
   });
   return (
-    <>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
         <HeaderWithLeftIcon
-          title={"Club Promoter Application"}
-          icon={"menu"}
-          iconDirectory={"Entypo"}
-          iconRightDirectory={"Entypo"}
-          iconRight={""}
+          title='Club Promoter Application'
+          icon='menu'
+          iconDirectory='Entypo'
+          iconRightDirectory='Entypo'
+          iconRight=''
           onSubmit={() => {
             navigation.openDrawer();
           }}
           onPressRight={() => {}}
         />
 
-        <Box style={[styles.mainBox]}>
+        <View style={[styles.mainBox]}>
           <Text style={[styles.heading]}>
-            Want to become a club Influencer ? Please fill out this form and your
-            Application will be sent to the club for review.
+            Want to become a club Influencer ? Please fill out this form and your Application will be sent to the club
+            for review.
           </Text>
 
-          <Box style={{ paddingBottom: 30 }}>
-            <Box style={styles.inputBox}>
-              <Text style={[styles.heading, typography.bold.bold16]}>
-                First Name
-              </Text>
+          <View style={{ paddingBottom: 30 }}>
+            <View style={styles.inputBox}>
+              <Text style={[styles.heading, typography.bold.bold16]}>First Name</Text>
               <TextInput
-                autoFocus={true}
+                autoFocus
                 style={[typography.regular.regular16, styles.input]}
                 onChangeText={(text) => {
                   setprofileData((previousState) => ({
                     ...previousState,
-                    Fname: text,
+                    Fname: text
                   }));
                 }}
                 value={profileData.Fname}
-                placeholder="Phone Number"
+                placeholder='Phone Number'
                 placeholderTextColor={colors.grey.grey800}
-                keyboardType="numeric"
+                keyboardType='numeric'
               />
-            </Box>
-            <Box style={styles.inputBox}>
-              <Text style={[styles.heading, typography.bold.bold16]}>
-                Last Name
-              </Text>
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={[styles.heading, typography.bold.bold16]}>Last Name</Text>
               <TextInput
-                autoFocus={true}
+                autoFocus
                 style={[typography.regular.regular16, styles.input]}
                 onChangeText={(text) => {
                   setprofileData((previousState) => ({
                     ...previousState,
-                    Lname: text,
+                    Lname: text
                   }));
                 }}
                 value={profileData.Lname}
-                placeholder="Phone Number"
+                placeholder='Phone Number'
                 placeholderTextColor={colors.grey.grey800}
-                keyboardType="numeric"
+                keyboardType='numeric'
               />
-            </Box>
-            <Box style={styles.inputBox}>
-              <Text style={[styles.heading, typography.bold.bold16]}>
-                Email
-              </Text>
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={[styles.heading, typography.bold.bold16]}>Email</Text>
               <TextInput
-                autoFocus={true}
+                autoFocus
                 style={[typography.regular.regular16, styles.input]}
                 onChangeText={(text) => {
                   setprofileData((previousState) => ({
                     ...previousState,
-                    email: text,
+                    email: text
                   }));
                 }}
                 value={profileData.email}
-                placeholder="Phone Number"
+                placeholder='Phone Number'
                 placeholderTextColor={colors.grey.grey800}
-                keyboardType="numeric"
+                keyboardType='numeric'
               />
-            </Box>
-            <Box style={styles.inputBox}>
-              <Text style={[styles.heading, typography.bold.bold16]}>
-                Phone Number
-              </Text>
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={[styles.heading, typography.bold.bold16]}>Phone Number</Text>
               <TextInput
-                autoFocus={true}
+                autoFocus
                 style={[typography.regular.regular16, styles.input]}
                 onChangeText={(text) => {
                   setprofileData((previousState) => ({
                     ...previousState,
-                    phoneNumber: text,
+                    phoneNumber: text
                   }));
                 }}
                 value={profileData.phoneNumber}
-                placeholder="Phone Number"
+                placeholder='Phone Number'
                 placeholderTextColor={colors.grey.grey800}
-                keyboardType="numeric"
+                keyboardType='numeric'
               />
-            </Box>
-          </Box>
+            </View>
+          </View>
           <Button
             disabled={false}
             onSubmit={() => {
               if (
-                profileData.Fname.trim() != "" &&
-                profileData.Lnamename.trim() != "" &&
-                profileData.email.trim() != "" &&
-                profileData.phoneNumber.trim() != ""
+                profileData.Fname.trim() != '' &&
+                profileData.Lnamename.trim() != '' &&
+                profileData.email.trim() != '' &&
+                profileData.phoneNumber.trim() != ''
               ) {
               } else {
-                Alert.alert("All the details are mandatory!");
+                Alert.alert('All the details are mandatory!');
               }
             }}
             backgroundColor={colors.gold.gold100}
-            text={"Submit"}
+            text='Submit'
           />
-        </Box>
+        </View>
       </SafeAreaView>
-    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.black.black800,
+    backgroundColor: colors.black.black800
   },
   mainBox: {
     paddingHorizontal: 18,
-    flex: 1,
+    flex: 1
   },
   textHeading: {
     color: colors.gold.gold100,
-    paddingTop: 20,
+    paddingTop: 20
   },
 
   input: {
@@ -174,15 +149,15 @@ const styles = StyleSheet.create({
     borderColor: colors.gold.gold100,
     borderRadius: 6,
     color: colors.gold.gold100,
-    fontSize: 16,
+    fontSize: 16
   },
   inputBox: {
-    paddingVertical: 10,
+    paddingVertical: 10
   },
   heading: {
     color: colors.gold.gold100,
-    paddingVertical: 8,
-  },
+    paddingVertical: 8
+  }
 });
 
 export default InfluencerAppl;

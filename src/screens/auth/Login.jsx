@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextInput, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants';
+
 // components
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import SearchDropdown from '../../components/SearchDropdown';

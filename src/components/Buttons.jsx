@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from 'native-base';
-import { Text, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { ActivityLoader } from './Loaders';
 import { colors, typography } from '../theme';
 
@@ -9,7 +8,7 @@ import { colors, typography } from '../theme';
 // Step 2:::> Use below code to render component and pass props according to requirement
 
   /* <Button
-            text={'CLICdK ME'}
+            text={'CLICK ME'}
             onSubmit={() => {
               console.log('BUtton clicked....!');
             }}
@@ -30,17 +29,17 @@ export const Button = (props) => {
           props.onSubmit();
         }}
         style={{ width: '100%', height: 40 }}>
-        <Box
+        <View
           justifyContent='center'
           alignItem='center'
          
         >
           {loader === false ? (
-            <Box style={{ alignItem: 'center', justifyContent: 'center' }}>
+            <View style={{ alignItem: 'center', justifyContent: 'center' }}>
               <ActivityLoader />
-            </Box>
+            </View>
           ) : (
-            <Box
+            <View
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -61,9 +60,9 @@ export const Button = (props) => {
                   ]}>
                   {props.text}
                 </Text>
-              </Box>
+              </View>
           )}
-        </Box>
+        </View>
       </Pressable>
   );
 };

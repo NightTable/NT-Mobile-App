@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-//components
+import React from 'react';
+// components
 
-//libraries
-import { Box, Text } from "native-base";
+// libraries
+import { View, Text } from 'native-base';
 import {
   Dimensions,
   TouchableOpacity,
   Image,
-  SafeAreaView,
-} from "react-native";
-//Utils
-const { height, width } = Dimensions.get("screen");
-import { value } from "../../theme/spacing";
-import { colors, typography } from "../../theme";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+  SafeAreaView
+} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { value } from '../../theme/spacing';
+import { colors, typography } from '../../theme';
+// Utils
+const { height, width } = Dimensions.get('screen');
 
-//HOW TO USE
+// HOW TO USE
 // STEP 1:  import {EventRegister} from 'react-native-event-listeners';
 // STEP 2:
 
@@ -42,10 +42,10 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 // popUpTheme={popUpTheme}
 // />
 
-//STEP 4 :
-//IF THE POP-UP IS SUCESS SEND sucess as true or false
+// STEP 4 :
+// IF THE POP-UP IS SUCESS SEND sucess as true or false
 // send msg
-//if you want to send other msg apart from this add in object
+// if you want to send other msg apart from this add in object
 // let obj = {
 //     sucess: true,
 //     msg: 'ESL Mapping Updated',
@@ -53,47 +53,43 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 //   EventRegister.emit('popupTriggerd', obj);
 
 // GLOBAL POP-UP ALERT
-export const PopUpAlertUi = (props) => {
-  return (
-    <>
-      <SafeAreaView>
-        <Box
+export const PopUpAlertUi = (props) => (
+    <SafeAreaView>
+        <View
           style={{
-            height: height,
-            width: width,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: colors.shadowColor,
+            height,
+            width,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: colors.shadowColor
           }}
         >
-          <Box
+          <View
             style={{
-              width: width,
-              borderRadius: 12,
+              width,
+              borderRadius: 12
             }}
           >
             {props?.closeBtnEnable === true ? (
-              <>
-                <Box
-                  style={{ flexDirection: "row", justifyContent: "flex-end" }}
+              <View
+                  style={{ flexDirection: 'row', justifyContent: 'flex-end' }}
                 >
                   <TouchableOpacity
                     style={{
                       paddingTop: value.micro,
-                      paddingHorizontal: value.micro,
+                      paddingHorizontal: value.micro
                     }}
                     onPress={() => {
                       props.onPopUpClose();
                     }}
                   >
                     <MaterialIcons
-                      name={"close"}
+                      name='close'
                       color={colors.black.black800}
                       size={26}
                     />
                   </TouchableOpacity>
-                </Box>
-              </>
+                </View>
             ) : null}
 
             <Text
@@ -101,34 +97,32 @@ export const PopUpAlertUi = (props) => {
                 typography.bold.bold16,
                 {
                   color: props.headingColor && props.headingColor,
-                  textAlign: "center",
+                  textAlign: 'center',
                   paddingVertical:
                     props?.message?.length > 0 ? value.regular : 0,
-                  width: "96%",
-                  lineHeight: 30,
-                },
+                  width: '96%',
+                  lineHeight: 30
+                }
               ]}
             >
               {props?.message}
             </Text>
 
             {!props?.img ? null : (
-              <Box
+              <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "center",
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   padding: 10,
-                  paddingBottom: 16,
+                  paddingBottom: 16
                 }}
               >
                 <Image source={props?.img} style={{ height: 60, width: 60 }} />
-              </Box>
+              </View>
             )}
 
-            <Box style={{ justifyContent: "flex-end" }}>{props?.renderfn}</Box>
-          </Box>
-        </Box>
+            <View style={{ justifyContent: 'flex-end' }}>{props?.renderfn}</View>
+          </View>
+        </View>
       </SafeAreaView>
-    </>
   );
-};

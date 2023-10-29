@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react';
-import { Box } from 'native-base';
-import { Text, StyleSheet, ScrollView, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, ScrollView, Dimensions, SafeAreaView, TouchableOpacity ,View} from 'react-native';
 import {  useDispatch, useSelector } from 'react-redux';
 // THEME
 import { colors, typography } from '../../theme';
@@ -43,7 +42,7 @@ const TableConfigurations = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Box style={{ width: '100%' }}>
+      <View style={{ width: '100%' }}>
         <HeaderWithLeftIcon
           title='Table Prices'
           icon='arrowleft'
@@ -55,8 +54,8 @@ const TableConfigurations = ({ route, navigation }) => {
             });
           }}
         />
-      </Box>
-      <Box
+      </View>
+      <View
         style={{
           paddingHorizontal: 20,
           marginBottom: 20,
@@ -81,34 +80,34 @@ const TableConfigurations = ({ route, navigation }) => {
           friends, or persons of interest should not let it stop them from joining, as they may request for a low fee or
           no-fee to join a table.
         </Text>
-      </Box>
-      <Box style={{ flex: 1 /* borderWidth: 2, borderColor: 'green' */ }}>
-        {/* This Box contains your headers "Table Map ID", "Table Type", "Table Minimum" */}
-        <Box style={{ flex: 1 /* borderWidth: 2, borderColor: 'green' */ }}>
-          <Box
+      </View>
+      <View style={{ flex: 1 /* borderWidth: 2, borderColor: 'green' */ }}>
+        {/* This View contains your headers "Table Map ID", "Table Type", "Table Minimum" */}
+        <View style={{ flex: 1 /* borderWidth: 2, borderColor: 'green' */ }}>
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-evenly' /* borderWidth: 2, borderColor: 'blue', marginBottom: 50 */
             }}>
-            <Box style={styles.splitBox}>
+            <View style={styles.splitBox}>
               <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Map ID</Text>
-            </Box>
-            <Box style={styles.splitBox}>
+            </View>
+            <View style={styles.splitBox}>
               <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Type</Text>
-            </Box>
-            <Box style={styles.splitBox}>
+            </View>
+            <View style={styles.splitBox}>
               <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Minimum</Text>
-            </Box>
-          </Box>
+            </View>
+          </View>
           <ScrollView
             style={{ borderWidth: 2, borderColor: colors.gold.gold200, borderRadius: 15, flex: 1 /* marginTop: -10 */ }}
             showsVerticalScrollIndicator>
             {renderTableConfigs()}
           </ScrollView>
-        </Box>
-      </Box>
+        </View>
+      </View>
 
-      <Box style={{ height: '20%', flex: 1, padding: 20 /* borderWidth: 2, borderColor: 'red' */ }}>
+      <View style={{ height: '20%', flex: 1, padding: 20 /* borderWidth: 2, borderColor: 'red' */ }}>
         <TouchableOpacity
           disabled={false}
           onPress={() => {
@@ -129,7 +128,7 @@ const TableConfigurations = ({ route, navigation }) => {
           }}>
           <Text style={[colors.black.black800, typography.bold.bold16]}>Organize a Table</Text>
         </TouchableOpacity>
-      </Box>
+      </View>
     </SafeAreaView>
   );
 };
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
 export default TableConfigurations;
 /*
 
-      <Box style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <TableConfigurationsCard
           data={clubStore?.individualClubTableConfig}
           onpress_return_selectedTableConfigs={(item) => {
@@ -159,6 +158,6 @@ export default TableConfigurations;
           }}
           showTables={true}
         />
-      </Box>
+      </View>
 
 */

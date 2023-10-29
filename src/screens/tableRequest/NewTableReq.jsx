@@ -25,7 +25,6 @@ import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
 import CostSplittingSectionComp from '../../features/costSplitting';
 import TableConfigComp from '../../features/NewTableReq/TableConfigComp';
-import { TableConfigurationsCard } from '../../features/tableConfig/TableConfig';
 import DyModal from '../../components/Modal';
 import { Button as ButtonComp } from '../../components/Buttons';
 

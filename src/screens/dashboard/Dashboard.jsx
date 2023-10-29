@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from 'native-base';
+import { View } from 'native-base';
 import {
   Text,
   StyleSheet,
-  TextInput,
   Dimensions,
   SafeAreaView,
   FlatList,
   Pressable,
   Image,
-  ImageBackground,
-  Alert,
+  Alert
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-//component
-import { HeaderWithLeftIcon } from "../../components/Header";
-//REDUX
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-//THEME
-import { colors, typography } from "../../theme";
-import { getEventOfClub } from "../../store/action/clubs";
-//DIMENSIONS
+// component
+import {  useDispatch, useSelector } from 'react-redux';
+import { HeaderWithLeftIcon } from '../../components/Header';
+// REDUX
+// THEME
+import { colors, typography } from '../../theme';
+import { getEventOfClub } from '../../store/action/clubs';
+// DIMENSIONS
 const { width, height } = Dimensions.get('screen');
 
 // import { getDistanceFromLatLonInMi } from "./algo";
@@ -28,7 +25,7 @@ const { width, height } = Dimensions.get('screen');
 // import { API_URL_IOS, API_URL_ANDROID, LOCAL_URL } from "@env";
 
 const Dashboard = ({ navigation }) => {
-  //SELECTORS
+  // SELECTORS
   const dispatch = useDispatch();
 
   const clubStore = useSelector((state) => state.club);
@@ -67,8 +64,7 @@ const Dashboard = ({ navigation }) => {
 
  
 
-  const ClubCards = ({ props }) => {
-    return (
+  const ClubCards = ({ props }) => (
       <Pressable
         style={{
           backgroundColor: colors.gold.gold100,
@@ -82,19 +78,19 @@ const Dashboard = ({ navigation }) => {
         }}
         onPress={() => {
           dispatch(getEventOfClub(props._id));
-          navigation.navigate("Club", {
-            clubData: props,
+          navigation.navigate('Club', {
+            clubData: props
           });
         }}
       >
         {/* Left Side: Club Name */}
-        <Box style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           <Text style={typography.bold.bold14}>{props?.name}</Text>
-        </Box>
+        </View>
   
         {/* Right Side: Image */}
-        <Box style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
-          <Box
+        <View style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center' }}>
+          <View
             style={{
               height: 54, // 50 (image height) + 2 (border width) * 2
               width: 54, // 50 (image width) + 2 (border width) * 2
@@ -108,41 +104,40 @@ const Dashboard = ({ navigation }) => {
               style={{
                 height: 50,
                 width: 50,
-                borderRadius: 25, // Circle shape
+                borderRadius: 25 // Circle shape
               }}
               source={{ uri: props?.photos[0] }}
             />
-          </Box>
-        </Box>
+          </View>
+        </View>
       </Pressable>
     );
-  };
   
   
 
   const logoutBtn = () =>
-    Alert.alert("Logout", "Are you sure want to logout?", [
+    Alert.alert('Logout', 'Are you sure want to logout?', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
+        style: 'cancel'
       },
       {
         text: 'OK',
         onPress: () => {
           navigation.navigate('Login');
-        },
-      },
+        }
+      }
     ]);
 
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithLeftIcon
-        title={'NightTable'}
-        icon={'menu'}
-        iconDirectory={'Entypo'}
-        iconRightDirectory={'Entypo'}
-        iconRight={'log-out'}
+        title='NightTable'
+        icon='menu'
+        iconDirectory='Entypo'
+        iconRightDirectory='Entypo'
+        iconRight='log-out'
         onSubmit={() => {
           navigation.openDrawer();
         }}
@@ -150,12 +145,12 @@ const Dashboard = ({ navigation }) => {
           logoutBtn();
         }}
       />
-      <Box style={styles.mainBox}>
+      <View style={styles.mainBox}>
         <Text style={[typography.bold.bold16, styles.textHeading]}>
           Welcome back, here's a list of clubs near your city
         </Text>
 
-        <Box style={{ alignItems: "center", paddingTop: 20, /*borderColor: 'white', borderWidth: 5,*/ }}>
+        <View style={{ alignItems: 'center', paddingTop: 20 /* borderColor: 'white', borderWidth: 5, */ }}>
           <FlatList
             style={{
               borderColor: colors.gold.gold200,
@@ -164,19 +159,17 @@ const Dashboard = ({ navigation }) => {
               borderRadius: 10
             }}
             showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={true}
+            showsVerticalScrollIndicator
             contentContainerStyle={{
               indicatorStyle: colors.gold.gold100, // change this to the color you desire; works only on iOS
               width: 5
             }}
             data={clubStore?.allClubs}
-            renderItem={({ item }) => {
-              return <ClubCards props={item} />;
-            }}
+            renderItem={({ item }) => <ClubCards props={item} />}
             keyExtractor={(item) => item._id.toString()}
           />
-        </Box>
-      </Box>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -184,17 +177,17 @@ const Dashboard = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.black.black800,
+    backgroundColor: colors.black.black800
   },
   mainBox: {
     paddingHorizontal: 18,
-    flex: 1,
+    flex: 1
 
   },
   clubListContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    height: 400 * height,
+    height: 400 * height
   },
   input: {
     height: 40 * height,
@@ -203,17 +196,17 @@ const styles = StyleSheet.create({
     padding: 10 * height,
     borderTopWidth: 0,
     borderRightWidth: 0,
-    borderLeftWidth: 0,
+    borderLeftWidth: 0
   },
   textHeading: {
     color: colors.gold.gold200,
-    paddingTop: 20,
-  },
+    paddingTop: 20
+  }
 });
 
 export default Dashboard;
 {
-  /*<Box
+  /* <View
           style={{
             width: "100%",
             alignItems: "center",
@@ -237,5 +230,5 @@ export default Dashboard;
               borderBottomColor: colors.gold.gold200,
               color: colors.gold.gold200,
             }}
-          /> </Box>*/
+          /> </View> */
 }

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Box } from 'native-base';
-import { Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-//THEME
+import React, {  useState } from 'react';
+import { View } from 'native-base';
+import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+// THEME
 import { colors, typography } from '../../theme';
-import ClosedDropDown from '../../../assets/chevron-back-outline.png';
 import OpenDropDown from '../../../assets/chevron-back-outline-collapsed.png';
 
-//DIMENSIONS
+// DIMENSIONS
 
 export const TableConfigurationsCard = ({
   data,
@@ -27,29 +26,25 @@ export const TableConfigurationsCard = ({
 
   const onTableConfigPressed = (item) => {
     if (showTables === false) {
-      //LOGIC FOR SELECTING MULTIPLE TABLE CONFIG'S
+      // LOGIC FOR SELECTING MULTIPLE TABLE CONFIG'S
       let tempArrIds = [];
       let tempArrDatas = [];
 
-      //if one item is selected and present in array
+      // if one item is selected and present in array
       if (selectedTable_ids?.length > 0) {
-        let checkItemIndex = selectedTable_ids?.indexOf(item?._id);
+        const checkItemIndex = selectedTable_ids?.indexOf(item?._id);
         if (checkItemIndex === -1) {
-          //if item is not present
+          // if item is not present
           tempArrIds = [...selectedTable_ids, item?._id];
           tempArrDatas = [...selectedTableData, item];
           setselectedTableData(tempArrDatas);
           setselectedTable_ids(tempArrIds);
           onpress_return_selectedTableConfigs(tempArrDatas);
         } else {
-          //if item is present pop-out that data
-          tempArrIds = selectedTable_ids?.filter((data) => {
-            return data != item?._id;
-          });
+          // if item is present pop-out that data
+          tempArrIds = selectedTable_ids?.filter((data) => data != item?._id);
 
-          tempArrDatas = selectedTableData?.filter((data) => {
-            return data?._id != item?._id;
-          });
+          tempArrDatas = selectedTableData?.filter((data) => data?._id != item?._id);
 
           setselectedTableData(tempArrDatas);
           setselectedTable_ids(tempArrIds);
@@ -62,7 +57,7 @@ export const TableConfigurationsCard = ({
         onpress_return_selectedTableConfigs([item]);
       }
     } else {
-      //IF SHOW TABE IS TRUE
+      // IF SHOW TABE IS TRUE
       return onpress_return_selectedTableConfigs(item);
     }
   };
@@ -70,7 +65,7 @@ export const TableConfigurationsCard = ({
   const getSelectedColor = (item) => {
     if (showTables === true) {
       return colors.gold.gold200;
-    } else if (showTables === false) {
+    } if (showTables === false) {
       console.log('');
       console.log('selectedTable_ids', selectedTable_ids);
       console.log('');
@@ -79,29 +74,24 @@ export const TableConfigurationsCard = ({
   };
 
   return (
-    <>
-      <Box>
-        <Box style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <Box style={styles.splitBox}>
+    <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <View style={styles.splitBox}>
             <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Map ID</Text>
-          </Box>
-          <Box style={styles.splitBox}>
+          </View>
+          <View style={styles.splitBox}>
             <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Type</Text>
-          </Box>
-          <Box style={styles.splitBox}>
+          </View>
+          <View style={styles.splitBox}>
             <Text style={[typography.bold.bold16, { color: colors.gold.gold200 }]}>Table Minimum</Text>
-          </Box>
-        </Box>
+          </View>
+        </View>
 
         {data && (
           <>
-            {data?.map((item) => {
-              return (
-                <>
-                  <TouchableOpacity
-                    key={() => {
-                      return String(item?.tableMapId);
-                    }}
+            {data?.map((item) => (
+                <TouchableOpacity
+                    key={() => String(item?.tableMapId)}
                     onPress={() => {
                       onTableConfigPressed(item);
                       toggleDropDown();
@@ -112,13 +102,13 @@ export const TableConfigurationsCard = ({
                         backgroundColor: getSelectedColor(item)
                       }
                     ]}>
-                    <Box style={styles.splitBox}>
+                    <View style={styles.splitBox}>
                       <Image
                         source={openDropdown ? OpenDropDown : Close}
                         style={{ width: 20, height: 20, marginRight: 5 }}
                       />
-                    </Box>
-                    <Box style={styles.splitBox}>
+                    </View>
+                    <View style={styles.splitBox}>
                       <Text
                       // style={[
                       //   typography.regular.regular14,
@@ -127,21 +117,18 @@ export const TableConfigurationsCard = ({
                       >
                         {item?.tableMapId}
                       </Text>
-                    </Box>
-                    <Box style={styles.splitBox}>
+                    </View>
+                    <View style={styles.splitBox}>
                       <Text>{item?.type}</Text>
-                    </Box>
-                    <Box style={styles.splitBox}>
+                    </View>
+                    <View style={styles.splitBox}>
                       <Text>$ {item?.minPrice}</Text>
-                    </Box>
+                    </View>
                   </TouchableOpacity>
-                </>
-              );
-            })}
+              ))}
           </>
         )}
-      </Box>
-    </>
+      </View>
   );
 };
 

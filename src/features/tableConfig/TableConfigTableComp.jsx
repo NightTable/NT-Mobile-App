@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "native-base";
-import { Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
-import { colors, typography } from "../../theme";
-import ChevronArrowNormal from "../../../assets/chevron-back-outline.png";
-import ChevronCollapsed from "../../../assets/chevron-back-outline-collapsed.png";
+import React, { useEffect, useState } from 'react';
+import { Text, StyleSheet, ScrollView, TouchableOpacity, Image, View } from 'react-native';
+import { colors, typography } from '../../theme';
+import ChevronArrowNormal from '../../../assets/chevron-back-outline.png';
+import ChevronCollapsed from '../../../assets/chevron-back-outline-collapsed.png';
 
 const TableConfigTableComp = (props) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -20,15 +19,14 @@ const TableConfigTableComp = (props) => {
   };
 
   useEffect(() => {
-    console.log("Checking props:", props);
-    console.log("Checking typography:", typography);
-    console.log("Checking colors:", colors);
+    console.log('Checking props:', props);
+    console.log('Checking typography:', typography);
+    console.log('Checking colors:', colors);
   }, []);
 
   return (
-    <>
-      <Box>
-        <Box 
+    <View>
+        <View
           style={[
             {
               marginVertical: 15,
@@ -39,7 +37,7 @@ const TableConfigTableComp = (props) => {
               alignSelf: 'center',
               alignItems: 'center',
               flexDirection: 'row',
-              borderRadius: 10,
+              borderRadius: 10
             },
             {
               shadowColor: 'black',
@@ -48,51 +46,96 @@ const TableConfigTableComp = (props) => {
               shadowOpacity: 0.5,
               elevation: 10
             }
-          ]}
-        >
-          <Box style={{ alignSelf: 'flex-start', flexDirection: 'row' }}>
+          ]}>
+          <View style={{ alignSelf: 'flex-start', flexDirection: 'row' }}>
             <TouchableOpacity onPress={handleChevronClick}>
-              <Image
-                style={collapsed ? styles.tinyLogoCollapsed : styles.tinyLogoNormal}
-                source={chevronImageSrc}
-              />
+              <Image style={collapsed ? styles.tinyLogoCollapsed : styles.tinyLogoNormal} source={chevronImageSrc} />
             </TouchableOpacity>
-            <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center', marginVertical: 3 }}>
+            <Text
+              style={{
+                ...typography.regular.regular16,
+                color: colors.black.black800,
+                textAlign: 'center',
+                marginVertical: 3
+              }}>
               {props.tableMapId}
             </Text>
-          </Box>
+          </View>
 
-          <Box style={{ marginVertical: 3, alignItems: 'center', flexDirection: 'row' }}>
-            <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center', marginVertical: 3 }}>
+          <View style={{ marginVertical: 3, alignItems: 'center', flexDirection: 'row' }}>
+            <Text
+              style={{
+                ...typography.regular.regular16,
+                color: colors.black.black800,
+                textAlign: 'center',
+                marginVertical: 3
+              }}>
               {props.tableType}
             </Text>
-          </Box>
+          </View>
 
-          <Box style={{ alignSelf: 'flex-end', marginVertical: 3, alignItems: 'center', flexDirection: 'row' }}>
-            <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center', marginVertical: 3 }}>
+          <View style={{ alignSelf: 'flex-end', marginVertical: 3, alignItems: 'center', flexDirection: 'row' }}>
+            <Text
+              style={{
+                ...typography.regular.regular16,
+                color: colors.black.black800,
+                textAlign: 'center',
+                marginVertical: 3
+              }}>
               {props.tableMinimum}
             </Text>
-          </Box>
-        </Box>
+          </View>
+        </View>
 
-        {collapsed ? 
+        {collapsed ? (
           <ScrollView>
-            <Box style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <Text style={{...typography.regular.regular16, color: colors.gold.gold100, textAlign: 'center', marginTop: 15 }}>Organizer</Text>
-              <Text style={{...typography.regular.regular16, color: colors.gold.gold100, textAlign: 'center', marginTop: 15 }}>Group Spend</Text>
-              <Text style={{...typography.regular.regular16, color: colors.gold.gold100, textAlign: 'center', marginTop: 15 }}>Joining Fee</Text>
-            </Box>
-            <TouchableOpacity 
-              disabled={true}
-              style={{ padding: 15, alignItems: 'center', backgroundColor: colors.gold.gold100, width: '90%', alignSelf: 'center', borderRadius: 10, marginBottom: 30 }}
-            >
-              <Text style={{...typography.regular.regular16, color: colors.black.black800, textAlign: 'center' }}>Feature coming soon!</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+              <Text
+                style={{
+                  ...typography.regular.regular16,
+                  color: colors.gold.gold100,
+                  textAlign: 'center',
+                  marginTop: 15
+                }}>
+                Organizer
+              </Text>
+              <Text
+                style={{
+                  ...typography.regular.regular16,
+                  color: colors.gold.gold100,
+                  textAlign: 'center',
+                  marginTop: 15
+                }}>
+                Group Spend
+              </Text>
+              <Text
+                style={{
+                  ...typography.regular.regular16,
+                  color: colors.gold.gold100,
+                  textAlign: 'center',
+                  marginTop: 15
+                }}>
+                Joining Fee
+              </Text>
+            </View>
+            <TouchableOpacity
+              disabled
+              style={{
+                padding: 15,
+                alignItems: 'center',
+                backgroundColor: colors.gold.gold100,
+                width: '90%',
+                alignSelf: 'center',
+                borderRadius: 10,
+                marginBottom: 30
+              }}>
+              <Text style={{ ...typography.regular.regular16, color: colors.black.black800, textAlign: 'center' }}>
+                Feature coming soon!
+              </Text>
             </TouchableOpacity>
-          </ScrollView> 
-          : null
-        }
-      </Box>
-    </>
+          </ScrollView>
+        ) : null}
+      </View>
   );
 };
 

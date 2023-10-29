@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
-import { Box } from 'native-base';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 // REDUX
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
@@ -37,7 +36,7 @@ const Splash = ({ navigation }) => {
   }, []);
 
   return (
-    <Box
+    <View
       style={{
         flex: 1,
         justifyContent: 'center',
@@ -46,7 +45,7 @@ const Splash = ({ navigation }) => {
       }}
       safeArea>
       <Image style={{ height: 200, width: 220 }} source={logoImg} />
-    </Box>
+    </View>
   );
 };
 

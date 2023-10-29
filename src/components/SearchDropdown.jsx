@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, KeyboardAvoidingView, ScrollView } from 'native-base';
+import { View, KeyboardAvoidingView, ScrollView } from 'native-base';
 import { TextInput, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native';
 
 // components
@@ -12,7 +12,7 @@ const SearchDropdown = (props) => {
   const [searchText, setSearchText] = useState('');
 
   // PlaceHolder Text
-  const [placeHolder, setplaceHolder] = useState(props?.placeholder);
+  const [placeHolder, setPlaceHolder] = useState(props?.placeholder);
   // action sheet
   const [openActionSheet, setopenActionSheet] = useState(false);
 
@@ -51,7 +51,7 @@ const SearchDropdown = (props) => {
         onPress={() => {
           setopenActionSheet(true);
         }}>
-        <Box
+        <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -68,7 +68,7 @@ const SearchDropdown = (props) => {
             ]}>
             {props?.value?.length > 11 ? props?.value?.substring(0, 16)?.concat('...') : props?.value}
           </Text>
-          <Box
+          <View
             style={[
               {
                 width: '24%',
@@ -77,8 +77,8 @@ const SearchDropdown = (props) => {
               }
             ]}>
             <EntypoIcon name='chevron-small-down' color={props.iconColor} size={30} />
-          </Box>
-        </Box>
+          </View>
+        </View>
       </TouchableOpacity>
       <Modal
         animationType='slide'
@@ -103,14 +103,14 @@ const SearchDropdown = (props) => {
             }}
           />
 
-          <Box
+          <View
             style={{
               height: props?.search === true ? '90%' : '40%',
               backgroundColor: colors.red.red800,
               borderTopLeftRadius: 22,
               borderTopRightRadius: 22
             }}>
-            <Box
+            <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -138,8 +138,8 @@ const SearchDropdown = (props) => {
                 }}>
                 <MaterialCommunityIcon name='close' color={colors.white.white0} size={24} />
               </TouchableOpacity>
-            </Box>
-            <Box
+            </View>
+            <View
               style={{
                 height: 0.5,
                 backgroundColor: colors.grey.grey100,
@@ -147,8 +147,8 @@ const SearchDropdown = (props) => {
               }}
             />
             {props?.search === true ? (
-              <Box style={{ padding: 12 }}>
-                <Box
+              <View style={{ padding: 12 }}>
+                <View
                   style={{
                     flexDirection: 'row',
                     height: 40,
@@ -159,15 +159,15 @@ const SearchDropdown = (props) => {
                     justifyItems: 'center',
                     alignItems: 'center'
                   }}>
-                  <Box
+                  <View
                     style={{
                       width: '10%',
                       alignItems: 'center',
                       justifyItems: 'center'
                     }}>
                     {LeftIcon(props?.leftIconDirectoryName)}
-                  </Box>
-                  <Box
+                  </View>
+                  <View
                     style={{
                       width: '90%'
                     }}>
@@ -184,9 +184,9 @@ const SearchDropdown = (props) => {
                       }}
                       value={searchText}
                     />
-                  </Box>
-                </Box>
-              </Box>
+                  </View>
+                </View>
+              </View>
             ) : null}
 
             <ScrollView style={{ paddingVertical: 10 }}>
@@ -216,16 +216,16 @@ const SearchDropdown = (props) => {
                   </Text>
 
                   {props?.value === item.label ? (
-                    <Box>
+                    <View>
                       <FeatherIcon name='check' color={colors.green.green550} size={22} />
-                    </Box>
+                    </View>
                   ) : (
                     <></>
                   )}
                 </Pressable>
               ))}
             </ScrollView>
-          </Box>
+          </View>
         </KeyboardAvoidingView>
       </Modal>
     </>

@@ -1,9 +1,8 @@
 // Imported Libraries
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput } from 'react-native';
+import { StyleSheet, Text, TextInput,View } from 'react-native';
 // libraries
-import { Box } from 'native-base';
 // REDUX
 import { useSelector } from 'react-redux';
 // components
@@ -93,7 +92,7 @@ const Profile = ({ route, navigation }) => {
   };
 
   return (
-    <Box safeArea style={styles.container}>
+    <View safeArea style={styles.container}>
       <HeaderWithLeftIcon
         title='Profile'
         icon='arrowleft'
@@ -102,8 +101,8 @@ const Profile = ({ route, navigation }) => {
           navigation.navigate('Home');
         }}
       />
-      <Box style={[styles.mainBox]}>
-        <Box style={styles.inputBox}>
+      <View style={[styles.mainBox]}>
+        <View style={styles.inputBox}>
           <Text style={[styles.heading, typography.bold.bold16]}>First Name</Text>
           <TextInput
             autoFocus
@@ -119,8 +118,8 @@ const Profile = ({ route, navigation }) => {
             placeholderTextColor={colors.grey.grey800}
             keyboardType='numeric'
           />
-        </Box>
-        <Box style={styles.inputBox}>
+        </View>
+        <View style={styles.inputBox}>
           <Text style={[styles.heading, typography.bold.bold16]}>Last Name</Text>
           <TextInput
             autoFocus
@@ -136,8 +135,8 @@ const Profile = ({ route, navigation }) => {
             placeholderTextColor={colors.grey.grey800}
             keyboardType='numeric'
           />
-        </Box>
-        <Box style={styles.inputBox}>
+        </View>
+        <View style={styles.inputBox}>
           <Text style={[styles.heading, typography.bold.bold16]}>Email</Text>
           <TextInput
             style={[typography.regular.regular16, styles.input]}
@@ -152,8 +151,8 @@ const Profile = ({ route, navigation }) => {
             placeholderTextColor={colors.grey.grey800}
             keyboardType='numeric'
           />
-        </Box>
-        <Box style={styles.inputBox}>
+        </View>
+        <View style={styles.inputBox}>
           <Text style={[styles.heading, typography.bold.bold16]}>Instagram Id</Text>
           <TextInput
             autoFocus
@@ -169,8 +168,8 @@ const Profile = ({ route, navigation }) => {
             placeholderTextColor={colors.grey.grey800}
             keyboardType='numeric'
           />
-        </Box>
-        <Box
+        </View>
+        <View
           style={{
             paddingTop: 60
           }}>
@@ -183,9 +182,9 @@ const Profile = ({ route, navigation }) => {
             backgroundColor={colors.gold.gold200}
             text='Update Profile '
           />
-        </Box>
-      </Box>
-    </Box>
+        </View>
+      </View>
+    </View>
   );
 };
 
