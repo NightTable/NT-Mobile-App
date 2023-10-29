@@ -1,24 +1,23 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//Screens
-import Login from '../screens/auth/Login';
+// Screens
+import Login from '../screens/auth/login';
 import Splash from '../screens/Splash';
-import Otp from '../screens/auth/Otp';
+import Otp from '../screens/auth/otp';
 
-//Stack Hooks
+// Stack Hooks
 const Stack = createNativeStackNavigator();
 
-//Auth Stack
+// Auth Stack
 
-const AuthenticationStack = () => {
-  return (
+const AuthenticationStack = () => (
     <Stack.Navigator initialRouteName='Splash'>
       <Stack.Screen
         name='Splash'
         component={Splash}
         options={{
-          headerShown: false,
+          headerShown: false
         }}
       />
 
@@ -27,7 +26,7 @@ const AuthenticationStack = () => {
         component={Login}
         options={{
           headerShown: false,
-          gestureEnabled: false,
+          gestureEnabled: false
         }}
       />
       <Stack.Screen
@@ -35,11 +34,10 @@ const AuthenticationStack = () => {
         component={Otp}
         options={{
           headerShown: false,
-          gestureEnabled: false,
+          gestureEnabled: false
         }}
       />
     </Stack.Navigator>
   );
-};
 
 export default AuthenticationStack;

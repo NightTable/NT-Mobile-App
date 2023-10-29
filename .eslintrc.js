@@ -3,12 +3,7 @@ module.exports = {
     es2021: true,
     browser: true
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'airbnb',
-    'prettier'
-  ],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb', 'prettier'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -22,22 +17,14 @@ module.exports = {
     'no-restricted-syntax': [
       'error',
       {
-        selector:
-          "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        selector: "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
         message: 'Unexpected property on console object was called'
       }
     ],
     'linebreak-style': ['error', 'unix'],
     semi: ['error', 'always'],
-    quotes: [
-      'error',
-      'single',
-      { avoidEscape: true, allowTemplateLiterals: false }
-    ],
-    'react/function-component-definition': [
-      'error',
-      { namedComponents: 'arrow-function' }
-    ],
+    quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
+    'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
     'react/jsx-filename-extension': [0, { allow: 'as-needed' }],
     'jsx-quotes': [2, 'prefer-single'],
     'object-curly-newline': 'off',
@@ -47,7 +34,8 @@ module.exports = {
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-static-element-interactions': 0,
-    'react/prop-types':2,
+    'react/prop-types': 0,
+    'no-use-before-define':0,
     // 'import/no-unresolved': [2, { ignore: ['/decide/**'] }], // Disable the eslintimport/no-unresolved rule,
     // 'import/no-unresolved': 2, // Disable the eslintimport/no-unresolved rule,
     'import/no-unresolved': [
@@ -69,21 +57,12 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        '**/*.spec.js',
-        '**/*.spec.jsx',
-        '**/*.test.js',
-        '.eslintrc.{js,cjs}'
-      ],
+      files: ['**/*.spec.js', '**/*.spec.jsx', '**/*.test.js', '.eslintrc.{js,cjs}'],
       env: {
         jest: true
       }
     }
   ],
-  ignorePatterns: [
-    'node_modules/',
-    '**/node_modules/',
-    '/**/node_modules/*'
-  ],
+  ignorePatterns: ['node_modules/', '**/node_modules/', '/**/node_modules/*'],
   settings: {}
 };

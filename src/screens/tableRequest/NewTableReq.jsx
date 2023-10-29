@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from 'native-base';
 import {
   Text,
   StyleSheet,
@@ -11,29 +10,28 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard
-} from 'react-native';
+, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import axios from 'axios';
-//component
+// component
+import {  useSelector } from 'react-redux';
+import {  AntDesign } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as SMS from 'expo-sms';
+import { CardField, useStripe } from '@stripe/stripe-react-native';
+import { ObjectId } from 'bson';
 import { HeaderWithLeftIcon } from '../../components/Header';
-//REDUX
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+// REDUX
 import { colors, typography } from '../../theme';
-import { ScrollView } from 'react-native';
 import CostSplittingSectionComp from '../../features/costSplitting';
 import TableConfigComp from '../../features/NewTableReq/TableConfigComp';
 import { TableConfigurationsCard } from '../../features/tableConfig/TableConfig';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
 import DyModal from '../../components/Modal';
 import { Button as ButtonComp } from '../../components/Buttons';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import * as SMS from 'expo-sms';
-import { CardField, useConfirmPayment, useStripe } from '@stripe/stripe-react-native';
-import { ObjectId } from 'bson';
 
 const { width, height } = Dimensions.get('screen');
 
-//main function
+// main function
 const NewTableReq = ({ navigation, route }) => {
   useEffect(() => {
     console.log('params\n');
@@ -46,14 +44,14 @@ const NewTableReq = ({ navigation, route }) => {
   }, [selectedTableIds]);
 
   const myIP = 'http://192.168.1.77';
-  //const myIP = 'http://10.0.0.146'
-  //Store
+  // const myIP = 'http://10.0.0.146'
+  // Store
   const clubStore = useSelector((state) => state.club); // club store
   const [selectedTableIds, setSelectedTableIds] = useState([]); // ids of the selected tables
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0); // default table min = sum of the table minds of selected tables
   const [selectedTables, setSelectedTables] = useState([]); // tables of ids selected by user
   const [selectedTableConfigId, setSelectedTableConfigId] = useState(''); // table config id of a selected table
-  const [modalVisible, setModalVisible] = useState(false); //modal visibility
+  const [modalVisible, setModalVisible] = useState(false); // modal visibility
   const [inputValue, setInputValue] = useState(''); // phone number of invitee
   const [isSending, setIsSending] = useState(false); // sms sending or not
   const [isCardValid, setIsCardValid] = useState(false); // card valid or not
@@ -61,24 +59,24 @@ const NewTableReq = ({ navigation, route }) => {
   const [tableName, setTableName] = useState(''); // name of your table
 
   const [tableMinimum, setTableMinimum] = useState(0); // table minimum
-  //const [TableConfigModal, setTableConfigModal] = useState(false); // modal for opening table configs
-  //const [tableConfigsData, settableConfigsData] = useState([]); // data containing table configs
+  // const [TableConfigModal, setTableConfigModal] = useState(false); // modal for opening table configs
+  // const [tableConfigsData, settableConfigsData] = useState([]); // data containing table configs
 
   // console.log("tableConfigsData::>>====>", tableConfigsData.length);
-  //MODAL
+  // MODAL
   const [inviteParticipantModal, setinviteParticipantModal] = useState(false); // brings up payment and participant modal
   const [inviteParticipantData, setinviteParticipantData] = useState(''); // participant invite phone data
   const [InviteFrndsData, setInviteFrndsData] = useState([]); // list of friends invitied
-  //SNPL - PNSL
+  // SNPL - PNSL
   const [selectedPaymentType, setselectedPaymentType] = useState(2); // payment type
-  //DATE
+  // DATE
   const [selectedDate, setSelectedDate] = useState(new Date()); // time of table
   const [showDatePicker, setShowDatePicker] = useState(false); // date time picker
-  //modal- know-more (Snpl& pnsl)
+  // modal- know-more (Snpl& pnsl)
   const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false); // pnsl snpl selection
   // ON DATE CHANGE
 
-  let paymentTypeMethod = [
+  const paymentTypeMethod = [
     {
       id: 1,
       short_form: 'snpl',
@@ -120,7 +118,7 @@ and join the table for a fun night!`;
     } else {
       setSelectedTableIds((prevIds) => [...prevIds, id]);
     }
-    //console.log(selectedTableIds);
+    // console.log(selectedTableIds);
   };
 
   function handleTouchOutside() {
@@ -147,8 +145,8 @@ and join the table for a fun night!`;
       promoterId: route?.params?.promoterData._id,
       costSplitType: data.costSplitType,
       eta: data.eta,
-      isPolling: data.costSplitType === 'pnsl' ? false : true,
-      isActive: data.costSplitType === 'pnsl' ? true : false,
+      isPolling: data.costSplitType !== 'pnsl',
+      isActive: data.costSplitType === 'pnsl',
       isClosed: false,
       requestPlacementTime: new Date(),
       clubId: route?.params?.clubData._id
@@ -253,9 +251,9 @@ and join the table for a fun night!`;
         const createPaymentIntentBody = {
           amount: chargeAmount,
           lineItems: modifiedPercentages,
-          paymentType: paymentType,
+          paymentType,
           paymentMethodId: paymentMethod.id,
-          customerId: customerId
+          customerId
         };
         console.log(myIP);
         const responsePaymentIntent = await axios.post(
@@ -267,9 +265,9 @@ and join the table for a fun night!`;
         console.log('\n');
         console.log(responsePaymentIntent.data, `responsePaymentIntent${paymentType.toUpperCase()}\n`);
 
-        //if (paymentType)
+        // if (paymentType)
 
-        //create table request and nav to next screen
+        // create table request and nav to next screen
         const trData = {
           name: tableName,
           tableConfigId: selectedTables,
@@ -278,12 +276,12 @@ and join the table for a fun night!`;
           costSplitType: paymentType,
           eta: selectedDate,
           invitedFriends: InviteFrndsData,
-          paymentMethod: paymentMethod,
+          paymentMethod,
           stripeCustomer: responseStripeCustomer,
           internalCustomer: responseInternalCustomer
         };
 
-        //navToPollingRoomScreen(trData);
+        // navToPollingRoomScreen(trData);
 
         // clubData: route?.params?.clubData,
         // electedEventData: route?.params?.selectedEventData,
@@ -330,7 +328,7 @@ and join the table for a fun night!`;
     }
   };
 
-  //change table minimum based on how many configs selected
+  // change table minimum based on how many configs selected
   const handleModifyTableMin = (min) => {
     let parsedMin = parseInt(min, 10);
     if (isNaN(parsedMin)) {
@@ -340,7 +338,7 @@ and join the table for a fun night!`;
     setDefaultTableMinimum(defaultTableMinimum + parsedMin);
   };
 
-  //change the name of table group
+  // change the name of table group
   const toggleTableGroupName = (name) => {
     setTableName(name);
     console.log(name);
@@ -403,7 +401,7 @@ and join the table for a fun night!`;
 
   // add / remove tables from your list of selected tables
   const handleTableConfigPress = (idParam) => {
-    let selectedTableList = selectedTables;
+    const selectedTableList = selectedTables;
     setSelectedTableConfigId(idParam);
     if (selectedTableList.length === 0) {
       for (let i = 0; i < tcs.length; i++) {
@@ -432,10 +430,8 @@ and join the table for a fun night!`;
   };
 
   // CLUB AND EVENT NAME CARD
-  const ClubandEventNameCard = () => {
-    return (
-      <>
-        <Box
+  const ClubandEventNameCard = () => (
+      <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -460,10 +456,8 @@ and join the table for a fun night!`;
             ]}>
             {route?.params?.selectedEventData?.name}
           </Text>
-        </Box>
-      </>
+        </View>
     );
-  };
   console.log('');
   console.log('');
   console.log(selectedTableIds, 'table ids');
@@ -482,48 +476,42 @@ and join the table for a fun night!`;
           flex: 1
         }}>
         <HeaderWithLeftIcon
-          title={'New Table Request'}
-          icon={'back'}
-          iconDirectory={'Entypo'}
-          iconRightDirectory={'Entypo'}
-          iconRight={''}
+          title='New Table Request'
+          icon='back'
+          iconDirectory='Entypo'
+          iconRightDirectory='Entypo'
+          iconRight=''
           onSubmit={() => {
             navigation.navigate('Hostsandpromoters', {
               clubData: route?.params?.clubData,
               selectedEventData: route?.params?.selectedEventData
             });
           }}
-          onPressRight={() => {
-            return null;
-          }}
+          onPressRight={() => null}
         />
 
-        <Box style={{ height: '20%' }}>
-          <ScrollView horizontal={true}>
-            {route?.params?.clubData?.photos.map((image) => {
-              return (
-                <>
-                  <Box>
+        <View style={{ height: '20%' }}>
+          <ScrollView horizontal>
+            {route?.params?.clubData?.photos.map((image) => (
+                <View>
                     <Image
                       style={{
-                        width: width,
+                        width,
                         height: 160
                       }}
                       source={{
                         uri: image
                       }}
                     />
-                  </Box>
-                </>
-              );
-            })}
+                  </View>
+              ))}
           </ScrollView>
           <ClubandEventNameCard />
-        </Box>
+        </View>
 
-        <Box style={styles.box2}>
-          <Box style={styles.box2_first}>
-            <Box
+        <View style={styles.box2}>
+          <View style={styles.box2_first}>
+            <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -552,10 +540,10 @@ and join the table for a fun night!`;
                 }}>
                 <Text style={[typography.regular.regular16, { color: 'black', fontSize: 18 }]}>Text VIP Host</Text>
               </TouchableOpacity>
-            </Box>
+            </View>
 
             <TouchableWithoutFeedback onPress={handleTouchOutside}>
-              <Box
+              <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -572,16 +560,16 @@ and join the table for a fun night!`;
                 </Text>
                 <TextInput
                   style={{ ...styles.input, width: 250 }}
-                  placeholder={'Name your table group'}
+                  placeholder='Name your table group'
                   onChangeText={(value) => toggleTableGroupName(value)}
                   placeholderTextColor={colors.gold.gold100}
                   selectionColor={colors.gold.gold100}
                 />
-              </Box>
+              </View>
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={handleTouchOutside}>
-              <Box
+              <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -599,7 +587,7 @@ and join the table for a fun night!`;
                 {selectedTableIds.length > 0 ? (
                   <TextInput
                     style={styles.input}
-                    editable={true}
+                    editable
                     placeholder={`$${defaultTableMinimum}`}
                     onChangeText={(value) => toggleTableMin(value)}
                     placeholderTextColor={colors.gold.gold100}
@@ -607,13 +595,13 @@ and join the table for a fun night!`;
                     value={
                       !isNaN(tableMinimum) ? tableMinimum : !isNaN(defaultTableMinimum) ? defaultTableMinimum : '0'
                     }
-                    keyboardType={'numeric'}
+                    keyboardType='numeric'
                   />
                 ) : null}
-              </Box>
+              </View>
             </TouchableWithoutFeedback>
 
-            <Box
+            <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -634,12 +622,12 @@ and join the table for a fun night!`;
                 mode='time'
                 display='default'
                 onChange={onDateChange}
-                style={{ width: 120 }} //add this
-                themeVariant={'dark'}
+                style={{ width: 120 }} // add this
+                themeVariant='dark'
               />
-            </Box>
+            </View>
 
-            <Box
+            <View
               style={{
                 flexDirection: 'column', // Changed to 'column' to stack content vertically
                 paddingVertical: 10
@@ -661,7 +649,7 @@ and join the table for a fun night!`;
                   justifyContent: 'space-between',
                   paddingVertical: 5,
                   borderBottomColor: colors.gold.gold100
-                  //borderBottomWidth: 1,
+                  // borderBottomWidth: 1,
                 }}>
                 <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>ID</Text>
                 <Text style={[typography.semBold.semBold16, { color: colors.gold.gold100 }]}>TYPE</Text>
@@ -695,11 +683,11 @@ and join the table for a fun night!`;
                   </Text>
                 )}
               </ScrollView>
-            </Box>
+            </View>
 
-            <Box>
-              {/* Start of "Select Request Type" Box */}
-              <Box
+            <View>
+              {/* Start of "Select Request Type" View */}
+              <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -710,8 +698,8 @@ and join the table for a fun night!`;
                     typography.semBold.semBold14,
                     {
                       color: colors.gold.gold100,
-                      justifyContent: 'center', //Centered vertically
-                      alignItems: 'center' //Centered horizontally
+                      justifyContent: 'center', // Centered vertically
+                      alignItems: 'center' // Centered horizontally
                     }
                   ]}>
                   Select Request Type :
@@ -722,17 +710,15 @@ and join the table for a fun night!`;
                   }}>
                   <AntDesign name='questioncircle' size={20} color='silver' />
                 </Pressable>
-              </Box>
-              <Box
+              </View>
+              <View
                 style={{
                   flexDirection: 'row',
                   paddingVertical: 8,
                   justifyContent: 'space-between'
                 }}>
-                {paymentTypeMethod?.map((item) => {
-                  return (
-                    <>
-                      <Pressable
+                {paymentTypeMethod?.map((item) => (
+                    <Pressable
                         onPress={() => {
                           setselectedPaymentType(item.id);
                         }}
@@ -752,14 +738,12 @@ and join the table for a fun night!`;
                           {item?.name}
                         </Text>
                       </Pressable>
-                    </>
-                  );
-                })}
-              </Box>
-            </Box>
-          </Box>
+                  ))}
+              </View>
+            </View>
+          </View>
 
-          <Box style={styles.box2_second}>
+          <View style={styles.box2_second}>
             <ButtonComp
               onSubmit={() => {
                 if (selectedTableIds.length === 0) {
@@ -770,18 +754,18 @@ and join the table for a fun night!`;
                   setinviteParticipantModal(!inviteParticipantModal);
                 }
               }}
-              text={'Send Invites and Make payment'}
+              text='Send Invites and Make payment'
               backgroundColor={colors.gold.gold100}
             />
-          </Box>
-        </Box>
+          </View>
+        </View>
       </View>
 
-      {/*<DyModal
+      {/* <DyModal
         bgColor={colors.black.black800}
         children={
           <>
-            <Box style={{ height: height, paddingHorizontal: 18 }}>
+            <View style={{ height: height, paddingHorizontal: 18 }}>
               <Text
                 style={[
                   typography.bold.bold24,
@@ -822,7 +806,7 @@ and join the table for a fun night!`;
                 backgroundColor={colors.gold.gold100}
                 text={'Continue '}
               />
-            </Box>
+            </View>
           </>
         }
         openActionSheet={TableConfigModal}
@@ -830,7 +814,7 @@ and join the table for a fun night!`;
         onClosepress={() => {
           setTableConfigModal(false);
         }}
-      />*/}
+      /> */}
 
       <DyModal
         children={<CostSplittingSectionComp selectedPaymentType={selectedPaymentType} />}
@@ -844,15 +828,14 @@ and join the table for a fun night!`;
 
       <DyModal
         children={
-          <>
-            <Box style={{ paddingHorizontal: 18 }}>
+          <View style={{ paddingHorizontal: 18 }}>
               <Text style={[typography.bold.bold24, { color: colors.gold.gold100, paddingVertical: 12 }]}>
                 Invite Friends
               </Text>
 
               {tableMinimum !== 0 && (
                 <CardField
-                  postalCodeEnabled={true}
+                  postalCodeEnabled
                   placeholders={{ number: '4242 4242 4242 4242' }}
                   cardStyle={{
                     placeholderColor: '#e4d0b5',
@@ -889,14 +872,14 @@ and join the table for a fun night!`;
                     editable={false} // making it non-editable
                     placeholderTextColor={colors.gold.gold100}
                     selectionColor={colors.gold.gold100}
-                    keyboardType={'numeric'}
+                    keyboardType='numeric'
                   />
                 </>
               ) : (
                 // if it's "split-now-pay-later"
                 <>
                   <Text style={[typography.bold.bold16, { color: colors.gold.gold100 }]}>My Joining Fee $</Text>
-                  <Box
+                  <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
@@ -906,19 +889,19 @@ and join the table for a fun night!`;
                     <TextInput
                       style={styles.inputInviteParticipant}
                       onChangeText={(fee) => setJoiningFee(fee)}
-                      placeholder={``}
+                      placeholder=''
                       placeholderTextColor={colors.gold.gold100}
                       selectionColor={colors.gold.gold100}
-                      keyboardType={'numeric'}
+                      keyboardType='numeric'
                     />
-                  </Box>
+                  </View>
                 </>
               )}
               <Text style={[typography.bold.bold16, { color: colors.gold.gold100 }]}>
                 Enter Invitee's Phone Number (include country code)
               </Text>
 
-              <Box
+              <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -928,17 +911,17 @@ and join the table for a fun night!`;
                 <TextInput
                   style={styles.inputInviteParticipant}
                   onChangeText={(e) => [setinviteParticipantData(e), setInputValue(e)]}
-                  placeholder={``}
+                  placeholder=''
                   placeholderTextColor={colors.gold.gold100}
                   selectionColor={colors.gold.gold100}
                   value={inviteParticipantData}
-                  keyboardType={'numeric'}
+                  keyboardType='numeric'
                 />
-              </Box>
+              </View>
 
               <Text style={[typography.bold.bold16, { color: colors.gold.gold100 }]}>Invitee Joining Fee $</Text>
 
-              <Box
+              <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -948,14 +931,14 @@ and join the table for a fun night!`;
                 <TextInput
                   style={styles.inputInviteParticipant}
                   onChangeText={(fee) => setJoiningFee(fee)}
-                  placeholder={``}
+                  placeholder=''
                   placeholderTextColor={colors.gold.gold100}
                   selectionColor={colors.gold.gold100}
-                  keyboardType={'numeric'}
+                  keyboardType='numeric'
                 />
-              </Box>
+              </View>
 
-              <Box style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <Pressable
                   style={{ borderRadius: 20 / 2, padding: 4 }}
                   onPress={async () => {
@@ -973,7 +956,7 @@ and join the table for a fun night!`;
                     }
 
                     const status = await sendInvite();
-                    let tempArr = [...InviteFrndsData];
+                    const tempArr = [...InviteFrndsData];
 
                     switch (status) {
                       case 'sent':
@@ -1003,14 +986,14 @@ and join the table for a fun night!`;
                     Send Invitation
                   </Text>
                 </Pressable>
-              </Box>
+              </View>
 
-              <Box>
+              <View>
                 <Text style={[typography.bold.bold16, { color: colors.gold.gold100, paddingVertical: 10 }]}>
                   Invitees:
                 </Text>
 
-                <Box style={{ paddingVertical: 14 }}>
+                <View style={{ paddingVertical: 14 }}>
                   <ScrollView
                     style={{
                       paddingBottom: 50,
@@ -1020,9 +1003,8 @@ and join the table for a fun night!`;
                       height: '50%'
                     }}>
                     {InviteFrndsData &&
-                      InviteFrndsData.map((item, index) => {
-                        return (
-                          <Box
+                      InviteFrndsData.map((item, index) => (
+                          <View
                             key={index}
                             style={{
                               flexDirection: 'row',
@@ -1045,9 +1027,8 @@ and join the table for a fun night!`;
                               ]}>
                               +{item.emailOrPhone} - Fee: ${item.fee}
                             </Text>
-                          </Box>
-                        );
-                      })}
+                          </View>
+                        ))}
                   </ScrollView>
                   <Text
                     style={[
@@ -1081,10 +1062,9 @@ and join the table for a fun night!`;
                       Confirm Payment
                     </Text>
                   </TouchableOpacity>
-                </Box>
-              </Box>
-            </Box>
-          </>
+                </View>
+              </View>
+            </View>
         }
         onClosepress={() => setinviteParticipantModal(!inviteParticipantModal)}
         bgColor={colors.black.black800}
