@@ -1,7 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginReducer } from '../reducer/loginReducer';
 import { getCountries } from '../../services/country';
 import { loginApi, otpVerify } from '../../services/auths';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SensitiveKey } from '../../utils/SensitiveData/SInfoKeys';
 
 const {
