@@ -1,57 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Pressable } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, View, Pressable, SafeAreaView } from 'react-native';
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
 
-// MAIN FUNCTION
-const TableInvites = ({ route, navigation }) => {
-  const TableInviteCard = () => (
-    <Pressable
-      style={styles.cardBoxOuterLayer}
-      onPress={() => {
-        navigation.navigate('TableInvitesOverView', {
-          data: {}
-        });
-      }}>
-      <View style={styles.cardBox}>
-        <View>
-          <Text style={[typography.bold.bold16]}>Table Name</Text>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={[typography.regular.regular14]}>12 people, </Text>
-          <Text style={[typography.regular.regular14]}>snpl, </Text>
-          <Text style={[typography.regular.regular14]}>4 friends</Text>
-        </View>
+const TableInviteCard = () => (
+  <View style={styles.cardBoxOuterLayer}>
+    <View style={styles.cardBox}>
+      <View>
+        <Text style={[typography.bold.bold16]}>Table Name</Text>
       </View>
-      <View style={styles.cardBox}>
-        <View>
-          <Text style={[typography.regular.regular16]}>User Name</Text>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={[typography.regular.regular14]}>placed on </Text>
-          <Text style={[typography.bold.bold14]}>1-12-22 </Text>
-          <Text style={[typography.bold.bold14]}>18:00</Text>
-        </View>
-      </View>
-    </Pressable>
-  );
-  return (
-    <View safeArea style={styles.container}>
-      <HeaderWithLeftIcon
-        title='Table Invites'
-        icon='arrowleft'
-        iconDirectory='AntDesign'
-        onSubmit={() => {
-          navigation.navigate('Home');
-        }}
-      />
-
-      <View style={[styles.mainBox]}>
-        <TableInviteCard />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={[typography.regular.regular14]}>12 people, </Text>
+        <Text style={[typography.regular.regular14]}>snpl, </Text>
+        <Text style={[typography.regular.regular14]}>4 friends</Text>
       </View>
     </View>
+    <View style={styles.cardBox}>
+      <View>
+        <Text style={[typography.regular.regular16]}>User Name</Text>
+      </View>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={[typography.regular.regular14]}>placed on </Text>
+        <Text style={[typography.bold.bold14]}>1-12-22 </Text>
+        <Text style={[typography.bold.bold14]}>18:00</Text>
+      </View>
+    </View>
+  </View>
+);
+
+// MAIN FUNCTION
+const TableInvites = ({ navigation }) => (
+    <SafeAreaView style={styles.container}>
+        <HeaderWithLeftIcon
+          title='Table Invites'
+          icon='arrowleft'
+          iconDirectory='AntDesign'
+          onSubmit={() => {
+            navigation.navigate('Home');
+          }}
+        />
+
+        <Pressable
+          onPress={() => {
+            navigation.navigate('TableInvitesOverView', {
+              data: {}
+            });
+          }}
+          style={[styles.mainBox]}>
+          <TableInviteCard />
+        </Pressable>
+      </SafeAreaView>
   );
-};
 
 const styles = StyleSheet.create({
   container: {

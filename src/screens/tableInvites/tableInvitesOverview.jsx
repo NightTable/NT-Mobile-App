@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Dimensions, FlatList, SafeAreaView } from 'react-native';
 import { Image } from 'expo-image';
 import { colors, typography } from '../../theme';
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { Button } from '../../components/Buttons';
 
-const { width, height } = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 
 const photos = [
   'https://images.unsplash.com/photo-1543007630-9710e4a00a20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
@@ -22,9 +22,11 @@ const ClubDetails = () => (
         console.log('image===>', image);
         return (
           <View
-            style={{
-              backgroundColor: 'red'
-            }}>
+            style={
+              {
+                // backgroundColor: 'red'
+              }
+            }>
             <Image
               style={{ width: width - 10, height: 120 }}
               source={{
@@ -86,7 +88,7 @@ const InviteDetailCard = ({ headingName, value }) => (
 );
 
 // MAIN FUNCTION
-const TableInvitesOverView = ({ navigation }) => {
+const TableInvitesOverView = ({ navigation }) => (
   <SafeAreaView
     style={[
       styles.container,
@@ -147,8 +149,8 @@ const TableInvitesOverView = ({ navigation }) => {
         />
       </View>
     </View>
-  </SafeAreaView>;
-};
+  </SafeAreaView>
+);
 
 const styles = StyleSheet.create({
   container: {
