@@ -171,7 +171,7 @@ and join the table for a fun night!`;
 
     const responseCreateNewTableRequest = await axios.get(`${myIP}:3000/api/tablerequests/createTableRequest`, createTRBody);
     // eslint-disable-next-line quotes
-    console.log(responseCreateNewTableRequest.data, "table request data\n")
+    console.log(responseCreateNewTableRequest.data, "table request data\n");
 
     for (let invitee of data.invitedFriends){
       const newInviteBody = {
@@ -277,8 +277,7 @@ and join the table for a fun night!`;
         customerId = responseStripeCustomer.data.id;
         // eslint-disable-next-line quotes
 
-        const paymentType = selectedPaymentType == 1 ? 'snpl' : 'pnsl';
-        const clubInfo = route?.params?.clubData;
+        const paymentType = selectedPaymentType === 1 ? 'snpl' : 'pnsl';
         const tipPercentage = clubData?.lineItems.find((item) => item.name === 'Tip')?.percentage;
         const taxPercentage = clubData?.lineItems.find((item) => item.name === 'Tax')?.percentage;
         const modifiedPercentages = [tipPercentage, taxPercentage - taxPercentage];
@@ -320,7 +319,7 @@ and join the table for a fun night!`;
         };
 
         console.log(InviteFrndsData, "friends data after payment")
-        //navToPollingRoomScreen(trData);
+        await navToPollingRoomScreen(trData);
 
 
 
