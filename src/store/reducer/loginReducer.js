@@ -1,25 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   verifyNumberData: [],
   otpNumberData: [],
   countryData: [],
   userData: [],
-  userInfoAddress:[],
-  token: "",
+  userInfoAddress: [],
+  token: '',
   isProfileSetup: false,
-  isUserLoggedIn: false,
-
+  isUserLoggedIn: false
 };
 
 export const loginReducer = createSlice({
-  name: "login",
+  name: 'login',
   initialState,
   reducers: {
-    logout: (state) => {
-      return {
-        ...initialState,
-      };
+    logout: () => {
+      initialState;
     },
 
     updateUserData: (state, { payload }) => {
@@ -28,7 +27,7 @@ export const loginReducer = createSlice({
     updateCountryData: (state, { payload }) => {
       state.countryData = payload;
     },
-    userAddress : (state, { payload }) => {
+    userAddress: (state, { payload }) => {
       state.userInfoAddress = payload;
     },
     otpGeneratedData: (state, { payload }) => {
@@ -45,6 +44,6 @@ export const loginReducer = createSlice({
     },
     updateUserToken: (state, { payload }) => {
       state.token = payload;
-    },
-  },
+    }
+  }
 });

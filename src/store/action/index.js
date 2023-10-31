@@ -1,3 +1,3 @@
-import { loginStore } from "./login";
+import { loginStore } from './login';
 
 export { loginStore };

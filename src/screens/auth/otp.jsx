@@ -15,6 +15,7 @@ import { updateToken, verifyOtp } from '../../store/action/login';
 import { disableLoader, enableLoader } from '../../components/popUp/loader/trigger';
 import { getAllClubfromdb } from '../../store/action/clubs';
 import { HeaderWithLeftIcon } from '../../components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { height, width } = Dimensions.get('screen');
 // Main Function
@@ -60,6 +61,7 @@ const Otp = ({ route, navigation }) => {
       disableLoader();
       navigation.navigate('DrawerNavigator');
       console.log('GO TO DASHBOARD');
+      AsyncStorage.setItem()
       // }
     }
   }, [loginStore]);

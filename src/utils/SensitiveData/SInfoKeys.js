@@ -1,6 +1,6 @@
 export const SensitiveKey = {
   USER: {
-    DATA: "DATA",
-    ADDRESS:'ADDRESS'
-  },
+    DATA: 'DATA',
+    ADDRESS: 'ADDRESS'
+  }
 };

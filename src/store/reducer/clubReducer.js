@@ -1,15 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   allClubs: [],
   individualClubDetail: [],
   isLoading: true,
   individualClubEvents: [],
-  individualClubTableConfig: [],
+  individualClubTableConfig: []
 };
 
 export const clubReducer = createSlice({
-  name: "club",
+  name: 'club',
   initialState,
   reducers: {
     getAllClubs: (state, { payload }) => {
@@ -19,12 +20,11 @@ export const clubReducer = createSlice({
       state.individualClubEvents = payload;
     },
     getIndividualClubTableConfig: (state, { payload }) => {
-     
       state.individualClubTableConfig = payload;
     },
-    isLoaderState : (state, { payload }) => {
+    isLoaderState: (state, { payload }) => {
       state.isLoading = payload;
-    },
+    }
     // getClubDetails: (state, { payload }) => {
     //   state[payload.name] = payload.value;
     // },
@@ -32,5 +32,5 @@ export const clubReducer = createSlice({
     //   state.isLoading = payload;
     //   return { ...state };
     // },
-  },
+  }
 });

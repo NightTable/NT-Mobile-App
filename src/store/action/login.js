@@ -1,6 +1,8 @@
 import { loginReducer } from '../reducer/loginReducer';
 import { getCountries } from '../../services/country';
 import { loginApi, otpVerify } from '../../services/auths';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SensitiveKey } from '../../utils/SensitiveData/SInfoKeys';
 
 const {
   logout,
@@ -57,7 +59,8 @@ export const verifyOtp = (otp) => async (dispatch, getState) => {
 };
 
 export const updateToken = (data) => async (dispatch) => {
-  console.log('data===>', data);
+  console.log('data===>', data.data);
+  AsyncStorage.setItem(SensitiveKey.USER.DATA, JSON.stringify(data?.data));
   dispatch(updateUserToken(data?.token));
   dispatch(isProfileSetup(data?.data?.isProfileSetup));
   dispatch(checkUserLoggedIn(true));
