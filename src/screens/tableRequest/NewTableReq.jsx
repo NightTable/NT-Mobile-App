@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import React, { useEffect, useState } from 'react';
 import {
   Text,
@@ -16,6 +17,8 @@ import axios from 'axios';
 // component
 import {  useSelector } from 'react-redux';
 import {  AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SMS from 'expo-sms';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
@@ -27,15 +30,21 @@ import CostSplittingSectionComp from '../../features/costSplitting';
 import TableConfigComp from '../../features/NewTableReq/TableConfigComp';
 import DyModal from '../../components/Modal';
 import { Button as ButtonComp } from '../../components/Buttons';
+import { SensitiveKey } from '../../utils/SensitiveData';
+//import SensitiveKey from '../../utils/SensitiveData/SInfoKeys';
 
 const { width, height } = Dimensions.get('screen');
 
 // main function
 const NewTableReq = ({ navigation, route }) => {
-  useEffect(() => {
+  let userData;
+  useEffect(async () => {
+    userData = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+    
     console.log('params\n');
     console.log(route?.params);
     console.log('params\n');
+    console.log(JSON.parse(userData), "user data\n")
   }, []);
 
   useEffect(() => {
@@ -133,14 +142,19 @@ and join the table for a fun night!`;
   */
 
   const navToPollingRoomScreen = async (data) => {
+    const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+
     const createTRBody = {
       name: data.name,
       tableConfigId: data.tableConfigId,
       selectedTables: data.selectedTables,
       minimum: data.minimum,
+      // eslint-disable-next-line no-underscore-dangle
       eventId: route?.params?.selectedEventData._id,
       joiningFee: data.joiningFee,
-      organizerUserId: new ObjectId(),
+      // eslint-disable-next-line no-underscore-dangle
+      organizerUserId: JSON.parse(user)._id,
+      // eslint-disable-next-line no-underscore-dangle
       promoterId: route?.params?.promoterData._id,
       costSplitType: data.costSplitType,
       eta: data.eta,
@@ -148,10 +162,30 @@ and join the table for a fun night!`;
       isActive: data.costSplitType === 'pnsl',
       isClosed: false,
       requestPlacementTime: new Date(),
-      clubId: route?.params?.clubData._id
+      // eslint-disable-next-line no-underscore-dangle
+      clubId: route?.params?.clubData._id,
+      paymentMethod: data.paymentMethodData,
+      internalCustomer: data.internalCustomer,
+      paymentType: data.paymentTypeData
     };
 
-    const responseCreateNewTableRequest = await axios.get(`${myIP}:3000/api/tablerequests/tableReq`, createTRBody);
+    const responseCreateNewTableRequest = await axios.get(`${myIP}:3000/api/tablerequests/createTableRequest`, createTRBody);
+    // eslint-disable-next-line quotes
+    console.log(responseCreateNewTableRequest.data, "table request data\n")
+
+    for (let invitee of data.invitedFriends){
+      const newInviteBody = {
+        // eslint-disable-next-line no-underscore-dangle
+        organizerId: JSON.parse(user)._id, 
+        phoneNumber: `+${invitee.emailOrPhone}`,
+        tableRequestId: responseCreateNewTableRequest.data.id,
+        joiningFee: parseInt(invitee.fee, 10)
+      };
+      // eslint-disable-next-line no-await-in-loop
+      const responseSendNewInvite = await axios.post(`${myIP}:3000/api/invites/sendExternalInvite`, newInviteBody);
+      // eslint-disable-next-line quotes
+      console.log(responseSendNewInvite.data, "invite data \n");
+    }
 
     /*
         if PNSL, move to active table group screen
@@ -170,6 +204,7 @@ and join the table for a fun night!`;
     // tableMinimum: tableMinimum
     // tableRequest: responseCreateNewTableRequest.data
   };
+
   const makePayment = async (chargeAmount) => {
     const clubData = route?.params?.clubData;
     const handleError = (error, message) => {
@@ -240,6 +275,7 @@ and join the table for a fun night!`;
         );
         console.log(responseStripeCustomer.data, 'responseStripeCustomer\n');
         customerId = responseStripeCustomer.data.id;
+        // eslint-disable-next-line quotes
 
         const paymentType = selectedPaymentType == 1 ? 'snpl' : 'pnsl';
         const clubInfo = route?.params?.clubData;
@@ -250,9 +286,11 @@ and join the table for a fun night!`;
         const createPaymentIntentBody = {
           amount: chargeAmount,
           lineItems: modifiedPercentages,
-          paymentType,
+          // eslint-disable-next-line object-shorthand
+          paymentType: paymentType,
           paymentMethodId: paymentMethod.id,
-          customerId
+          // eslint-disable-next-line object-shorthand
+          customerId: customerId
         };
         console.log(myIP);
         const responsePaymentIntent = await axios.post(
@@ -275,12 +313,16 @@ and join the table for a fun night!`;
           costSplitType: paymentType,
           eta: selectedDate,
           invitedFriends: InviteFrndsData,
-          paymentMethod,
+          paymentMethodData: paymentMethod,
           stripeCustomer: responseStripeCustomer,
-          internalCustomer: responseInternalCustomer
+          internalCustomer: responseInternalCustomer,
+          paymentTypeData: paymentType
         };
 
-        // navToPollingRoomScreen(trData);
+        console.log(InviteFrndsData, "friends data after payment")
+        //navToPollingRoomScreen(trData);
+
+
 
         // clubData: route?.params?.clubData,
         // electedEventData: route?.params?.selectedEventData,

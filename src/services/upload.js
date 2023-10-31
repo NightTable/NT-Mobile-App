@@ -6,7 +6,7 @@ export const AddImage = (obj) =>
     try {
       const config = {
         method: 'post',
-        url: `${process.env.REACT_APP_BASE_URL}fileUpload/file`,
+        url: `${process.env.AMIYA_HOME_SSBOSNET}fileUpload/file`,
 
         headers: {
           'Content-Type': 'multipart/form-data'

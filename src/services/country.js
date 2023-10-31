@@ -5,7 +5,7 @@ export const getCountries = async () =>
    
     const config = {
       method: 'get',
-      url: `${process.env.REACT_APP_BASE_URL}auth/getCountryCodes`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}auth/getCountryCodes`,
       headers: {}
     };
 
@@ -23,7 +23,7 @@ export const getStatesOfCountry = async (data) =>
   new Promise((resolve, reject) => {
     const config = {
       method: 'post',
-      url: `${process.env.REACT_APP_BASE_URL}auth/getStatesOfCountry`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}auth/getStatesOfCountry`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -43,7 +43,7 @@ export const citiesOfStates = async (data) =>
   new Promise((resolve, reject) => {
     const config = {
       method: 'post',
-      url: `${process.env.REACT_APP_BASE_URL}auth/citiesOfStates`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}auth/citiesOfStates`,
       headers: {
         'Content-Type': 'application/json'
       },

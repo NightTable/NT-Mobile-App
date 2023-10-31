@@ -5,7 +5,7 @@ export const createMenuforClub = async (obj) =>
   new Promise(async (resolve, reject) => {
     const config = {
       method: 'post',
-      url: `${process.env.REACT_APP_BASE_URL}menu/createMenu`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}menu/createMenu`,
 
       headers: {
         'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export const getMenuforClub = async (club_id) =>
   new Promise(async (resolve, reject) => {
     const config = {
       method: 'get',
-      url: `${process.env.REACT_APP_BASE_URL}menu/club/${club_id}`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}menu/club/${club_id}`,
 
       headers: {
         'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ export const deleteMenuforClub = async (menu_id) =>
   new Promise(async (resolve, reject) => {
     const config = {
       method: 'delete',
-      url: `${process.env.REACT_APP_BASE_URL}menu/${menu_id}`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}menu/${menu_id}`,
       headers: {
         'Content-Type': 'application/json'
       }
@@ -71,7 +71,7 @@ export const updateMenuforClub = async (obj, menu_id) =>
     console.log(obj, menu_id);
     const config = {
       method: 'put',
-      url: `${process.env.REACT_APP_BASE_URL}menu/${menu_id}`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}menu/${menu_id}`,
       headers: {
         'Content-Type': 'application/json'
       },
