@@ -141,69 +141,90 @@ and join the table for a fun night!`;
     - navigate over to the next screen
   */
 
-  const navToPollingRoomScreen = async (data) => {
-    const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+    const navToPollingRoomScreen = async (data) => {
+      try {
+        const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+    
+        const createTRBody = {
+          name: data.name,
+          tableConfigId: data.tableConfigId,
+          minimum: data.minimum,
+          // eslint-disable-next-line no-underscore-dangle
+          eventId: route?.params?.selectedEventData._id,
+          joiningFee: data.joiningFee,
+          // eslint-disable-next-line no-underscore-dangle
+          organizerUserId: JSON.parse(user)._id,
+          // eslint-disable-next-line no-underscore-dangle
+          promoterId: route?.params?.promoterData._id,
+          costSplitType: data.costSplitType,
+          eta: data.eta,
+          isPolling: data.costSplitType !== 'pnsl',
+          isActive: data.costSplitType === 'pnsl',
+          isClosed: false,
+          requestPlacementTime: new Date(),
+          // eslint-disable-next-line no-underscore-dangle
+          clubId: route?.params?.clubData._id
+        };
+        
+        // eslint-disable-next-line no-unused-vars
+        const paymentMethod = data.paymentMethodData;
+        // eslint-disable-next-line no-unused-vars
+        const {internalCustomer} = data;
+        // eslint-disable-next-line no-unused-vars
+        const paymentType = data.paymentTypeData;
+        // eslint-disable-next-line no-shadow, no-unused-vars
+        const {selectedTables} = data;
 
-    const createTRBody = {
-      name: data.name,
-      tableConfigId: data.tableConfigId,
-      selectedTables: data.selectedTables,
-      minimum: data.minimum,
-      // eslint-disable-next-line no-underscore-dangle
-      eventId: route?.params?.selectedEventData._id,
-      joiningFee: data.joiningFee,
-      // eslint-disable-next-line no-underscore-dangle
-      organizerUserId: JSON.parse(user)._id,
-      // eslint-disable-next-line no-underscore-dangle
-      promoterId: route?.params?.promoterData._id,
-      costSplitType: data.costSplitType,
-      eta: data.eta,
-      isPolling: data.costSplitType !== 'pnsl',
-      isActive: data.costSplitType === 'pnsl',
-      isClosed: false,
-      requestPlacementTime: new Date(),
-      // eslint-disable-next-line no-underscore-dangle
-      clubId: route?.params?.clubData._id,
-      paymentMethod: data.paymentMethodData,
-      internalCustomer: data.internalCustomer,
-      paymentType: data.paymentTypeData
+
+        let responseCreateNewTableRequest;
+        try {
+          responseCreateNewTableRequest = await axios.post(`${myIP}:3000/api/tablerequests/createTableRequest`, createTRBody);
+          // eslint-disable-next-line quotes
+          console.log(responseCreateNewTableRequest.data, "table request data\n");
+        } catch (error) {
+          console.log('Error in creating table request:', error);
+          throw error;
+        }
+    
+        for (let invitee of data.invitedFriends) {
+          const newInviteBody = {
+            // eslint-disable-next-line no-underscore-dangle
+            organizerId: JSON.parse(user)._id,
+            phoneNumber: `+${invitee.emailOrPhone}`,
+            tableRequestId: responseCreateNewTableRequest.data.id,
+            joiningFee: parseInt(invitee.fee, 10)
+          };
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            const responseSendNewInvite = await axios.post(`${myIP}:3000/api/invites/sendExternalInvite`, newInviteBody);
+            // eslint-disable-next-line quotes
+            console.log(responseSendNewInvite.data, "invite data \n");
+          } catch (error) {
+            console.error(`Error in sending invite for ${invitee.emailOrPhone}:`, error.response ? error.response.data : error.message);
+          }
+        }
+    
+        /*
+          if PNSL, move to active table group screen
+          if SNPL, move to polling room screen
+        */
+        // clubData: route?.params?.clubData,
+        // electedEventData: route?.params?.selectedEventData,
+        // promoterData: route?.params?.promoterData,
+        // tableMinimum: tableMinimum,
+        // arrivalDate: selectedData
+        // selectedConfigData: tableConfigsData,
+        // InviteFrndsData: InviteFrndsData,
+        // paymentMethod: paymentMethod or null
+        // internalCustomer: internalCustomer
+        // tableMinimum: tableMinimum
+        // tableRequest: responseCreateNewTableRequest.data
+    
+      } catch (overallError) {
+        console.error('General error in navToPollingRoomScreen function:', overallError);
+      }
     };
-
-    const responseCreateNewTableRequest = await axios.get(`${myIP}:3000/api/tablerequests/createTableRequest`, createTRBody);
-    // eslint-disable-next-line quotes
-    console.log(responseCreateNewTableRequest.data, "table request data\n");
-
-    for (let invitee of data.invitedFriends){
-      const newInviteBody = {
-        // eslint-disable-next-line no-underscore-dangle
-        organizerId: JSON.parse(user)._id, 
-        phoneNumber: `+${invitee.emailOrPhone}`,
-        tableRequestId: responseCreateNewTableRequest.data.id,
-        joiningFee: parseInt(invitee.fee, 10)
-      };
-      // eslint-disable-next-line no-await-in-loop
-      const responseSendNewInvite = await axios.post(`${myIP}:3000/api/invites/sendExternalInvite`, newInviteBody);
-      // eslint-disable-next-line quotes
-      console.log(responseSendNewInvite.data, "invite data \n");
-    }
-
-    /*
-        if PNSL, move to active table group screen
-        if SNPL, move to polling room screen
-      */
-
-    // clubData: route?.params?.clubData,
-    // electedEventData: route?.params?.selectedEventData,
-    // promoterData: route?.params?.promoterData,
-    // tableMinimum: tableMinimum,
-    // arrivalDate: selectedData
-    // selectedConfigData: tableConfigsData,
-    // InviteFrndsData: InviteFrndsData,
-    // paymentMethod: paymentMethod or null
-    // internalCustomer: internalCustomer
-    // tableMinimum: tableMinimum
-    // tableRequest: responseCreateNewTableRequest.data
-  };
+    
 
   const makePayment = async (chargeAmount) => {
     const clubData = route?.params?.clubData;
@@ -301,12 +322,9 @@ and join the table for a fun night!`;
         console.log('\n');
         console.log(responsePaymentIntent.data, `responsePaymentIntent${paymentType.toUpperCase()}\n`);
 
-        // if (paymentType)
-
-        // create table request and nav to next screen
         const trData = {
           name: tableName,
-          tableConfigId: selectedTables,
+          tableConfigId: extractedTableConfigIds,
           minimum: tableMinimum,
           joiningFee: 300,
           costSplitType: paymentType,
@@ -318,7 +336,6 @@ and join the table for a fun night!`;
           paymentTypeData: paymentType
         };
 
-        console.log(InviteFrndsData, "friends data after payment")
         await navToPollingRoomScreen(trData);
 
 
