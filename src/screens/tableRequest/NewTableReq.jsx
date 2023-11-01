@@ -185,13 +185,17 @@ and join the table for a fun night!`;
           console.log('Error in creating table request:', error);
           throw error;
         }
-    
+        
+        // eslint-disable-next-line no-underscore-dangle
+        console.log('Table Request ID:', responseCreateNewTableRequest.data.data._id);
+                
         for (let invitee of data.invitedFriends) {
           const newInviteBody = {
             // eslint-disable-next-line no-underscore-dangle
             organizerId: JSON.parse(user)._id,
             phoneNumber: `+${invitee.emailOrPhone}`,
-            tableRequestId: responseCreateNewTableRequest.data.id,
+            // eslint-disable-next-line no-underscore-dangle
+            tableRequestId: responseCreateNewTableRequest.data.data._id,
             joiningFee: parseInt(invitee.fee, 10)
           };
           try {
