@@ -16,7 +16,7 @@ const PollingRoom = ({ navigation }) => (
         
 
         <View>
-            <View style={{height:120,backgroundColor:'red'}}>
+            <View style={{height:120,backgroundColor:colors.red.red950}}>
 
             </View>
 

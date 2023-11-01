@@ -49,7 +49,8 @@ export const colors = {
     red350: '#FB4C4C',
     red800: '#282828',
     red850: '#581A1A',
-    red900: '#FB5C5C'
+    red900: '#FB5C5C',
+    red950: '#8C0322'
   },
   green: {
     green0: '#00FF00',
