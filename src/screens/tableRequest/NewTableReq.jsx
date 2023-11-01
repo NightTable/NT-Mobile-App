@@ -31,8 +31,8 @@ import TableConfigComp from '../../features/NewTableReq/TableConfigComp';
 import DyModal from '../../components/Modal';
 import { Button as ButtonComp } from '../../components/Buttons';
 import { SensitiveKey } from '../../utils/SensitiveData';
-//import SensitiveKey from '../../utils/SensitiveData/SInfoKeys';
 
+// eslint-disable-next-line no-unused-vars
 const { width, height } = Dimensions.get('screen');
 
 // main function
@@ -44,6 +44,7 @@ const NewTableReq = ({ navigation, route }) => {
     console.log('params\n');
     console.log(route?.params);
     console.log('params\n');
+    // eslint-disable-next-line quotes
     console.log(JSON.parse(userData), "user data\n")
   }, []);
 
@@ -58,7 +59,9 @@ const NewTableReq = ({ navigation, route }) => {
   const [selectedTableIds, setSelectedTableIds] = useState([]); // ids of the selected tables
   const [defaultTableMinimum, setDefaultTableMinimum] = useState(0); // default table min = sum of the table minds of selected tables
   const [selectedTables, setSelectedTables] = useState([]); // tables of ids selected by user
+  // eslint-disable-next-line no-unused-vars
   const [selectedTableConfigId, setSelectedTableConfigId] = useState(''); // table config id of a selected table
+  // eslint-disable-next-line no-unused-vars
   const [modalVisible, setModalVisible] = useState(false); // modal visibility
   const [inputValue, setInputValue] = useState(''); // phone number of invitee
   const [isSending, setIsSending] = useState(false); // sms sending or not
@@ -79,8 +82,10 @@ const NewTableReq = ({ navigation, route }) => {
   const [selectedPaymentType, setselectedPaymentType] = useState(2); // payment type
   // DATE
   const [selectedDate, setSelectedDate] = useState(new Date()); // time of table
+  // eslint-disable-next-line no-unused-vars
   const [showDatePicker, setShowDatePicker] = useState(false); // date time picker
   // modal- know-more (Snpl& pnsl)
+  // eslint-disable-next-line camelcase
   const [snpl_psnl_modal, setsnpl_psnl_modal] = useState(false); // pnsl snpl selection
   // ON DATE CHANGE
 
@@ -101,9 +106,6 @@ const NewTableReq = ({ navigation, route }) => {
     }
   ];
 
-  const club = 'Caveau';
-  const event = 'Afrojack Tour';
-  const fee = 500;
   const appStoreLink = 'https://apps.apple.com/us/app/amex/id362348516';
   const playStoreLink =
     'https://play.google.com/store/apps/details?id=com.americanexpress.android.acctsvcs.us&pcampaignid=web_share';
@@ -115,9 +117,10 @@ or Play Store: ${playStoreLink},\n
 make sure to sign up using the phone number on which you've recieved this message,\n
 and join the table for a fun night!`;
 
-  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event via NightTable. Thank you!`;
+  const promoterMessage = `Hey! I'm Amiya. I'd like your help in curating my night at ${route?.params?.clubData?.name} for the ${route?.params?.selectedEventData?.name} event via NightTable. Feel free to create a new table request for me if necessary. Thank you!`;
   const promoterNumber = '+16178933910';
 
+  // eslint-disable-next-line no-unused-vars
   const { createPaymentMethod, handleNextAction } = useStripe();
 
   const toggleTableSelection = (id) => {
@@ -185,7 +188,7 @@ and join the table for a fun night!`;
           console.log('Error in creating table request:', error);
           throw error;
         }
-        
+
         // eslint-disable-next-line no-underscore-dangle
         console.log('Table Request ID:', responseCreateNewTableRequest.data.data._id);
                 
@@ -245,6 +248,7 @@ and join the table for a fun night!`;
     try {
       const extractedTableConfigIds = clubStore?.individualClubTableConfig
         .filter((table) => selectedTableIds.includes(table.tableMapId))
+        // eslint-disable-next-line no-underscore-dangle
         .map((table) => table._id);
       console.log(extractedTableConfigIds, 'selectedTables mp\n');
 
@@ -392,6 +396,7 @@ and join the table for a fun night!`;
   // change table minimum based on how many configs selected
   const handleModifyTableMin = (min) => {
     let parsedMin = parseInt(min, 10);
+    // eslint-disable-next-line no-restricted-globals
     if (isNaN(parsedMin)) {
       parsedMin = 0;
     } // exit early if min is not a number
@@ -408,6 +413,7 @@ and join the table for a fun night!`;
   // for promoters when they want to modify the table minimum manually
   const toggleTableMin = (min) => {
     const parsedMin = parseFloat(min);
+    // eslint-disable-next-line no-restricted-globals
     setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);
   };
 
@@ -455,6 +461,7 @@ and join the table for a fun night!`;
   };
 
   // remove a participant
+  // eslint-disable-next-line no-unused-vars
   const handleRemoveParticipant = (indexToRemove) => {
     const updatedList = InviteFrndsData.filter((_, index) => index !== indexToRemove);
     setInviteFrndsData(updatedList);
@@ -465,6 +472,7 @@ and join the table for a fun night!`;
     const selectedTableList = selectedTables;
     setSelectedTableConfigId(idParam);
     if (selectedTableList.length === 0) {
+      console.log(tcs, "tcs handle table config press");
       for (let i = 0; i < tcs.length; i++) {
         if (tcs[i].id === idParam) {
           selectedTableList.push(tcs[i]);
@@ -472,6 +480,7 @@ and join the table for a fun night!`;
       }
     } else {
       let found = false;
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < selectedTableList.length; i++) {
         if (selectedTableList[i].id === idParam) {
           found = true;
@@ -518,7 +527,7 @@ and join the table for a fun night!`;
             {route?.params?.selectedEventData?.name}
           </Text>
         </View>
-    );
+          );
   console.log('');
   console.log('');
   console.log(selectedTableIds, 'table ids');
@@ -654,6 +663,7 @@ and join the table for a fun night!`;
                     placeholderTextColor={colors.gold.gold100}
                     selectionColor={colors.gold.gold100}
                     value={
+                      // eslint-disable-next-line no-nested-ternary, no-restricted-globals
                       !isNaN(tableMinimum) ? tableMinimum : !isNaN(defaultTableMinimum) ? defaultTableMinimum : '0'
                     }
                     keyboardType='numeric'
@@ -720,6 +730,7 @@ and join the table for a fun night!`;
                 {clubStore?.individualClubTableConfig.length > 0 ? (
                   clubStore?.individualClubTableConfig.map((item, index) => (
                     <TableConfigComp
+                      // eslint-disable-next-line react/no-array-index-key
                       key={index}
                       onOuterTableConfigPress={handleTableConfigPress}
                       handleTableMinimum={handleModifyTableMin}
@@ -808,6 +819,7 @@ and join the table for a fun night!`;
             <ButtonComp
               onSubmit={() => {
                 if (selectedTableIds.length === 0) {
+                  // eslint-disable-next-line no-undef
                   console.log(tableConfigsData, 'table config data when button pressed');
                   Alert.alert('Please select the table Configs');
                 } else {
@@ -878,16 +890,21 @@ and join the table for a fun night!`;
       /> */}
 
       <DyModal
+        // eslint-disable-next-line react/no-children-prop
         children={<CostSplittingSectionComp selectedPaymentType={selectedPaymentType} />}
         onClosepress={() => {
+          // eslint-disable-next-line camelcase
           setsnpl_psnl_modal(!snpl_psnl_modal);
         }}
         bgColor={colors.black.black800}
+        // eslint-disable-next-line camelcase
         openActionSheet={snpl_psnl_modal}
+        // eslint-disable-next-line camelcase
         setopenActionSheet={setsnpl_psnl_modal}
       />
 
       <DyModal
+        // eslint-disable-next-line react/no-children-prop
         children={
           <View style={{ paddingHorizontal: 18 }}>
               <Text style={[typography.bold.bold24, { color: colors.gold.gold100, paddingVertical: 12 }]}>
@@ -1004,14 +1021,17 @@ and join the table for a fun night!`;
                   style={{ borderRadius: 20 / 2, padding: 4 }}
                   onPress={async () => {
                     if (!isCardValid && tableMinimum !== 0) {
+                      // eslint-disable-next-line no-alert
                       alert('Please enter a valid credit card to invite friends.');
                       return;
                     }
                     if (!inviteParticipantData) {
+                      // eslint-disable-next-line no-alert
                       alert('Please enter a phone number to invite friends.');
                       return;
                     }
                     if (!joiningFee) {
+                      // eslint-disable-next-line no-alert
                       alert('Please specify a joining fee to invite friends.');
                       return;
                     }
@@ -1066,6 +1086,7 @@ and join the table for a fun night!`;
                     {InviteFrndsData &&
                       InviteFrndsData.map((item, index) => (
                           <View
+                            // eslint-disable-next-line react/no-array-index-key
                             key={index}
                             style={{
                               flexDirection: 'row',
@@ -1203,4 +1224,4 @@ const styles = StyleSheet.create({
   }
 });
 
-// testing commit
+
