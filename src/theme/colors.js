@@ -65,7 +65,10 @@ export const colors = {
     green470: '#16A562',
     green500: '#346153',
     green550: '#16A562',
-    green600: '#083a22'
+    green600: '#083a22',
+    green650: '#162526',
+    green700: '#516D65',
+    green750: '#0d1f1e'
   },
   brown: {
     brown100: '#988968',
