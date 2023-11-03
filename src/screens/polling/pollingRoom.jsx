@@ -7,8 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ImageBackground,
-  ScrollView,
-  Image
+  ScrollView
 } from 'react-native';
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
