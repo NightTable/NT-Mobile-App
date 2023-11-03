@@ -2,7 +2,7 @@ import { GetRequest } from '../utils/axios/Axios';
 
 export const getEventofClub = async (clubId, obj) => {
   try {
-    const response = await GetRequest(`${process.env.AMIYA_HOME_SSBOSNET}events/club/${clubId}`, '', '');
+    const response = await GetRequest(`${process.env.REACT_APP_BASE_URL}events/club/${clubId}`, '', '');
     return response.data;
   } catch (error) {
     return error;
@@ -16,7 +16,7 @@ export const ViewEvent = async (obj) =>
   new Promise((resolve, reject) => {
     const config = {
       method: 'get',
-      url: `${process.env.AMIYA_HOME_SSBOSNET}events/club/${obj.clubId}/${obj.EventId}`,
+      url: `${process.env.REACT_APP_BASE_URL}events/club/${obj.clubId}/${obj.EventId}`,
       headers: {}
     };
 
