@@ -49,7 +49,8 @@ export const colors = {
     red350: '#FB4C4C',
     red800: '#282828',
     red850: '#581A1A',
-    red900: '#FB5C5C'
+    red900: '#FB5C5C',
+    red950: '#8C0322'
   },
   green: {
     green0: '#00FF00',
@@ -64,7 +65,10 @@ export const colors = {
     green470: '#16A562',
     green500: '#346153',
     green550: '#16A562',
-    green600: '#083a22'
+    green600: '#083a22',
+    green650: '#162526',
+    green700: '#516D65',
+    green750: '#0d1f1e'
   },
   brown: {
     brown100: '#988968',

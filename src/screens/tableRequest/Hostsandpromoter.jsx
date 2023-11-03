@@ -68,7 +68,7 @@ const Hostsandpromoters = ({ navigation, route }) => {
       <View style={styles.mainBox}>
         {/* Adding description above the list */}
         <Text style={[styles.descriptionText, typography.regular.regular18]}>
-          Choose a VIP host who will help you facilitate your night
+          Choose a VIP host who will help you facilitate your night. They can help you find people to help split costs, or more people who would make your night fun.
         </Text>
 
         {/* Centering the cards */}

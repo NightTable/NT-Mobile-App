@@ -198,7 +198,18 @@ const Login = ({ navigation }) => {
               },
               typography.regular.regular12
             ]}>
-            By logging in,you agree to the Terms of Use and Privacy Policy{' '}
+            By logging in,you agree to the Terms of Use and Privacy Policy.{' '}
+          </Text>
+          <Text
+            style={[
+              styles.termandconditionText,
+              {
+                color: colors.gold.gold100,
+                textAlign: 'center'
+              },
+              typography.regular.regular12
+            ]}>
+            Please enable location sharing, as our system uses your live location to find the best clubs near you.
           </Text>
         </View>
       </View>
