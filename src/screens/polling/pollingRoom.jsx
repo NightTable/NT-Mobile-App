@@ -102,7 +102,9 @@ const PollingRoom = ({ navigation }) => {
             style={{ height: 200, width: '100%' }}>
             <View style={{ alignItems: 'flex-end', paddingTop: 20 }}>
               <View style={{ backgroundColor: 'black', height: 60, width: 160, justifyContent: 'center' }}>
-                <Text style={{ color: colors.gold.gold100,paddingLeft:4 }}>Table request organized by Amanda May</Text>
+                <Text style={{ color: colors.gold.gold100, paddingLeft: 4 }}>
+                  Table request organized by Amanda May
+                </Text>
               </View>
             </View>
             <View style={{ backgroundColor: 'black', height: 80, width: 140 }}>
