@@ -1114,13 +1114,13 @@ and join the table for a fun night!`;
                   </ScrollView>
                   <Text
                     style={[
-                      typography.semBold.semBold12,
+                      typography.light.light10,
                       {
                         color: colors.gold.gold200 // Assuming you want black text
                       }
                     ]}>
-                    You'll also be levied an additional fee of no more than 60% and no less than 30% to account for
-                    miscellaneous club fees, such as tip, tax, and service fees, and payment processing fees.
+                    You'll also be levied additional fees of a reasonable amount  to account for
+                    miscellaneous club fees, such as tip, tax, service fees, and payment processing fees.
                   </Text>
                   <TouchableOpacity
                     style={{
