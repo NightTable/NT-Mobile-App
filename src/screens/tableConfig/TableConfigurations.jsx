@@ -26,7 +26,7 @@ const TableConfigurations = ({ route, navigation }) => {
       console.log(config);
       return config ? (
         <TableConfigTableComp
-          key={index}
+          key={config}
           tableMapId={config.tableMapId}
           tableType={config.type}
           tableMinimum={config.minPrice}
@@ -34,10 +34,10 @@ const TableConfigurations = ({ route, navigation }) => {
       ) : null;
     });
 
-  useEffect(() => {
-    console.log('state tc', tableConfigs);
-    console.log('store', clubStore?.individualClubTableConfig);
-  }, []);
+  // useEffect(() => {
+  //   console.log('state tc', tableConfigs);
+  //   console.log('store', clubStore?.individualClubTableConfig);
+  // }, []);
 
 
   return (
