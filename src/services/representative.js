@@ -5,7 +5,7 @@ export const getProfileData = async (id) =>
   new Promise((resolve, reject) => {
     const config = {
       method: 'get',
-      url: `${process.env.REACT_APP_BASE_URL}representatives/representative/${id}`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}representatives/representative/${id}`,
       headers: {}
     };
 
@@ -23,7 +23,7 @@ export const addRepresentativetoClub = async (obj) =>
   new Promise((resolve, reject) => {
     const config = {
       method: 'post',
-      url: `${process.env.REACT_APP_BASE_URL}representatives/createRepresentative`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}representatives/createRepresentative`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -44,7 +44,7 @@ export const editRepresentativetoClub = async (obj) =>
   new Promise((resolve, reject) => {
     const config = {
       method: 'put',
-      url: `${process.env.REACT_APP_BASE_URL}representatives/updateRepresentative`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}representatives/updateRepresentative`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -64,7 +64,7 @@ export const editRepresentativetoClub = async (obj) =>
 
 export const getRepresentativebyClub = async (club_id) => {
   try {
-    const response = await GetRequest(`${process.env.REACT_APP_BASE_URL}representatives/club/${club_id}`, '', '');
+    const response = await GetRequest(`${process.env.AMIYA_HOME_SSBOSNET}representatives/club/${club_id}`, '', '');
 
     return response.data;
   } catch (error) {
@@ -78,7 +78,7 @@ export const deleteRepresentativebyClub = async (representative_id) =>
     const config = {
       method: 'delete',
       maxBodyLength: Infinity,
-      url: `${process.env.REACT_APP_BASE_URL}representatives/representative/${representative_id}`,
+      url: `${process.env.AMIYA_HOME_SSBOSNET}representatives/representative/${representative_id}`,
       headers: {},
       data: ''
     };

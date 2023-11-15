@@ -52,7 +52,6 @@ const NewTableReq = ({ navigation, route }) => {
     console.log(selectedTableIds, 'table ids');
   }, [selectedTableIds]);
 
-  const myIP = 'http://192.168.1.77';
   // const myIP = 'http://10.0.0.146'
   // Store
   const clubStore = useSelector((state) => state.club); // club store
@@ -181,7 +180,8 @@ and join the table for a fun night!`;
 
         let responseCreateNewTableRequest;
         try {
-          responseCreateNewTableRequest = await axios.post(`${myIP}:3000/api/tablerequests/createTableRequest`, createTRBody);
+          console.log("create table req", `${process.env.AMIYA_HOME_SSBOSNET}tablerequests/createTableRequest`, createTRBody);
+          responseCreateNewTableRequest = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/createTableRequest`, createTRBody);
           // eslint-disable-next-line quotes
           console.log(responseCreateNewTableRequest.data, "table request data\n");
         } catch (error) {
@@ -202,8 +202,10 @@ and join the table for a fun night!`;
             joiningFee: parseInt(invitee.fee, 10)
           };
           try {
+            // eslint-disable-next-line no-await-in-loop, quotes
+            console.log("sending invite", `${process.env.AMIYA_HOME_SSBOSNET}invites/sendExternalInvite`, newInviteBody);
             // eslint-disable-next-line no-await-in-loop
-            const responseSendNewInvite = await axios.post(`${myIP}:3000/api/invites/sendExternalInvite`, newInviteBody);
+            const responseSendNewInvite = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}invites/sendExternalInvite`, newInviteBody);
             // eslint-disable-next-line quotes
             console.log(responseSendNewInvite.data, "invite data \n");
           } catch (error) {
@@ -251,12 +253,14 @@ and join the table for a fun night!`;
         // eslint-disable-next-line no-underscore-dangle
         .map((table) => table._id);
       console.log(extractedTableConfigIds, 'selectedTables mp\n');
+      
 
       // Fetching table requests for each extracted table config ID.
+      console.log("get table requests by table config id", `${process.env.AMIYA_HOME_SSBOSNET}tablerequests/tableConfiguration/:id`);
       const tableRequestsResponses = await Promise.all(
         extractedTableConfigIds.map(async (tableConfigId) => {
           try {
-            return await axios.get(`${myIP}:3000/api/tablerequests/tableConfiguration/${tableConfigId}`);
+            return await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/tableConfiguration/${tableConfigId}`);
           } catch (error) {
             handleError(error, `Error fetching table request for ID ${tableConfigId}`);
             return null; // Handle individual request errors
@@ -293,14 +297,15 @@ and join the table for a fun night!`;
         };
 
         const responseInternalCustomer = await axios.post(
-          `${myIP}:3000/api/payments/create-customer`,
+          `${process.env.AMIYA_HOME_SSBOSNET}payments/create-customer`,
           createCustomerBody
         );
         console.log(responseInternalCustomer.data, 'responseInternalCustomer\n');
 
         let customerId;
+        console.log("get stripe customer by stripe customer id", `${process.env.AMIYA_HOME_SSBOSNET}payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`);
         const responseStripeCustomer = await axios.get(
-          `${myIP}:3000/api/payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`
+          `${process.env.AMIYA_HOME_SSBOSNET}payments/get-stripe-customer/${responseInternalCustomer.data.stripeCustomerId}`
         );
         console.log(responseStripeCustomer.data, 'responseStripeCustomer\n');
         customerId = responseStripeCustomer.data.id;
@@ -320,9 +325,9 @@ and join the table for a fun night!`;
           // eslint-disable-next-line object-shorthand
           customerId: customerId
         };
-        console.log(myIP);
+        console.log("creating payment intent", `${process.env.AMIYA_HOME_SSBOSNET}payments/create-payment-intent`);
         const responsePaymentIntent = await axios.post(
-          `${myIP}:3000/api/payments/create-payment-intent`,
+          `${process.env.AMIYA_HOME_SSBOSNET}payments/create-payment-intent`,
           createPaymentIntentBody
         );
         console.log('\n');
