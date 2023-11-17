@@ -1,56 +1,165 @@
-import React from 'react';
-import { Text, StyleSheet, View, Pressable, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, StyleSheet, View, Pressable, SafeAreaView, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
+import { SensitiveKey } from '../../utils/SensitiveData';
 
-const TableInviteCard = () => (
-  <View style={styles.cardBoxOuterLayer}>
+
+const TableInviteCard = (/* tableName, paymentType, participants, organizerName, placementTime, joiningFee */) => (
+  <View style={styles.cardBoxOuterLayerOrganized}>
     <View style={styles.cardBox}>
       <View>
-        <Text style={[typography.bold.bold16]}>Table Name</Text>
+        <Text style={[typography.bold.bold16, {color: colors.gold.gold200}]}>Table: Table Name</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={[typography.regular.regular14]}>12 people, </Text>
-        <Text style={[typography.regular.regular14]}>snpl, </Text>
-        <Text style={[typography.regular.regular14]}>4 friends</Text>
+        <Text style={[typography.regular.regular14, {color: colors.gold.gold200}]}>snpl, </Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>20 girls, </Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>5 guys, </Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>$500</Text>
       </View>
     </View>
     <View style={styles.cardBox}>
       <View>
-        <Text style={[typography.regular.regular16]}>User Name</Text>
+        <Text style={[typography.regular.regular16, {color: colors.gold.gold200}]}>Organizer: User Name</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={[typography.regular.regular14]}>placed on </Text>
-        <Text style={[typography.bold.bold14]}>1-12-22 </Text>
-        <Text style={[typography.bold.bold14]}>18:00</Text>
+        <Text style={[typography.regular.regular14, {color: colors.gold.gold200}]}>placed on </Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>1-12-22 </Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>18:00</Text>
       </View>
     </View>
   </View>
 );
 
-// MAIN FUNCTION
-const TableInvites = ({ navigation }) => (
-    <SafeAreaView style={styles.container}>
-        <HeaderWithLeftIcon
-          title='Table Invites'
-          icon='arrowleft'
-          iconDirectory='AntDesign'
-          onSubmit={() => {
-            navigation.navigate('Home');
-          }}
-        />
+const TableInvites = ({ navigation }) => {
+  const [orgTables, setOrgTables] = useState([]);
+  const [invites, setInvites] = useState([]);
 
-        <Pressable
-          onPress={() => {
-            navigation.navigate('TableInvitesOverView', {
-              data: {}
-            });
-          }}
-          style={[styles.mainBox]}>
-          <TableInviteCard />
+  const getAllOrganizedTables = async () => {
+    let array;
+    try {
+      const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+      const tableRequests = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/organizerUserId/${JSON.parse(user)._id}`);
+      array = tableRequests.data.data;
+      console.log(array, "tableRequests.data\n");
+      return array;
+    } catch (error) {
+      console.error('Error fetching organized tables:', error);
+      // Handle or throw the error as needed
+      throw error;  // Re-throw the error if you want to handle it outside this function
+    }
+  };
+  
+  const getAllInvitedTables = async () => {
+    let array;
+    try {
+      const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+      console.log(JSON.parse(user).phoneNumber, "JSON.parse(user).phoneNumber}")
+      const invs = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}invites/getListOfInvites/+${JSON.parse(user).phoneNumber}`);
+      array = invs.data.data;
+      console.log(array, "invs.data\n");
+      return array;
+    } catch (error) {
+      console.error('Error fetching invited tables:', error);
+      // Handle or throw the error as needed
+      throw error;  // Re-throw the error if you want to handle it outside this function
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const trs = await getAllOrganizedTables();
+      const invs = await getAllInvitedTables();
+      setOrgTables(trs);
+      setInvites(invs);
+    };
+    
+    fetchData();
+
+  }, []);
+
+  console.log(orgTables, "orgtables");
+  console.log(invites, "invites");
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <HeaderWithLeftIcon
+        title='Table Invites'
+        icon='arrowleft'
+        iconDirectory='AntDesign'
+        onSubmit={() => {
+          navigation.navigate('Home');
+        }}
+      />
+      <ScrollView style={{ borderWidth: 2, borderColor: colors.gold.gold200, borderRadius: 15, flex: 1 /* marginTop: -10 */ }}>
+
+      <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Organized:</Text>
+        <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+        <FlatList
+          data={orgTables} // assuming orgTables is an array of table objects
+          renderItem={({ item }) => (
+            <TableInviteCard
+              tableName={item.name}
+              paymentType={item.paymentType}
+              participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
+              organizerName={item.organizerName}
+              placementTime={item.placementTime}
+              joiningFee={item.joiningFee}
+            />
+          )}
+          keyExtractor={item => item.id} // replace 'id' with the key used in your data
+        />
+          
         </Pressable>
-      </SafeAreaView>
+
+        <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Been Invited to:</Text>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('TableInvitesOverView', {
+                data: {}
+              });
+            }}
+            style={[styles.mainBox]}>
+            <TableInviteCard />
+          </Pressable>
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Table Requests:</Text>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('TableInvitesOverView', {
+                data: {}
+              });
+            }}
+            style={[styles.mainBox]}>
+            <TableInviteCard />
+          </Pressable>
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Table Requests:</Text>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('TableInvitesOverView', {
+                data: {}
+              });
+            }}
+            style={[styles.mainBox]}>
+            <TableInviteCard />
+          </Pressable>
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Table Requests:</Text>
+          <Pressable
+            onPress={() => {
+              navigation.navigate('TableInvitesOverView', {
+                data: {}
+              });
+            }}
+            style={[styles.mainBox]}>
+            <TableInviteCard />
+          </Pressable>
+
+
+      </ScrollView>
+    </SafeAreaView>
   );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -69,8 +178,40 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 6
   },
-  cardBoxOuterLayer: {
-    backgroundColor: colors.gold.gold100,
+  cardBoxOuterLayerOrganized: {
+    backgroundColor: colors.blue.blue400,
+    borderColor: colors.gold.gold200,
+    borderWidth: 2,
+    padding: 12,
+    borderRadius: 12,
+    marginVertical: '2%'
+    
+  },
+  cardBoxOuterLayerInvited: {
+    backgroundColor: colors.blue.blue400,
+    borderColor: colors.gold.gold200,
+    borderWidth: 2,
+    padding: 12,
+    borderRadius: 12
+  },
+  cardBoxOuterLayerActive: {
+    backgroundColor: colors.blue.blue400,
+    borderColor: colors.gold.gold200,
+    borderWidth: 2,
+    padding: 12,
+    borderRadius: 12
+  },
+  cardBoxOuterLayerPolling: {
+    backgroundColor: colors.blue.blue400,
+    borderColor: colors.gold.gold200,
+    borderWidth: 2,
+    padding: 12,
+    borderRadius: 12
+  },
+  cardBoxOuterLayerPast: {
+    backgroundColor: colors.blue.blue400,
+    borderColor: colors.gold.gold200,
+    borderWidth: 2,
     padding: 12,
     borderRadius: 12
   }

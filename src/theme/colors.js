@@ -80,7 +80,8 @@ export const colors = {
     blue200: '#8690A2',
     blue250: '#04D1FC',
     blue300: '#009CD6',
-    blue350: '#005474'
+    blue350: '#005474',
+    blue400: '#0f4065'
   },
   black: {
     black400: '#1D1E22',

@@ -188,30 +188,3 @@ const styles = StyleSheet.create({
 });
 
 export default Dashboard;
-{
-  /* <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            flexDirection: "row",
-          }}
-        > <Text
-            style={{
-              color: colors.gold.gold200,
-              fontSize: 14,
-              fontWeight: "500",
-            }}
-          >
-            Enter City :{"  "}
-          </Text> 
-           <TextInput
-            value={city}
-            onChangeText={handleChangeText}
-            placeholder="                 "
-            style={{
-              borderBottomWidth: 2,
-              borderBottomColor: colors.gold.gold200,
-              color: colors.gold.gold200,
-            }}
-          /> </View> */
-}
