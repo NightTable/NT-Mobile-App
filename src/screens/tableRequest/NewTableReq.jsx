@@ -45,12 +45,22 @@ const NewTableReq = ({ navigation, route }) => {
     console.log(route?.params);
     console.log('params\n');
     // eslint-disable-next-line quotes
-    console.log(JSON.parse(userData), "user data\n")
+    console.log(JSON.parse(userData), "user data\n");
   }, []);
 
   useEffect(() => {
     console.log(selectedTableIds, 'table ids');
   }, [selectedTableIds]);
+
+  useEffect(() => {
+    // If paymentType is "pay-now-split-later", set the joining fee to tableMinimum
+    console.log("this is your joining fee ", myJoiningFee);
+    if (selectedPaymentType === 2) {
+      setMyJoiningFee(tableMinimum);
+      console.log("your joining fee has changed to ", myJoiningFee);
+
+    }
+  }, [selectedPaymentType, tableMinimum]);
 
   // const myIP = 'http://10.0.0.146'
   // Store
@@ -66,6 +76,7 @@ const NewTableReq = ({ navigation, route }) => {
   const [isSending, setIsSending] = useState(false); // sms sending or not
   const [isCardValid, setIsCardValid] = useState(false); // card valid or not
   const [joiningFee, setJoiningFee] = useState(''); // joining fee of user
+  const [myJoiningFee, setMyJoiningFee] = useState(''); // organizer's joining fee
   const [tableName, setTableName] = useState(''); // name of your table
 
   const [tableMinimum, setTableMinimum] = useState(0); // table minimum
@@ -144,8 +155,10 @@ and join the table for a fun night!`;
   */
 
     const navToPollingRoomScreen = async (data) => {
+      console.log(myJoiningFee, tableMinimum, " this is supposed to be your joining fee and this the tableMinimum")
       try {
         const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+        console.log(JSON.parse(user)._id, "JSON.parse(user)._id\n");
     
         const createTRBody = {
           name: data.name,
@@ -191,9 +204,37 @@ and join the table for a fun night!`;
 
         // eslint-disable-next-line no-underscore-dangle
         console.log('Table Request ID:', responseCreateNewTableRequest.data.data._id);
-                
+
+        let responseCreateNewTableRequestPartMapping;
+        let newInviteBody;
+        let newTRPMBody;
+
+        try {
+          newTRPMBody = {
+            // eslint-disable-next-line no-underscore-dangle
+            userId: JSON.parse(user)._id,
+            // eslint-disable-next-line no-underscore-dangle
+            tableRequestId: responseCreateNewTableRequest.data.data._id,
+            minimumPrice: myJoiningFee,
+            isRequestOrganizer: true,
+            isInvitedPending: false,
+            isActiveParticipant: (selectedPaymentType === 2),
+            phoneNumber: `${JSON.parse(user).phoneNumber}`,
+            isPaymentInfoRegistered: true
+
+          };
+          // eslint-disable-next-line no-await-in-loop, quotes
+          console.log("creating table req part map for organizer", `${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, newTRPMBody);
+          // eslint-disable-next-line no-await-in-loop
+          responseCreateNewTableRequestPartMapping = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, newTRPMBody);
+          // eslint-disable-next-line quotes
+          console.log(responseCreateNewTableRequestPartMapping.data, "trpm data \n");
+        } catch (error) {
+          console.error(`Error in creating trpm for user aka organizer with id ${JSON.parse(user)._id}`, error);
+        }
+
         for (let invitee of data.invitedFriends) {
-          const newInviteBody = {
+          newInviteBody = {
             // eslint-disable-next-line no-underscore-dangle
             organizerId: JSON.parse(user)._id,
             phoneNumber: `+${invitee.emailOrPhone}`,
@@ -211,7 +252,32 @@ and join the table for a fun night!`;
           } catch (error) {
             console.error(`Error in sending invite for ${invitee.emailOrPhone}:`, error.response ? error.response.data : error.message);
           }
+
+          try {
+            newTRPMBody = {
+              // eslint-disable-next-line no-underscore-dangle
+              // eslint-disable-next-line no-underscore-dangle
+              tableRequestId: responseCreateNewTableRequest.data.data._id,
+              minimumPrice: parseInt(invitee.fee, 10),
+              isRequestOrganizer: false,
+              isInvitedPending: true,
+              isActiveParticipant: false,
+              phoneNumber: `+${invitee.emailOrPhone}`,
+              isPaymentInfoRegistered: false
+            };
+            // eslint-disable-next-line no-await-in-loop, quotes
+            console.log("creating table req part map", `${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, newTRPMBody);
+            // eslint-disable-next-line no-await-in-loop
+            responseCreateNewTableRequestPartMapping = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, newTRPMBody);
+            // eslint-disable-next-line quotes
+            console.log(responseCreateNewTableRequestPartMapping.data, "trpm data \n");
+          } catch (error) {
+            console.error(`Error in creating trpm for invitee ${invitee}`, error);
+          }
+
         }
+
+
     
         /*
           if PNSL, move to active table group screen
@@ -419,7 +485,8 @@ and join the table for a fun night!`;
   const toggleTableMin = (min) => {
     const parsedMin = parseFloat(min);
     // eslint-disable-next-line no-restricted-globals
-    setTableMinimum(isNaN(parsedMin) ? 0 : parsedMin);
+    setTableMinimum(isNaN(parsedMin) ? defaultTableMinimum : parsedMin);
+    setMyJoiningFee(isNaN(parsedMin) ? defaultTableMinimum : parsedMin);
   };
 
   const sendSMSPromoter = async (message, number) => {
@@ -541,6 +608,7 @@ and join the table for a fun night!`;
   console.log('');
   console.log('');
   console.log('tableMinimum', tableMinimum);
+  console.log('my joining fee', myJoiningFee);
   console.log('');
   return (
     <>
@@ -971,7 +1039,7 @@ and join the table for a fun night!`;
                     }}>
                     <TextInput
                       style={styles.inputInviteParticipant}
-                      onChangeText={(fee) => setJoiningFee(fee)}
+                      onChangeText={(fee) => setMyJoiningFee(fee)}
                       placeholder=''
                       placeholderTextColor={colors.gold.gold100}
                       selectionColor={colors.gold.gold100}
