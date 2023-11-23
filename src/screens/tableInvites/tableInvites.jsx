@@ -7,7 +7,27 @@ import { colors, typography } from '../../theme';
 import { SensitiveKey } from '../../utils/SensitiveData';
 
 
-const TableInviteCard = (/* tableName, paymentType, participants, organizerName, placementTime, joiningFee */) => (
+const TableInviteCard = (/* isSelfOrganized, isInvited, showActOrPoll, showPast, tableName, paymentType, participants, organizerName, placementTime, joiningFee */) => (
+
+  /*const getOuterLayerStyle = () => {
+    if (selfOrganized === true){
+      return cardBoxOuterLayerOrganized;
+    }
+    if (isInvited === true){
+      return cardBoxOuterLayerInvited;
+    }
+    if (showActOrPoll === 'active'){
+      return cardBoxOuterLayerActive
+    }
+    if (showActOrPoll === 'active'){
+      return cardBoxOuterLayerPolling
+    }
+    if (showPast === true){
+      return cardBoxOuterLayerPast
+    }
+  }*/
+  // const outerLayerStyle = getOuterLayerStyle();
+
   <View style={styles.cardBoxOuterLayerOrganized}>
     <View style={styles.cardBox}>
       <View>
@@ -36,6 +56,24 @@ const TableInviteCard = (/* tableName, paymentType, participants, organizerName,
 const TableInvites = ({ navigation }) => {
   const [orgTables, setOrgTables] = useState([]);
   const [invites, setInvites] = useState([]);
+
+  const getTableReqParticipants = async (tableReqId) => {
+    /*
+      get all trpms assosciated with a table req id
+      out of all those that you get, only consider those whose participants payment info you have registered and have accepted the table req
+      if no one has their payment info registered, return the count of all participants
+      else, of all that have payment info registered and have accepted table req, count how many are girls and guys, and return as [#girls, #guys]
+      if their genders are not retrievable, just return count of those hat have payment info registered and have accepted table req
+    */
+    return;
+  };
+
+  const getTR = async (tableReqId) => {
+    /*
+      get joining fee for me as organizer, get joining fee for me as invitee 
+    */
+    return;
+  };
 
   const getAllOrganizedTables = async () => {
     let array;
@@ -77,6 +115,7 @@ const TableInvites = ({ navigation }) => {
     };
     
     fetchData();
+    console.log(orgTables, "org tables");
 
   }, []);
 
@@ -102,10 +141,10 @@ const TableInvites = ({ navigation }) => {
           renderItem={({ item }) => (
             <TableInviteCard
               tableName={item.name}
-              paymentType={item.paymentType}
+              paymentType={item.costSplitType}
               participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-              organizerName={item.organizerName}
-              placementTime={item.placementTime}
+              organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+              placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
               joiningFee={item.joiningFee}
             />
           )}
