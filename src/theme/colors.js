@@ -72,7 +72,8 @@ export const colors = {
   },
   brown: {
     brown100: '#988968',
-    brown150: '#847451'
+    brown150: '#847451',
+    brown200: '#522d18'
   },
   blue: {
     blue100: '#65718D',
@@ -91,11 +92,14 @@ export const colors = {
   },
   orange: {
     orange600: '#FF6736',
-    orange400: '#F3A638'
+    orange400: '#754909'
   },
   gold: {
     gold0: '',
     gold100: '#E4D0B5',
     gold200: '#CBAE83'
+  }, 
+  purple: {
+    purple0: '#460137'
   }
 };

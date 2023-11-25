@@ -28,7 +28,7 @@ const TableInviteCard = (/* isSelfOrganized, isInvited, showActOrPoll, showPast,
   }*/
   // const outerLayerStyle = getOuterLayerStyle();
 
-  <View style={styles.cardBoxOuterLayerOrganized}>
+  <View style={styles.cardBoxOuterLayerPolling}>
     <View style={styles.cardBox}>
       <View>
         <Text style={[typography.bold.bold16, {color: colors.gold.gold200}]}>Table: Table Name</Text>
@@ -56,23 +56,37 @@ const TableInviteCard = (/* isSelfOrganized, isInvited, showActOrPoll, showPast,
 const TableInvites = ({ navigation }) => {
   const [orgTables, setOrgTables] = useState([]);
   const [invites, setInvites] = useState([]);
+  const [participantsInfo, setParticipantsInfo] = useState('Loading...');
 
   const getTableReqParticipants = async (tableReqId) => {
-    /*
-      get all trpms assosciated with a table req id
-      out of all those that you get, only consider those whose participants payment info you have registered and have accepted the table req
-      if no one has their payment info registered, return the count of all participants
-      else, of all that have payment info registered and have accepted table req, count how many are girls and guys, and return as [#girls, #guys]
-      if their genders are not retrievable, just return count of those hat have payment info registered and have accepted table req
-    */
-    return;
-  };
-
-  const getTR = async (tableReqId) => {
-    /*
-      get joining fee for me as organizer, get joining fee for me as invitee 
-    */
-    return;
+    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${tableReqId}`);
+    const participantData = trpms.data.data;
+  
+    const participantInfo = participantData.filter(item => !item.isDeleted).map(item => item.participantId); // all invited participants
+  
+    const hasUserIdWithGender = participantInfo.some(item => 
+      item.userId && 
+      'gender' in item.userId
+    );
+  
+    if (!hasUserIdWithGender) {
+      // Return the count of all participants invited, regardless of userId
+      return participantInfo.length;
+    }
+  
+    let genderCount = [0, 0]; // [female, male]
+  
+    participantInfo.forEach(item => {
+      if (item.userId && item.userId.gender) {
+        if (item.userId.gender.toLowerCase() === 'female') {
+          genderCount[0] += 1;
+        } else if (item.userId.gender.toLowerCase() === 'male') {
+          genderCount[1] += 1;
+        }
+      }
+    });
+  
+    return genderCount;
   };
 
   const getAllOrganizedTables = async () => {
@@ -96,6 +110,7 @@ const TableInvites = ({ navigation }) => {
       const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
       console.log(JSON.parse(user).phoneNumber, "JSON.parse(user).phoneNumber}")
       const invs = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}invites/getListOfInvites/+${JSON.parse(user).phoneNumber}`);
+      
       array = invs.data.data;
       console.log(array, "invs.data\n");
       return array;
@@ -112,6 +127,7 @@ const TableInvites = ({ navigation }) => {
       const invs = await getAllInvitedTables();
       setOrgTables(trs);
       setInvites(invs);
+      // get invited joining fee function
     };
     
     fetchData();
@@ -136,65 +152,94 @@ const TableInvites = ({ navigation }) => {
 
       <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Organized:</Text>
         <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
-        <FlatList
-          data={orgTables} // assuming orgTables is an array of table objects
-          renderItem={({ item }) => (
-            <TableInviteCard
-              tableName={item.name}
-              paymentType={item.costSplitType}
-              participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-              organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
-              placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
-              joiningFee={item.joiningFee}
-            />
-          )}
-          keyExtractor={item => item.id} // replace 'id' with the key used in your data
-        />
-          
+          <FlatList
+            data={orgTables} // assuming orgTables is an array of table objects
+            renderItem={({ item }) => (
+              <TableInviteCard
+                tableName={item.name}
+                paymentType={item.costSplitType}
+                participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
+                organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+                placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                joiningFee={item.joiningFee}
+              />
+            )}
+            keyExtractor={item => item.id} // replace 'id' with the key used in your data
+          />
+
         </Pressable>
 
         <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Been Invited to:</Text>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('TableInvitesOverView', {
-                data: {}
-              });
-            }}
-            style={[styles.mainBox]}>
-            <TableInviteCard />
+          <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <FlatList
+              data={orgTables} // assuming orgTables is an array of table objects
+              renderItem={({ item }) => (
+                <TableInviteCard
+                  tableName={item.name}
+                  paymentType={item.costSplitType}
+                  participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
+                  organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+                  placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                  joiningFee={item.joiningFee}
+                />
+              )}
+              keyExtractor={item => item.id} // replace 'id' with the key used in your data
+            />
+
           </Pressable>
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Table Requests:</Text>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('TableInvitesOverView', {
-                data: {}
-              });
-            }}
-            style={[styles.mainBox]}>
-            <TableInviteCard />
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+              <FlatList
+                data={orgTables} // assuming orgTables is an array of table objects
+                renderItem={({ item }) => (
+                  <TableInviteCard
+                    tableName={item.name}
+                    paymentType={item.costSplitType}
+                    participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
+                    organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+                    placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                    joiningFee={item.joiningFee}
+                  />
+                )}
+                keyExtractor={item => item.id} // replace 'id' with the key used in your data
+              />
+
           </Pressable>
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Table Requests:</Text>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('TableInvitesOverView', {
-                data: {}
-              });
-            }}
-            style={[styles.mainBox]}>
-            <TableInviteCard />
-          </Pressable>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+              <FlatList
+                data={orgTables} // assuming orgTables is an array of table objects
+                renderItem={({ item }) => (
+                  <TableInviteCard
+                    tableName={item.name}
+                    paymentType={item.costSplitType}
+                    participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
+                    organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+                    placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                    joiningFee={item.joiningFee}
+                  />
+                )}
+                keyExtractor={item => item.id} // replace 'id' with the key used in your data
+              />
+
+            </Pressable>
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Table Requests:</Text>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('TableInvitesOverView', {
-                data: {}
-              });
-            }}
-            style={[styles.mainBox]}>
-            <TableInviteCard />
-          </Pressable>
-
-
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+              <FlatList
+                data={orgTables} // assuming orgTables is an array of table objects
+                renderItem={({ item }) => (
+                  <TableInviteCard
+                    tableName={item.name}
+                    paymentType={item.costSplitType}
+                    participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
+                    organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+                    placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                    joiningFee={item.joiningFee}
+                  />
+                )}
+                keyExtractor={item => item.id} // replace 'id' with the key used in your data
+              />
+            </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
@@ -227,32 +272,36 @@ const styles = StyleSheet.create({
     
   },
   cardBoxOuterLayerInvited: {
-    backgroundColor: colors.blue.blue400,
+    backgroundColor: colors.brown.brown200,
     borderColor: colors.gold.gold200,
     borderWidth: 2,
     padding: 12,
-    borderRadius: 12
+    borderRadius: 12,
+    marginVertical: '2%'
   },
   cardBoxOuterLayerActive: {
-    backgroundColor: colors.blue.blue400,
+    backgroundColor: colors.green.green650,
     borderColor: colors.gold.gold200,
     borderWidth: 2,
     padding: 12,
-    borderRadius: 12
+    borderRadius: 12,
+    marginVertical: '2%'
   },
   cardBoxOuterLayerPolling: {
-    backgroundColor: colors.blue.blue400,
+    backgroundColor: colors.purple.purple0,
     borderColor: colors.gold.gold200,
     borderWidth: 2,
     padding: 12,
-    borderRadius: 12
+    borderRadius: 12,
+    marginVertical: '2%'
   },
   cardBoxOuterLayerPast: {
-    backgroundColor: colors.blue.blue400,
+    backgroundColor: colors.red.red950,
     borderColor: colors.gold.gold200,
     borderWidth: 2,
     padding: 12,
-    borderRadius: 12
+    borderRadius: 12,
+    marginVertical: '2%'
   }
 });
 
