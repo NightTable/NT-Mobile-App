@@ -7,47 +7,30 @@ import { colors, typography } from '../../theme';
 import { SensitiveKey } from '../../utils/SensitiveData';
 
 
-const TableInviteCard = (/* isSelfOrganized, isInvited, showActOrPoll, showPast, tableName, paymentType, participants, organizerName, placementTime, joiningFee */) => (
+const TableInviteCard = ({tableName, paymentType, participants, organizerName, placementTime, joiningFee, style}) => (
 
-  /*const getOuterLayerStyle = () => {
-    if (selfOrganized === true){
-      return cardBoxOuterLayerOrganized;
-    }
-    if (isInvited === true){
-      return cardBoxOuterLayerInvited;
-    }
-    if (showActOrPoll === 'active'){
-      return cardBoxOuterLayerActive
-    }
-    if (showActOrPoll === 'active'){
-      return cardBoxOuterLayerPolling
-    }
-    if (showPast === true){
-      return cardBoxOuterLayerPast
-    }
-  }*/
-  // const outerLayerStyle = getOuterLayerStyle();
-
-  <View style={styles.cardBoxOuterLayerPolling}>
+  <View style={style}>
     <View style={styles.cardBox}>
       <View>
-        <Text style={[typography.bold.bold16, {color: colors.gold.gold200}]}>Table: Table Name</Text>
+        <Text style={[typography.bold.bold16, {color: colors.gold.gold200}]}>Table: {tableName}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={[typography.regular.regular14, {color: colors.gold.gold200}]}>snpl, </Text>
-        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>20 girls, </Text>
-        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>5 guys, </Text>
-        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>$500</Text>
+        <Text style={[typography.regular.regular14, {color: colors.gold.gold200}]}>{paymentType}, </Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>{participants}, </Text>
+        { // <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>5 guys, </Text>
+        }
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>${joiningFee}</Text>
       </View>
     </View>
     <View style={styles.cardBox}>
       <View>
-        <Text style={[typography.regular.regular16, {color: colors.gold.gold200}]}>Organizer: User Name</Text>
+        <Text style={[typography.regular.regular16, {color: colors.gold.gold200}]}>Organizer: {organizerName}</Text>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <Text style={[typography.regular.regular14, {color: colors.gold.gold200}]}>placed on </Text>
-        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>1-12-22 </Text>
-        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>18:00</Text>
+        <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>{placementTime}</Text>
+        { // <Text style={[typography.bold.bold14, {color: colors.gold.gold200}]}>18:00</Text>
+        }
       </View>
     </View>
   </View>
@@ -56,87 +39,151 @@ const TableInviteCard = (/* isSelfOrganized, isInvited, showActOrPoll, showPast,
 const TableInvites = ({ navigation }) => {
   const [orgTables, setOrgTables] = useState([]);
   const [invites, setInvites] = useState([]);
-  const [participantsInfo, setParticipantsInfo] = useState('Loading...');
-
-  const getTableReqParticipants = async (tableReqId) => {
-    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${tableReqId}`);
-    const participantData = trpms.data.data;
-  
-    const participantInfo = participantData.filter(item => !item.isDeleted).map(item => item.participantId); // all invited participants
-  
-    const hasUserIdWithGender = participantInfo.some(item => 
-      item.userId && 
-      'gender' in item.userId
-    );
-  
-    if (!hasUserIdWithGender) {
-      // Return the count of all participants invited, regardless of userId
-      return participantInfo.length;
-    }
-  
-    let genderCount = [0, 0]; // [female, male]
-  
-    participantInfo.forEach(item => {
-      if (item.userId && item.userId.gender) {
-        if (item.userId.gender.toLowerCase() === 'female') {
-          genderCount[0] += 1;
-        } else if (item.userId.gender.toLowerCase() === 'male') {
-          genderCount[1] += 1;
-        }
-      }
-    });
-  
-    return genderCount;
-  };
 
   const getAllOrganizedTables = async () => {
-    let array;
+    let response;
+    let organizedTables;
+    const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
     try {
-      const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
-      const tableRequests = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/organizerUserId/${JSON.parse(user)._id}`);
-      array = tableRequests.data.data;
-      console.log(array, "tableRequests.data\n");
-      return array;
+      // eslint-disable-next-line no-underscore-dangle
+      response = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/organizerUserId/${JSON.parse(user)._id}`);
+      organizedTables = response.data.data;
     } catch (error) {
       console.error('Error fetching organized tables:', error);
-      // Handle or throw the error as needed
-      throw error;  // Re-throw the error if you want to handle it outside this function
+      throw error;
     }
+  
+    try {
+      for (const table of organizedTables) {
+        try {
+          // eslint-disable-next-line no-await-in-loop, no-underscore-dangle
+          const partMappingsResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${table._id}`);
+          // Add partMappings directly to the table object
+          table.partMappings = partMappingsResponse.data.data;
+        }
+        catch (error) {
+          console.error('Error fetching part mappings:', error);
+          // Optionally, you can set partMappings to null or an empty array in case of an error
+        }
+      }
+      for (const table of organizedTables) {
+        let guys = 0;
+        let girls = 0;
+        
+        const pms = table.partMappings;
+        for (const pm of pms) {
+          if (pm.participantId?.userId?.gender === 'male') {
+            // eslint-disable-next-line no-plusplus
+            guys++;
+          }
+          if (pm.participantId?.userId?.gender === 'female') {
+            // eslint-disable-next-line no-plusplus
+            girls++;
+          }
+        }
+      
+        table.guys = guys;
+        table.girls = girls;
+      }
+      console.log(JSON.stringify(organizedTables, null, 4), 'the organizedTables');
+      
+    }
+
+    catch (error) {
+      console.error('Error in the outer loop:', error);
+    }
+  
+    // You can return organizedTables here if needed
+    return organizedTables;
   };
   
+  
   const getAllInvitedTables = async () => {
-    let array;
+    const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
+    console.log(JSON.parse(user).phoneNumber, 'JSON.parse(user).phoneNumber}');
+    let invsResponse;
+    let invs;
     try {
-      const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
-      console.log(JSON.parse(user).phoneNumber, "JSON.parse(user).phoneNumber}")
-      const invs = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}invites/getListOfInvites/+${JSON.parse(user).phoneNumber}`);
+      invsResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}invites/getListOfInvites/+${JSON.parse(user).phoneNumber}`);
       
-      array = invs.data.data;
-      console.log(array, "invs.data\n");
-      return array;
-    } catch (error) {
+      invs = invsResponse.data.data;
+      // console.log(JSON.stringify(invsResponse.data.data, null, 4), 'invsResponse.data.data;');
+
+    } 
+    
+    catch (error) {
       console.error('Error fetching invited tables:', error);
       // Handle or throw the error as needed
       throw error;  // Re-throw the error if you want to handle it outside this function
     }
+
+    try {
+      for (const table of invs) {
+        try {
+          // eslint-disable-next-line no-await-in-loop, no-underscore-dangle
+          const partMappingsResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${table.tableRequestId._id}`);
+          // console.log(JSON.stringify(partMappingsResponse, null, 4), 'partMappingsResponse');
+          // Add partMappings directly to the table object
+          table.partMappings = partMappingsResponse.data.data;
+        }
+        catch (error) {
+          console.error('Error fetching part mappings:', error);
+          throw error;
+          // Optionally, you can set partMappings to null or an empty array in case of an error
+        }
+      }
+      for (const table of invs) {
+        let guys = 0;
+        let girls = 0;
+        
+        const pms = table.partMappings;
+        for (const pm of pms) {
+          if (pm.participantId?.userId?.gender === 'male') {
+            // eslint-disable-next-line no-plusplus
+            guys++;
+          }
+          if (pm.participantId?.userId?.gender === 'female') {
+            // eslint-disable-next-line no-plusplus
+            girls++;
+          }
+        }
+        if (typeof guys !== 'number') {
+          guys = 0;
+        }
+        if (typeof girls !== 'number'){
+          girls = 0;
+        }
+        table.guys = guys;
+        table.girls = girls;
+      }
+      console.log(JSON.stringify(invs, null, 4), 'the invs');
+
+    }
+
+    catch (error) {
+      console.error('Error fetching part mappings:', error);
+      throw error;
+    }
+    return invs;
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const trs = await getAllOrganizedTables();
       const invs = await getAllInvitedTables();
+      console.log(trs, 'this is trs')
       setOrgTables(trs);
       setInvites(invs);
       // get invited joining fee function
     };
     
     fetchData();
-    console.log(orgTables, "org tables");
+    console.log(orgTables, 'org tables');
 
   }, []);
 
-  console.log(orgTables, "orgtables");
-  console.log(invites, "invites");
+  console.log(orgTables, 'orgtables');
+  console.log(invites, 'invites');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -158,13 +205,15 @@ const TableInvites = ({ navigation }) => {
               <TableInviteCard
                 tableName={item.name}
                 paymentType={item.costSplitType}
-                participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-                organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
+                participants={`${item.girls} girls, ${item.guys} guys`}
+                organizerName={`${item.organizerUserId.firstName} ${item.organizerUserId.lastName}`}
                 placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
                 joiningFee={item.joiningFee}
+                style={styles.cardBoxOuterLayerOrganized}
               />
             )}
-            keyExtractor={item => item.id} // replace 'id' with the key used in your data
+            keyExtractor={(item, index) => item._id || String(index)}
+            nestedScrollEnabled
           />
 
         </Pressable>
@@ -172,23 +221,28 @@ const TableInvites = ({ navigation }) => {
         <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Been Invited to:</Text>
           <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
             <FlatList
-              data={orgTables} // assuming orgTables is an array of table objects
+              data={invites} // assuming orgTables is an array of table objects
               renderItem={({ item }) => (
+                
                 <TableInviteCard
-                  tableName={item.name}
-                  paymentType={item.costSplitType}
-                  participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-                  organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
-                  placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                  tableName={item.tableRequestId?.name}
+                  paymentType={item.tableRequestId.costSplitType}
+                  participants={`${item.girls} girls, ${item.guys} guys`}
+                  organizerName={`${item.organizerId.firstName} ${item.organizerId.lastName}`}
+                  placementTime={item.tableRequestId.eta.replace('T', ' ').slice(0, item.tableRequestId.eta.indexOf(':')+3)}
                   joiningFee={item.joiningFee}
+                  style={styles.cardBoxOuterLayerInvited}
+
                 />
               )}
-              keyExtractor={item => item.id} // replace 'id' with the key used in your data
+              keyExtractor={(item, index) => item._id || String(index)}
+              nestedScrollEnabled
             />
 
           </Pressable>
+
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            { /* <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={orgTables} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -201,12 +255,13 @@ const TableInvites = ({ navigation }) => {
                     joiningFee={item.joiningFee}
                   />
                 )}
-                keyExtractor={item => item.id} // replace 'id' with the key used in your data
+                keyExtractor={(item, index) => item._id || String(index)}
+                nestedScrollEnabled={true}
               />
 
-          </Pressable>
+                </Pressable> */ }
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            { /* <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={orgTables} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -219,12 +274,14 @@ const TableInvites = ({ navigation }) => {
                     joiningFee={item.joiningFee}
                   />
                 )}
-                keyExtractor={item => item.id} // replace 'id' with the key used in your data
-              />
+                keyExtractor={(item, index) => item._id || String(index)}
+                nestedScrollEnabled={true}
+              /> 
 
-            </Pressable>
+            </Pressable> */
+            }
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            { /* <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={orgTables} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -238,8 +295,10 @@ const TableInvites = ({ navigation }) => {
                   />
                 )}
                 keyExtractor={item => item.id} // replace 'id' with the key used in your data
+                nestedScrollEnabled={true}
               />
-            </Pressable>
+            </Pressable> */
+            }
       </ScrollView>
     </SafeAreaView>
   );
