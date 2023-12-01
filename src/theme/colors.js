@@ -69,11 +69,13 @@ export const colors = {
     green650: '#162526',
     green700: '#516D65',
     green750: '#0d1f1e'
+
   },
   brown: {
     brown100: '#988968',
     brown150: '#847451',
-    brown200: '#522d18'
+    brown200: '#522d18',
+    brown250: '#905a3e'
   },
   blue: {
     blue100: '#65718D',

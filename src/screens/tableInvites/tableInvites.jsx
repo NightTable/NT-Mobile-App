@@ -39,6 +39,13 @@ const TableInviteCard = ({tableName, paymentType, participants, organizerName, p
 const TableInvites = ({ navigation }) => {
   const [orgTables, setOrgTables] = useState([]);
   const [invites, setInvites] = useState([]);
+  const [activeInvites, setActiveInvites] = useState([]);
+  const [activeOrganized, setActiveOrganized] = useState([]);
+  const [pollingInvites, setPollingInvites] = useState([]);
+  const [pollingOrganized, setPollingOrganized] = useState([]);
+  const [closedInvites, setClosedInvites] = useState([]);
+  const [closedOrganized, setClosedOrganized] = useState([]);
+
 
   const getAllOrganizedTables = async () => {
     let response;
@@ -167,11 +174,51 @@ const TableInvites = ({ navigation }) => {
     return invs;
   };
 
+  const resort = () => {
+    const newActiveInvites = [];
+    const newPollingInvites = [];
+    const newClosedInvites = [];
+    const newActiveOrganized = [];
+    const newPollingOrganized = [];
+    const newClosedOrganized = [];
+  
+    for (const inv of invites) {
+      if (inv.tableRequestId.isActive) {
+        newActiveInvites.push(inv);
+      } else if (inv.tableRequestId.isPolling) {
+        newPollingInvites.push(inv);
+      } else if (inv.tableRequestId.isClosed) {
+        newClosedInvites.push(inv);
+      }
+    }
+  
+    for (const table of orgTables) {
+      if (table.isActive) {
+        newActiveOrganized.push(table);
+      } else if (table.isPolling) {
+        newPollingOrganized.push(table);
+      } else if (table.isClosed) {
+        newClosedOrganized.push(table);
+      }
+    }
+  
+    // Then set your state once with the new arrays
+    setActiveInvites(newActiveInvites);
+    setPollingInvites(newPollingInvites);
+    setClosedInvites(newClosedInvites);
+    setActiveOrganized(newActiveOrganized);
+    setPollingOrganized(newPollingOrganized);
+    setClosedOrganized(newClosedOrganized);
+  };
+  
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       const trs = await getAllOrganizedTables();
       const invs = await getAllInvitedTables();
-      console.log(trs, 'this is trs')
+      console.log(trs, 'this is trs');
       setOrgTables(trs);
       setInvites(invs);
       // get invited joining fee function
@@ -182,8 +229,18 @@ const TableInvites = ({ navigation }) => {
 
   }, []);
 
+  useEffect(() => {
+    resort();
+  }, [invites,orgTables]);
+
   console.log(orgTables, 'orgtables');
   console.log(invites, 'invites');
+  console.log(activeInvites, 'activeInvites');
+  console.log(pollingInvites, 'pollingInvites');
+  console.log(pollingOrganized, 'activeInvites');
+  console.log(closedInvites, 'pollingOrganized');
+  console.log(closedOrganized, 'closedOrganized');
+  console.log(activeOrganized, 'activeOrganized');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -241,64 +298,131 @@ const TableInvites = ({ navigation }) => {
 
           </Pressable>
 
-          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Table Requests:</Text>
-            { /* <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Organized Table Requests:</Text>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
               <FlatList
-                data={orgTables} // assuming orgTables is an array of table objects
+                data={activeOrganized} // assuming orgTables is an array of table objects
+                renderItem={({ item }) => (
+                <TableInviteCard
+                  tableName={item.name}
+                  paymentType={item.costSplitType}
+                  participants={`${item.girls} girls, ${item.guys} guys`}
+                  organizerName={`${item.organizerUserId.firstName} ${item.organizerUserId.lastName}`}
+                  placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                  joiningFee={item.joiningFee}
+                  style={styles.cardBoxOuterLayerActive}
+                />
+                )}
+                keyExtractor={(item, index) => item._id || String(index)}
+                nestedScrollEnabled
+              />
+
+                </Pressable> 
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Invited Table Requests:</Text>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+              <FlatList
+                data={activeInvites} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
                   <TableInviteCard
-                    tableName={item.name}
-                    paymentType={item.costSplitType}
-                    participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-                    organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
-                    placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                    tableName={item.tableRequestId?.name}
+                    paymentType={item.tableRequestId.costSplitType}
+                    participants={`${item.girls} girls, ${item.guys} guys`}
+                    organizerName={`${item.organizerId.firstName} ${item.organizerId.lastName}`}
+                    placementTime={item.tableRequestId.eta.replace('T', ' ').slice(0, item.tableRequestId.eta.indexOf(':')+3)}
                     joiningFee={item.joiningFee}
+                    style={styles.cardBoxOuterLayerActive}
+
                   />
                 )}
                 keyExtractor={(item, index) => item._id || String(index)}
                 nestedScrollEnabled={true}
               />
 
-                </Pressable> */ }
-          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Table Requests:</Text>
-            { /* <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+                </Pressable>
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Organized Table Requests:</Text>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
               <FlatList
-                data={orgTables} // assuming orgTables is an array of table objects
+                data={pollingOrganized} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
-                  <TableInviteCard
-                    tableName={item.name}
-                    paymentType={item.costSplitType}
-                    participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-                    organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
-                    placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
-                    joiningFee={item.joiningFee}
-                  />
+                <TableInviteCard
+                  tableName={item.name}
+                  paymentType={item.costSplitType}
+                  participants={`${item.girls} girls, ${item.guys} guys`}
+                  organizerName={`${item.organizerUserId.firstName} ${item.organizerUserId.lastName}`}
+                  placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                  joiningFee={item.joiningFee}
+                  style={styles.cardBoxOuterLayerPolling}
+                />
                 )}
                 keyExtractor={(item, index) => item._id || String(index)}
-                nestedScrollEnabled={true}
+                nestedScrollEnabled
               /> 
 
-            </Pressable> */
-            }
-          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Table Requests:</Text>
-            { /* <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            </Pressable>
+            
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Invited Table Requests:</Text>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
               <FlatList
-                data={orgTables} // assuming orgTables is an array of table objects
+                data={pollingInvites} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
-                  <TableInviteCard
-                    tableName={item.name}
-                    paymentType={item.costSplitType}
-                    participants={`${item.girlsCount} girls, ${item.guysCount} guys`}
-                    organizerName={item.organizerUserId.firstName + item.organizerUserId.lastName}
-                    placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
-                    joiningFee={item.joiningFee}
-                  />
+                <TableInviteCard
+                  tableName={item.tableRequestId?.name}
+                  paymentType={item.tableRequestId.costSplitType}
+                  participants={`${item.girls} girls, ${item.guys} guys`}
+                  organizerName={`${item.organizerId.firstName} ${item.organizerId.lastName}`}
+                  placementTime={item.tableRequestId.eta.replace('T', ' ').slice(0, item.tableRequestId.eta.indexOf(':')+3)}
+                  joiningFee={item.joiningFee}
+                  style={styles.cardBoxOuterLayerPolling}
+
+                />
+                )}
+                keyExtractor={(item, index) => item._id || String(index)}
+                nestedScrollEnabled
+              /> 
+
+            </Pressable> 
+            
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Organized Table Requests:</Text>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+              <FlatList
+                data={closedOrganized} // assuming orgTables is an array of table objects
+                renderItem={({ item }) => (
+                <TableInviteCard
+                  tableName={item.name}
+                  paymentType={item.costSplitType}
+                  participants={`${item.girls} girls, ${item.guys} guys`}
+                  organizerName={`${item.organizerUserId.firstName} ${item.organizerUserId.lastName}`}
+                  placementTime={item.eta.replace('T', ' ').slice(0, item.eta.indexOf(':')+3)}
+                  joiningFee={item.joiningFee}
+                  style={styles.cardBoxOuterLayerPast}
+                />
                 )}
                 keyExtractor={item => item.id} // replace 'id' with the key used in your data
-                nestedScrollEnabled={true}
+                nestedScrollEnabled
               />
-            </Pressable> */
-            }
+            </Pressable> 
+            
+          <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Invited Table Requests:</Text>
+            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+              <FlatList
+                data={closedInvites} // assuming orgTables is an array of table objects
+                renderItem={({ item }) => (
+                <TableInviteCard
+                  tableName={item.tableRequestId?.name}
+                  paymentType={item.tableRequestId.costSplitType}
+                  participants={`${item.girls} girls, ${item.guys} guys`}
+                  organizerName={`${item.organizerId.firstName} ${item.organizerId.lastName}`}
+                  placementTime={item.tableRequestId.eta.replace('T', ' ').slice(0, item.tableRequestId.eta.indexOf(':')+3)}
+                  joiningFee={item.joiningFee}
+                  style={styles.cardBoxOuterLayerPast}
+
+                />
+                )}
+                keyExtractor={item => item.id} // replace 'id' with the key used in your data
+                nestedScrollEnabled
+              />
+            </Pressable>
+            
       </ScrollView>
     </SafeAreaView>
   );
