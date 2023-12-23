@@ -255,7 +255,7 @@ const TableInvites = ({ navigation }) => {
       <ScrollView style={{ borderWidth: 2, borderColor: colors.gold.gold200, borderRadius: 15, flex: 1 /* marginTop: -10 */ }}>
 
       <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Organized:</Text>
-        <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+        <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
           <FlatList
             data={orgTables} // assuming orgTables is an array of table objects
             renderItem={({ item }) => (
@@ -276,7 +276,7 @@ const TableInvites = ({ navigation }) => {
         </Pressable>
 
         <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Tables You've Been Invited to:</Text>
-          <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+          <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
             <FlatList
               data={invites} // assuming orgTables is an array of table objects
               renderItem={({ item }) => (
@@ -299,7 +299,7 @@ const TableInvites = ({ navigation }) => {
           </Pressable>
 
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Organized Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={activeOrganized} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -319,7 +319,7 @@ const TableInvites = ({ navigation }) => {
 
                 </Pressable> 
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Active Invited Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={activeInvites} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -340,7 +340,7 @@ const TableInvites = ({ navigation }) => {
 
                 </Pressable>
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Organized Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={pollingOrganized} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -361,7 +361,7 @@ const TableInvites = ({ navigation }) => {
             </Pressable>
             
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Polling Invited Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={pollingInvites} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -383,7 +383,7 @@ const TableInvites = ({ navigation }) => {
             </Pressable> 
             
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Organized Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={closedOrganized} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
@@ -403,7 +403,7 @@ const TableInvites = ({ navigation }) => {
             </Pressable> 
             
           <Text style={[typography.bold.bold24, { color: colors.gold.gold200 }, {marginVertical: '5%'}, {marginLeft: '2%'}]}>Past Invited Table Requests:</Text>
-            <Pressable onPress={() => navigation.navigate('TableInvitesOverView', { data: {} })} style={styles.mainBox}>
+            <Pressable onPress={() => navigation.navigate('Polling Room', { data: {} })} style={styles.mainBox}>
               <FlatList
                 data={closedInvites} // assuming orgTables is an array of table objects
                 renderItem={({ item }) => (
