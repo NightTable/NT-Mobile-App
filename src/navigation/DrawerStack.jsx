@@ -17,7 +17,7 @@ import Hostsandpromoters from '../screens/tableRequest/Hostsandpromoter';
 import NewTableReq from '../screens/tableRequest/NewTableReq';
 import TableInvites from '../screens/tableInvites/tableInvites';
 import TableInvitesOverView from '../screens/tableInvites/tableInvitesOverview';
-import PollingRoom from '../screens/polling/pollingRoom';
+import TableViewScreen from '../screens/polling/tableViewScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -45,7 +45,7 @@ const DrawerNavigator = () => (
     <Drawer.Screen name='Home' component={Dashboard} />
     <Drawer.Screen name='Profile' component={Profile} />
     <Drawer.Screen name='Table Invites and Requests' component={TableInvites} />
-    <Drawer.Screen name='Polling Room' component={PollingRoom} />
+    <Drawer.Screen name='Table View' component={TableViewScreen} />
     <Drawer.Screen
       name='TableInvitesOverView'
       component={TableInvitesOverView}

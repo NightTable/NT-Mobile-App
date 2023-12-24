@@ -12,66 +12,70 @@ import {
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
 
-const btnArray = [
-  {
-    id: 1,
-    name: 'Menu',
-    backgroundColor: 'transparent',
-    borderColor: colors.gold.gold100,
-    textColor: colors.gold.gold100
-  },
-  {
-    id: 2,
-    name: 'Floor Plan',
-    backgroundColor: 'transparent',
-    borderColor: colors.gold.gold100,
-    textColor: colors.gold.gold100
-  },
-  {
-    id: 3,
-    name: 'Add Participants',
-    backgroundColor: '#516D65',
-    borderColor: colors.gold.gold100,
-    textColor: 'white'
-  },
-  {
-    id: 4,
-    name: 'Remove Participants',
-    backgroundColor: '#D08714',
-    borderColor: colors.gold.gold100,
-    textColor: 'white'
-  },
-  {
-    id: 5,
-    name: 'Leave Group',
-    backgroundColor: '#8C0322',
-    borderColor: colors.gold.gold100,
-    textColor: colors.gold.gold100
-  },
-  {
-    id: 6,
-    name: 'Approve Request',
-    backgroundColor: colors.gold.gold100,
-    borderColor: colors.gold.gold100,
-    textColor: 'black'
-  },
-  {
-    id: 7,
-    name: 'View Cart',
-    backgroundColor: colors.gold.gold200,
-    borderColor: colors.gold.gold200,
-    textColor: 'black'
-  },
-  {
-    id: 8,
-    name: 'Add to General Tab',
-    backgroundColor: colors.gold.gold200,
-    borderColor: colors.gold.gold200,
-    textColor: 'black'
-  }
-];
 
-const PollingRoom = ({ navigation }) => {
+const TableViewScreen = ({ route, navigation }) => {
+
+  console.log(route.params, "route params")
+
+  const btnArray = [
+    {
+      id: 1,
+      name: 'Menu',
+      backgroundColor: 'transparent',
+      borderColor: colors.gold.gold100,
+      textColor: colors.gold.gold100
+    },
+    {
+      id: 2,
+      name: 'Floor Plan',
+      backgroundColor: 'transparent',
+      borderColor: colors.gold.gold100,
+      textColor: colors.gold.gold100
+    },
+    {
+      id: 3,
+      name: 'Add Participants',
+      backgroundColor: '#516D65',
+      borderColor: colors.gold.gold100,
+      textColor: 'white'
+    },
+    {
+      id: 4,
+      name: 'Remove Participants',
+      backgroundColor: '#D08714',
+      borderColor: colors.gold.gold100,
+      textColor: 'white'
+    },
+    {
+      id: 5,
+      name: 'Leave Group',
+      backgroundColor: '#8C0322',
+      borderColor: colors.gold.gold100,
+      textColor: colors.gold.gold100
+    },
+    {
+      id: 6,
+      name: route.params.tableType === 'Active Organized' || route.params.tableType === 'Active Invited' ? 'End Outing' : 'Approve Request',
+      backgroundColor: colors.gold.gold100,
+      borderColor: colors.gold.gold100,
+      textColor: 'black'
+    },
+    /* {
+      id: 7,
+      name: 'View Cart',
+      backgroundColor: colors.gold.gold200,
+      borderColor: colors.gold.gold200,
+      textColor: 'black'
+    }, */
+    {
+      id: 8,
+      name: 'Add to General Tab',
+      backgroundColor: colors.gold.gold200,
+      borderColor: colors.gold.gold200,
+      textColor: 'black'
+    }
+  ];
+
   const onButtonPress = (id) => {
     if (id === 1) {
       // 'Menu',
@@ -102,7 +106,7 @@ const PollingRoom = ({ navigation }) => {
             <View style={{ alignItems: 'flex-end', paddingTop: 20 }}>
               <View style={{ backgroundColor: 'black', height: 60, width: 160, justifyContent: 'center' }}>
                 <Text style={{ color: colors.gold.gold100, paddingLeft: 4 }}>
-                  Table request organized by Amanda May
+                  Table request organized by {route.params.name}
                 </Text>
               </View>
             </View>
@@ -144,8 +148,8 @@ const PollingRoom = ({ navigation }) => {
           <FlatList
             data={btnArray}
             numColumns={2}
-            renderItem={({ item }) => (
-              <View style={styles.btnBox}>
+            renderItem={({ item, index }) => (
+              <View style={index === btnArray.length - 1 ? styles.lastBtnContainer : styles.btnBox}>
                 <TouchableOpacity
                   onPress={() => {
                     onButtonPress(item.id);
@@ -185,9 +189,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10
+    borderRadius: 10,
+    paddingHorizontal: 10, // Make sure this matches the padding of the other buttons
+    minWidth: '45%'
   },
-  btnBox: { width: '50%', justifyContent: 'space-evenly', paddingVertical: 6, paddingHorizontal: 10 }
+  lastBtnContainer: {
+    width: '100%', // Take the full width
+    justifyContent: 'center', // Center horizontally
+    alignItems: 'center', // Center vertically
+    paddingVertical: 6,
+    paddingHorizontal: 20
+  },
+
+  // Update btnBox to handle non-last buttons
+  btnBox: {
+    width: '50%',
+    justifyContent: 'space-evenly',
+    paddingVertical: 6,
+    paddingHorizontal: 10
+  }
 });
 
-export default PollingRoom;
+export default TableViewScreen;

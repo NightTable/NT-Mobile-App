@@ -90,7 +90,7 @@ const Dashboard = ({ navigation }) => {
             style={{
               height: 50,
               width: 50,
-              borderRadius: 25 // Circle shape
+              borderRadius: 5 // Circle shape
             }}
             source={{ uri: props?.photos[0] }}
           />
