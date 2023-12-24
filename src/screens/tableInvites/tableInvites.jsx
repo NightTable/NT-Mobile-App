@@ -266,6 +266,9 @@ const TableInvites = ({ route, navigation }) => {
                   onPress={() => {
                     const fullName = `${userData.firstName} ${userData.lastName}`;
                     const tableMapIds = item.tableConfigId.map(config => config.tableMapId);
+                    console.log(userData, "this is userData");
+                    console.log(fullName, "full name");
+                    console.log(tableMapIds, "tableMapIds");
                     navigation.navigate('Table View', 
                     { 
                       data: 
