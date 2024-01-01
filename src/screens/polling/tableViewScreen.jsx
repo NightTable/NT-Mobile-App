@@ -9,13 +9,26 @@ import {
   ImageBackground,
   ScrollView
 } from 'react-native';
+import axios from 'axios';
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
 
 
 const TableViewScreen = ({ route, navigation }) => {
 
-  console.log(route.params, "route params")
+  const getPendingParticipants = async() => {
+    const tableReqId = route.params.data.tableRequestId;
+
+    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${tableReqId}`);
+    
+    const inactiveParticipantIds = trpms
+    .filter(item => !item.isActiveParticipant)
+    .map(item => item.participantId._id);
+
+    return 0;
+  };
+  
+  console.log(route.params.data, "route params")
 
   const btnArray = [
     {
@@ -55,7 +68,7 @@ const TableViewScreen = ({ route, navigation }) => {
     },
     {
       id: 6,
-      name: route.params.tableType === 'Active Organized' || route.params.tableType === 'Active Invited' ? 'End Outing' : 'Approve Request',
+      name: route.params.data.tableType === 'Active Organized' || route.params.data.tableType === 'Active Invited' ? 'End Outing' : 'Approve Request',
       backgroundColor: colors.gold.gold100,
       borderColor: colors.gold.gold100,
       textColor: 'black'
@@ -83,7 +96,10 @@ const TableViewScreen = ({ route, navigation }) => {
       // 'Floor Plan'
     }
   };
-
+  const etaDate = new Date(route.params.data.eta);
+  const hours = etaDate.getUTCHours().toString().padStart(2, '0');
+  const minutes = etaDate.getUTCMinutes().toString().padStart(2, '0');
+  const formattedTime = `${hours}:${minutes}`; // Time in hh:mm format
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithLeftIcon
@@ -96,27 +112,27 @@ const TableViewScreen = ({ route, navigation }) => {
       />
 
       <ScrollView>
-        <View>
-          <ImageBackground
-            source={{
-              uri: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=60&w=1400&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGFydHl8ZW58MHx8MHx8fDA%3D'
-            }}
-            resizeMode='cover'
-            style={{ height: 200, width: '100%' }}>
-            <View style={{ alignItems: 'flex-end', paddingTop: 20 }}>
-              <View style={{ backgroundColor: 'black', height: 60, width: 160, justifyContent: 'center' }}>
-                <Text style={{ color: colors.gold.gold100, paddingLeft: 4 }}>
-                  Table request organized by {route.params.name}
-                </Text>
-              </View>
+      <View>
+        <ImageBackground
+          source={{
+            uri: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=60&w=1400&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGFydHl8ZW58MHx8MHx8fDA%3D'
+          }}
+          resizeMode='cover'
+          style={{ height: 200, width: '100%' }}>
+          <View style={{ alignItems: 'flex-end', paddingTop: 20 }}>
+            <View style={{ backgroundColor: 'black', height: 60, width: 160, justifyContent: 'center' }}>
+              <Text style={{ color: colors.gold.gold100, paddingLeft: 4 }}>
+                Table request organized by {route.params.data.name}
+              </Text>
             </View>
-            <View style={{ backgroundColor: 'black', height: 80, width: 140 }}>
-              <Text style={{ color: colors.gold.gold100 }}>Waiting for 7 more people</Text>
-              <Text style={{ color: colors.gold.gold100 }}>Tables : S1, D1</Text>
-              <Text style={{ color: colors.gold.gold100 }}>Time: 11:00 PM</Text>
-            </View>
-          </ImageBackground>
-        </View>
+          </View>
+          <View style={{ backgroundColor: 'black', height: 80, width: 140 }}>
+            <Text style={{ color: colors.gold.gold100 }}>Waiting for 7 more people</Text>
+            <Text style={{ color: colors.gold.gold100 }}>Tables : {route.params.data.tables.join(', ')}</Text>
+            <Text style={{ color: colors.gold.gold100 }}>Time: {formattedTime}</Text>
+          </View>
+        </ImageBackground>
+      </View>
 
         <View style={{ padding: 12 }}>
           <Text style={styles.heading}>Current Cost Breakdown:</Text>

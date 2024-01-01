@@ -220,7 +220,7 @@ const TableInvites = ({ route, navigation }) => {
       const trs = await getAllOrganizedTables();
       const invs = await getAllInvitedTables();
       const user = await AsyncStorage.getItem(SensitiveKey.USER.DATA);
-      setUserData(user);
+      setUserData(JSON.parse(user));
       console.log(user, 'userData');
       console.log(trs, 'this is trs');
       setOrgTables(trs);
@@ -266,6 +266,7 @@ const TableInvites = ({ route, navigation }) => {
                   onPress={() => {
                     const fullName = `${userData.firstName} ${userData.lastName}`;
                     const tableMapIds = item.tableConfigId.map(config => config.tableMapId);
+                    console.log(userData.firstName, "user Data.firstName");
                     console.log(userData, "this is userData");
                     console.log(fullName, "full name");
                     console.log(tableMapIds, "tableMapIds");
