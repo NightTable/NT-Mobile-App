@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -15,20 +15,6 @@ import { colors, typography } from '../../theme';
 
 
 const TableViewScreen = ({ route, navigation }) => {
-
-  const getPendingParticipants = async() => {
-    const tableReqId = route.params.data.tableRequestId;
-
-    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${tableReqId}`);
-    
-    const inactiveParticipantIds = trpms
-    .filter(item => !item.isActiveParticipant)
-    .map(item => item.participantId._id);
-
-    return 0;
-  };
-  
-  console.log(route.params.data, "route params")
 
   const btnArray = [
     {
@@ -100,6 +86,30 @@ const TableViewScreen = ({ route, navigation }) => {
   const hours = etaDate.getUTCHours().toString().padStart(2, '0');
   const minutes = etaDate.getUTCMinutes().toString().padStart(2, '0');
   const formattedTime = `${hours}:${minutes}`; // Time in hh:mm format
+
+  const [partCount, setPartCount] = useState(0);
+
+  const getPendingParticipants = async() => {
+    // const tableReqId = route.params.data.tableRequestId;
+    // 656086984d7a76927e19bca0
+    // const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${tableReqId}`);
+    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/656086984d7a76927e19bca0`);
+
+    const inactiveParticipantIds = trpms.data.data.filter(item => !item.isActiveParticipant)
+    .map(item => item.participantId._id);
+
+    return inactiveParticipantIds.length;
+  };
+  
+  console.log(route.params.data, "route params");
+
+  useEffect( async() => {
+
+    const inactiveParticipantIds = await getPendingParticipants();
+    setPartCount(inactiveParticipantIds);
+
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <HeaderWithLeftIcon
@@ -127,7 +137,7 @@ const TableViewScreen = ({ route, navigation }) => {
             </View>
           </View>
           <View style={{ backgroundColor: 'black', height: 80, width: 140 }}>
-            <Text style={{ color: colors.gold.gold100 }}>Waiting for 7 more people</Text>
+            <Text style={{ color: colors.gold.gold100 }}>Waiting for {partCount} more people</Text>
             <Text style={{ color: colors.gold.gold100 }}>Tables : {route.params.data.tables.join(', ')}</Text>
             <Text style={{ color: colors.gold.gold100 }}>Time: {formattedTime}</Text>
           </View>
