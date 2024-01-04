@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, {useEffect, useState} from 'react';
 import {
   Text,
@@ -88,25 +89,65 @@ const TableViewScreen = ({ route, navigation }) => {
   const formattedTime = `${hours}:${minutes}`; // Time in hh:mm format
 
   const [partCount, setPartCount] = useState(0);
+  const [orgFee, setOrgFee] = useState(0);
+  const [pendingParticipants, setPendingParticipants] = useState([]);
+  const [activeParts, setActiveParts] = useState([]);
+  const [activePartsTrial, setActivePartsTrial] = useState([{"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}]);
+  const [showActive, setShowActive] = useState(false);
 
-  const getPendingParticipants = async() => {
-    // const tableReqId = route.params.data.tableRequestId;
-    // 656086984d7a76927e19bca0
-    // const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${tableReqId}`);
+  const toggleShowActivePending = () => {
+    setShowActive(!showActive); // This will toggle the state between true and false
+  };
+
+  const getPendingParticipantsData = async() => {
     const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/656086984d7a76927e19bca0`);
+  
+    const organizer = trpms.data.data.find(participant => participant.isRequestOrganizer);
+    const organizerMinimumPrice = organizer ? organizer.minimumPrice : null;
+    setOrgFee(organizerMinimumPrice);
+  
+    // Function to get the full name or phone number
+    const getNameOrPhone = (participant) => {
+      if (participant.userId && participant.userId.firstName && participant.userId.lastName) {
+        return `${participant.userId.firstName} ${participant.userId.lastName}`;
+      }
+      return participant.phoneNumber.toString();
+    };
+  
+    // Create lists of active and inactive participants, excluding the organizer
+    const activeParticipants = [];
+    const inactiveParticipants = [];
+  
+    trpms.data.data.forEach(participant => {
+      if (!participant.isRequestOrganizer) {
+        const participantInfo = {
+          nameOrPhone: getNameOrPhone(participant.participantId),
+          minimumPrice: participant.minimumPrice
+        };
+  
+        if (participant.isActiveParticipant) {
+          activeParticipants.push(participantInfo);
+        } else {
+          inactiveParticipants.push(participantInfo);
+        }
+      }
+    });
+  
+    setPartCount(inactiveParticipants.length); // Assuming you want the count of inactive participants
+    setPendingParticipants(inactiveParticipants);
+    setActiveParts(activeParticipants);
 
-    const inactiveParticipantIds = trpms.data.data.filter(item => !item.isActiveParticipant)
-    .map(item => item.participantId._id);
-
-    return inactiveParticipantIds.length;
+    console.log('Active participants:', activeParticipants);
+    console.log('Inactive participants:', inactiveParticipants);
+  
+    // Perform any additional logic with activeParticipants and inactiveParticipants as needed
   };
   
-  console.log(route.params.data, "route params");
+  console.log(route.params.data, 'route params');
 
   useEffect( async() => {
 
-    const inactiveParticipantIds = await getPendingParticipants();
-    setPartCount(inactiveParticipantIds);
+    await getPendingParticipantsData();
 
   }, []);
 
@@ -154,20 +195,36 @@ const TableViewScreen = ({ route, navigation }) => {
                   padding: 10
                 }
               ]}>
-              Your Share: $ 200
+              Your Share: ${orgFee}
             </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                backgroundColor: colors.gold.gold100,
-                borderRadius: 8,
-                padding: 12,
-                margin: 6
-              }}>
-              <Text>Amanda May</Text>
-              <Text> $ 100</Text>
+            <View style={{ borderRadius: 8, padding: 12, margin: 6 }}>
+              <Text style={[typography.regular.regular16, { color: colors.gold.gold200 }]}>Pending Participants</Text>
+              <FlatList
+                  data={pendingParticipants}
+                  keyExtractor={(item, index) => item.nameOrPhone + index}
+                  renderItem={({ item }) => (
+                      <View style={{ 
+                        flexDirection: 'row',
+                        justifyContent: 'space-between', 
+                        backgroundColor: colors.gold.gold200, // or any color you want for the box
+                        borderRadius: 4, // if you want rounded corners for each box
+                        padding: 8, // padding inside each box
+                        marginBottom: 8, // space between boxes
+                        shadowOffset: {
+                          width: 0,
+                          height: 2
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5
+                      }}>
+                          <Text style={[typography.regular.regular14, { color: colors.black.black800 }]}>{isNaN(item.nameOrPhone) ? item.nameOrPhone : `+${item.nameOrPhone}`}</Text>
+                          <Text style={[typography.regular.regular14, { color: colors.black.black800 }]}>${item.minimumPrice}</Text>
+                      </View>
+                  )}
+              />
             </View>
+
           </View>
         </View>
         <View>
@@ -233,6 +290,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     paddingVertical: 6,
     paddingHorizontal: 10
+  },
+  toggleButton: {
+    // Style for the button
+    backgroundColor: colors.gold.gold200,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginVertical: 10
+  },
+  toggleButtonText: {
+    // Style for the button text
+    color: colors.black.black800,
+    fontSize: 16
   }
 });
 
