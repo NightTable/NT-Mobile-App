@@ -92,7 +92,7 @@ const TableViewScreen = ({ route, navigation }) => {
   const [orgFee, setOrgFee] = useState(0);
   const [pendingParticipants, setPendingParticipants] = useState([]);
   const [activeParts, setActiveParts] = useState([]);
-  const [activePartsTrial, setActivePartsTrial] = useState([{"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}]);
+  const [activePartsTrial, setActivePartsTrial] = useState([{"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}, {"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}, {"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}]);
   const [showActive, setShowActive] = useState(false);
 
   const toggleShowActivePending = () => {
@@ -184,8 +184,37 @@ const TableViewScreen = ({ route, navigation }) => {
           </View>
         </ImageBackground>
       </View>
+      {/* Current Cost Breakdown */}
+      <View style={{ padding: 12 }}>
+        <Text style={styles.heading}>Current Cost Breakdown:</Text>
+        <View style={{ height: 180, borderWidth: 1, borderColor: colors.gold.gold100, borderRadius: 12 }}>
+          <Text style={[styles.heading, { padding: 10 }]}>Your Share: ${orgFee}</Text>
 
-        <View style={{ padding: 12 }}>
+          {/* Button to toggle between active and pending participants */}
+          <TouchableOpacity onPress={toggleShowActivePending} style={styles.toggleButton}>
+            <Text style={styles.toggleButtonText}>
+              {showActive ? 'Show Pending Participants' : 'Show Active Participants'}
+            </Text>
+          </TouchableOpacity>
+
+          {/* List of participants */}
+          <FlatList
+            data={showActive ? activePartsTrial : pendingParticipants}
+            keyExtractor={(item, index) => item.nameOrPhone + index}
+            renderItem={({ item }) => (
+              <View style={styles.participantBox}>
+                <Text style={[typography.regular.regular14, { color: colors.black.black800 }]}>
+                  {isNaN(item.nameOrPhone) ? item.nameOrPhone : `+${item.nameOrPhone}`}
+                </Text>
+                <Text style={[typography.regular.regular14, { color: colors.black.black800 }]}>
+                  ${item.minimumPrice}
+                </Text>
+              </View>
+            )}
+          />
+        </View>
+      </View>
+        {/* <View style={{ padding: 12 }}>
           <Text style={styles.heading}>Current Cost Breakdown:</Text>
           <View style={{ height: 180, borderWidth: 1, borderColor: colors.gold.gold100, borderRadius: 12 }}>
             <Text
@@ -226,7 +255,7 @@ const TableViewScreen = ({ route, navigation }) => {
             </View>
 
           </View>
-        </View>
+        </View> */}
         <View>
           <FlatList
             data={btnArray}
@@ -258,7 +287,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18
   },
   heading: {
-    fontSize: 16,
+    ...typography.regular.regular16,
     color: colors.gold.gold100,
     paddingBottom: 10
   },
@@ -297,12 +326,29 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
-    marginVertical: 10
+    marginVertical: 10,
+    maxWidth: 300,
+    alignSelf: 'center' // Center button horizontally
   },
   toggleButtonText: {
-    // Style for the button text
-    color: colors.black.black800,
-    fontSize: 16
+    ...typography.regular.regular16, // Ensure this object exists and contains the font settings you want
+    color: colors.black.black800
+  },
+  participantBox: {
+    // Style for each participant box
+    flexDirection: 'row',
+    justifyContent: 'space-between', 
+    backgroundColor: colors.gold.gold200, // or any color you want for the box
+    borderRadius: 4, // if you want rounded corners for each box
+    padding: 8, // padding inside each box
+    marginBottom: 8, // space between boxes
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
   }
 });
 
