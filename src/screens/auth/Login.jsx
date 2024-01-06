@@ -71,8 +71,10 @@ const Login = ({ navigation }) => {
       lat: lotlong?.coords.latitude,
       lng: lotlong.coords.longitude
     };
+    console.log("from login.jsx. obj is: ", obj)
     // API CALL
     const addressApiCall = await getAddressfromLatlong(obj);
+    console.log("from login.jsx. addressApiCall is: ", addressApiCall.data)
 
     if (addressApiCall.message !== 'Request failed with status code 400') {
       const { address } = addressApiCall.data;
@@ -88,6 +90,7 @@ const Login = ({ navigation }) => {
       };
       await StoretoLocalData(SensitiveKey.USER.ADDRESS, userAddressObj);
       const data = loginReducer.countryData.filter((item) => (item.name === country ? item : ''));
+      console.log("from login.jsx. loginReducer.countryData is: ", loginReducer.countryData.filter((item) => (item.name === country ? item : '')));
       console.log('====================================');
       console.log('data::>> LOGIN REDUCER ::>> ', data);
       console.log('====================================');

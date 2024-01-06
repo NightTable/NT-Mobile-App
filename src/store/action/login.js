@@ -34,6 +34,7 @@ export const getAllCountriesData = () => async (dispatch) => {
       name: item.name
     })
   );
+  console.log(tempArr, "the temp arr of country codes")
   dispatch(updateCountryData(tempArr));
 };
 
