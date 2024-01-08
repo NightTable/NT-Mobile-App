@@ -111,7 +111,8 @@ const TableViewScreen = ({ route, navigation }) => {
     const clubid = route.params.data.clubId;
     let menu = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}menu/club/${clubid}`);
     menu = menu.data.data;
-    clubMenu(menu);
+    setClubMenu(menu);
+    console.log(clubMenu);
   };
 
   const getPendingParticipantsData = async() => {
@@ -164,29 +165,44 @@ const TableViewScreen = ({ route, navigation }) => {
   useEffect( async() => {
 
     await getPendingParticipantsData();
-
+    await getClubMenu();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
+
       <Modal
-        animationType="slide"
+        animationType='slide'
         transparent={true}
         visible={isMenuModalVisible}
         onRequestClose={() => {
           setMenuModalVisible(!isMenuModalVisible);
         }}>
         <View style={styles.modalView}>
-          {/* Your menu content here */}
+          <ScrollView style={{width: '100%'}}>
+            {clubMenu.map((category) => (
+              <View key={category._id} style={styles.categoryContainer}>
+                <Text style={styles.categoryName}>{category.category}</Text>
+                {category.items.map((item) => (
+                  <View key={item._id} style={styles.itemContainer}>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemPrice}>${item.price}</Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </ScrollView>
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setMenuModalVisible(false)}>
-            <Text>Close Menu</Text>
+            <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
+
+
       <Modal
-        animationType="fade"
+        animationType='fade'
         transparent={true}
         visible={isFloorPlanPopupVisible}
         onRequestClose={() => {
@@ -194,10 +210,12 @@ const TableViewScreen = ({ route, navigation }) => {
         }}>
         <View style={styles.centeredView}>
           {/* Your floor plan content here */}
+          <Text>We are working on uploading the floor plan to the mobile app. For now, please ask your promoter / VIP for a floor plan</Text>
+
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setFloorPlanPopupVisible(false)}>
-            <Text>Close Floor Plan</Text>
+            <Text>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -360,32 +378,68 @@ const styles = StyleSheet.create({
   },
   modalView: {
     position: 'absolute',
+    borderColor: colors.gold.gold100,
+    borderWidth: 5,
     bottom: 0,
     width: '100%',
-    backgroundColor: 'white',
+    height: '70%', // Set the modal height to half of the screen height
+    backgroundColor: 'black',
     padding: 20,
     alignItems: 'center',
+    borderTopLeftRadius: 20, // Rounded top left corner
+    borderTopRightRadius: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  categoryContainer: {
+    padding: 20
   },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  categoryName: {
+    color: 'gold',
+    fontSize: 24,
+    fontWeight: 'bold'
+    // ... other styling ...
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    borderBottomColor: 'gold',
+    borderBottomWidth: 1
+    // ... other styling ...
+  },
+  itemPrice: {
+    color: 'gold',
+    fontSize: 18
+    // ... other styling ...
+  },
+  closeButtonText: {
+    color: 'white'
+    // ... other styling ...
+  },
+  itemName: {
+    color: 'white',
+    fontSize: 18
+    // ... other styling ...
   },
   closeButton: {
     backgroundColor: colors.gold.gold100,
     padding: 10,
-    elevation: 2,
-  },
+    elevation: 2
+  }
 });
 
 export default TableViewScreen;
