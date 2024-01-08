@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  Modal
 } from 'react-native';
 import axios from 'axios';
 import { HeaderWithLeftIcon } from '../../components/Header';
@@ -76,13 +77,6 @@ const TableViewScreen = ({ route, navigation }) => {
     }
   ];
 
-  const onButtonPress = (id) => {
-    if (id === 1) {
-      // 'Menu',
-    } else if (id === 2) {
-      // 'Floor Plan'
-    }
-  };
   const etaDate = new Date(route.params.data.eta);
   const hours = etaDate.getUTCHours().toString().padStart(2, '0');
   const minutes = etaDate.getUTCMinutes().toString().padStart(2, '0');
@@ -94,13 +88,35 @@ const TableViewScreen = ({ route, navigation }) => {
   const [activeParts, setActiveParts] = useState([]);
   const [activePartsTrial, setActivePartsTrial] = useState([{"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}, {"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}, {"minimumPrice": 500, "nameOrPhone": "Jason Strauss"}, {"minimumPrice": 500, "nameOrPhone": "16175300464"}]);
   const [showActive, setShowActive] = useState(false);
-
+  const [clubMenu, setClubMenu] = useState([]);
+  const [isMenuModalVisible, setMenuModalVisible] = useState(false);
+  const [isFloorPlanPopupVisible, setFloorPlanPopupVisible] = useState(false);
+  
   const toggleShowActivePending = () => {
     setShowActive(!showActive); // This will toggle the state between true and false
   };
 
+  const onButtonPress = (id) => {
+    switch(id) {
+      case 1: // 'Menu'
+        setMenuModalVisible(true);
+        break;
+      case 2: // 'Floor Plan'
+        setFloorPlanPopupVisible(true);
+        break;
+    }
+  };
+  
+  const getClubMenu = async() => {
+    const clubid = route.params.data.clubId;
+    let menu = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}menu/club/${clubid}`);
+    menu = menu.data.data;
+    clubMenu(menu);
+  };
+
   const getPendingParticipantsData = async() => {
-    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/656086984d7a76927e19bca0`);
+    const trID = route.params.data.tableRequestId;
+    const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${trID}`);
   
     const organizer = trpms.data.data.find(participant => participant.isRequestOrganizer);
     const organizerMinimumPrice = organizer ? organizer.minimumPrice : null;
@@ -153,6 +169,39 @@ const TableViewScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isMenuModalVisible}
+        onRequestClose={() => {
+          setMenuModalVisible(!isMenuModalVisible);
+        }}>
+        <View style={styles.modalView}>
+          {/* Your menu content here */}
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setMenuModalVisible(false)}>
+            <Text>Close Menu</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isFloorPlanPopupVisible}
+        onRequestClose={() => {
+          setFloorPlanPopupVisible(!isFloorPlanPopupVisible);
+        }}>
+        <View style={styles.centeredView}>
+          {/* Your floor plan content here */}
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setFloorPlanPopupVisible(false)}>
+            <Text>Close Floor Plan</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
       <HeaderWithLeftIcon
         title='Polling Room'
         icon='arrowleft'
@@ -214,48 +263,7 @@ const TableViewScreen = ({ route, navigation }) => {
           />
         </View>
       </View>
-        {/* <View style={{ padding: 12 }}>
-          <Text style={styles.heading}>Current Cost Breakdown:</Text>
-          <View style={{ height: 180, borderWidth: 1, borderColor: colors.gold.gold100, borderRadius: 12 }}>
-            <Text
-              style={[
-                styles.heading,
-                {
-                  padding: 10
-                }
-              ]}>
-              Your Share: ${orgFee}
-            </Text>
-            <View style={{ borderRadius: 8, padding: 12, margin: 6 }}>
-              <Text style={[typography.regular.regular16, { color: colors.gold.gold200 }]}>Pending Participants</Text>
-              <FlatList
-                  data={pendingParticipants}
-                  keyExtractor={(item, index) => item.nameOrPhone + index}
-                  renderItem={({ item }) => (
-                      <View style={{ 
-                        flexDirection: 'row',
-                        justifyContent: 'space-between', 
-                        backgroundColor: colors.gold.gold200, // or any color you want for the box
-                        borderRadius: 4, // if you want rounded corners for each box
-                        padding: 8, // padding inside each box
-                        marginBottom: 8, // space between boxes
-                        shadowOffset: {
-                          width: 0,
-                          height: 2
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5
-                      }}>
-                          <Text style={[typography.regular.regular14, { color: colors.black.black800 }]}>{isNaN(item.nameOrPhone) ? item.nameOrPhone : `+${item.nameOrPhone}`}</Text>
-                          <Text style={[typography.regular.regular14, { color: colors.black.black800 }]}>${item.minimumPrice}</Text>
-                      </View>
-                  )}
-              />
-            </View>
 
-          </View>
-        </View> */}
         <View>
           <FlatList
             data={btnArray}
@@ -349,7 +357,35 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5
-  }
+  },
+  modalView: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'white',
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  closeButton: {
+    backgroundColor: colors.gold.gold100,
+    padding: 10,
+    elevation: 2,
+  },
 });
 
 export default TableViewScreen;
