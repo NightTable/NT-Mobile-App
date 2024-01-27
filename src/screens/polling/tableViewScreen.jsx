@@ -14,6 +14,7 @@ import {
 import axios from 'axios';
 import { HeaderWithLeftIcon } from '../../components/Header';
 import { colors, typography } from '../../theme';
+import * as SMS from 'expo-sms';
 
 
 const TableViewScreen = ({ route, navigation }) => {
@@ -96,14 +97,38 @@ const TableViewScreen = ({ route, navigation }) => {
     setShowActive(!showActive); // This will toggle the state between true and false
   };
 
+  const sendSMS = async (number) => {
+    setIsSending(true);
+    const isAvailable = await SMS.isAvailableAsync();
+    if (isAvailable) {
+      try {
+        const inviteMessage = `Hey!\n
+        I'm inviting you to a table at the club.\n 
+        Download NightTable on the App Store: ${appStoreLink}\n
+        or Play Store: ${playStoreLink},\n
+        make sure to sign up using the phone number on which you've recieved this message,\n
+        and join the table for a fun night!`; // need club name and event
+        const { result } = await SMS.sendSMSAsync([number], inviteMessage);
+        setIsSending(false);
+        return result === 'sent' ? 'sent' : 'error'; // Ensure a consistent return value
+      } catch (error) {
+        console.log(error);
+        setIsSending(false); // Resetting the isSending flag in the catch block
+        return 'error'; // Ensure a return value
+      }
+    } else {
+      Alert.alert('Your device does not support SMS');
+      setIsSending(false);
+      return 'error'; // Ensure a return value
+    }
+  };
+
   const onButtonPress = (id) => {
-    switch(id) {
-      case 1: // 'Menu'
-        setMenuModalVisible(true);
-        break;
-      case 2: // 'Floor Plan'
-        setFloorPlanPopupVisible(true);
-        break;
+    if (id === 1) {
+      setMenuModalVisible(true);
+    } else if (id === 2) {
+      // Handle floor plan button press
+      setFloorPlanPopupVisible(true);
     }
   };
   
@@ -172,17 +197,16 @@ const TableViewScreen = ({ route, navigation }) => {
     <SafeAreaView style={styles.container}>
 
       <Modal
-        animationType='slide'
+        animationType="slide"
         transparent={true}
         visible={isMenuModalVisible}
-        onRequestClose={() => {
-          setMenuModalVisible(!isMenuModalVisible);
-        }}>
+        onRequestClose={() => setMenuModalVisible(!isMenuModalVisible)}
+      >
         <View style={styles.modalView}>
-          <ScrollView style={{width: '100%'}}>
-            {clubMenu.map((category) => (
+          <ScrollView>
+            {clubMenu.map((category, index) => (
               <View key={category._id} style={styles.categoryContainer}>
-                <Text style={styles.categoryName}>{category.category}</Text>
+                <Text style={styles.categoryTitle}>{category.category}</Text>
                 {category.items.map((item) => (
                   <View key={item._id} style={styles.itemContainer}>
                     <Text style={styles.itemName}>{item.name}</Text>
@@ -194,7 +218,8 @@ const TableViewScreen = ({ route, navigation }) => {
           </ScrollView>
           <TouchableOpacity
             style={styles.closeButton}
-            onPress={() => setMenuModalVisible(false)}>
+            onPress={() => setMenuModalVisible(false)}
+          >
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
@@ -202,20 +227,20 @@ const TableViewScreen = ({ route, navigation }) => {
 
 
       <Modal
-        animationType='fade'
+        animationType='slide'
         transparent={true}
         visible={isFloorPlanPopupVisible}
         onRequestClose={() => {
           setFloorPlanPopupVisible(!isFloorPlanPopupVisible);
         }}>
-        <View style={styles.centeredView}>
+        <View style={styles.modalView}>
           {/* Your floor plan content here */}
-          <Text>We are working on uploading the floor plan to the mobile app. For now, please ask your promoter / VIP for a floor plan</Text>
+            <Text style={styles.categoryTitle}>We are working on uploading the floor plan to the mobile app. For now, please ask your promoter / VIP for a floor plan</Text>
 
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setFloorPlanPopupVisible(false)}>
-            <Text>Close</Text>
+            <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -378,16 +403,16 @@ const styles = StyleSheet.create({
   },
   modalView: {
     position: 'absolute',
-    borderColor: colors.gold.gold100,
     borderWidth: 5,
+    borderColor: colors.gold.gold100,
     bottom: 0,
     width: '100%',
-    height: '70%', // Set the modal height to half of the screen height
+    height: '50%', // Change this to 50% to make the modal take up half the screen
     backgroundColor: 'black',
     padding: 20,
-    alignItems: 'center',
-    borderTopLeftRadius: 20, // Rounded top left corner
-    borderTopRightRadius: 20,
+    justifyContent: 'space-between', // Add this to space out the content
+    borderTopLeftRadius: 30, // Rounded top left corner
+    borderTopRightRadius: 30, // Rounded top right corner
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -395,10 +420,17 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 5
   },
   categoryContainer: {
-    padding: 20
+    width: '100%',
+    marginBottom: 20
+  },
+  categoryTitle: {
+    ...typography.regular.regular24,
+    color: colors.gold.gold100,
+    marginBottom: 10,
+    alignSelf: 'center'
   },
   centeredView: {
     flex: 1,
@@ -408,37 +440,48 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)'
   },
   categoryName: {
-    color: 'gold',
-    fontSize: 24,
-    fontWeight: 'bold'
+    color: colors.gold.gold100,
+    ...typography.regular.regular24,
+    fontWeight: 'bold',
+    marginBottom: 10
     // ... other styling ...
   },
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: colors.gold.gold100,
+    borderRadius: 10,
     paddingVertical: 10,
-    borderBottomColor: 'gold',
-    borderBottomWidth: 1
-    // ... other styling ...
-  },
-  itemPrice: {
-    color: 'gold',
-    fontSize: 18
-    // ... other styling ...
-  },
-  closeButtonText: {
-    color: 'white'
-    // ... other styling ...
+    paddingHorizontal: 20,
+    marginVertical: 5
   },
   itemName: {
-    color: 'white',
-    fontSize: 18
-    // ... other styling ...
+    ...typography.regular.regular18,
+    color: colors.black.black800
+  },
+  itemPrice: {
+    ...typography.regular.regular18,
+    color: colors.black.black800
+  },
+  closeButtonText: {
+    ...typography.regular.regular18,
+    color: colors.gold.gold100,
+    textAlign: 'center'
+  },
+  priceBox: {
+    backgroundColor: colors.gold.gold100,
+    paddingVertical: 5, // Vertical padding for the price
+    paddingHorizontal: 10, // Horizontal padding for the price
+    borderTopRightRadius: 10, // Rounded top right corner
+    borderBottomRightRadius: 10 // Rounded bottom right corner
   },
   closeButton: {
-    backgroundColor: colors.gold.gold100,
+    marginTop: 20,
+    backgroundColor: colors.red.red950,
     padding: 10,
-    elevation: 2
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.gold.gold100
   }
 });
 
