@@ -907,61 +907,6 @@ and join the table for a fun night!`;
         </View>
       </View>
 
-      {/* <DyModal
-        bgColor={colors.black.black800}
-        children={
-          <>
-            <View style={{ height: height, paddingHorizontal: 18 }}>
-              <Text
-                style={[
-                  typography.bold.bold24,
-                  { color: colors.gold.gold100, paddingBottom: 20 },
-                ]}
-              >
-                Select Tables
-              </Text>
-              <TableConfigurationsCard
-                data={clubStore?.individualClubTableConfig}
-                selectedTableConfigsData={tableConfigsData}
-                selectedTableConfigsIds={() => {
-                  let tempArr = [];
-                  if (tableConfigsData.length > 0) {
-                    tableConfigsData.map((item) => {
-                      tempArr.push(item?._id);
-                    });
-                    return tempArr;
-                  } else {
-                    return [];
-                  }
-                }}
-                onpress_return_selectedTableConfigs={(item) => {
-                  let mintableAmount = item
-                    ?.map((item) => item.minPrice)
-                    .reduce((prev, curr) => prev + curr, 0);
-
-                  settableConfigsData(item);
-                  setTableMinimum(Number(mintableAmount));
-                }}
-                showTables={false}
-              />
-              <ButtonComp
-                disabled={false}
-                onSubmit={() => {
-                  setTableConfigModal(false);
-                }}
-                backgroundColor={colors.gold.gold100}
-                text={'Continue '}
-              />
-            </View>
-          </>
-        }
-        openActionSheet={TableConfigModal}
-        setopenActionSheet={setTableConfigModal}
-        onClosepress={() => {
-          setTableConfigModal(false);
-        }}
-      /> */}
-
       <DyModal
         // eslint-disable-next-line react/no-children-prop
         children={<CostSplittingSectionComp selectedPaymentType={selectedPaymentType} />}

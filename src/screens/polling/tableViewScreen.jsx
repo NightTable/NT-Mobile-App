@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
-  Modal
+  Modal,
+  TextInput
 } from 'react-native';
 import axios from 'axios';
 import { HeaderWithLeftIcon } from '../../components/Header';
@@ -70,7 +71,7 @@ const TableViewScreen = ({ route, navigation }) => {
       textColor: 'black'
     }, */
     {
-      id: 8,
+      id: 7,
       name: 'Add to General Tab',
       backgroundColor: colors.gold.gold200,
       borderColor: colors.gold.gold200,
@@ -83,6 +84,8 @@ const TableViewScreen = ({ route, navigation }) => {
   const minutes = etaDate.getUTCMinutes().toString().padStart(2, '0');
   const formattedTime = `${hours}:${minutes}`; // Time in hh:mm format
 
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [joiningFee, setJoiningFee] = useState('');
   const [partCount, setPartCount] = useState(0);
   const [orgFee, setOrgFee] = useState(0);
   const [pendingParticipants, setPendingParticipants] = useState([]);
@@ -91,10 +94,32 @@ const TableViewScreen = ({ route, navigation }) => {
   const [showActive, setShowActive] = useState(false);
   const [clubMenu, setClubMenu] = useState([]);
   const [isMenuModalVisible, setMenuModalVisible] = useState(false);
+  const [addParticipantsModal, setAddParticipantsModal] = useState(false);
   const [isFloorPlanPopupVisible, setFloorPlanPopupVisible] = useState(false);
   
   const toggleShowActivePending = () => {
+    console.log(pendingParticipants, "pending parts");
+    console.log(activeParts, "active parts");
     setShowActive(!showActive); // This will toggle the state between true and false
+  };
+
+  const handleSendInvite = () => {
+    // Construct the participant object
+    const participant = {
+      minimumPrice: joiningFee,
+      nameOrPhone: phoneNumber
+    };
+    
+    // Add the new participant to the pendingParticipants array
+    setPendingParticipants([...pendingParticipants, participant]);
+    sendSMS(`+${phoneNumber}`)
+    // Clear the input fields
+    setPhoneNumber('');
+    setJoiningFee('');
+    console.log("Sending invites");
+    // Close the modal or perform other actions as needed
+    setAddParticipantsModal(false);
+
   };
 
   const sendSMS = async (number) => {
@@ -129,6 +154,22 @@ const TableViewScreen = ({ route, navigation }) => {
     } else if (id === 2) {
       // Handle floor plan button press
       setFloorPlanPopupVisible(true);
+    } else if (id === 3 ) {
+      setAddParticipantsModal(true);
+      console.log ("Button 3 is pressed");
+      console.log(addParticipantsModal);
+    } 
+    else if (id === 4){
+      console.log("Button 4 pressed");
+    }
+    else if (id === 5){
+      console.log("Button 5 pressed");
+    }
+    else if (id === 6){
+      console.log("Button 6 pressed");
+    }
+    else if (id === 7){
+      console.log("Button 7 pressed");
     }
   };
   
@@ -161,18 +202,23 @@ const TableViewScreen = ({ route, navigation }) => {
     const inactiveParticipants = [];
   
     trpms.data.data.forEach(participant => {
-      if (!participant.isRequestOrganizer) {
-        const participantInfo = {
-          nameOrPhone: getNameOrPhone(participant.participantId),
-          minimumPrice: participant.minimumPrice
-        };
+      
+      if (!participant.isDeleted) {
+        // Continue with your existing logic
+        if (!participant.isRequestOrganizer) {
+          const participantInfo = {
+            nameOrPhone: getNameOrPhone(participant.participantId),
+            minimumPrice: participant.minimumPrice
+          };
   
-        if (participant.isActiveParticipant) {
-          activeParticipants.push(participantInfo);
-        } else {
-          inactiveParticipants.push(participantInfo);
+          if (participant.isActiveParticipant) {
+            activeParticipants.push(participantInfo);
+          } else {
+            inactiveParticipants.push(participantInfo);
+          }
         }
       }
+
     });
   
     setPartCount(inactiveParticipants.length); // Assuming you want the count of inactive participants
@@ -225,6 +271,50 @@ const TableViewScreen = ({ route, navigation }) => {
         </View>
       </Modal>
 
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={addParticipantsModal}
+        onRequestClose={() => setAddParticipantsModal(!addParticipantsModal)}
+      >
+        <View style={styles.modalView}>
+          <Text style={styles.categoryTitle}>Send an invite text</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.categoryTitle}>Include country code: +</Text>
+            <TextInput 
+              style={styles.textInputStyle}
+              placeholder="Phone Number"
+              placeholderTextColor={colors.gold.gold100}
+              keyboardType="phone-pad"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.categoryTitle}>Joining Fee: $</Text>
+            <TextInput 
+              style={styles.textInputStyle}
+              placeholder="Amount"
+              placeholderTextColor={colors.gold.gold100}
+              keyboardType="numeric"
+              value={joiningFee}
+              onChangeText={setJoiningFee}
+            />
+          </View>
+
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={handleSendInvite}>
+            <Text style={styles.closeButtonText}>Send invite</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setAddParticipantsModal(false)}>
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
 
       <Modal
         animationType='slide'
@@ -467,6 +557,18 @@ const styles = StyleSheet.create({
     ...typography.regular.regular18,
     color: colors.gold.gold100,
     textAlign: 'center'
+  },
+  textInputStyle: {
+    backgroundColor: colors.black.black800, // Black background
+    color: colors.gold.gold100, // Gold text
+    borderColor: colors.gold.gold100, // Gold border
+    borderWidth: 1, // Set the border width
+    borderRadius: 10, // Round the corners
+    height: 40, // Adjust the height as necessary
+    marginVertical: 10, // Add some vertical spacing
+    paddingHorizontal: 10, // Add some horizontal padding
+    fontSize: 16, // Adjust the font size as necessary
+    marginLeft: 5
   },
   priceBox: {
     backgroundColor: colors.gold.gold100,
