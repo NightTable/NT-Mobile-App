@@ -200,7 +200,26 @@ const TableViewScreen = ({ route, navigation }) => {
         const response = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}invites/sendExternalInvite`, inviteRequestBody);
         console.log(response)
 
-        setPendingParticipants([...pendingParticipants, participant]);
+        const participantBody = {
+          phoneNumber: phoneNumber,
+          isPaymentInfoRegistered: false,
+        }
+        const participantResponse = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}participants/participant`, participantBody);
+
+        if (participantResponse.data.status){
+          const trpmBody = {
+            tableReqId: tableReqId,
+            participantId: participantResponse.data.data._id,
+            minimumPrice: joiningFee,
+            isRequestOrganizer: false,
+            isInvitedPending: true,
+            isActiveParticipant: false,
+          }
+          const trpmResponse = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, trpmBody);
+          if (trpmResponse.data.status){
+            setPendingParticipants([...pendingParticipants, participant]);
+          }
+        }
       }
     }
   
