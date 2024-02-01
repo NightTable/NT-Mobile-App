@@ -10,7 +10,8 @@ import {
   ImageBackground,
   ScrollView,
   Modal,
-  TextInput
+  TextInput,
+  Keyboard,
 } from 'react-native';
 import axios from 'axios';
 import { HeaderWithLeftIcon } from '../../components/Header';
@@ -96,57 +97,118 @@ const TableViewScreen = ({ route, navigation }) => {
   const [isMenuModalVisible, setMenuModalVisible] = useState(false);
   const [addParticipantsModal, setAddParticipantsModal] = useState(false);
   const [isFloorPlanPopupVisible, setFloorPlanPopupVisible] = useState(false);
-  
+  const [isSending, setIsSending] = useState(false);
+
+
   const toggleShowActivePending = () => {
     console.log(pendingParticipants, "pending parts");
     console.log(activeParts, "active parts");
     setShowActive(!showActive); // This will toggle the state between true and false
   };
 
-  const handleSendInvite = () => {
-    // Construct the participant object
+  const sendSMS = async (number) => {
+    console.log("Entered the sendSMS function");
+    setIsSending(true);
+    console.log("about to check sms availability");
+
+    try {
+      console.log("about to check sms availability");
+      const isAvailable = await SMS.isAvailableAsync();
+      console.log("SMS availability:", isAvailable);
+  
+      if (isAvailable) {
+        try {
+          const inviteMessage = `Hey!\n
+          I'm inviting you to a table at the club.\n 
+          Download NightTable on the App Store\n
+          or Play Store,\n
+          make sure to sign up using the phone number on which you've received this message,\n
+          and join the table for a fun night!`;
+  
+          const { result } = await SMS.sendSMSAsync([number], inviteMessage);
+          console.log("SMS send result:", result);
+          setIsSending(false);
+          return result;
+        } catch (smsError) {
+          console.error("Error sending SMS:", smsError);
+          setIsSending(false);
+          return 'error';
+        }
+      } else {
+        Alert.alert('Your device does not support SMS');
+        setIsSending(false);
+        return 'error';
+      }
+    } catch (availabilityError) {
+      console.error("Error checking SMS availability:", availabilityError);
+      setIsSending(false);
+      return 'error';
+    }
+  };
+  
+  
+  const handleSendInvite = async () => {
     const participant = {
       minimumPrice: joiningFee,
       nameOrPhone: phoneNumber
     };
-    
-    // Add the new participant to the pendingParticipants array
-    setPendingParticipants([...pendingParticipants, participant]);
-    sendSMS(`+${phoneNumber}`)
-    // Clear the input fields
+    console.log(participant)
+    const tableReqId = route.params.data.tableRequestId;
+    console.log(tableReqId)
+    let inviteResponse;
+    let invitesForPhoneNum = null;
+    try {
+      inviteResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}/getListOfInvites/+${phoneNumber}`);
+      console.log(inviteResponse.status);
+      console.log(inviteResponse.data);
+      console.log(inviteResponse.data.data);
+      console.log(inviteResponse.data.data.length);
+
+      if (inviteResponse.status === 200 && inviteResponse.data && inviteResponse.data.data && inviteResponse.data.data.length > 0) {
+        console.log("Invites found for phone number:", phoneNumber);
+        invitesForPhoneNum = inviteResponse.data.data;
+        console.log(inviteResponse)
+
+      }
+    } catch (error) {
+      
+      console.log("Error checking invites:", error);
+    }
+  
+    console.log(invitesForPhoneNum)
+
+    const inviteExists = invitesForPhoneNum !== null && invitesForPhoneNum.some(item => item.tableRequestId._id === tableReqId);
+    console.log(inviteExists)
+
+    if (!inviteExists) {
+      const smsResult = await sendSMS(`+${phoneNumber}`);
+      console.log(smsResult);
+      if (smsResult === 'sent') {
+        const tableReqResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/tablereq/${tableReqId}`);
+        console.log(tableReqResponse.data.data)
+
+        const orgUserId = tableReqResponse.data.data.organizerUserId._id;
+        console.log(orgUserId)
+
+        const inviteRequestBody = {
+          organizerId: orgUserId,
+          phoneNumber: phoneNumber,
+          tableRequestId: tableReqId,
+          joiningFee: joiningFee
+        };
+  
+        const response = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}invites/sendExternalInvite`, inviteRequestBody);
+        console.log(response)
+
+        setPendingParticipants([...pendingParticipants, participant]);
+      }
+    }
+  
     setPhoneNumber('');
     setJoiningFee('');
-    console.log("Sending invites");
-    // Close the modal or perform other actions as needed
     setAddParticipantsModal(false);
-
   };
-
-  const sendSMS = async (number) => {
-    setIsSending(true);
-    const isAvailable = await SMS.isAvailableAsync();
-    if (isAvailable) {
-      try {
-        const inviteMessage = `Hey!\n
-        I'm inviting you to a table at the club.\n 
-        Download NightTable on the App Store: ${appStoreLink}\n
-        or Play Store: ${playStoreLink},\n
-        make sure to sign up using the phone number on which you've recieved this message,\n
-        and join the table for a fun night!`; // need club name and event
-        const { result } = await SMS.sendSMSAsync([number], inviteMessage);
-        setIsSending(false);
-        return result === 'sent' ? 'sent' : 'error'; // Ensure a consistent return value
-      } catch (error) {
-        console.log(error);
-        setIsSending(false); // Resetting the isSending flag in the catch block
-        return 'error'; // Ensure a return value
-      }
-    } else {
-      Alert.alert('Your device does not support SMS');
-      setIsSending(false);
-      return 'error'; // Ensure a return value
-    }
-  };
+  
 
   const onButtonPress = (id) => {
     if (id === 1) {
@@ -225,8 +287,8 @@ const TableViewScreen = ({ route, navigation }) => {
     setPendingParticipants(inactiveParticipants);
     setActiveParts(activeParticipants);
 
-    console.log('Active participants:', activeParticipants);
-    console.log('Inactive participants:', inactiveParticipants);
+
+
   
     // Perform any additional logic with activeParticipants and inactiveParticipants as needed
   };
@@ -239,6 +301,8 @@ const TableViewScreen = ({ route, navigation }) => {
     await getClubMenu();
   }, []);
 
+  console.log('Active participants:', activePartsTrial);
+  console.log('Inactive participants:', pendingParticipants);
   return (
     <SafeAreaView style={styles.container}>
 
@@ -288,6 +352,8 @@ const TableViewScreen = ({ route, navigation }) => {
               keyboardType="phone-pad"
               value={phoneNumber}
               onChangeText={setPhoneNumber}
+              returnKeyType="done"  // Set the return key type to "done"
+              onSubmitEditing={Keyboard.dismiss}
             />
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -299,11 +365,13 @@ const TableViewScreen = ({ route, navigation }) => {
               keyboardType="numeric"
               value={joiningFee}
               onChangeText={setJoiningFee}
+              returnKeyType="done"  // Set the return key type to "done"
+              onSubmitEditing={Keyboard.dismiss}  // Dismiss the keyboard when "done" is pressed
             />
           </View>
 
           <TouchableOpacity
-            style={styles.closeButton}
+            style={styles.addPartInviteButton}
             onPress={handleSendInvite}>
             <Text style={styles.closeButtonText}>Send invite</Text>
           </TouchableOpacity>
@@ -580,6 +648,14 @@ const styles = StyleSheet.create({
   closeButton: {
     marginTop: 20,
     backgroundColor: colors.red.red950,
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.gold.gold100
+  },
+  addPartInviteButton: {
+    marginTop: 20,
+    backgroundColor: colors.green.green450,
     padding: 10,
     borderRadius: 10,
     borderWidth: 2,

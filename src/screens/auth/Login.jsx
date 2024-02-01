@@ -35,13 +35,14 @@ const Login = ({ navigation }) => {
   // ERROR MSG
   const [errorMsg, seterrorMsg] = useState('');
 
-  const { abstractApiPartialUrl } = Constants.manifest.extra;
+  //const { abstractApiPartialUrl } = Constants.manifest.extra;
 
   // //API CALL
   const triggerOtp = async () => {
     enableLoader();
     try {
       // FOR VALIDATING PHONE-NO
+      const abstractApiPartialUrl = 'https://phonevalidation.abstractapi.com/v1/?api_key=96832543ded64bbd92d9bb974e2437d8';
       const phoneNumber = `${selectedCountry}${number}`;
       const response = await axios.get(`${abstractApiPartialUrl}&phone=${phoneNumber}`);
       const isValid = response.data.valid;
