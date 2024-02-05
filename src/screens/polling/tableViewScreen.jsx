@@ -171,7 +171,6 @@ const TableViewScreen = ({ route, navigation }) => {
 
       }
     } catch (error) {
-      
       console.log("Error checking invites:", error);
     }
   
@@ -184,8 +183,15 @@ const TableViewScreen = ({ route, navigation }) => {
       const smsResult = await sendSMS(`+${phoneNumber}`);
       console.log(smsResult);
       if (smsResult === 'sent') {
-        const tableReqResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/tablereq/${tableReqId}`);
-        console.log(tableReqResponse.data.data)
+
+        let tableReqResponse;
+        try {
+          tableReqResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tablerequests/tablereq/${tableReqId}`);
+          console.log(tableReqResponse.data.data, "table requests");
+        }
+        catch (error){
+          console.log(error, "tablerequests/tablereq");
+        }
 
         const orgUserId = tableReqResponse.data.data.organizerUserId._id;
         console.log(orgUserId)
@@ -196,29 +202,39 @@ const TableViewScreen = ({ route, navigation }) => {
           tableRequestId: tableReqId,
           joiningFee: joiningFee
         };
-  
-        const response = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}invites/sendExternalInvite`, inviteRequestBody);
-        console.log(response)
 
-        const participantBody = {
-          phoneNumber: phoneNumber,
-          isPaymentInfoRegistered: false,
+        let response;
+        try {
+          response = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}invites/sendExternalInvite`, inviteRequestBody);
+          console.log(response.data.data, "invite data")
         }
-        const participantResponse = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}participants/participant`, participantBody);
+        catch (error){
+          console.log(error, "invites/sendExternalInvite")
+        }
 
-        if (participantResponse.data.status){
+        let trpmResponse;
+        try {
           const trpmBody = {
-            tableReqId: tableReqId,
-            participantId: participantResponse.data.data._id,
+            phoneNumber: Number(phoneNumber.match(/\d+/g).join('')),
+            tableRequestId: tableReqId,
+            isPaymentInfoRegistered: false,
             minimumPrice: joiningFee,
             isRequestOrganizer: false,
             isInvitedPending: true,
             isActiveParticipant: false,
-          }
-          const trpmResponse = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, trpmBody);
+          };
+
+          console.log(trpmBody, "trpmBody")
+
+          trpmResponse = await axios.post(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/createTableReqParticipantMapping`, trpmBody);
+          console.log(trpmResponse.data.data, "trpmResponse data");
           if (trpmResponse.data.status){
             setPendingParticipants([...pendingParticipants, participant]);
           }
+
+        }
+        catch (error){
+          console.log(error, "tableRequestParticipantMapping/createTableReqParticipantMapping")
         }
       }
     }
