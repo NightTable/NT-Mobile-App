@@ -49,7 +49,8 @@
     "react-native-svg": "14.1.0",
     "react-native-web": "~0.19.10",
     "react-redux": "^9.1.0",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "string-hash-64": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",

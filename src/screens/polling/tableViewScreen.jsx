@@ -98,8 +98,10 @@ const TableViewScreen = ({ route, navigation }) => {
   const [addParticipantsModal, setAddParticipantsModal] = useState(false);
   const [isFloorPlanPopupVisible, setFloorPlanPopupVisible] = useState(false);
   const [isSending, setIsSending] = useState(false);
-
-
+  const [removeParticipantsModal, setRemoveParticipantsModal] = useState(false);
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [selectedParticipant, setSelectedParticipant] = useState(null);
+  
   const toggleShowActivePending = () => {
     console.log(pendingParticipants, "pending parts");
     console.log(activeParts, "active parts");
@@ -176,7 +178,7 @@ const TableViewScreen = ({ route, navigation }) => {
   
     console.log(invitesForPhoneNum)
 
-    const inviteExists = invitesForPhoneNum !== null && invitesForPhoneNum.some(item => item.tableRequestId._id === tableReqId);
+    const inviteExists = invitesForPhoneNum !== null && invitesForPhoneNum.some(item => item.tableRequestId._id === tableReqId) && invitesForPhoneNum.some(item => item.isDeleted._id === false);
     console.log(inviteExists)
 
     if (!inviteExists) {
@@ -257,6 +259,7 @@ const TableViewScreen = ({ route, navigation }) => {
       console.log(addParticipantsModal);
     } 
     else if (id === 4){
+      setRemoveParticipantsModal(true);
       console.log("Button 4 pressed");
     }
     else if (id === 5){
@@ -278,6 +281,35 @@ const TableViewScreen = ({ route, navigation }) => {
     console.log(clubMenu);
   };
 
+  const handleRemoveParticipant = async () => {
+    if (selectedParticipant) {
+      
+      /*
+        these are pending participants, so this is what we do
+        remove the invite given to the participant, modify is deleted
+        do same for the trpm
+        do same for the participant
+        
+      */
+      try {
+        const inviteResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}/getListOfInvites/+${phoneNumber}`);
+        const invitesToThisTable = inviteResponse.data.data
+      }
+      catch (error){
+        console.log(error)
+      }
+
+
+      setPendingParticipants(prev => prev.filter(p => p !== selectedParticipant));
+
+  
+      // Hide the confirmation popup
+      setIsConfirmationVisible(false);
+      // Reset the selected participant
+      setSelectedParticipant(null);
+    }
+  };  
+  
   const getPendingParticipantsData = async() => {
     const trID = route.params.data.tableRequestId;
     const trpms = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}tableRequestParticipantMapping/tableRequest/${trID}`);
@@ -420,6 +452,62 @@ const TableViewScreen = ({ route, navigation }) => {
       </Modal>
 
       <Modal
+        animationType="slide"
+        transparent={true}
+        visible={removeParticipantsModal}
+        onRequestClose={() => setRemoveParticipantsModal(!removeParticipantsModal)}
+      >
+        <View style={styles.modalView}>
+          <ScrollView>
+            <View style={styles.categoryContainer}>
+              <Text style={styles.categoryTitle}>Pending Participants</Text>
+              {pendingParticipants.map((item, index) => (
+                <TouchableOpacity onPress={() => { setSelectedParticipant(item); setIsConfirmationVisible(true); }}>
+                  <View style={[styles.itemContainer, {marginBottom: 50}]}>
+                    <Text style={styles.itemName}>{item.nameOrPhone}</Text>
+                    <Text style={styles.itemPrice}>${item.minimumPrice}</Text>
+                  </View>
+                </TouchableOpacity>
+
+              ))}
+            </View>
+          </ScrollView>
+          
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setRemoveParticipantsModal(false)}
+          >
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isConfirmationVisible}
+        onRequestClose={() => setIsConfirmationVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.confirmationModalView}>
+            <Text style={styles.confirmationText}>Are you sure you want to remove this participant?</Text>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => handleRemoveParticipant()}
+            >
+              <Text style={styles.confirmButtonText}>Yes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setIsConfirmationVisible(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
         animationType='slide'
         transparent={true}
         visible={isFloorPlanPopupVisible}
@@ -428,7 +516,7 @@ const TableViewScreen = ({ route, navigation }) => {
         }}>
         <View style={styles.modalView}>
           {/* Your floor plan content here */}
-            <Text style={styles.categoryTitle}>We are working on uploading the floor plan to the mobile app. For now, please ask your promoter / VIP for a floor plan</Text>
+            <Text style={styles.categoryTitle}>We are working on uploading the floor plan to the mobile app. For now, please ask your promoter / VIP host for a floor plan</Text>
 
           <TouchableOpacity
             style={styles.closeButton}
@@ -695,7 +783,46 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 2,
     borderColor: colors.gold.gold100
-  }
+  },
+confirmationModalView: {
+  margin: 20,
+  backgroundColor: "white",
+  borderRadius: 20,
+  padding: 35,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5
+},
+confirmButton: {
+  backgroundColor: "green",
+  borderRadius: 20,
+  padding: 10,
+  elevation: 2,
+  marginTop: 15
+},
+cancelButton: {
+  backgroundColor: "red",
+  borderRadius: 20,
+  padding: 10,
+  elevation: 2,
+  marginTop: 15
+},
+confirmButtonText: {
+  color: "white",
+  fontWeight: "bold",
+  textAlign: "center"
+},
+cancelButtonText: {
+  color: "white",
+  fontWeight: "bold",
+  textAlign: "center"
+}
 });
 
 export default TableViewScreen;

@@ -97,6 +97,7 @@ const TableInvites = ({ route, navigation }) => {
       
     }
 
+
     catch (error) {
       console.error('Error in the outer loop:', error);
     }
@@ -104,6 +105,8 @@ const TableInvites = ({ route, navigation }) => {
     // You can return organizedTables here if needed
     return organizedTables;
   };
+
+
   
   
   const getAllInvitedTables = async () => {
@@ -115,7 +118,7 @@ const TableInvites = ({ route, navigation }) => {
       invsResponse = await axios.get(`${process.env.AMIYA_HOME_SSBOSNET}invites/getListOfInvites/+${JSON.parse(user).phoneNumber}`);
       
       invs = invsResponse.data.data;
-      // console.log(JSON.stringify(invsResponse.data.data, null, 4), 'invsResponse.data.data;');
+      console.log(JSON.stringify(invsResponse.data.data, null, 4), 'invsResponse.data.data;');
 
     } 
     
